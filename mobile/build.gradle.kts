@@ -171,3 +171,13 @@ tasks.register("assembleStandaloneLynkPreview") {
     description = "Build a debug-signed Lynk preview APK with explicitly provisioned authentication."
     dependsOn(verifyStandaloneAuthentication, "assembleLynkPreview")
 }
+tasks.register("assembleStandaloneLynkRelease") {
+    group = "build"
+    description = "Build a release-signed Lynk APK with explicitly provisioned authentication."
+    dependsOn(verifyStandaloneAuthentication, "assembleLynkRelease")
+}
+tasks.register("assembleStandaloneStandardRelease") {
+    group = "build"
+    description = "Build a release-signed standard APK with explicitly provisioned authentication."
+    dependsOn(verifyStandaloneAuthentication, "assembleStandardRelease")
+}

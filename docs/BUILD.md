@@ -66,8 +66,12 @@
 DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneDebug
 # 或带认证身份的 preview 包（包名仍为 .preview）
 DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandalonePreview
-# 领克 A/B 版
+# 领克 A/B 版（debug 签名）
 DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkPreview
+
+# 正式签名版（需同时提供 ANDROID_KEYSTORE_* 环境变量）
+DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneStandardRelease
+DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkRelease
 ```
 
 - 只有显式传入的资产目录会被打包，并且**只对 `assembleStandalone*` 任务生效**；其他 debug / preview / release 构建即使设置了该变量也会忽略并给出警告，避免凭据误入公开包。
