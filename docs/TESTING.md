@@ -15,12 +15,12 @@ CI 使用同一组核心任务，并额外验证公开 APK 无认证资产和 re
 
 ## 自动化与构建验证
 
-记录日期：2026-11-03。本地环境：macOS arm64、Homebrew OpenJDK 26、Android SDK Platform 37.2 / Build-Tools 37.0.0 / NDK 28.2.13676358、Gradle 9.5.0。GitHub Actions 的 Android checks 与 Preview release 两次运行均通过（run `41648473187`、`41648516628`）。
+记录日期：2026-11-03。本地环境：macOS arm64、Homebrew OpenJDK 26、Android SDK Platform 37.2 / Build-Tools 37.0.0 / NDK 28.2.13676358、Gradle 9.5.0。GitHub Actions 的 Android checks 与 Preview release 运行均通过（run `41648473187`、`41648516628`、`41652240197`）。
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |
 | `:shared:testDebugUnitTest` | ✅ 1798 通过 / 1 跳过 | 传输、音频、视频、协议与兼容层 |
-| `:common:testDebugUnitTest` | ✅ 1760 通过 | 设置 UI、诊断、更新、备份与资源测试 |
+| `:common:testDebugUnitTest` | ✅ 1761 通过 | 设置 UI、诊断、更新、备份与资源测试 |
 | `:mobile:lintStandardDebug` | ✅ 0 阻断 | lint 报告见 `mobile/build/reports/` |
 | `:mobile:assembleStandardDebug` | ✅ | `com.osnplay.debug` / `0.1.1-debug` |
 | `:mobile:assembleLynkDebug` | ✅ | `com.osnplay.lynk.debug` / `0.1.1-lynk-debug` |

@@ -39,8 +39,8 @@ OSNPlay 自身的实车验收仍在进行中。上表中的“参考验证”来
 
 | 包 | applicationId | 用途 |
 | --- | --- | --- |
-| `OSNPlay-<version>-standard.apk` | `com.osnplay` | 主包，日常使用 |
-| `OSNPlay-<version>-lynk.apk` | `com.osnplay.lynk` | 领克 A/B 测试包，可与主包并存 |
+| `OSNPlay-<version>-standard.apk` | `com.osnplay`（正式）/ `com.osnplay.preview`（预览） | 主包 |
+| `OSNPlay-<version>-lynk.apk` | `com.osnplay.lynk`（正式）/ `com.osnplay.lynk.preview`（预览） | 领克 A/B 包，可与主包并存 |
 
 > **默认预览包不含 CarPlay 配件认证身份。** 公开源码和 CI 构建只包含应用代码，可安装、浏览界面和验证设置，但**无法完成真实 CarPlay 连接**。需要实车连接时，请按 [构建说明](docs/BUILD.md) 用你自己合法持有的 `DIPLAY_AUTH_ASSETS_DIR` 构建 standalone 包。仓库不会分发认证私钥。
 

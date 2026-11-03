@@ -39,8 +39,8 @@ Download the preview APK from [Releases](https://github.com/Jas0n0ss/OSN-Play/re
 
 | Package | applicationId | Purpose |
 | --- | --- | --- |
-| `OSNPlay-<version>-standard.apk` | `com.osnplay` | Main package |
-| `OSNPlay-<version>-lynk.apk` | `com.osnplay.lynk` | Lynk A/B package; coexists with the main package |
+| `OSNPlay-<version>-standard.apk` | `com.osnplay` (release) / `com.osnplay.preview` (preview) | Main package |
+| `OSNPlay-<version>-lynk.apk` | `com.osnplay.lynk` (release) / `com.osnplay.lynk.preview` (preview) | Lynk A/B package; coexists with the main package |
 
 > **The default preview APK has no CarPlay accessory identity.** Public source and CI builds contain application code only. They install, show the interface and let you inspect settings, but **cannot complete a real CarPlay connection**. For in-car use, build a standalone package with your own lawful `DIPLAY_AUTH_ASSETS_DIR` as described in [BUILD.md](docs/BUILD.md). This repository does not distribute accessory private keys.
 
