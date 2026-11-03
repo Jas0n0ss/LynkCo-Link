@@ -11,11 +11,11 @@
   :mobile:assembleStandardPreview :mobile:assembleLynkPreview
 ```
 
-CI 使用同一命令，见 [.github/workflows/android.yml](../.github/workflows/android.yml)。
+CI 使用同一组核心任务，并额外验证公开 APK 无认证资产和 release 签名路径，见 [.github/workflows/android.yml](../.github/workflows/android.yml)。
 
 ## 自动化与构建验证
 
-记录日期：2026-11-03。环境：macOS arm64、Homebrew OpenJDK 26、Android SDK Platform 37.2 / Build-Tools 37.0.0 / NDK 28.2.13676358、Gradle 9.5.0。
+记录日期：2026-11-03。本地环境：macOS arm64、Homebrew OpenJDK 26、Android SDK Platform 37.2 / Build-Tools 37.0.0 / NDK 28.2.13676358、Gradle 9.5.0。GitHub Actions 的 Android checks 与 Preview release 两次运行均通过（run `41648473187`、`41648516628`）。
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |

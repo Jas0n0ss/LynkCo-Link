@@ -4,7 +4,7 @@
 
 [![Android checks](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml)
 [![Latest preview](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?include_prereleases&label=preview)](https://github.com/Jas0n0ss/OSN-Play/releases)
-[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0%20%2F%20AGPL--3.0-blue.svg)](LICENSE)
 
 OSNPlay 是 [DiPlay](https://github.com/shihabal3amri/DiPlay)（GPL-3.0，0.2.22 基线）面向领克 OSN 车机平台的二创项目，并整合了 [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) 的领克适配成果（构建风味、环境检测、连接诊断与实车记录）。
 
