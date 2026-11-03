@@ -31,6 +31,20 @@ class UpdateChecksumsTest {
     }
 
     @Test
+    fun normalizesTheDotSlashPrefixWrittenBySha256sum() {
+        val checksums = UpdateChecksums.parse(
+            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad  ./OSNPlay-0.1.1-preview-standard.apk\n",
+        )
+        assertTrue(
+            UpdateChecksums.matches(
+                checksums,
+                "OSNPlay-0.1.1-preview-standard.apk",
+                "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+            ),
+        )
+    }
+
+    @Test
     fun hashesFileContentsStreamed() {
         val file = temporaryFolder.newFile("payload.bin")
         file.writeBytes("abc".toByteArray())

@@ -93,7 +93,7 @@ jobs:
       - name: Checksums
         run: |
           set -euo pipefail
-          (cd release-assets && sha256sum ./*.apk > SHA256SUMS.txt)
+          (cd release-assets && sha256sum *.apk > SHA256SUMS.txt)
           ls -lh release-assets
       - name: Publish GitHub pre-release
         env:
