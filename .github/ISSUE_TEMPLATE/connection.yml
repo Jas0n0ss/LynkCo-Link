@@ -1,0 +1,54 @@
+name: Connection problem (logs required)
+description: USB / Bluetooth / Wi-Fi failures, stuck opening CarPlay, disconnects, reconnect loops or connection-dependent stutter.
+title: '[Connection] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Connection problems need diagnostic logs. While parked, reproduce the issue on the latest release, then open **Settings → Diagnostics → Save diagnostic report**. Capture the first connection attempt through the failure.
+
+        Reports are public. Remove personal information, hotspot passwords and authentication files before uploading. Screenshots or videos help but do not replace logs.
+  - type: input
+    id: version
+    attributes: {label: OSNPlay version, placeholder: 'Exact version from Settings → About'}
+    validations: {required: true}
+  - type: input
+    id: car
+    attributes: {label: Lynk & Co model and head unit, placeholder: 'Model/year, OSN and Android version, exact firmware'}
+    validations: {required: true}
+  - type: input
+    id: phone
+    attributes: {label: iPhone model and exact iOS version}
+    validations: {required: true}
+  - type: dropdown
+    id: transport
+    attributes:
+      label: Connection
+      options: ['USB', 'Wireless: car hotspot', 'Wireless: Wi-Fi Direct', 'Wireless: Existing Wi-Fi / Same LAN', 'Both / multiple', 'Other / unsure']
+    validations: {required: true}
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: What happened and how to reproduce it
+      description: 'Include expected behaviour, steps, the last connection message, band/channel if shown, and whether the head unit is also joined to another Wi-Fi network. For USB, describe any permission prompts.'
+    validations: {required: true}
+  - type: input
+    id: failure-time
+    attributes:
+      label: Approximate failure time
+      description: 'Give the time shown on the device so the failure can be found in the logs.'
+      placeholder: 'Example: 2026-11-03 21:35, device local time'
+    validations: {required: true}
+  - type: upload
+    id: diagnostics
+    attributes:
+      label: Diagnostic logs
+      description: 'Attach the full OSNPlay diagnostic report (.txt or .log), or a .zip containing the logs.'
+    validations:
+      required: true
+      accept: '.txt,.log,.zip'
+  - type: textarea
+    id: extra-context
+    attributes:
+      label: Additional context or screenshots
+      description: 'Optional workarounds, recordings or comparisons with another connection mode.'

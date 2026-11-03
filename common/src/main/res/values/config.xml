@@ -1,0 +1,7 @@
+<resources>
+    <bool name="config_advanced_audio_channel_mapping">false</bool>
+    <!-- Ported from LynkCo-OSNPlay: enables the simplified two-entry connection flow and the
+         read-only environment checklist in diagnostic reports. OSNPlay keeps it off until the
+         Lynk panel/simple-flow port lands (see docs/ADAPTATION-NOTES.md). -->
+    <bool name="config_simple_connection_flow">false</bool>
+</resources>

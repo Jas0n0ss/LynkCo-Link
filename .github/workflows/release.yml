@@ -1,0 +1,110 @@
+name: Preview release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to publish (for example v0.1.1-preview)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+      - name: Reject credential files in public source
+        run: python3 scripts/check_public_tree.py
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools platforms;android-37.2 build-tools;37.0.0 ndk;28.2.13676358
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Unit tests and lint
+        run: >
+          ./gradlew
+          :shared:testDebugUnitTest
+          :common:testDebugUnitTest
+          :mobile:lintStandardDebug
+          --stacktrace
+      - name: Prepare optional authentication assets
+        env:
+          AUTH_B64: ${{ secrets.DIPLAY_AUTH_ASSETS_BASE64 }}
+        run: |
+          set -euo pipefail
+          if [ -z "${AUTH_B64:-}" ]; then
+            echo "DIPLAY_AUTH_ASSETS_BASE64 is not configured; publishing source-only preview APKs."
+            exit 0
+          fi
+          mkdir -p "$RUNNER_TEMP/auth-assets"
+          printf '%s' "$AUTH_B64" | base64 --decode > "$RUNNER_TEMP/auth-assets.zip"
+          unzip -q "$RUNNER_TEMP/auth-assets.zip" -d "$RUNNER_TEMP/auth-assets"
+          test -s "$RUNNER_TEMP/auth-assets/offline-mfi/identity.pk8"
+          test -s "$RUNNER_TEMP/auth-assets/offline-mfi/certificate.p7b"
+          echo "OSNPLAY_STANDALONE_ASSETS=$RUNNER_TEMP/auth-assets" >> "$GITHUB_ENV"
+      - name: Build public preview APKs
+        run: |
+          set -euo pipefail
+          ./gradlew :mobile:assembleStandardPreview :mobile:assembleLynkPreview --stacktrace
+      - name: Collect public release assets
+        run: |
+          set -euo pipefail
+          VERSION="${RELEASE_TAG#v}"
+          mkdir -p release-assets
+          cp mobile/build/outputs/apk/standard/preview/mobile-standard-preview.apk \
+            "release-assets/OSNPlay-${VERSION}-standard.apk"
+          cp mobile/build/outputs/apk/lynk/preview/mobile-lynk-preview.apk \
+            "release-assets/OSNPlay-${VERSION}-lynk.apk"
+      - name: Assert public assets contain no authentication data
+        run: |
+          set -euo pipefail
+          for apk in release-assets/OSNPlay-*-standard.apk release-assets/OSNPlay-*-lynk.apk; do
+            if unzip -l "$apk" | grep -qE 'offline-mfi|\.pk8|\.p7b'; then
+              echo "Authentication asset found in public APK: $apk"
+              exit 1
+            fi
+          done
+      - name: Build standalone preview APK
+        if: ${{ env.OSNPLAY_STANDALONE_ASSETS != '' }}
+        run: |
+          set -euo pipefail
+          VERSION="${RELEASE_TAG#v}"
+          DIPLAY_AUTH_ASSETS_DIR="$OSNPLAY_STANDALONE_ASSETS" \
+            ./gradlew :mobile:assembleStandalonePreview --stacktrace
+          cp mobile/build/outputs/apk/standard/preview/mobile-standard-preview.apk \
+            "release-assets/OSNPlay-${VERSION}-standalone.apk"
+      - name: Checksums
+        run: |
+          set -euo pipefail
+          (cd release-assets && sha256sum ./*.apk > SHA256SUMS.txt)
+          ls -lh release-assets
+      - name: Publish GitHub pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" release-assets/* --clobber
+          else
+            gh release create "$RELEASE_TAG" release-assets/* \
+              --title "OSNPlay ${RELEASE_TAG#v}" \
+              --generate-notes \
+              --prerelease
+          fi

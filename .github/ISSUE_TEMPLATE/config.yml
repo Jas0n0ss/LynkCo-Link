@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Installation and connection help
+    url: https://github.com/Jas0n0ss/OSN-Play/blob/main/docs/INSTALL.md
+    about: Read the installation, connection and troubleshooting guide first.
+  - name: Compatibility and vehicle notes
+    url: https://github.com/Jas0n0ss/OSN-Play/blob/main/docs/COMPATIBILITY.md
+    about: Check the current Lynk & Co OSN matrix and known limitations.

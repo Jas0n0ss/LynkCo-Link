@@ -1,0 +1,87 @@
+name: Android checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject credential files in public source
+        run: python3 scripts/check_public_tree.py
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools platforms;android-37.2 build-tools;37.0.0 ndk;28.2.13676358
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Unit tests, lint and source builds
+        run: >
+          ./gradlew
+          :shared:testDebugUnitTest
+          :common:testDebugUnitTest
+          :mobile:lintStandardDebug
+          :mobile:assembleStandardDebug
+          :mobile:assembleLynkDebug
+          :mobile:assembleStandardPreview
+          :mobile:assembleLynkPreview
+          --stacktrace
+      - name: Verify public APKs contain no authentication assets
+        run: |
+          set -euo pipefail
+          for apk in mobile/build/outputs/apk/standard/preview/*.apk mobile/build/outputs/apk/lynk/preview/*.apk; do
+            if unzip -l "$apk" | grep -qE 'offline-mfi|\.pk8|\.p7b'; then
+              echo "Authentication asset found in public APK: $apk"
+              exit 1
+            fi
+          done
+      - name: Verify the release signing path with a throwaway key
+        run: |
+          set -euo pipefail
+          keytool -genkeypair -noprompt \
+            -keystore "$RUNNER_TEMP/ci-release.jks" \
+            -storepass ci-release-pass -keypass ci-release-pass \
+            -alias ci -dname "CN=OSNPlay CI" -keyalg RSA -keysize 2048 -validity 1
+          export ANDROID_KEYSTORE_PATH="$RUNNER_TEMP/ci-release.jks"
+          export ANDROID_KEYSTORE_PASSWORD=ci-release-pass
+          export ANDROID_KEY_ALIAS=ci
+          export ANDROID_KEY_PASSWORD=ci-release-pass
+          ./gradlew :mobile:assembleStandardRelease --stacktrace
+      - name: Upload APKs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: OSNPlay-apks
+          path: |
+            mobile/build/outputs/apk/standard/debug/*.apk
+            mobile/build/outputs/apk/lynk/debug/*.apk
+            mobile/build/outputs/apk/standard/preview/*.apk
+            mobile/build/outputs/apk/lynk/preview/*.apk
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload test and lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: OSNPlay-reports
+          path: |
+            shared/build/reports/tests/
+            common/build/reports/tests/
+            mobile/build/reports/lint-results-standardDebug.html
+            mobile/build/reports/lint-results-standardDebug.sarif
+          if-no-files-found: warn
+          retention-days: 14

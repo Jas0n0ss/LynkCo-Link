@@ -1,0 +1,5 @@
+<resources>
+    <!-- The Lynk edition uses the OS N connection profile: the API 28 manual-hotspot path does
+         not gate on location, and the environment check reports the Lynk system AP state. -->
+    <bool name="config_simple_connection_flow">true</bool>
+</resources>
