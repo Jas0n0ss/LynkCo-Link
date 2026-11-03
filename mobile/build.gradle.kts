@@ -163,6 +163,11 @@ tasks.register("assembleStandaloneDebug") {
 }
 tasks.register("assembleStandalonePreview") {
     group = "build"
-    description = "Build a debug-signed preview APK with explicitly provisioned authentication."
+    description = "Build a debug-signed standard preview APK with explicitly provisioned authentication."
     dependsOn(verifyStandaloneAuthentication, "assembleStandardPreview")
+}
+tasks.register("assembleStandaloneLynkPreview") {
+    group = "build"
+    description = "Build a debug-signed Lynk preview APK with explicitly provisioned authentication."
+    dependsOn(verifyStandaloneAuthentication, "assembleLynkPreview")
 }
