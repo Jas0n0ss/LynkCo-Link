@@ -542,7 +542,7 @@ object AirPlayPersistence {
 
     fun loadAutoStartOnBoot(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(KEY_AUTO_START_ON_BOOT, false)
+            .getBoolean(KEY_AUTO_START_ON_BOOT, context.resources.getBoolean(com.shilapi.xcertplay.host.R.bool.config_auto_start_on_boot_default))
 
     fun saveAutoStartOnBoot(context: Context, enabled: Boolean) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
@@ -926,7 +926,10 @@ object AirPlayPersistence {
 
     /** A shortcut over the launcher's home screen that comes back to CarPlay (LauncherBubble). */
     fun loadLauncherBubble(context: Context): Boolean =
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_LAUNCHER_BUBBLE, false)
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(
+            KEY_LAUNCHER_BUBBLE,
+            context.resources.getBoolean(com.shilapi.xcertplay.host.R.bool.config_launcher_bubble_default),
+        )
 
     fun saveLauncherBubble(context: Context, enabled: Boolean) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_LAUNCHER_BUBBLE, enabled).apply()

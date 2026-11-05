@@ -30,6 +30,7 @@ OSNPlay's own vehicle acceptance is still in progress. “Same-platform referenc
 - **Display tuning**: resolution, picture size, frame rate, day/night, system bars and split-screen areas.
 - **Audio and keys**: music buffering, navigation volume, optional steering-wheel media/Siri keys (some features require ADB or an accessibility service).
 - **Upstream features**: auto-connect, start with the car, hotspot automation and diagnostic export from DiPlay 0.2.22.
+- **OSN launcher compatibility**: adaptive icon, boot notification and home-screen bubble for the stock Launcher3 package whitelist that can hide sideloaded apps.
 
 BYD-firmware-only features (HUD navigation, cluster cards, ambient lighting, BYD settings entry) are out of scope for OSN; the code remains only for upstream compatibility.
 
@@ -65,12 +66,12 @@ See [docs/BUILD.md](docs/BUILD.md) for the full environment, signing, standalone
 
 | Build type | Application ID | Example version | Signing | Purpose |
 | --- | --- | --- | --- | --- |
-| `standardDebug` | `com.osnplay.debug` | `0.1.1-debug` | debug | Development |
-| `lynkDebug` | `com.osnplay.lynk.debug` | `0.1.1-lynk-debug` | debug | Lynk development |
-| `standardPreview` | `com.osnplay.preview` | `0.1.1-preview` | debug | Public preview / UI review (separate from stable) |
-| `lynkPreview` | `com.osnplay.lynk.preview` | `0.1.1-lynk-preview` | debug | Lynk public preview (separate from stable) |
-| `standardRelease` | `com.osnplay` | `0.1.1` | release | Signed release |
-| `lynkRelease` | `com.osnplay.lynk` | `0.1.1-lynk` | release | Signed Lynk release |
+| `standardDebug` | `com.osnplay.debug` | `0.1.2-debug` | debug | Development |
+| `lynkDebug` | `com.osnplay.lynk.debug` | `0.1.2-lynk-debug` | debug | Lynk development |
+| `standardPreview` | `com.osnplay.preview` | `0.1.2-preview` | debug | Public preview / UI review (separate from stable) |
+| `lynkPreview` | `com.osnplay.lynk.preview` | `0.1.2-lynk-preview` | debug | Lynk public preview (separate from stable) |
+| `standardRelease` | `com.osnplay` | `0.1.2` | release | Signed release |
+| `lynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | Signed Lynk release |
 
 `standard` / `lynk` are product flavors (distribution editions); `debug` / `preview` / `release` are build types. CI runs unit tests, lint, all four debug/preview variants and a release-signing check on every push and pull request, then uploads the APKs and reports.
 

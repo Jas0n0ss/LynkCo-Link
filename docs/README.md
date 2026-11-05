@@ -20,6 +20,7 @@
 | [TESTING.md](TESTING.md) | 自动化测试、构建验证与实车验收清单 |
 | [DESIGN-REVIEW.md](DESIGN-REVIEW.md) | 发布前的设计评审结论与已处理问题 |
 | [ADAPTATION-NOTES.md](ADAPTATION-NOTES.md) | 相对 DiPlay 的改造、LynkCo-DiPlay 整合和路线图 |
+| [UPSTREAM-INTEGRATION.md](UPSTREAM-INTEGRATION.md) | 四个上游项目各取了什么、为什么不能整包合并 |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | 第三方代码、素材和许可 |
 | [LICENSING.md](../LICENSING.md) | GPL-3.0 与 AGPL-3.0-only 文件的组合许可说明 |
 | [AGENTS.md](../AGENTS.md) | 代码贡献规则与设置信息架构约束 |

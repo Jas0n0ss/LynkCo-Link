@@ -4,4 +4,8 @@
          read-only environment checklist in diagnostic reports. OSNPlay keeps it off until the
          Lynk panel/simple-flow port lands (see docs/ADAPTATION-NOTES.md). -->
     <bool name="config_simple_connection_flow">false</bool>
+    <!-- Defaults overridden by the lynk edition: launch on boot and show the home-screen bubble
+         make OSNPlay reachable when the stock OSN Launcher3 whitelist hides third-party apps. -->
+    <bool name="config_auto_start_on_boot_default">false</bool>
+    <bool name="config_launcher_bubble_default">false</bool>
 </resources>

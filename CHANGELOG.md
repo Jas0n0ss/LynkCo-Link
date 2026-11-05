@@ -1,5 +1,22 @@
 # 更新日志
 
+## 0.1.2 — 2026-11-05
+
+### 新增
+
+- 领克 OSN 桌面可见性适配：自适应图标与 PNG 回退、显式 activity label/icon、`LEANBACK_LAUNCHER` 入口。
+- `lynk` 版本默认开启开机自动启动和桌面悬浮球；首次运行提示授予“显示在其他应用上层”。
+- 开机时发布“打开 OSNPlay”通知，即使原厂 Launcher3 的包名白名单不显示图标也能进入应用。
+- 文档补充 OSN 原厂桌面白名单的原因、替代启动器/ADB/悬浮球处理方式。
+
+### 变更
+
+- versionCode 102 / versionName `0.1.2`。
+
+### 已知限制
+
+- 原厂 Launcher3 的包名白名单无法由普通 APK 绕过；如需桌面图标，需使用替代启动器、ADB 启动，或修改系统白名单。
+
 OSNPlay 使用独立版本线。上游 DiPlay 的逐版本变更见 [DiPlay Releases](https://github.com/shihabal3amri/DiPlay/releases)；本文件只记录 OSNPlay 的改动。
 
 ## 0.1.1 — 2026-11-03（预览版）

@@ -30,6 +30,7 @@ OSNPlay 自身的实车验收仍在进行中。上表中的“参考验证”来
 - **显示适配**：分辨率、画面尺寸、帧率、日夜模式、系统栏和分屏区域。
 - **音频与按键**：音乐缓冲、导航音量、可选的方向盘媒体键 / Siri 键（部分功能需要 ADB 或无障碍服务）。
 - **上游能力**：自动连接、开机启动、车机热点自动化、诊断报告等 DiPlay 0.2.22 能力。
+- **OSN 桌面兼容**：自适应图标、开机通知和桌面悬浮球，缓解 OSN 原厂 Launcher3 白名单不显示第三方应用的问题。
 
 比亚迪固件专属能力（HUD 导航、仪表卡片、氛围灯、BYD 设置入口等）不在 OSN 的适配范围内，相关代码仅为兼容上游而保留。
 
@@ -65,12 +66,12 @@ OSNPlay 自身的实车验收仍在进行中。上表中的“参考验证”来
 
 | 构建类型 | 包名 | 版本示例 | 签名 | 用途 |
 | --- | --- | --- | --- | --- |
-| `standardDebug` | `com.osnplay.debug` | `0.1.1-debug` | debug | 开发调试 |
-| `lynkDebug` | `com.osnplay.lynk.debug` | `0.1.1-lynk-debug` | debug | 领克开发调试 |
-| `standardPreview` | `com.osnplay.preview` | `0.1.1-preview` | debug | 公开预览 / UI 验收（与正式版独立） |
-| `lynkPreview` | `com.osnplay.lynk.preview` | `0.1.1-lynk-preview` | debug | 领克公开预览（与正式版独立） |
-| `standardRelease` | `com.osnplay` | `0.1.1` | release | 正式签名发布 |
-| `lynkRelease` | `com.osnplay.lynk` | `0.1.1-lynk` | release | 领克正式签名发布 |
+| `standardDebug` | `com.osnplay.debug` | `0.1.2-debug` | debug | 开发调试 |
+| `lynkDebug` | `com.osnplay.lynk.debug` | `0.1.2-lynk-debug` | debug | 领克开发调试 |
+| `standardPreview` | `com.osnplay.preview` | `0.1.2-preview` | debug | 公开预览 / UI 验收（与正式版独立） |
+| `lynkPreview` | `com.osnplay.lynk.preview` | `0.1.2-lynk-preview` | debug | 领克公开预览（与正式版独立） |
+| `standardRelease` | `com.osnplay` | `0.1.2` | release | 正式签名发布 |
+| `lynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | 领克正式签名发布 |
 
 `standard` / `lynk` 是产品风味（distribution edition），`debug` / `preview` / `release` 是构建类型。CI 在每次 push 和 PR 上运行单元测试、lint、debug / preview 四个变体构建和 release 签名验证，并上传 APK 与测试报告。
 

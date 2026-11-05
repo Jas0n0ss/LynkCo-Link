@@ -9,7 +9,7 @@
 | 上游项目 | [DiPlay](https://github.com/shihabal3amri/DiPlay)（基于 [xcertplay](https://github.com/shilapi/xcertplay)） |
 | 上游版本 | 0.2.22（commit `615b32c`） |
 | 上游许可 | GPL-3.0；设置 UI 沿袭 DiAuto，AGPL-3.0 |
-| 本版本 | OSNPlay 0.1.1（versionCode 101） |
+| 本版本 | OSNPlay 0.1.2（versionCode 102） |
 | 标准包名 | `com.osnplay` |
 | 领克包名 | `com.osnplay.lynk` |
 | 命名空间 | `com.shilapi.xcertplay`（有意保留，见下文） |
@@ -27,7 +27,7 @@
   - `debug` → 包名追加 `.debug`，版本追加 `-debug`
   - `preview` → debug 签名、独立 `.preview` 包名、版本追加 `-preview`，用于预览发布
   - `release` → 正式签名，版本不追加后缀
-- 版本从 0.1.0 / 100 起步，0.1.1 为当前预览版。
+- 版本从 0.1.0 / 100 起步，0.1.2 为当前版本。
 
 ### 2. 应用身份与品牌
 
@@ -48,7 +48,19 @@
 - 新增资源 `strings_environment.xml` 与 `strings_lynk.xml`，并补齐 `values-ja`、`values-zh-rTW` 等语言。
 - 兼容性矩阵和实车证据整理到 [COMPATIBILITY.md](COMPATIBILITY.md)。
 
-### 4. 文档与仓库整理
+### 4. 领克 OSN 桌面可见性适配
+
+OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功不等于桌面出现图标。本版本从四个上游项目合并了以下可落地的缓解措施：
+
+- 自适应图标与 PNG 回退（参考 LynkCo-DiPlay 的领克启动图标做法），并显式声明 activity 的 label/icon；
+- 增加 `LEANBACK_LAUNCHER` 入口，兼容部分只索引 leanback 类别的车机/TV 桌面；
+- `lynk` 版本默认开启“开机后自动启动”，并在 `BOOT_COMPLETED` 时发布“打开 OSNPlay”通知；
+- `lynk` 版本默认开启桌面悬浮球，首次运行提示授予“显示在其他应用上层”；授权后即使桌面没有图标也能从悬浮球打开；
+- 保留 `am start` 和第三方启动器（小八启动器/应用页）作为替代入口。
+
+说明见 [INSTALL.md](INSTALL.md#安装成功但桌面不显示-osnplay)。
+
+### 5. 文档与仓库整理
 
 - 根目录只保留一份简体中文 README 和一份英文 README；移除重复的 `README.zh-CN.md`、`README.zh-TW.md`。
 - 文档从 `docs/lynk/` 提升到 `docs/` 顶层，新增文档索引、设计评审、预览发布说明。

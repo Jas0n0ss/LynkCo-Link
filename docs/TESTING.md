@@ -15,21 +15,24 @@ CI 使用同一组核心任务，并额外验证公开 APK 无认证资产和 re
 
 ## 自动化与构建验证
 
-记录日期：2026-11-03。本地环境：macOS arm64、Homebrew OpenJDK 26、Android SDK Platform 37.2 / Build-Tools 37.0.0 / NDK 28.2.13676358、Gradle 9.5.0。GitHub Actions 的 Android checks 与 Preview release 运行均通过（run `41648473187`、`41648516628`、`41652240197`）。
+记录日期：2026-11-05。本地环境：macOS arm64、Homebrew OpenJDK 26、Android SDK Platform 37.2 / Build-Tools 37.0.0 / NDK 28.2.13676358、Gradle 9.5.0。GitHub Actions 的历史运行（0.1.1）见 run `41648473187`、`41648516628`、`41652240197`；0.1.2 的验证在本地完成。
 
 | 检查 | 结果 | 说明 |
 | --- | --- | --- |
 | `:shared:testDebugUnitTest` | ✅ 1798 通过 / 1 跳过 | 传输、音频、视频、协议与兼容层 |
 | `:common:testDebugUnitTest` | ✅ 1761 通过 | 设置 UI、诊断、更新、备份与资源测试 |
 | `:mobile:lintStandardDebug` | ✅ 0 阻断 | lint 报告见 `mobile/build/reports/` |
-| `:mobile:assembleStandardDebug` | ✅ | `com.osnplay.debug` / `0.1.1-debug` |
-| `:mobile:assembleLynkDebug` | ✅ | `com.osnplay.lynk.debug` / `0.1.1-lynk-debug` |
-| `:mobile:assembleStandardPreview` | ✅ | `com.osnplay.preview` / `0.1.1-preview` |
-| `:mobile:assembleLynkPreview` | ✅ | `com.osnplay.lynk.preview` / `0.1.1-lynk-preview` |
+| `:mobile:assembleStandardDebug` | ✅ | `com.osnplay.debug` / `0.1.2-debug` |
+| `:mobile:assembleLynkDebug` | ✅ | `com.osnplay.lynk.debug` / `0.1.2-lynk-debug` |
+| `:mobile:assembleStandardPreview` | ✅ | `com.osnplay.preview` / `0.1.2-preview` |
+| `:mobile:assembleLynkPreview` | ✅ | `com.osnplay.lynk.preview` / `0.1.2-lynk-preview` |
 | 公开包认证资产检查 | ✅ 无 | 四个 debug / preview APK 均无 `offline-mfi` / `.pk8` / `.p7b` |
 | release 签名路径 | ✅ | 用临时 keystore 构建 `:mobile:assembleStandardRelease` 成功 |
 | standalone 凭据门禁 | ✅ | 单独调用会打包显式资产；与公开构建混合调用会被拒绝 |
 | `scripts/check_public_tree.py` | ✅ | 源码树无凭据容器或私钥块 |
+| `aapt2` launcher 检查 | ✅ | 同时存在 `launchable-activity` 与 `leanback-launchable-activity`，label 为 OSNPlay |
+| `lynk` 资源默认值 | ✅ | auto-start / launcher bubble / simple flow 均为 true |
+| 0.1.2 签名发布包 | ✅ | `com.osnplay.lynk` / `0.1.2-lynk` / versionCode 102，认证资产已打入 |
 
 ### 产物核对
 
@@ -46,8 +49,8 @@ unzip -l mobile/build/outputs/apk/standard/preview/mobile-standard-preview.apk |
 
 | APK | package | versionName | minSdk | targetSdk |
 | --- | --- | --- | --- | --- |
-| standard preview | `com.osnplay.preview` | `0.1.1-preview` | 24 | 37 |
-| lynk preview | `com.osnplay.lynk.preview` | `0.1.1-lynk-preview` | 24 | 37 |
+| standard preview | `com.osnplay.preview` | `0.1.2-preview` | 24 | 37 |
+| lynk preview | `com.osnplay.lynk.preview` | `0.1.2-lynk-preview` | 24 | 37 |
 
 ## 自动化测试覆盖
 

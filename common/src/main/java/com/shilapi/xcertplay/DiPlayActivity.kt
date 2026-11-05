@@ -170,6 +170,7 @@ internal object SettingsInformationArchitecture {
 class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private val handler = Handler(Looper.getMainLooper())
     private var appNight = true
+    private var bubblePromptChecked = false
     override val currentAppNight: Boolean get() = appNight
     private var palette = DiPlayPalette.DARK
     private var appearanceObserverRemoval: (() -> Unit)? = null
@@ -498,6 +499,21 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
         interfaceOverride = next
         return false
     }
+    /** OSN's stock Launcher3 may never list a sideloaded app; offer the overlay bubble once. */
+    private fun maybeOfferLauncherBubble() {
+        if (!AirPlayPersistence.loadLauncherBubble(this)) return
+        if (LauncherBubble.permitted(this)) return
+        val prompted = getSharedPreferences("osnplay_ui", MODE_PRIVATE)
+        if (prompted.getBoolean("bubble_prompted", false)) return
+        prompted.edit().putBoolean("bubble_prompted", true).apply()
+        appDialogBuilder()
+            .setTitle(R.string.settings_launcher_bubble)
+            .setMessage(R.string.settings_launcher_bubble_description)
+            .setPositiveButton(R.string.open) { _, _ -> openOverlayPermission() }
+            .setNegativeButton(R.string.later, null)
+            .show()
+    }
+
     private fun openOverlayPermission() {
         val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
         if (runCatching { startActivity(intent) }.isFailure) {
@@ -527,6 +543,10 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     override fun onResume() {
         super.onResume()
+        if (!bubblePromptChecked) {
+            bubblePromptChecked = true
+            maybeOfferLauncherBubble()
+        }
         WheelKeyService.restoreIfNeeded(this)
         applyFullscreenMode()
         // Returning from another activity can bring the head unit's own density back.

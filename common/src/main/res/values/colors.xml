@@ -9,4 +9,5 @@
     <color name="window_background_light">#E9EEF6</color>
     <color name="dialog_background_dark">#151E2C</color>
     <color name="dialog_background_light">#F8FAFD</color>
+    <color name="ic_osnplay_background">#0E1B2E</color>
 </resources>
