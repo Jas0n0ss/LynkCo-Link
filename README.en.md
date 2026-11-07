@@ -47,13 +47,92 @@ Application ID `com.osnplay.lynk`, version `0.1.2-lynk`, release-signed, with th
 
 Source/CI builds contain no accessory identity; they only verify UI/settings. A **real CarPlay connection needs your own lawful `DIPLAY_AUTH_ASSETS_DIR`**. This repository does not distribute accessory private keys.
 
-## Install and launcher
+## Install (beginner)
 
-Follow [INSTALL](docs/INSTALL.md). Notes:
+> Install only **`OSNPlay-<version>-lynk-release-standalone.apk`**. The public preview APK has no accessory identity and cannot connect to CarPlay.
 
-- Launch once manually after a fresh install (Android stopped state); boot auto-start/notification then works.
-- The stock OSN Launcher3 uses a package whitelist, so a sideloaded APK may not appear in the app list; use ADB `am start`, an alternative launcher or the home-screen bubble.
-- The stock home icon can only be solved by the system whitelist or an alternative launcher; a normal APK cannot bypass it.
+### Prepare
+
+- Park the car and have the iPhone ready.
+- APK file: `OSNPlay-0.1.2-lynk-release-standalone.apk`.
+- A **USB-A data cable** (PC install) or a FAT32 USB drive (head-unit file manager).
+- [Android Platform-Tools](https://developer.android.com/tools/releases/platform-tools) on the PC (includes `adb`).
+
+### Step 1: allow installation
+
+**A. USB drive (if the firmware allows it)**
+
+1. Copy the APK to a FAT32 USB drive.
+2. Open it from the head-unit file manager and allow “Unknown sources”.
+
+**B. ADB (usual on OSN)**
+
+1. Open the car dialer and enter `2468789`; if it opens native Android Settings, continue.
+2. Tap **About tablet/device → Build number** seven times.
+3. Open **Developer options → USB debugging**.
+4. Connect the head-unit **USB-A data port** to the PC with a data cable.
+5. Run:
+
+```sh
+adb devices
+```
+
+Allow the USB-debugging prompt on the car.
+
+> If `2468789` does nothing, try the input-method route: text field → input-method settings → Dictionary → Edit custom phrases → back. Menu availability varies by OSN firmware.
+
+### Step 2: install
+
+```sh
+adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
+```
+
+| Error | Fix |
+| --- | --- |
+| `adb: command not found` | Install Platform-Tools or run `adb` from its folder |
+| `device unauthorized` | Allow USB debugging on the car; revoke authorizations and reconnect if needed |
+| `INSTALL_FAILED_USER_RESTRICTED` | Enable “USB install/Unknown sources” in Developer options, or run `adb shell settings put secure install_non_market_apps 1` |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Different signing key: `adb uninstall com.osnplay.lynk`, then install again (settings are lost) |
+
+### Step 3: first launch
+
+A newly installed app is in Android's stopped state; boot auto-start will not run until it is launched once:
+
+```sh
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+```
+
+Without ADB, tap **Open** in the installer or open OSNPlay once from an alternative launcher.
+
+### Step 4: no icon in the app list
+
+The stock OSN Launcher3 uses a **package whitelist**, so sideloaded apps may not appear. This is not an installation failure.
+
+1. Reboot the head unit and check “All apps / App management”.
+2. If it is still missing, open **Settings → Advanced → Home-screen bubble**, allow “Display over other apps”, then tap the bubble on the home screen.
+3. Or launch it from ADB:
+
+```sh
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+```
+
+4. A stock home-screen icon requires modifying the system whitelist (root/engineering mode) or using an alternative launcher; a normal APK cannot bypass it.
+
+### Step 5: connect the iPhone
+
+- **Wired**: connect the iPhone to the USB-A data port, open OSNPlay, and allow CarPlay on the iPhone.
+- **Wireless**: open Connection setup and choose car hotspot, Wi-Fi Direct or Existing Wi-Fi.
+- On failure: **Settings → Diagnostics → Save diagnostic report**.
+
+### Uninstall
+
+**Settings → Apps → OSNPlay → Uninstall**, or:
+
+```sh
+adb uninstall com.osnplay.lynk
+```
+
+Uninstalling removes app settings and pairing records.
 
 ## Documentation
 

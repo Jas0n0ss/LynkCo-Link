@@ -47,13 +47,95 @@ export ANDROID_KEY_PASSWORD='...'
 
 源码/CI 构建不含认证身份，只能验证界面和设置；**真实 CarPlay 连接需要你自己合法持有的 `DIPLAY_AUTH_ASSETS_DIR`**。本仓库不分发认证私钥。
 
-## 安装与桌面显示
+## 安装（小白版）
 
-按 [安装指南](docs/INSTALL.md) 安装。注意：
+> 只安装 **`OSNPlay-<version>-lynk-release-standalone.apk`**。公开 Release 里的 preview 包不含认证身份，不能连接 CarPlay。
 
-- 全新安装后需手动启动一次（Android stopped state），之后开机自启/通知才生效；
-- 领克 OSN 原厂 Launcher3 使用包名白名单，第三方 APK 可能不出现在应用列表；可用 ADB `am start`、替代启动器或桌面悬浮球打开；
-- 原厂首页图标只能通过系统白名单或替代启动器解决，普通 APK 无法绕过。
+### 准备
+
+- 车停稳，准备好 iPhone。
+- APK 文件：`OSNPlay-0.1.2-lynk-release-standalone.apk`。
+- 一根**公对公 USB 数据线**（电脑装 APK），或一个 FAT32 格式 U 盘（车机文件管理器装 APK）。
+- 电脑安装 [Android Platform-Tools](https://developer.android.com/tools/releases/platform-tools)（含 `adb`）。
+
+### 第一步：让车机允许安装
+
+**方法 A：U 盘安装（固件允许时最简单）**
+
+1. 把 APK 拷到 FAT32 U 盘；
+2. U 盘插车机 USB 口，用车机文件管理器打开 APK；
+3. 按提示允许“未知来源”，安装。
+
+**方法 B：ADB 安装（OSN 更常用）**
+
+1. 车机打开拨号，输入 `2468789`，看是否进入原生 Android 设置；
+2. 进入 **关于平板电脑 / 关于设备**，连续点击 **版本号** 7 次；
+3. 返回 **开发者选项**，打开 **USB 调试**；
+4. 用公对公数据线连接车机 **USB-A 数据口**和电脑；
+5. 电脑终端执行：
+
+```sh
+adb devices
+```
+
+车机会弹出“允许 USB 调试”，勾选“始终允许”并确定。
+
+> 拨号 `2468789` 不生效时，可试输入法入口：任意输入框 → 输入法设置 → 字典 → 编辑自定义短语 → 返回，进入系统设置。不同 OSN 版本可能封堵入口。
+
+### 第二步：安装 APK
+
+```sh
+adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
+```
+
+常见报错：
+
+| 报错 | 处理 |
+| --- | --- |
+| `adb: command not found` | 安装 Platform-Tools，或在 Platform-Tools 目录里执行 `adb` |
+| `device unauthorized` | 在车机上允许 USB 调试；不行就撤销 USB 调试授权后重连 |
+| `INSTALL_FAILED_USER_RESTRICTED` | 开发者选项里打开“USB 安装/未知来源”；或执行 `adb shell settings put secure install_non_market_apps 1` |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 旧包签名不同，先 `adb uninstall com.osnplay.lynk` 再装（会丢设置） |
+
+### 第三步：第一次打开
+
+Android 新安装应用在第一次手动启动前处于 stopped state，开机自启不会生效，所以必须打开一次：
+
+```sh
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+```
+
+没有 ADB 时，安装完点安装器的“打开”，或用小八启动器/应用页打开一次。
+
+### 第四步：桌面没有图标怎么办
+
+领克 OSN 原厂 Launcher3 使用**包名白名单**，第三方 APK 可能不出现在应用列表。这不是安装失败。
+
+1. 先重启车机，找“所有应用 / 应用管理”；
+2. 仍没有：进入 **设置 → 高级 → 桌面悬浮球**，允许“显示在其他应用上层”，桌面会出现 OSNPlay 悬浮图标；
+3. 或每次用 ADB 打开：
+
+```sh
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+```
+
+4. 想彻底显示在原厂首页，只能修改系统白名单（root/工程模式）或使用替代启动器；普通 APK 无法绕过。
+
+### 第五步：连接 iPhone
+
+- **有线**：数据线接车机 USB-A 数据口，打开 OSNPlay，iPhone 弹窗点“允许”；
+- **无线**：OSNPlay → 连接设置，选择车机热点/Wi-Fi Direct/Existing Wi-Fi，按提示配对；
+- 连接失败：**设置 → 诊断 → 保存诊断报告**，用于排查。
+
+### 卸载
+
+车机 **设置 → 应用 → OSNPlay → 卸载**，或：
+
+```sh
+adb uninstall com.osnplay.lynk
+```
+
+卸载会清除应用设置和配对记录。
 
 ## 文档
 
