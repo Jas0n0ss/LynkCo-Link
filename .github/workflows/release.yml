@@ -100,11 +100,23 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          VERSION="${RELEASE_TAG#v}"
+          TITLE="OSNPlay ${VERSION} Preview — 领克 01 / OSN 2.0 Launcher Compatibility"
+          NOTES_FILE="docs/RELEASE-${VERSION^^}.md"
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_TAG" --title "$TITLE"
+            if [ -f "$NOTES_FILE" ]; then
+              gh release edit "$RELEASE_TAG" --notes-file "$NOTES_FILE"
+            fi
             gh release upload "$RELEASE_TAG" release-assets/* --clobber
+          elif [ -f "$NOTES_FILE" ]; then
+            gh release create "$RELEASE_TAG" release-assets/* \
+              --title "$TITLE" \
+              --notes-file "$NOTES_FILE" \
+              --prerelease
           else
             gh release create "$RELEASE_TAG" release-assets/* \
-              --title "OSNPlay ${RELEASE_TAG#v}" \
+              --title "$TITLE" \
               --generate-notes \
               --prerelease
           fi
