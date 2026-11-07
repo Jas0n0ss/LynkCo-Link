@@ -80,7 +80,7 @@ OSNPlay 自身的实车验收仍在进行中。上表中的“参考验证”来
 - [文档索引](docs/README.md)
 - [构建与 CI](docs/BUILD.md) · [安装指南](docs/INSTALL.md) · [兼容性矩阵](docs/COMPATIBILITY.md)
 - [改造说明与路线图](docs/ADAPTATION-NOTES.md) · [测试与验收](docs/TESTING.md)
-- [设计评审](docs/DESIGN-REVIEW.md) · [预览版发布说明](docs/RELEASE-0.1.1-PREVIEW.md)
+- [设计评审](docs/DESIGN-REVIEW.md) · [0.1.2 发布说明](docs/RELEASE-0.1.2-PREVIEW.md) · [0.1.1 发布说明](docs/RELEASE-0.1.1-PREVIEW.md)
 - [隐私](docs/PRIVACY.md) · [安全](SECURITY.md) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)
 - [English README](README.en.md)
 

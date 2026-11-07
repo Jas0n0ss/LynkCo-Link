@@ -80,7 +80,7 @@ See [docs/BUILD.md](docs/BUILD.md) for the full environment, signing, standalone
 - [Documentation index](docs/README.md)
 - [Build and CI](docs/BUILD.md) · [Install](docs/INSTALL.md) · [Compatibility](docs/COMPATIBILITY.md)
 - [Adaptation notes and roadmap](docs/ADAPTATION-NOTES.md) · [Testing](docs/TESTING.md)
-- [Design review](docs/DESIGN-REVIEW.md) · [Preview release notes](docs/RELEASE-0.1.1-PREVIEW.md)
+- [Design review](docs/DESIGN-REVIEW.md) · [0.1.2 release notes](docs/RELEASE-0.1.2-PREVIEW.md) · [0.1.1 release notes](docs/RELEASE-0.1.1-PREVIEW.md)
 - [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md) · [Third-party notices](docs/THIRD_PARTY_NOTICES.md)
 - [简体中文 README](README.md)
 
