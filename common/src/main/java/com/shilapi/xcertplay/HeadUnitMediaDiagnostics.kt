@@ -56,7 +56,7 @@ internal object HeadUnitMediaDiagnostics {
             val manager = context.getSystemService(NotificationManager::class.java)
             val notifications = manager?.activeNotifications.orEmpty()
             val own = notifications.firstOrNull { it.id == 1 }
-            "enabled=${manager?.areNotificationsEnabled()} channelImportance=${manager?.getNotificationChannel(DiPlaySessionService.CHANNEL)?.importance} " +
+            "enabled=${manager?.areNotificationsEnabled()} channelImportance=${manager?.getNotificationChannel(OSNPlaySessionService.CHANNEL)?.importance} " +
                 "present=${own != null} sessionLinked=${own?.notification?.extras?.containsKey(android.app.Notification.EXTRA_MEDIA_SESSION)} " +
                 "actions=${own?.notification?.actions?.size ?: 0} category=${own?.notification?.category} " +
                 "visibility=own_package_only"

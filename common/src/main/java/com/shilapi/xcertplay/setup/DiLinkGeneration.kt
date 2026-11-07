@@ -18,7 +18,7 @@ enum class DiLinkGeneration(val key: String) {
     companion object {
         private val VERSION = Regex("""DiLink\s*([345])(?:\.\d+)?""", RegexOption.IGNORE_CASE)
         private const val CONTROLLER_VERSION_PROPERTY = "apps.setting.product.outswver"
-        private const val PREFS = "diplay"
+        private const val PREFS = "osnplay"
         private const val KEY = "setup_dilink_generation"
 
         fun fromKey(key: String?): DiLinkGeneration? = entries.firstOrNull { it.key == key }

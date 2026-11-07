@@ -42,7 +42,7 @@ class WheelMediaKeyWindowTest {
         BydCarPlayCall.end()
         CarPlayBackgroundSession.clear()
         host = Robolectric.buildActivity(CarPlayHostActivity::class.java).get()
-        host.getSharedPreferences("diplay_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
+        host.getSharedPreferences("osnplay_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
         host.getSharedPreferences("xcertplay_airplay", Context.MODE_PRIVATE).edit().clear().commit()
         host.getSystemService(AudioManager::class.java).mode = AudioManager.MODE_NORMAL
         // A session has to exist: outside one the wheel keeps the car's own action.

@@ -24,8 +24,8 @@ import java.io.File
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28], qualifiers = "en", shadows = [FileProviderPathTestShadow::class])
 class DiagnosticExportUiTest {
-    @Test fun missingPickerSavesAReportAndProvidesSelectableTextInsideDiPlay() {
-        val controller = Robolectric.buildActivity(DiPlayActivity::class.java).setup()
+    @Test fun missingPickerSavesAReportAndProvidesSelectableTextInsideOSNPlay() {
+        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java).setup()
         val activity = controller.get()
         val context = activity.applicationContext
         val authority = "${context.packageName}.diagnostic-reports"

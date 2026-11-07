@@ -71,7 +71,7 @@ class WiredStartWatchdogTest {
         assertEquals(0, cancelled)
     }
 
-    @Test fun diPlaysOwnSecondRequestGetsAFullLimitOnce() {
+    @Test fun osnPlaysOwnSecondRequestGetsAFullLimitOnce() {
         val watch = watchdog()
         watch.startSessionSent()
         val first = timer

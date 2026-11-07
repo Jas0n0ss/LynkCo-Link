@@ -256,7 +256,7 @@ class WheelKeyService : AccessibilityService() {
                 handler.postDelayed(requestDelayedSiri, release.triggerDelayMillis.toLong())
             }
             // Both presses stay vehicle-owned: the first can open its assistant and the second can
-            // close it. DiPlay only observes the pair and opens Siri after the configured delay.
+            // close it. OSNPlay only observes the pair and opens Siri after the configured delay.
             return false
         }
         val controller = CarPlayBackgroundSession.snapshot()?.controller
@@ -483,7 +483,7 @@ class WheelKeyService : AccessibilityService() {
     }
 
     companion object {
-        internal const val TAG = "DiPlay-WheelKeys"
+        internal const val TAG = "OSNPlay-WheelKeys"
         private const val ZOOM_NOTE_SOURCE = 6
         private const val ELIGIBILITY_POLL_MILLIS = 250L
         private const val ROUTE_CHECK_MILLIS = 1_000L
@@ -544,7 +544,7 @@ class WheelKeyService : AccessibilityService() {
             if (allowed) access else LocalAdb.Access.UNREACHABLE
         }
 
-        private const val GRANT_EXIT = "DIPLAY_WHEEL_EXIT"
+        private const val GRANT_EXIT = "OSNPLAY_WHEEL_EXIT"
         private const val CRASH_RESET_PAUSE_SECONDS = 1
         private fun checkedShell(command: String, shell: (String) -> String?): String? {
             val lines = shell("( $command ); result=\$?; printf '\\n$GRANT_EXIT:%s\\n' \"\$result\"")
@@ -592,9 +592,9 @@ class WheelKeyService : AccessibilityService() {
         internal fun needsRestore(context: Context): Boolean = !connected() && wanted(context)
 
         /**
-         * The call controls need the service too: outside the CarPlay screen the call key reaches DiPlay
+         * The call controls need the service too: outside the CarPlay screen the call key reaches OSNPlay
          * only through it, and without it BYD's window manager opens its own phone app instead. So does the
-         * watcher for other apps' calls, which runs only while something keeps DiPlay alive.
+         * watcher for other apps' calls, which runs only while something keeps OSNPlay alive.
          */
         internal fun wanted(context: Context): Boolean = WheelZoomSettings.anyEnabled(context) ||
             BydOutputSettings.carPlayCallControls(context) || NavigationWheelSettings.restoreAllowed(context) ||
@@ -602,11 +602,11 @@ class WheelKeyService : AccessibilityService() {
 
         /**
          * Android takes the service off the allowed list when the app is force-stopped (BYD's system does
-         * that), and an update or a crash can leave it unbound. With a wheel key setting or the call controls on, DiPlay
+         * that), and an update or a crash can leave it unbound. With a wheel key setting or the call controls on, OSNPlay
          * puts it back over the car's adb, already allowed, when it is still not running a few seconds after
-         * a DiPlay screen opens or comes back to the front, so the keys work without a visit to the settings.
+         * a OSNPlay screen opens or comes back to the front, so the keys work without a visit to the settings.
          * The front check matters when the service stays unbound after the retries at startup: the keys
-         * stayed on "Allowed, starting…" with the car's adb working until DiPlay was restarted (#606).
+         * stayed on "Allowed, starting…" with the car's adb working until OSNPlay was restarted (#606).
          */
         fun restoreIfNeeded(context: Context) {
             val app = context.applicationContext
@@ -629,12 +629,12 @@ class WheelKeyService : AccessibilityService() {
                 } finally {
                     restoring.set(false)
                 }
-            }, "diplay-wheel-keys-restore").start()
+            }, "osnplay-wheel-keys-restore").start()
         }
 
         /**
-         * At boot the car's adb can come up after DiPlay, and a single early attempt left the keys on
-         * "Allowed, starting…" until DiPlay was force-stopped (#606, #619). Unreachable adb, or a service
+         * At boot the car's adb can come up after OSNPlay, and a single early attempt left the keys on
+         * "Allowed, starting…" until OSNPlay was force-stopped (#606, #619). Unreachable adb, or a service
          * that the rewritten list did not bind yet, is tried again; a key the driver has not approved is not.
          */
         internal fun restoreWithRetries(
@@ -953,7 +953,7 @@ class VoiceKeyPair {
 
 /** Settings for the wheel's dashboard map zoom, CarPlay joystick and Siri key. */
 object WheelZoomSettings {
-    private const val PREFS = "diplay_wheel_map_zoom"
+    private const val PREFS = "osnplay_wheel_map_zoom"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_BEHAVIOUR = "behaviour"
     private const val KEY_JOYSTICK = "joystick"
@@ -974,7 +974,7 @@ object WheelZoomSettings {
 
     /**
      * Defaults are a BYD Tang's wheel: the custom key, volume up and down (the roller), the media key,
-     * previous, next and play/pause. The Siri key has no default: DiPlay's screen already takes BYD's voice key.
+     * previous, next and play/pause. The Siri key has no default: OSNPlay's screen already takes BYD's voice key.
      */
     enum class Role(val defaultKey: WheelKey?) {
         MODE(WheelKey(305, 300, BYD_KEYS)),

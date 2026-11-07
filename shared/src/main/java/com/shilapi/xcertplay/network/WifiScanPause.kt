@@ -52,8 +52,8 @@ internal class WifiScanPause(
     }
 
     internal companion object {
-        internal const val TAG = "DiPlayWifiScan"
-        internal const val HEADER = "DIPLAY_WIFI_SCAN_V1"
+        internal const val TAG = "OSNPlayWifiScan"
+        internal const val HEADER = "OSNPLAY_WIFI_SCAN_V1"
 
         /** app_process start-up on a slow head unit plus the helper's own deadline. */
         internal const val HELPER_TIMEOUT_MS = 15_000
@@ -96,7 +96,7 @@ internal interface WifiScanPauseControl {
 
 /** The single writer is shared across full controller rebuilds, including delayed restore retries. */
 private object ProcessWifiScanPause : WifiScanPauseControl {
-    private const val PREFS = "diplay_wifi_scan_pause"
+    private const val PREFS = "osnplay_wifi_scan_pause"
     private const val JOURNAL = "restore_pending"
     private val worker: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor {
         Thread(it, WifiScanPause.TAG).apply { isDaemon = true }

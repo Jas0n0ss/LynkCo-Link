@@ -878,7 +878,7 @@ class WifiP2pGroupManager(
                     return@requestGroupInfo
                 }
                 // Cleanup needs this attempt's exact identity. The reinstall namespace used at
-                // startup is broader and could also match a newer DiPlay session.
+                // startup is broader and could also match a newer OSNPlay session.
                 val ours = current.isGroupOwner && !expectedName.isNullOrBlank() &&
                     current.networkName == expectedName
                 if (!ours) {

@@ -103,15 +103,15 @@
     <string name="a_familiar_drive">いつもの操作を車でも。</string>
     <string name="a_previous_wi_fi_direct_connection_is_still_running_reset">以前のWi-Fi Direct接続が残っています。接続するにはリセットしてください。</string>
     <string name="about">アプリ情報</string>
-    <string name="about_diplay">OSNPlayについて</string>
+    <string name="about_osnplay">OSNPlayについて</string>
     <string name="active">有効</string>
     <string name="advanced_audio_channel_mapping">高度な音声チャンネル設定</string>
     <string name="airplay_icon">AirPlayアイコン</string>
     <string name="allow_carplay_ui_outside_the_safe_area">セーフエリアの外側にもCarPlayを表示する</string>
     <string name="allow_nearby_devices_and_on_older_android_versions_locatio">CarPlayのWi-Fiをリセットする前に、付近のデバイスへのアクセスと、古いAndroidでは位置情報へのアクセスを許可してください。</string>
-    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">車載端末のアプリ権限で、OSNPlayに「付近のデバイス」を許可してください。</string>
-    <string name="allow_nearby_devices_so_diplay_can_connect_to_your_paired">ペアリングしたiPhoneへ接続するため、「付近のデバイス」を許可してください。</string>
-    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">車載端末のアプリ権限で、OSNPlayに正確な位置情報を許可してください。</string>
+    <string name="allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per">車載端末のアプリ権限で、OSNPlayに「付近のデバイス」を許可してください。</string>
+    <string name="allow_nearby_devices_so_osnplay_can_connect_to_your_paired">ペアリングしたiPhoneへ接続するため、「付近のデバイス」を許可してください。</string>
+    <string name="allow_precise_location_for_osnplay_in_the_head_unit_s_app_p">車載端末のアプリ権限で、OSNPlayに正確な位置情報を許可してください。</string>
     <string name="allow_the_connection_permission_to_continue">続行するには接続権限を許可してください</string>
     <string name="an_independent_carplay_receiver_for_android_head_units_wir">Android車載端末向けの独立したCarPlayレシーバーです。有線・無線接続と認証は車載端末上で処理します。通常のiPhoneを脱獄せずに接続でき、Mac、ドングル、サインインは不要です。\n\nこのプレビュー版では試験的なアクセサリー識別情報を使用しています。すべてのiPhoneと車載端末との互換性は現在も検証中です。Apple認証製品ではありません。</string>
     <string name="android_9_compatibility">Android 9との互換性</string>
@@ -131,7 +131,7 @@
     <string name="automatic_map_setup_adb">地図の自動設定 · ADB</string>
     <string name="availability_depends_on_your_head_unit_s_startup_settings">利用可否は車載端末の起動設定によって異なります。</string>
     <string name="back">戻る</string>
-    <string name="back_to_diplay">OSNPlayに戻る</string>
+    <string name="back_to_osnplay">OSNPlayに戻る</string>
     <string name="band">周波数帯</string>
     <string name="bluetooth_settings">Bluetooth設定</string>
     <string name="byd_navigation">BYDナビゲーション</string>
@@ -170,7 +170,7 @@
     <string name="cluster_map_size">メーター内地図のサイズ</string>
     <string name="connect">接続</string>
     <string name="connect_phone">iPhoneに接続</string>
-    <string name="connect_when_diplay_opens">OSNPlay起動時に接続</string>
+    <string name="connect_when_osnplay_opens">OSNPlay起動時に接続</string>
     <string name="connect_when_iphone_bluetooth_connects">選択したiPhoneが再接続したら接続</string>
     <string name="connect_when_iphone_bluetooth_connects_description">車の起動後、選択したiPhoneがBluetoothで接続したらOSNPlayを開いてワイヤレスCarPlayを開始します。一部の車載端末ではバックグラウンドからの起動が制限されます。</string>
     <string name="connect_with_usb">USBで接続</string>
@@ -189,14 +189,14 @@
     <string name="could_not_reset_wi_fi_direct_close_the_other_projection_ap">Wi-Fi Directをリセットできませんでした。他の画面投影アプリを閉じてから再試行してください。</string>
     <string name="could_not_save_image">画像を保存できませんでした</string>
     <string name="could_not_save_the_report">レポートを保存できませんでした</string>
-    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">CarPlayを起動できませんでした。OSNPlayに戻り、アプリの権限を確認してください。</string>
+    <string name="could_not_start_carplay_return_to_osnplay_and_check_app_per">CarPlayを起動できませんでした。OSNPlayに戻り、アプリの権限を確認してください。</string>
     <string name="custom_1_1_icon">カスタムの正方形アイコン</string>
     <string name="debug_logs">デバッグログ</string>
     <string name="default_icon">標準アイコン</string>
     <string name="default_placeholder_icon">標準の仮アイコン</string>
     <string name="diagnostic_report_saved">診断レポートを保存しました</string>
     <string name="diagnostics">診断</string>
-    <string name="diplay">OSNPlay</string>
+    <string name="osnplay">OSNPlay</string>
     <string name="discard_changes_and_exit_settings">変更を破棄して設定を終了</string>
     <string name="disconnect">切断</string>
     <string name="discovering_iphone">iPhoneを検索しています</string>
@@ -244,7 +244,7 @@
     <string name="i2c_device_path_contains_u_0000">I2CデバイスのパスにU+0000が含まれています</string>
     <string name="i2c_device_path_is_required">I2Cデバイスのパスを指定してください</string>
     <string name="image_is_not_ready">画像を準備できていません</string>
-    <string name="in_carplay_swipe_down_with_three_fingers_to_open_diplay_se">CarPlay画面で3本指で下にスワイプするとOSNPlayの設定が開きます。</string>
+    <string name="in_carplay_swipe_down_with_three_fingers_to_open_osnplay_se">CarPlay画面で3本指で下にスワイプするとOSNPlayの設定が開きます。</string>
     <string name="instrument_contrast">メーターのコントラスト</string>
     <string name="instrument_theme">メーターのテーマ</string>
     <string name="keep_bluetooth_and_wi_fi_on_your_iphone_pair_with_the_car">iPhoneのBluetoothとWi-Fiをオンにして車のBluetoothとペアリングし、ここでiPhoneを選んでください。求められたら「付近のデバイス」を許可します。</string>
@@ -259,7 +259,7 @@
     <string name="longest_height">最大高さ</string>
     <string name="looking_for_your_paired_iphone">ペアリング済みのiPhoneを探しています…</string>
     <string name="made_possible_by_open_source">オープンソースに支えられています</string>
-    <string name="make_diplay_feel_right_for_your_car">車に合わせてOSNPlayを設定できます。</string>
+    <string name="make_osnplay_feel_right_for_your_car">車に合わせてOSNPlayを設定できます。</string>
     <string name="manual_hotspot">手動ホットスポット</string>
     <string name="manual_mode_match_the_cluster_theme_here_the_map_cannot_fo">手動モード：メーターのテーマに合わせて選んでください。使用状況へのアクセスがないと、地図カードの表示状態を自動で追跡できません。</string>
     <string name="manufacturer">メーカー</string>
@@ -306,7 +306,7 @@
     <string name="preparing_mfi_authentication">MFi認証を準備しています</string>
     <string name="ready">準備完了</string>
     <string name="ready_when_you_are">いつでも接続できます</string>
-    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_diplay">レシーバーはGPL-3.0のxcertplayを基にしています。OSNPlayのインターフェースはAGPL-3.0のDiAutoの設計を参考にしています。\n\nAndroidX、Bouncy Castle、JmDNS、SLF4Jを使用しています。ソースコードとライセンスに関する表記はリリースに同梱されています。\n\nCarPlayおよびCarPlayアイコンはApple Inc.に帰属します。OSNPlayは独立したプロジェクトです。</string>
+    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_osnplay">レシーバーはGPL-3.0のxcertplayを基にしています。OSNPlayのインターフェースはAGPL-3.0のDiAutoの設計を参考にしています。\n\nAndroidX、Bouncy Castle、JmDNS、SLF4Jを使用しています。ソースコードとライセンスに関する表記はリリースに同梱されています。\n\nCarPlayおよびCarPlayアイコンはApple Inc.に帰属します。OSNPlayは独立したプロジェクトです。</string>
     <string name="reconnecting_to_your_iphone">iPhoneに再接続しています…</string>
     <string name="remote">リモート</string>
     <string name="remote_server_address_contains_u_0000">サーバーアドレスにU+0000が含まれています</string>
@@ -316,7 +316,7 @@
     <string name="report_android_location_to_the_iphone">Androidの位置情報をiPhoneへ送信する</string>
     <string name="report_location_to_iphone">iPhoneへ位置情報を送信</string>
     <string name="report_saved_open_it_from_your_file_manager_to_share_it">レポートを保存しました。ファイル管理アプリから開いて共有できます。</string>
-    <string name="reports_save_to_downloads_diplay">レポートはDownloads/OSNPlayに保存されます。\u0020</string>
+    <string name="reports_save_to_downloads_osnplay">レポートはDownloads/OSNPlayに保存されます。\u0020</string>
     <string name="requesting_iphone_usb_permission">iPhoneのUSB接続権限を要求しています</string>
     <string name="requesting_mfi_usb_permission">MFi USB権限を要求しています</string>
     <string name="reset">リセット</string>
@@ -325,7 +325,7 @@
     <string name="reset_carplay_wi_fi">CarPlayのWi-Fiをリセット</string>
     <string name="reset_carplay_wi_fi_2">CarPlayのWi-Fiをリセットしますか？</string>
     <string name="resolution">解像度</string>
-    <string name="return_from_car_settings_to_diplay_then_connect_accept_the">車の設定からOSNPlayに戻って接続してください。iPhoneでCarPlayの確認が出たら許可します。車のインターネット契約は不要で、モバイルデータ通信も使用できます。</string>
+    <string name="return_from_car_settings_to_osnplay_then_connect_accept_the">車の設定からOSNPlayに戻って接続してください。iPhoneでCarPlayの確認が出たら許可します。車のインターネット契約は不要で、モバイルデータ通信も使用できます。</string>
     <string name="review_app_permissions">アプリの権限を確認</string>
     <string name="right_hand_drive">右ハンドル</string>
     <string name="running">実行中</string>
@@ -433,7 +433,7 @@
     <string name="turn_on_wi_fi_in_the_head_unit_s_settings_to_connect">接続するには車載端末の設定でWi-Fiをオンにしてください。</string>
     <string name="turn_the_car_s_wi_fi_switch_on_allow_location_nearby_devic">車載端末のWi-Fiをオンにします。求められたら位置情報や付近のデバイスへのアクセスを許可し、Androidから要求された場合は位置情報機能も有効にしてください。映像や音声が途切れる場合は、車載ホットスポットの5 GHz接続をお試しください。</string>
     <string name="usage_access_enabled">使用状況へのアクセス：有効</string>
-    <string name="usage_access_lets_diplay_follow_the_instrument_theme_and_m">使用状況へのアクセスを許可すると、OSNPlayがメーターのテーマや地図カードの状態に追従できます。BYDメーター関連の画面イベントだけを端末内で処理します。</string>
+    <string name="usage_access_lets_osnplay_follow_the_instrument_theme_and_m">使用状況へのアクセスを許可すると、OSNPlayがメーターのテーマや地図カードの状態に追従できます。BYDメーター関連の画面イベントだけを端末内で処理します。</string>
     <string name="usage_access_setup_needed_for_automatic_mode">使用状況へのアクセス：自動モードには設定が必要</string>
     <string name="usb_ch341">USB/CH341</string>
     <string name="use_a_usb_data_cable_and_the_car_s_usb_data_port_unlock_yo">データ転送対応USBケーブルと車のUSBデータポートを使用してください。iPhoneのロックを解除し、CarPlayを許可します。ホットスポットの設定は不要です。</string>
@@ -654,7 +654,7 @@
     <string name="adb_cluster_routing">ADB経由でメーター地図を起動しています…</string>
     <string name="adb_cluster_routed">メーターで起動しました。iPhoneの地図を待っています</string>
     <string name="adb_cluster_route_failed">メーターでの起動に失敗。診断レポートを書き出してください。</string>
-    <string name="open_diplay_settings_hint">CarPlay画面で%1$d本指で下にスワイプするとクイックメニューを開けます。</string>
+    <string name="open_osnplay_settings_hint">CarPlay画面で%1$d本指で下にスワイプするとクイックメニューを開けます。</string>
     <string name="carplay_controls">CarPlay操作</string>
     <string name="settings_gesture_fingers">クイックメニュー · %1$d本指でスワイプ（タップして変更）</string>
     <string name="settings_gesture_fingers_label">クイックメニュー · 下スワイプの指の本数</string>

@@ -19,7 +19,7 @@ import java.util.List;
 
 /** Detached shell helper: one fixed package/op, sequenced commands, ten-second recovery lease. */
 public final class BydCallPopupTool {
-    static final String DIRECTORY = "/data/local/tmp/diplay-call-popup";
+    static final String DIRECTORY = "/data/local/tmp/osnplay-call-popup";
     static final String PACKAGE = "com.byd.bluetoothcall";
     private final String base;
     private BydCallPopupLease lease;
@@ -78,7 +78,7 @@ public final class BydCallPopupTool {
                 lease.tick();
             }
         };
-        Thread hook = new Thread(restore, "diplay-call-popup-restore");
+        Thread hook = new Thread(restore, "osnplay-call-popup-restore");
         Runtime.getRuntime().addShutdownHook(hook);
         try {
             report("READY"); // Published before the launching ADB shell exits.

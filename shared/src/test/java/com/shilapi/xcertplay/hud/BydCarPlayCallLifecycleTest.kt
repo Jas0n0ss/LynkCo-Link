@@ -319,7 +319,7 @@ class BydCarPlayCallLifecycleTest {
     }
 
     private fun tokenFrom(command: String): String =
-        Regex("/data/local/tmp/diplay-carplay-call-[A-Za-z0-9_.]+-[0-9a-f-]{36}")
+        Regex("/data/local/tmp/osnplay-carplay-call-[A-Za-z0-9_.]+-[0-9a-f-]{36}")
             .find(command)!!.value
 
     @Implements(BydAdbShell::class, isInAndroidSdk = false)

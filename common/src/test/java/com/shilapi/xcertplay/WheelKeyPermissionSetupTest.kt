@@ -19,11 +19,11 @@ class WheelKeyPermissionSetupTest {
     private val other = "car.package/.Accessibility"
     private val commands = mutableListOf<String>()
     private var reading = other
-    private var reply: String? = "\nDIPLAY_WHEEL_EXIT:0"
+    private var reply: String? = "\nOSNPLAY_WHEEL_EXIT:0"
     private var allow = true
 
     @Before fun setup() {
-        context.getSharedPreferences("diplay_navigation_wheel", android.content.Context.MODE_PRIVATE).edit().clear().commit()
+        context.getSharedPreferences("osnplay_navigation_wheel", android.content.Context.MODE_PRIVATE).edit().clear().commit()
         WheelZoomSettings.setEnabled(context, false)
         WheelZoomSettings.setJoystick(context, false)
         Settings.Secure.putString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, other)
@@ -31,7 +31,7 @@ class WheelKeyPermissionSetupTest {
     }
 
     @Test fun nullEmptyOrFailedReadDoesNotWriteTheServiceList() {
-        for (output in listOf(null, "", "$other\nDIPLAY_WHEEL_EXIT:1")) {
+        for (output in listOf(null, "", "$other\nOSNPLAY_WHEEL_EXIT:1")) {
             commands.clear()
             assertFalse(WheelKeyService.applyServiceSettings(context, { commands += it; output }))
             assertEquals(1, commands.size)
@@ -91,7 +91,7 @@ class WheelKeyPermissionSetupTest {
     }
 
     @Test fun shellFailureStopsFurtherWritesAndDoesNotClaimSuccess() {
-        reply = "DIPLAY_WHEEL_EXIT:1"
+        reply = "OSNPLAY_WHEEL_EXIT:1"
         assertFalse(WheelKeyService.applyServiceSettings(context, ::shell))
         assertEquals(2, commands.size)
         assertFalse(commands.any { it.contains("settings put secure accessibility_enabled") })
@@ -99,7 +99,7 @@ class WheelKeyPermissionSetupTest {
 
     @Test fun successfulShellWithoutActualPermissionIsNotSuccess() {
         assertFalse(WheelKeyService.applyServiceSettings(context, { command ->
-            if (command.contains("settings get")) "$other\nDIPLAY_WHEEL_EXIT:0" else "DIPLAY_WHEEL_EXIT:0"
+            if (command.contains("settings get")) "$other\nOSNPLAY_WHEEL_EXIT:0" else "OSNPLAY_WHEEL_EXIT:0"
         }))
     }
 
@@ -118,7 +118,7 @@ class WheelKeyPermissionSetupTest {
     }
 
     @Test fun navigationOnlyRestorationRequiresRecordedAuthorizationAndStopsWhenDisabled() {
-        val prefs = context.getSharedPreferences("diplay_navigation_wheel", android.content.Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("osnplay_navigation_wheel", android.content.Context.MODE_PRIVATE)
         assertFalse(NavigationWheelSettings.enabled(context))
         prefs.edit().putBoolean("enabled", true).commit()
         assertFalse(WheelKeyService.needsRestore(context))
@@ -132,8 +132,8 @@ class WheelKeyPermissionSetupTest {
 
     private fun shell(command: String): String? {
         commands += command
-        if (command.contains("settings get")) return "$reading\nDIPLAY_WHEEL_EXIT:0"
-        if (reply?.trim() != "DIPLAY_WHEEL_EXIT:0") return reply
+        if (command.contains("settings get")) return "$reading\nOSNPLAY_WHEEL_EXIT:0"
+        if (reply?.trim() != "OSNPLAY_WHEEL_EXIT:0") return reply
         if (command.contains("settings put secure enabled_accessibility_services")) {
             val value = command.substringAfter("enabled_accessibility_services '").substringBefore("'")
             Settings.Secure.putString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, value)

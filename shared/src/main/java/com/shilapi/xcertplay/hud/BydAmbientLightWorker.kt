@@ -69,7 +69,7 @@ object BydAmbientLightTool {
         if (args.size != 2 || args[0] != "--stdin") return
         val token = args[1].takeIf(BydAmbientLightWorkerProtocol::validToken) ?: return
         // A blocked old Binder/restore must exclude new writes even beyond its 15-second lease.
-        val ownership = runCatching { AmbientWorkerOwnerLock.tryAcquire(File("/data/local/tmp/diplay-ambient-worker.lock")) }.getOrNull()
+        val ownership = runCatching { AmbientWorkerOwnerLock.tryAcquire(File("/data/local/tmp/osnplay-ambient-worker.lock")) }.getOrNull()
         if (ownership == null) {
             println("error worker-busy"); println("done"); System.out.flush()
             return // Do not initialize the SDK before acquiring ownership.

@@ -105,15 +105,15 @@
     <string name="a_familiar_drive">A familiar drive.</string>
     <string name="a_previous_wi_fi_direct_connection_is_still_running_reset">A previous Wi-Fi Direct connection is still running. Reset it to connect.</string>
     <string name="about">About</string>
-    <string name="about_diplay">About OSNPlay</string>
+    <string name="about_osnplay">About OSNPlay</string>
     <string name="active">Active</string>
     <string name="advanced_audio_channel_mapping">Advanced audio channel mapping</string>
     <string name="airplay_icon">AirPlay icon</string>
     <string name="allow_carplay_ui_outside_the_safe_area">Allow CarPlay UI outside the safe area</string>
     <string name="allow_nearby_devices_and_on_older_android_versions_locatio">Allow Nearby devices and, on older Android versions, Location before resetting CarPlay Wi-Fi.</string>
-    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">Allow Nearby devices for OSNPlay in the head unit’s app permissions.</string>
-    <string name="allow_nearby_devices_so_diplay_can_connect_to_your_paired">Allow Nearby devices so OSNPlay can connect to your paired iPhone.</string>
-    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Allow precise Location for OSNPlay in the head unit’s app permissions.</string>
+    <string name="allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per">Allow Nearby devices for OSNPlay in the head unit’s app permissions.</string>
+    <string name="allow_nearby_devices_so_osnplay_can_connect_to_your_paired">Allow Nearby devices so OSNPlay can connect to your paired iPhone.</string>
+    <string name="allow_precise_location_for_osnplay_in_the_head_unit_s_app_p">Allow precise Location for OSNPlay in the head unit’s app permissions.</string>
     <string name="allow_the_connection_permission_to_continue">Allow the connection permission to continue</string>
     <string name="an_independent_carplay_receiver_for_android_head_units_wir">An independent CarPlay receiver for Android head units. Wired and wireless connections run on the head unit, with local authentication. A standard iPhone can connect without a jailbreak, Mac, dongle or sign-in.\n\nSome builds bundle an experimental accessory identity. Compatibility with every iPhone and head unit is still being tested. It is not an Apple-certified product.</string>
     <string name="android_9_compatibility">Android 9 compatibility</string>
@@ -133,7 +133,7 @@
     <string name="automatic_map_setup_adb">Automatic map setup · ADB</string>
     <string name="availability_depends_on_your_head_unit_s_startup_settings">Availability depends on your head unit’s startup settings.</string>
     <string name="back">Back</string>
-    <string name="back_to_diplay">Back to OSNPlay</string>
+    <string name="back_to_osnplay">Back to OSNPlay</string>
     <string name="band">Band</string>
     <string name="bluetooth_settings">Bluetooth settings</string>
     <string name="byd_navigation">BYD navigation</string>
@@ -172,7 +172,7 @@
     <string name="cluster_map_size">Dashboard map size</string>
     <string name="connect">Connect</string>
     <string name="connect_phone">Connect phone</string>
-    <string name="connect_when_diplay_opens">Connect when OSNPlay opens</string>
+    <string name="connect_when_osnplay_opens">Connect when OSNPlay opens</string>
     <string name="connect_when_iphone_bluetooth_connects">Connect when the selected iPhone reconnects</string>
     <string name="connect_when_iphone_bluetooth_connects_description">After the car wakes, open OSNPlay and start wireless CarPlay when the selected iPhone connects over Bluetooth. Some head units restrict background launches.</string>
     <string name="connect_with_usb">Connect with USB</string>
@@ -191,14 +191,14 @@
     <string name="could_not_reset_wi_fi_direct_close_the_other_projection_ap">Could not reset Wi-Fi Direct. Close the other projection app and try again.</string>
     <string name="could_not_save_image">Could not save image</string>
     <string name="could_not_save_the_report">Could not save the report</string>
-    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">Could not start CarPlay. Return to OSNPlay and check app permissions.</string>
+    <string name="could_not_start_carplay_return_to_osnplay_and_check_app_per">Could not start CarPlay. Return to OSNPlay and check app permissions.</string>
     <string name="custom_1_1_icon">Custom 1:1 icon</string>
     <string name="debug_logs">Debug logs</string>
     <string name="default_icon">Default icon</string>
     <string name="default_placeholder_icon">Default placeholder icon</string>
     <string name="diagnostic_report_saved">Diagnostic report saved</string>
     <string name="diagnostics">Diagnostics</string>
-    <string name="diplay">OSNPlay</string>
+    <string name="osnplay">OSNPlay</string>
     <string name="discard_changes_and_exit_settings">Discard changes and exit settings</string>
     <string name="disconnect">Disconnect</string>
     <string name="discovering_iphone">Discovering iPhone</string>
@@ -246,7 +246,7 @@
     <string name="i2c_device_path_contains_u_0000">I2C device path contains U+0000</string>
     <string name="i2c_device_path_is_required">I2C device path is required</string>
     <string name="image_is_not_ready">Image is not ready</string>
-    <string name="in_carplay_swipe_down_with_three_fingers_to_open_diplay_se">In CarPlay, swipe down with three fingers to open OSNPlay settings.</string>
+    <string name="in_carplay_swipe_down_with_three_fingers_to_open_osnplay_se">In CarPlay, swipe down with three fingers to open OSNPlay settings.</string>
     <string name="instrument_contrast">Instrument contrast</string>
     <string name="instrument_theme">Instrument theme</string>
     <string name="keep_bluetooth_and_wi_fi_on_your_iphone_pair_with_the_car">Keep Bluetooth and Wi-Fi on your iPhone. Pair with the car’s Bluetooth, then select your iPhone here. Allow Nearby devices when asked.</string>
@@ -261,7 +261,7 @@
     <string name="longest_height">Longest height</string>
     <string name="looking_for_your_paired_iphone">Looking for your paired iPhone…</string>
     <string name="made_possible_by_open_source">Made possible by open source</string>
-    <string name="make_diplay_feel_right_for_your_car">Make OSNPlay feel right for your car.</string>
+    <string name="make_osnplay_feel_right_for_your_car">Make OSNPlay feel right for your car.</string>
     <string name="manual_hotspot">Manual hotspot</string>
     <string name="manual_mode_match_the_cluster_theme_here_the_map_cannot_fo">Manual mode: match the cluster theme here. The map cannot follow card visibility without Usage Access.</string>
     <string name="manufacturer">Manufacturer</string>
@@ -308,7 +308,7 @@
     <string name="preparing_mfi_authentication">Preparing MFi authentication</string>
     <string name="ready">Ready</string>
     <string name="ready_when_you_are">Ready when you are</string>
-    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_diplay">Receiver based on xcertplay, licensed under GPL-3.0. OSNPlay’s interface follows DiAuto’s design, licensed under AGPL-3.0.\n\nIncludes AndroidX, Bouncy Castle, JmDNS and SLF4J. Source and license notices accompany this release.\n\nCarPlay and the CarPlay icon belong to Apple Inc. OSNPlay is an independent project for Lynk &amp; Co OSN head units.</string>
+    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_osnplay">Receiver based on xcertplay, licensed under GPL-3.0. OSNPlay’s interface follows DiAuto’s design, licensed under AGPL-3.0.\n\nIncludes AndroidX, Bouncy Castle, JmDNS and SLF4J. Source and license notices accompany this release.\n\nCarPlay and the CarPlay icon belong to Apple Inc. OSNPlay is an independent project for Lynk &amp; Co OSN head units.</string>
     <string name="reconnecting_to_your_iphone">Reconnecting to your iPhone…</string>
     <string name="remote">Remote</string>
     <string name="remote_server_address_contains_u_0000">Remote server address contains U+0000</string>
@@ -318,7 +318,7 @@
     <string name="report_android_location_to_the_iphone">Report Android location to the iPhone</string>
     <string name="report_location_to_iphone">Report location to iPhone</string>
     <string name="report_saved_open_it_from_your_file_manager_to_share_it">Report saved. Open it from your file manager to share it.</string>
-    <string name="reports_save_to_downloads_diplay">Reports save to Downloads/OSNPlay.\u0020</string>
+    <string name="reports_save_to_downloads_osnplay">Reports save to Downloads/OSNPlay.\u0020</string>
     <string name="requesting_iphone_usb_permission">Requesting iPhone USB permission</string>
     <string name="requesting_mfi_usb_permission">Requesting MFi USB permission</string>
     <string name="reset">Reset</string>
@@ -327,7 +327,7 @@
     <string name="reset_carplay_wi_fi">Reset CarPlay Wi-Fi</string>
     <string name="reset_carplay_wi_fi_2">Reset CarPlay Wi-Fi?</string>
     <string name="resolution">Resolution</string>
-    <string name="return_from_car_settings_to_diplay_then_connect_accept_the">Return from car settings to OSNPlay, then connect. Accept the CarPlay prompt on your iPhone. A car internet plan is not required; mobile data availability depends on your phone’s network settings.</string>
+    <string name="return_from_car_settings_to_osnplay_then_connect_accept_the">Return from car settings to OSNPlay, then connect. Accept the CarPlay prompt on your iPhone. A car internet plan is not required; mobile data availability depends on your phone’s network settings.</string>
     <string name="review_app_permissions">Review app permissions</string>
     <string name="right_hand_drive">Right-hand drive</string>
     <string name="running">Running</string>
@@ -435,7 +435,7 @@
     <string name="turn_on_wi_fi_in_the_head_unit_s_settings_to_connect">Turn on Wi-Fi in the head unit’s settings to connect.</string>
     <string name="turn_the_car_s_wi_fi_switch_on_allow_location_nearby_devic">Turn the car’s Wi-Fi switch on. Allow Location / Nearby devices if requested and enable Location when Android asks. If playback stutters, try the built-in car hotspot at 5 GHz.</string>
     <string name="usage_access_enabled">Usage Access: enabled</string>
-    <string name="usage_access_lets_diplay_follow_the_instrument_theme_and_m">Usage Access lets OSNPlay follow the instrument theme and map card. Only BYD cluster activity events are processed locally. This car does not provide a working permission settings page.</string>
+    <string name="usage_access_lets_osnplay_follow_the_instrument_theme_and_m">Usage Access lets OSNPlay follow the instrument theme and map card. Only BYD cluster activity events are processed locally. This car does not provide a working permission settings page.</string>
     <string name="usage_access_setup_needed_for_automatic_mode">Usage Access: setup needed for automatic mode</string>
     <string name="usb_ch341">USB/CH341</string>
     <string name="use_a_usb_data_cable_and_the_car_s_usb_data_port_unlock_yo">Use a USB data cable and the car’s USB data port. Unlock your iPhone and allow CarPlay. No hotspot setup is needed.</string>
@@ -656,7 +656,7 @@
     <string name="adb_cluster_routing">Launching cluster map through ADB…</string>
     <string name="adb_cluster_routed">Cluster task routed; waiting for iPhone map</string>
     <string name="adb_cluster_route_failed">Cluster launch failed; export diagnostics.</string>
-    <string name="open_diplay_settings_hint">In CarPlay, swipe down with %1$d fingers to open the quick menu.</string>
+    <string name="open_osnplay_settings_hint">In CarPlay, swipe down with %1$d fingers to open the quick menu.</string>
     <string name="carplay_controls">CarPlay controls</string>
     <string name="settings_gesture_fingers">Quick menu · swipe with %1$d fingers (tap to change)</string>
     <string name="settings_gesture_fingers_label">Quick menu · swipe-down fingers</string>

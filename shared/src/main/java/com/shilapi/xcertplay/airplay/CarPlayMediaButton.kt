@@ -65,7 +65,7 @@ object CarPlayMediaButton {
      * The CarPlay press the CarPlay screen itself should claim for [keyCode], or null to let the key
      * go on to the car.
      *
-     * BYD hands the steering wheel's next/previous keys to whichever window is in front, and DiPlay's
+     * BYD hands the steering wheel's next/previous keys to whichever window is in front, and OSNPlay's
      * CarPlay screen is that window whenever the driver is looking at it. Claiming them here is what
      * makes the wheel change tracks without the accessibility service, which a head unit with no ADB
      * cannot turn on.

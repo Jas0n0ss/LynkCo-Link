@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  * AMap adapter (see [BydAmapAdapter]), independently of the SOME/IP windshield HUD path.
  */
 internal object BydClusterBridge {
-    private const val TAG = "DiPlay-BYD-Cluster"
+    private const val TAG = "OSNPlay-BYD-Cluster"
     private const val AMAP_ACTION = "AUTONAVI_STANDARD_BROADCAST_SEND"
     private const val KEY_GUIDANCE = 10001
     private const val KEY_STATE = 10019
@@ -55,7 +55,7 @@ internal object BydClusterBridge {
         if (available && !senderStarted) {
             senderStarted = true
             Executors.newSingleThreadScheduledExecutor { runnable ->
-                Thread(runnable, "diplay-byd-cluster").apply { isDaemon = true }
+                Thread(runnable, "osnplay-byd-cluster").apply { isDaemon = true }
             }.scheduleAtFixedRate(::tick, 1, 1, TimeUnit.SECONDS)
         }
     }
@@ -154,8 +154,8 @@ internal object BydClusterBridge {
 
     /**
      * On DiLink 3 the cluster keeps its stock view until it is switched: simple navigation for the
-     * guidance card, or projection for DiPlay's map window. Restores the stock mode only after
-     * DiPlay changed it.
+     * guidance card, or projection for OSNPlay's map window. Restores the stock mode only after
+     * OSNPlay changed it.
      */
     private fun applyClusterModeLocked() {
         if (adapter?.needsSimpleNavigationMode != true) return

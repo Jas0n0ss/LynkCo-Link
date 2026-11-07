@@ -9,13 +9,13 @@ import org.junit.Test
 
 class BydClusterSongTest {
     @Test
-    fun theGateReturnsToCarPlayInItsOwnTaskOrOnTopOfDiPlays() {
+    fun theGateReturnsToCarPlayInItsOwnTaskOrOnTopOfOSNPlays() {
         val own = "com.shilapi.xcertplay.CarPlayHostActivity"
         val shared = "com.shilapi.xcertplay.SameTaskCarPlayHostActivity"
-        val home = "com.shilapi.xcertplay.DiPlayActivity"
+        val home = "com.shilapi.xcertplay.OSNPlayActivity"
 
         assertTrue(BydClusterSong.isCarPlayTask(own, own))
-        // "Keep CarPlay in the launcher card" (#463): CarPlay on top of DiPlay's own task.
+        // "Keep CarPlay in the launcher card" (#463): CarPlay on top of OSNPlay's own task.
         assertTrue(BydClusterSong.isCarPlayTask(home, shared))
         assertTrue(BydClusterSong.isCarPlayTask(shared, null))
         assertFalse(BydClusterSong.isCarPlayTask(home, home))

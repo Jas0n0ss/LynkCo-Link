@@ -30,19 +30,20 @@ Set `ANDROID_HOME` or `local.properties` if Gradle cannot find the SDK. Platform
 - `:common` — settings, home, diagnostics and head-unit UI.
 - `:shared` — CarPlay transport, audio, video and protocol code.
 - `:mobile` — the head-unit application.
+- `:launcher-entry` — OSN whitelist launcher entry; package `com.kugou.android.auto`, opens the main app.
 
 `standard` / `lynk` are product flavors; `release` is the only delivered build type.
 Debug and preview variants are not built for delivery. The `lynk` flavor uses
 `com.osnplay.lynk`; `com.osnplay` is the standard flavor.
 Ordinary source builds must not include authentication assets. Only `assembleStandalone*`
-tasks may bundle `DIPLAY_AUTH_ASSETS_DIR`, and only for the explicit car-test package.
-The only delivered APK is `:mobile:assembleStandaloneLynkRelease`.
+tasks may bundle `OSNPLAY_AUTH_ASSETS_DIR`, and only for the explicit car-test package.
+The delivered APKs are `:mobile:assembleStandaloneLynkRelease` (main, with authentication) and `:launcher-entry:assembleRelease` (whitelist entry, no authentication).
 
 ## Adding or moving a setting
 
 The Settings screen is grouped by driver goal, not by implementation.
 `SettingsCategory`, `SettingsSection` and `SettingsInformationArchitecture` at the top of
-`common/src/main/java/com/shilapi/xcertplay/DiPlayActivity.kt` define the groups.
+`common/src/main/java/com/shilapi/xcertplay/OSNPlayActivity.kt` define the groups.
 `SettingsLayoutPolicyTest` fails when a section has no category or has more than one.
 
 ### Choose the category
@@ -114,6 +115,6 @@ Spacing, size and shape in the Settings screen MUST come from one place.
 - Update `CHANGELOG.md` for user-visible changes and `docs/TESTING.md` for new verification evidence.
 - Never commit credentials, APKs, signing keys or `.pk8` / `.p7b` files.
   `scripts/check_public_tree.py` runs in CI.
-- `.github/workflows/release.yml` is manual-only and builds only
-  `:mobile:assembleStandaloneLynkRelease`, using the authentication and keystore secrets.
-  Do not hand-upload a locally built APK as a release.
+- `.github/workflows/release.yml` is manual-only and builds
+  `:mobile:assembleStandaloneLynkRelease` and `:launcher-entry:assembleRelease`, using the
+  authentication and keystore secrets. Do not hand-upload a locally built APK as a release.

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
  * ([BydOutputSettings.enabled]) and its own opt-in ([BydOutputSettings.fceCluster]).
  */
 internal object FceClusterBridge {
-    private const val TAG = "DiPlay-FCE-Cluster"
+    private const val TAG = "OSNPlay-FCE-Cluster"
 
     private val lock = Any()
     private val route = BydHudRouteState()
@@ -32,7 +32,7 @@ internal object FceClusterBridge {
         if (!tickStarted) {
             tickStarted = true
             Executors.newSingleThreadScheduledExecutor { runnable ->
-                Thread(runnable, "diplay-fce-cluster").apply { isDaemon = true }
+                Thread(runnable, "osnplay-fce-cluster").apply { isDaemon = true }
             }.scheduleAtFixedRate(::tick, 1, 1, TimeUnit.SECONDS)
         }
     }

@@ -36,8 +36,8 @@ class WheelKeyServiceTest {
 
     @Before fun setUp() {
         service = Robolectric.buildService(WheelKeyService::class.java).create().get()
-        service.getSharedPreferences("diplay_navigation_wheel", Context.MODE_PRIVATE).edit().clear().commit()
-        service.getSharedPreferences("diplay_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
+        service.getSharedPreferences("osnplay_navigation_wheel", Context.MODE_PRIVATE).edit().clear().commit()
+        service.getSharedPreferences("osnplay_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
         service.mapRoute = { route }
         WheelZoomSettings.setEnabled(service, true)
         WheelZoomSettings.assign(service, WheelZoomSettings.Role.MODE, WheelKey(KeyEvent.KEYCODE_F1, 0, "?"))
@@ -253,7 +253,7 @@ class WheelKeyServiceTest {
 
     @Test
     fun theAllowedListKeepsOtherServicesAndRebindsAListedButStoppedService() {
-        val ours = "com.shihab.diplay/com.shilapi.xcertplay.WheelKeyService"
+        val ours = "com.osnplay/com.shilapi.xcertplay.WheelKeyService"
         val car = "com.byd.airconditioning/.gesture.AcGestureService:com.android.systemui/.custom.StatusBarAccessibilityService"
         assertEquals(null to "$car:$ours", WheelKeyService.allowedServices("$car\n", ours))
         assertEquals(car to "$car:$ours", WheelKeyService.allowedServices("$ours:$car", ours))
@@ -587,7 +587,7 @@ class WheelKeyServiceTest {
         val audio = service.getSystemService(AudioManager::class.java)
         audio.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 2, 0)
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, 3, 0)
-        val prefs = service.getSharedPreferences("diplay_navigation_wheel", Context.MODE_PRIVATE)
+        val prefs = service.getSharedPreferences("osnplay_navigation_wheel", Context.MODE_PRIVATE)
         // The disabled default must pass the initial wheel press through.
         fun event(action: Int, time: Long, repeat: Int = 0) = KeyEvent(time, time, action,
             KeyEvent.KEYCODE_VOLUME_UP, repeat)

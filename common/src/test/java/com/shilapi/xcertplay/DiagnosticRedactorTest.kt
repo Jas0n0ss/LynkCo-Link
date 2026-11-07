@@ -17,9 +17,9 @@ class DiagnosticRedactorTest {
             "THEME_DIAGNOSTIC sample source=poll uiMode=0x13 nightMask=0x10 reported=light applied=light sessionActive=true pollsSinceSample=30 callbacksSinceSample=0",
             "Process exit index=0 ageMs=5000 reason=native_crash reasonCode=5 status=11 importance=100 pssKiB=2048 rssKiB=4096",
         )
-        val folder = Files.createTempDirectory("diplay-troubleshooting-report").toFile()
+        val folder = Files.createTempDirectory("osnplay-troubleshooting-report").toFile()
         try {
-            val file = folder.resolve("diplay.log")
+            val file = folder.resolve("osnplay.log")
             SessionLogFile(file).use { log ->
                 log.reset("started")
                 for (line in lines) {
@@ -58,16 +58,16 @@ class DiagnosticRedactorTest {
         assertFalse(DiagnosticRedactor.redact("CONNECTION_DIAGNOSTIC attempt=2 peer=192.168.49.1 id=0123456789abcdef0123456789abcdef")!!.contains("192.168.49.1"))
     }
     @Test fun savedDriveReportKeepsMediaPerformanceCounters() {
-        val folder = Files.createTempDirectory("diplay-media-report").toFile()
+        val folder = Files.createTempDirectory("osnplay-media-report").toFile()
         try {
             val audio = "audio stats audioType=media codec=AAC_LC rx=215 dropped=0 underruns=+3 queue=2 playing=true maxGapMs=420 sinceRxMs=10 maxWriteMs=22 decoderDroppedTotal=0 outputBuffersTotal=212 ended=true"
             val video = "Video: video stats rx=29.8fps shown=29.8fps maxGap=150ms kbps=4000 recoveries=0 touch2frame avg=85ms max=110ms n=3 touchSendMax=1ms"
-            SessionLogFile(folder.resolve("diplay.log")).use {
+            SessionLogFile(folder.resolve("osnplay.log")).use {
                 it.reset("started")
                 it.append(audio)
                 it.append(video)
             }
-            val report = folder.resolve("diplay.log").readText()
+            val report = folder.resolve("osnplay.log").readText()
             assertTrue(report.contains(audio))
             assertTrue(report.contains(video))
         } finally { folder.deleteRecursively() }
@@ -83,26 +83,26 @@ class DiagnosticRedactorTest {
         assertFalse(line.contains("C0:A6")); assertFalse(line.contains("192.168")); assertFalse(line.contains("012345")); assertFalse(line.contains("fe80"))
     }
     @Test fun logRotationIsBoundedAndRedactionHappensBeforeDisk() {
-        val folder = Files.createTempDirectory("diplay-log-test").toFile()
+        val folder = Files.createTempDirectory("osnplay-log-test").toFile()
         try {
-            val log = SessionLogFile(folder.resolve("diplay.log"))
+            val log = SessionLogFile(folder.resolve("osnplay.log"))
             log.reset("started")
             log.append("password=secret")
             repeat(1600) { log.append("connection state " + "x".repeat(690)) }
             log.append("CarPlay connected")
             assertTrue(log.awaitIdle(10_000))
             log.close()
-            assertTrue(folder.resolve("diplay.log").length() <= SessionLogFile.MAX_BYTES + 701)
+            assertTrue(folder.resolve("osnplay.log").length() <= SessionLogFile.MAX_BYTES + 701)
             assertTrue(folder.resolve("previous.log").length() <= SessionLogFile.MAX_BYTES + 701)
-            assertTrue(folder.resolve("diplay.log").readText().contains("CarPlay connected"))
+            assertTrue(folder.resolve("osnplay.log").readText().contains("CarPlay connected"))
             assertFalse(folder.listFiles()!!.any { it.readText().contains("secret") })
         } finally { folder.deleteRecursively() }
     }
     @Test fun failuresSurviveLaterSuccessfulSessionsAndOldestHistoryExpires() {
-        val folder = Files.createTempDirectory("diplay-history-test").toFile()
+        val folder = Files.createTempDirectory("osnplay-history-test").toFile()
         try {
             repeat(10) { session ->
-                SessionLogFile(folder.resolve("diplay.log")).use {
+                SessionLogFile(folder.resolve("osnplay.log")).use {
                     it.reset("session=$session")
                     it.append(if (session == 3) "Wi-Fi P2P create rejected code=0" else "CarPlay connected")
                     it.append("password=secret")
@@ -151,10 +151,10 @@ class DiagnosticRedactorTest {
         assertFalse(redacted, redacted.contains("001E2C3A0123401E"))
         assertFalse(redacted, redacted.contains("C0:A6"))
         assertTrue(redacted, redacted.contains("device-transport-identifier"))
-        val folder = Files.createTempDirectory("diplay-udid-report").toFile()
+        val folder = Files.createTempDirectory("osnplay-udid-report").toFile()
         try {
-            SessionLogFile(folder.resolve("diplay.log")).use { it.reset("started"); it.append(line) }
-            val report = folder.resolve("diplay.log").readText()
+            SessionLogFile(folder.resolve("osnplay.log")).use { it.reset("started"); it.append(line) }
+            val report = folder.resolve("osnplay.log").readText()
             assertFalse(report, report.contains("001E2C3A0123401E"))
             assertTrue(report, report.contains("resending 0x5703"))
         } finally { folder.deleteRecursively() }
@@ -172,10 +172,10 @@ class DiagnosticRedactorTest {
         val trace = Iap2FrameFormatter.format(Iap2TraceDirection.TX, "wireless-tunnel", Iap2ControlMessages.locationInformation(nmea))
         assertTrue(trace, trace.contains("NMEA"))
         assertNull(DiagnosticRedactor.redact(trace))
-        val folder = Files.createTempDirectory("diplay-nmea-report").toFile()
+        val folder = Files.createTempDirectory("osnplay-nmea-report").toFile()
         try {
-            SessionLogFile(folder.resolve("diplay.log")).use { it.reset("started"); it.append(trace) }
-            assertFalse(folder.resolve("diplay.log").readText().contains("3745.1234"))
+            SessionLogFile(folder.resolve("osnplay.log")).use { it.reset("started"); it.append(trace) }
+            assertFalse(folder.resolve("osnplay.log").readText().contains("3745.1234"))
         } finally { folder.deleteRecursively() }
     }
 

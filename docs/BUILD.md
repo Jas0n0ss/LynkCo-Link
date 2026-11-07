@@ -23,30 +23,38 @@
 | `:mobile` | 车机主应用，产出 APK |
 | `:common` | 设置、首页、诊断和车机 UI |
 | `:shared` | CarPlay 传输、音频、视频和协议实现 |
+| `:launcher-entry` | 白名单桌面入口，包名 `com.kugou.android.auto`，点击打开主程序；不含认证资产 |
 
-仓库只保留这三个模块；上游的 `home`、`maphost`、`automotive` 示例已移除，避免构建与文档噪音。
+仓库只保留这三个核心模块和入口模块；上游的 `home`、`maphost`、`automotive` 示例已移除。
 
 ## 本地构建（只构建功能包）
 
-本仓库只维护一个需要交付的 APK：**`assembleStandaloneLynkRelease`**。不再构建 preview / debug 变体。
+本仓库交付两个 APK：
+
+1. **`assembleStandaloneLynkRelease`**：主程序，含认证资产；
+2. **`:launcher-entry:assembleRelease`**：OSN 白名单桌面入口，不含认证资产。
+
+不再构建 preview / debug 变体。
 
 ```sh
-export DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets
+export OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets
 export ANDROID_KEYSTORE_PATH=/absolute/path/to/release.jks
 export ANDROID_KEYSTORE_PASSWORD='...'
 export ANDROID_KEY_ALIAS='...'
 export ANDROID_KEY_PASSWORD='...'
 
 ./gradlew :mobile:assembleStandaloneLynkRelease
+./gradlew :launcher-entry:assembleRelease
 ```
 
 产物：
 
 ```text
-mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
+mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk          # 主程序
+launcher-entry/build/outputs/apk/release/launcher-entry-release.apk    # 白名单入口
 ```
 
-包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
+主程序包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。入口包名 `com.kugou.android.auto`，版本 1.0，不含认证资产。
 
 ## 认证资产与 standalone 车机包
 
@@ -60,15 +68,15 @@ mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 显式提供后构建 standalone 包：
 
 ```sh
-DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneDebug
+OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneDebug
 # 或带认证身份的 preview 包（包名仍为 .preview）
-DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandalonePreview
+OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandalonePreview
 # 领克 A/B 版（debug 签名）
-DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkPreview
+OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkPreview
 
 # 正式签名版（需同时提供 ANDROID_KEYSTORE_* 环境变量）
-DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneStandardRelease
-DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkRelease
+OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneStandardRelease
+OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkRelease
 ```
 
 - 只有显式传入的资产目录会被打包，并且**只对 `assembleStandalone*` 任务生效**；其他 debug / preview / release 构建即使设置了该变量也会忽略并给出警告，避免凭据误入公开包。
@@ -99,18 +107,25 @@ export ANDROID_KEY_PASSWORD='...'
 2. 单元测试：`:shared:testDebugUnitTest`、`:common:testDebugUnitTest`。
 3. lint：`:mobile:lintStandardDebug`。
 4. 用临时 keystore 构建 `:mobile:assembleLynkRelease`（源码包，不含认证资产）。
-5. 断言构建产物不含 `offline-mfi` / `.pk8` / `.p7b`。
-6. 上传 APK、单元测试报告和 lint 报告为 artifact。
+5. 构建 `:launcher-entry:assembleRelease`（白名单入口，不含认证资产）。
+6. 断言两个构建产物都不含 `offline-mfi` / `.pk8` / `.p7b`。
+7. 上传两个 APK、单元测试报告和 lint 报告为 artifact。
 
 `.github/workflows/release.yml` 只手动触发，并且**只构建** `:mobile:assembleStandaloneLynkRelease`。它要求以下 Actions Secrets：
 
-- `DIPLAY_AUTH_ASSETS_BASE64`：包含 `offline-mfi/identity.pk8` + `certificate.p7b` 的 zip（base64）
+- `OSNPLAY_AUTH_ASSETS_BASE64`：包含 `offline-mfi/identity.pk8` + `certificate.p7b` 的 zip（base64）
 - `ANDROID_KEYSTORE_BASE64`：release keystore（base64）
 - `ANDROID_KEYSTORE_PASSWORD`
 - `ANDROID_KEY_ALIAS`
 - `ANDROID_KEY_PASSWORD`
 
-产物只有 `OSNPlay-<version>-lynk-release-standalone.apk` 和 `SHA256SUMS.txt`。该 APK 含可提取的认证材料，发布前必须确认分发范围。
+产物为：
+
+- `OSNPlay-<version>-lynk-release-standalone.apk`：主程序，含可提取的认证材料；
+- `OSNPlay-Whitelist-Entry-1.0.apk`：白名单入口，不含认证材料；
+- `SHA256SUMS.txt`：两个 APK 的校验和。
+
+发布前必须确认认证材料的分发范围。
 
 ## 常见问题
 

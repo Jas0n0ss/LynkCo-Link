@@ -27,7 +27,7 @@ object CarPlayGlance {
     )
 
     private const val LANE_GUIDANCE_UPDATE = 0x5204
-    private const val TAG = "DiPlay-Lane"
+    private const val TAG = "OSNPlay-Lane"
 
     private val route = BydHudRouteState()
     private val song = ClusterSongState()

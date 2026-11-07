@@ -27,10 +27,10 @@ object BydNavigationOutputs {
         emptyListHideNs = 8_000_000_000L,
         keepAcrossNoRoute = true,
     )
-    private val standalone = NavigationOutputWorker("diplay-standalone-output", BydStandaloneNavigationBridge::clear)
-    private val hud = NavigationOutputWorker("diplay-hud-output", BydHudBridge::clear)
-    private val cluster = NavigationOutputWorker("diplay-cluster-output", BydClusterBridge::clear)
-    private val fceCluster = NavigationOutputWorker("diplay-fce-cluster-output", FceClusterBridge::clear)
+    private val standalone = NavigationOutputWorker("osnplay-standalone-output", BydStandaloneNavigationBridge::clear)
+    private val hud = NavigationOutputWorker("osnplay-hud-output", BydHudBridge::clear)
+    private val cluster = NavigationOutputWorker("osnplay-cluster-output", BydClusterBridge::clear)
+    private val fceCluster = NavigationOutputWorker("osnplay-fce-cluster-output", FceClusterBridge::clear)
 
     /** The host reports whether its CarPlay map window is on the cluster (see [BydClusterMapPause]). */
     fun setClusterMapShown(shown: Boolean) {

@@ -14,9 +14,9 @@ import kotlin.math.pow
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33], manifest = Config.NONE)
-class DiPlayPaletteTest {
+class OSNPlayPaletteTest {
     @Test fun darkPalettePreservesTheExistingProductionColors() {
-        val palette = DiPlayPalette.DARK
+        val palette = OSNPlayPalette.DARK
         assertEquals(Color.rgb(12, 17, 27), palette.background)
         assertEquals(Color.rgb(21, 30, 44), palette.surface)
         assertEquals(Color.rgb(31, 43, 61), palette.button)
@@ -45,7 +45,7 @@ class DiPlayPaletteTest {
     }
 
     @Test fun semanticRolesMeetTheirWcagContrastTargets() {
-        for (palette in listOf(DiPlayPalette.DARK, DiPlayPalette.LIGHT)) {
+        for (palette in listOf(OSNPlayPalette.DARK, OSNPlayPalette.LIGHT)) {
             assertContrastAtLeast(palette.primaryText, palette.background, 4.5)
             assertContrastAtLeast(palette.secondaryText, palette.background, 4.5)
             assertContrastAtLeast(palette.accent, palette.background, 4.5)
@@ -60,13 +60,13 @@ class DiPlayPaletteTest {
             assertContrastAtLeast(palette.overlayOnAccent, palette.overlayAccent, 4.5)
             assertContrastAtLeast(palette.overlayDanger, palette.overlayBackground, 3.0)
         }
-        assertContrastAtLeast(DiPlayPalette.LIGHT.accentTrack, DiPlayPalette.LIGHT.trackOff, 3.0)
+        assertContrastAtLeast(OSNPlayPalette.LIGHT.accentTrack, OSNPlayPalette.LIGHT.trackOff, 3.0)
         assertContrastAtLeast(
-            DiPlayPalette.LIGHT.overlayAccentTrack,
-            DiPlayPalette.LIGHT.overlayTrackOff,
+            OSNPlayPalette.LIGHT.overlayAccentTrack,
+            OSNPlayPalette.LIGHT.overlayTrackOff,
             3.0,
         )
-        assertTrue(DiPlayPalette.LIGHT.systemBarIconsAreDark)
+        assertTrue(OSNPlayPalette.LIGHT.systemBarIconsAreDark)
     }
 
     private fun assertContrastAtLeast(foreground: Int, background: Int, minimum: Double) {

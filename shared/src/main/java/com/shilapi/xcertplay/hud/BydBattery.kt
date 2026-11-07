@@ -118,7 +118,7 @@ internal object BydBattery {
  * for vehicle status; the iAP2 loop only takes the last reading, so it never waits for adb.
  */
 internal object BydBatteryStatus : VehicleStatusProvider {
-    private const val TAG = "DiPlay-BYD-Battery"
+    private const val TAG = "OSNPlay-BYD-Battery"
     private const val READ_MILLIS = 30_000L
     private const val IDLE_MILLIS = 2 * 60_000L
 
@@ -134,7 +134,7 @@ internal object BydBatteryStatus : VehicleStatusProvider {
         BydBattery.read(app) { shell.run(app, it) }
     }
     private val executor = Executors.newSingleThreadScheduledExecutor { runnable ->
-        Thread(runnable, "diplay-battery").apply { isDaemon = true }
+        Thread(runnable, "osnplay-battery").apply { isDaemon = true }
     }
     @Volatile private var askedMillis = 0L
 

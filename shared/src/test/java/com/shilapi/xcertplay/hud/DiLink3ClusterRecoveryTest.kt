@@ -22,7 +22,7 @@ class DiLink3ClusterRecoveryTest {
     private val app get() = RuntimeEnvironment.getApplication()
     private val output get() = BydDiLink3ClusterOutput
     private val worker get() = ReflectionHelpers.getField<ScheduledExecutorService>(output, "worker")
-    private val prefs get() = app.getSharedPreferences("diplay_dilink3_cluster", 0)
+    private val prefs get() = app.getSharedPreferences("osnplay_dilink3_cluster", 0)
     private val stock get() = BydDiLink3ClusterMode.Mode.STOCK.command
     private fun drain() { worker.submit {}.get(5, TimeUnit.SECONDS) }
 

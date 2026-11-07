@@ -156,7 +156,7 @@ class CarPlayVpnConsentTest {
         assertAdbStep(R.string.vpn_authorization_adb_unusable)
     }
 
-    @Test fun adbThatHasNotApprovedDiPlayIsNamed() {
+    @Test fun adbThatHasNotApprovedOSNPlayIsNamed() {
         consentScreenMissingThenAdb(LocalAdb.Access.NOT_APPROVED)
         assertAdbStep(R.string.vpn_authorization_adb_not_approved)
     }
@@ -202,7 +202,7 @@ class CarPlayVpnConsentTest {
     }
 
     private fun awaitAdbConsent() = Thread.getAllStackTraces().keys
-        .filter { it.name == "diplay-vpn-adb-consent" }.forEach { it.join(3_000) }
+        .filter { it.name == "osnplay-vpn-adb-consent" }.forEach { it.join(3_000) }
 
     private fun assertAdbStep(@StringRes cause: Int) {
         assertEquals(activity.getString(cause), stage())
@@ -238,7 +238,7 @@ class CarPlayVpnConsentTest {
     private fun field(name: String): Boolean = ReflectionHelpers.getField(activity, name)
     private fun log(): String {
         assertTrue(ReflectionHelpers.getField<SessionLogFile>(activity, "sessionLog").awaitIdle(2_000))
-        return File(activity.filesDir, "logs/diplay.log").readText()
+        return File(activity.filesDir, "logs/osnplay.log").readText()
     }
     private fun invoke(name: String) {
         try { activity.javaClass.getDeclaredMethod(name).apply { isAccessible = true }.invoke(activity) }

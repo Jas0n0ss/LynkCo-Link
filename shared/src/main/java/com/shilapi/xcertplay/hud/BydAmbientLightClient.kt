@@ -18,7 +18,7 @@ internal class BydAmbientLightClient(context: Context) : AutoCloseable {
     data class Status(val phase: Phase, val generation: Long, val lastError: String? = null)
 
     private val app = context.applicationContext
-    private val executor = ScheduledThreadPoolExecutor(1) { r -> Thread(r, "diplay-ambient-light").apply { isDaemon = true } }
+    private val executor = ScheduledThreadPoolExecutor(1) { r -> Thread(r, "osnplay-ambient-light").apply { isDaemon = true } }
     private val generation = AtomicLong(0)
     @Volatile private var status = Status(Phase.IDLE, 0)
     private var adb: LocalAdb? = null
@@ -207,7 +207,7 @@ internal class BydAmbientLightClient(context: Context) : AutoCloseable {
         keepAlive?.cancel(false); keepAlive = null
         status = Status(Phase.FAILED, ticket, reason)
         runCatching { closeTransport() }
-        Log.w("DiPlay-Ambient", "worker failed: $reason")
+        Log.w("OSNPlay-Ambient", "worker failed: $reason")
     }
 
     private fun closeTransport() {

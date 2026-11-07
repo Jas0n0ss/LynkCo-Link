@@ -33,23 +33,36 @@ OSNPlay 基于 [DiPlay](https://github.com/shihabal3amri/DiPlay) 0.2.22，整合
 只构建功能包：
 
 ```sh
-export DIPLAY_AUTH_ASSETS_DIR=/path/to/auth
+export OSNPLAY_AUTH_ASSETS_DIR=/path/to/auth
 export ANDROID_KEYSTORE_PATH=/path/to/release.jks
 export ANDROID_KEYSTORE_PASSWORD='...'
 export ANDROID_KEY_ALIAS='...'
 export ANDROID_KEY_PASSWORD='...'
 
 ./gradlew :mobile:assembleStandaloneLynkRelease
+./gradlew :launcher-entry:assembleRelease
 ```
 
-产物：`mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk`  
+产物：
+
+```text
+mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
+launcher-entry/build/outputs/apk/release/launcher-entry-release.apk
+```  
 包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
 
 源码/CI 构建不含认证身份，只能验证界面和设置；**真实 CarPlay 连接需要认证资产**。公开 Release 的 `0.1.2` 功能包已包含该资产；源码树本身不分发私钥。
 
 ## 安装（小白版）
 
-> 只安装 **`OSNPlay-<version>-lynk-release-standalone.apk`**。公开 Release 的 `0.1.2` 已提供含认证资产的功能包；旧 preview 包不能连接 CarPlay。
+公开 Release 提供两个 APK，作用不同：
+
+| APK | 作用 | 是否必需 |
+| --- | --- | --- |
+| `OSNPlay-<version>-lynk-release-standalone.apk` | 主程序，含认证资产，负责 CarPlay 连接 | 必需 |
+| `OSNPlay-Whitelist-Entry-1.0.apk` | 白名单入口，让原厂应用列表显示 OSNPlay，点击后打开主程序 | 原厂列表不显示图标时安装 |
+
+> 旧 preview 包不能连接 CarPlay。主程序必须安装；白名单入口按需安装。
 
 ### 准备
 
@@ -85,8 +98,15 @@ adb devices
 ### 第二步：安装 APK
 
 ```sh
+# 必需：主程序
 adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
+
+# 可选：原厂应用列表不显示 OSNPlay 时安装入口
+adb install -r OSNPlay-Whitelist-Entry-1.0.apk
 ```
+
+> 入口包使用 `com.kugou.android.auto`（OSN Launcher3 白名单中的酷狗音乐车机版包名），显示名为 OSNPlay，点击后打开主程序。安装前检查冲突：
+> `adb shell pm list packages | grep com.kugou.android.auto`。若已有真正的酷狗车机版，不要覆盖。
 
 常见报错：
 
@@ -102,7 +122,7 @@ adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
 Android 新安装应用在第一次手动启动前处于 stopped state，开机自启不会生效，所以必须打开一次：
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
 没有 ADB 时，安装完点安装器的“打开”，或用小八启动器/应用页打开一次。
@@ -116,10 +136,11 @@ adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
 3. 或每次用 ADB 打开：
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
-4. 想彻底显示在原厂首页，只能修改系统白名单（root/工程模式）或使用替代启动器；普通 APK 无法绕过。
+4. 安装 `OSNPlay-Whitelist-Entry-1.0.apk` 后，应用列表会出现 OSNPlay 入口，点击打开主程序；它借用了白名单包名，安装前检查冲突，详见 [安装指南](docs/INSTALL.md#安装成功但桌面不显示-osnplay)。
+5. 想彻底显示在原厂首页，只能修改系统白名单（root/工程模式）或使用替代启动器；普通 APK 无法绕过。
 
 ### 第五步：连接 iPhone
 

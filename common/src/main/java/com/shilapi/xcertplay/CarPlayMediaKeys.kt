@@ -32,19 +32,19 @@ import kotlin.math.roundToInt
  * Steering-wheel and other hardware media buttons for CarPlay.
  *
  * Android delivers media keys to a media session; some head units pick the session of the
- * audio-focus owner. DiPlay normally holds focus and an active session until the CarPlay session
+ * audio-focus owner. OSNPlay normally holds focus and an active session until the CarPlay session
  * ends, but focus can be disabled on head units that otherwise route physical volume buttons to
- * DiPlay. Keys go to the iPhone as CarPlay media HID presses ([CarPlayMediaButton]).
+ * OSNPlay. Keys go to the iPhone as CarPlay media HID presses ([CarPlayMediaButton]).
  */
 internal object CarPlayMediaKeys {
-    private const val TAG = "DiPlay-MediaKeys"
+    private const val TAG = "OSNPlay-MediaKeys"
     private const val ACTIONS = PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PAUSE or
         PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS
 
     private val mainHandler = Handler(Looper.getMainLooper())
     private val artworkQueue = NowPlayingArtworkQueue(
         worker = Executors.newSingleThreadExecutor { task ->
-            Thread(task, "diplay-now-playing-artwork").apply { isDaemon = true }
+            Thread(task, "osnplay-now-playing-artwork").apply { isDaemon = true }
         },
         main = Executor { mainHandler.post(it) },
         decode = ::decodeAmbientArtwork,
@@ -474,7 +474,7 @@ internal object CarPlayMediaKeys {
             }
         }.build()
 
-    // Without art the car draws DiPlay's bright launcher icon instead.
+    // Without art the car draws OSNPlay's bright launcher icon instead.
     private fun shownArtworkLocked(): Bitmap? =
         artwork ?: placeholder ?: appContext?.let(::placeholderArt)?.also { placeholder = it }
 

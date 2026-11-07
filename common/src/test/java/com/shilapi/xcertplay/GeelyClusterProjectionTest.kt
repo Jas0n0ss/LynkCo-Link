@@ -20,7 +20,7 @@ class GeelyClusterProjectionTest {
         context.getSharedPreferences("xcertplay_airplay", Context.MODE_PRIVATE).edit().clear().commit()
     }
 
-    @Test fun aLeftoverIsOnlyHandedBackWhenDiPlayStillIsTheOneThatAsked() {
+    @Test fun aLeftoverIsOnlyHandedBackWhenOSNPlayStillIsTheOneThatAsked() {
         assertEquals(StaleProjectionAction.HAND_BACK,
             staleProjectionAction(heldInProcess = false, claimed = true, mapEnabled = false,
                 supported = true, projecting = { true }))
@@ -43,7 +43,7 @@ class GeelyClusterProjectionTest {
     }
 
     @Test fun aRunThatIsStillSetToProjectKeepsTheClaimForTheNextSession() {
-        // DiPlay asserts the projection again as soon as its session is up and that frame replaces the
+        // OSNPlay asserts the projection again as soon as its session is up and that frame replaces the
         // leftover. Handing the switch back first would take the wheel-key map off the cluster.
         var reads = 0
         assertEquals(StaleProjectionAction.NONE,
@@ -72,7 +72,7 @@ class GeelyClusterProjectionTest {
                 supported = true, projecting = { null }))
     }
 
-    @Test fun theClaimIsNotPersistedUntilDiPlayAsksForTheProjection() {
+    @Test fun theClaimIsNotPersistedUntilOSNPlayAsksForTheProjection() {
         assertFalse(AirPlayPersistence.loadClusterProjectionHeld(context))
         AirPlayPersistence.saveClusterProjectionHeld(context, true)
         assertTrue(AirPlayPersistence.loadClusterProjectionHeld(context))

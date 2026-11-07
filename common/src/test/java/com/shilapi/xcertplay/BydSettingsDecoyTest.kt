@@ -33,7 +33,7 @@ import org.robolectric.util.ReflectionHelpers
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "en", manifest = Config.NONE)
 class BydSettingsDecoyTest {
-    private lateinit var activity: DiPlayActivity
+    private lateinit var activity: OSNPlayActivity
     private lateinit var content: LinearLayout
 
     private val decoy = ComponentName(BYD_PACKAGE, "$BYD_PACKAGE.main.unsupport.UnsupportActivity")
@@ -45,7 +45,7 @@ class BydSettingsDecoyTest {
     @Before fun setUp() {
         val app = RuntimeEnvironment.getApplication()
         app.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
-        activity = Robolectric.buildActivity(DiPlayActivity::class.java).get()
+        activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         content = LinearLayout(activity)
         // Render the one card that holds the button under test rather than the whole settings page.
@@ -116,7 +116,7 @@ class BydSettingsDecoyTest {
         assertEquals(Settings.ACTION_BLUETOOTH_SETTINGS, started().action)
     }
 
-    /** Android 7.0, which DiPlay also installs on, has no audited BYD build either, so it is left alone too. */
+    /** Android 7.0, which OSNPlay also installs on, has no audited BYD build either, so it is left alone too. */
     @Test @Config(sdk = [25])
     fun theDecoyIsIgnoredBelowAndroid71() {
         resolveTo(decoy, Settings.ACTION_BLUETOOTH_SETTINGS)

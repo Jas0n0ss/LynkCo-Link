@@ -14,9 +14,9 @@
 
 | 文件 | applicationId | 说明 |
 | --- | --- | --- |
-| `OSNPlay-0.1.2-preview-standard.apk` | `com.osnplay.preview` | 标准预览包，仅用于界面与设置验证 |
-| `OSNPlay-0.1.2-preview-lynk.apk` | `com.osnplay.lynk.preview` | 领克预览包，含 lynk 默认入口策略 |
-| `SHA256SUMS.txt` | — | 下载后校验 |
+| `OSNPlay-0.1.2-lynk-release-standalone.apk` | `com.osnplay.lynk` | 主程序，含认证资产，release 签名 |
+| `OSNPlay-Whitelist-Entry-1.0.apk` | `com.kugou.android.auto` | 白名单入口，点击打开主程序；无认证资产 |
+| `SHA256SUMS.txt` | — | 两个 APK 的下载校验 |
 
 > **默认预览包不含 CarPlay 配件认证身份。** 可以安装、浏览界面、修改设置和导出诊断，但**无法完成真实 CarPlay 连接**。实车连接请使用自己合法持有的认证资产按 [BUILD.md](BUILD.md) 构建 standalone 包。仓库不分发认证私钥。
 
@@ -65,7 +65,7 @@ Android 的 stopped state 会让新安装应用在首次手动启动前收不到
 
 ```sh
 adb install -r OSNPlay-0.1.2-preview-lynk.apk
-adb shell am start -n com.osnplay.lynk.preview/com.shilapi.xcertplay.DiPlayActivity
+adb shell am start -n com.osnplay.lynk.preview/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
 首次启动后，重启车机，`lynk` 包的开机自启、通知和悬浮球才会工作。

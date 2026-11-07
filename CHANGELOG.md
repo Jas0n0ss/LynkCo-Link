@@ -4,7 +4,9 @@
 
 ### 新增
 
-- 领克 OSN 桌面可见性适配：自适应图标与 PNG 回退、显式 activity label/icon、`LEANBACK_LAUNCHER` 入口。
+- 领克 OSN 桌面可见性适配：CarPlay 图标、显式 activity label/icon、`LEANBACK_LAUNCHER` 入口。
+- 运行时/资源清理：`DiPlay*` 类、资源键、action、日志标记和环境变量统一改为 `OSNPlay*`；APK 内不再包含旧品牌字符串。
+- 发布两个 APK：`OSNPlay-0.1.2-lynk-release-standalone.apk`（主程序，含认证资产）和 `OSNPlay-Whitelist-Entry-1.0.apk`（白名单入口，无认证资产）。
 - `lynk` 版本默认开启开机自动启动和桌面悬浮球；首次运行提示授予“显示在其他应用上层”。
 - 开机时发布“打开 OSNPlay”通知，即使原厂 Launcher3 的包名白名单不显示图标也能进入应用。
 - 文档补充 OSN 原厂桌面白名单的原因、替代启动器/ADB/悬浮球处理方式。
@@ -38,7 +40,7 @@ OSNPlay 使用独立版本线。上游 DiPlay 的逐版本变更见 [DiPlay Rele
 - 构建配置改为 `standard` / `lynk` 产品风味 × `debug` / `preview` / `release` 构建类型。
 - 仓库只保留 `common`、`shared`、`mobile` 三个模块，移除上游示例模块。
 - README 合并为简体中文主文件和英文版本；删除重复语言版本、BYD 专属文档、上游逐版本说明和静态站点。
-- 公开构建默认不包含认证身份；只有显式 `assembleStandalone*` 任务才接受 `DIPLAY_AUTH_ASSETS_DIR`。
+- 公开构建默认不包含认证身份；只有显式 `assembleStandalone*` 任务才接受 `OSNPLAY_AUTH_ASSETS_DIR`。
 
 ### 已知限制
 

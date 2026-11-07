@@ -26,7 +26,7 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [29], qualifiers = "en-w1000dp-h700dp-land", shadows = [CarHotspotOffConnectTest.HotspotState::class])
 class HomeLastConnectionProblemTest {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private val opened = mutableListOf<DiPlayActivity>()
+    private val opened = mutableListOf<OSNPlayActivity>()
 
     @Before fun setUp() {
         clearSettings()
@@ -46,7 +46,7 @@ class HomeLastConnectionProblemTest {
     }
 
     private fun clearSettings() {
-        for (name in listOf("diplay", "xcertplay_airplay", "diplay_car_hotspot", "diplay_last_problem")) {
+        for (name in listOf("osnplay", "xcertplay_airplay", "osnplay_car_hotspot", "osnplay_last_problem")) {
             context.getSharedPreferences(name, 0).edit().clear().commit()
         }
     }
@@ -54,10 +54,10 @@ class HomeLastConnectionProblemTest {
     private fun fail(cause: ConnectionFailureCause) = LastConnectionProblem.follow(context,
         CarPlayStatus.Failed("failed", startupFailure = WirelessStartupFailure.HOTSPOT_CONFIGURATION, knownCause = cause))
 
-    private fun openHome(): DiPlayActivity = Robolectric.buildActivity(DiPlayActivity::class.java,
-        Intent(context, DiPlayActivity::class.java).putExtra("page", "home")).setup().get().also { opened += it }
+    private fun openHome(): OSNPlayActivity = Robolectric.buildActivity(OSNPlayActivity::class.java,
+        Intent(context, OSNPlayActivity::class.java).putExtra("page", "home")).setup().get().also { opened += it }
 
-    private fun shown(screen: DiPlayActivity): List<String> =
+    private fun shown(screen: OSNPlayActivity): List<String> =
         descendants(screen.window.decorView).filterIsInstance<TextView>().filter { it.isShown }.map { it.text.toString() }.toList()
 
     private fun descendants(view: View): Sequence<View> = sequence {
@@ -65,10 +65,10 @@ class HomeLastConnectionProblemTest {
         if (view is ViewGroup) for (index in 0 until view.childCount) yieldAll(descendants(view.getChildAt(index)))
     }
 
-    private fun refresh(home: DiPlayActivity) = ReflectionHelpers.callInstanceMethod<Unit>(home, "refreshStatus")
+    private fun refresh(home: OSNPlayActivity) = ReflectionHelpers.callInstanceMethod<Unit>(home, "refreshStatus")
 
     private fun reportLines(): List<String> {
-        val activity = Robolectric.buildActivity(DiPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
         return (ReflectionHelpers.callInstanceMethod<String>(activity, "diagnosticReportText",
             ReflectionHelpers.ClassParameter.from(Context::class.java, context))).lines()
     }

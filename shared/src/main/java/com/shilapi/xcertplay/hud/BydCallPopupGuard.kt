@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 object BydCallPopupGuard {
     private val gate = java.lang.Object()
     private val worker = Executors.newSingleThreadExecutor {
-        Thread(it, "diplay-call-popup").apply { isDaemon = true }
+        Thread(it, "osnplay-call-popup").apply { isDaemon = true }
     }
     private var owner: Any? = null
     private var sessionReady: () -> Boolean = { false }

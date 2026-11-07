@@ -45,13 +45,13 @@ internal object BydTyres {
  * On a head unit without BYD's autoservice it stops after the first reply and does not start again.
  */
 object BydTyreStatus {
-    private const val TAG = "DiPlay-BYD-Tyres"
+    private const val TAG = "OSNPlay-BYD-Tyres"
     private const val READ_MILLIS = 10_000L
     private const val STALE_MILLIS = 60_000L
 
     private val shell = BydAdbShell(TAG)
     private val executor = Executors.newSingleThreadScheduledExecutor { runnable ->
-        Thread(runnable, "diplay-tyres").apply { isDaemon = true }
+        Thread(runnable, "osnplay-tyres").apply { isDaemon = true }
     }
     private var task: ScheduledFuture<*>? = null
     @Volatile private var latest: BydTyreReading? = null

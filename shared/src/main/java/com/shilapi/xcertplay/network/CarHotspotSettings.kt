@@ -5,7 +5,7 @@ import com.shilapi.xcertplay.adb.LocalAdb
 import com.shilapi.xcertplay.orchestration.WirelessHotspotMode
 
 object CarHotspotSettings {
-    private fun prefs(context: Context) = context.getSharedPreferences("diplay_car_hotspot", Context.MODE_PRIVATE)
+    private fun prefs(context: Context) = context.getSharedPreferences("osnplay_car_hotspot", Context.MODE_PRIVATE)
 
     fun enabled(context: Context): Boolean = prefs(context).getBoolean("auto_enable", false)
 
@@ -26,7 +26,7 @@ object CarHotspotSettings {
 
     /**
      * Set when the driver connects although Android reports the car hotspot off. Some firmware reports it off
-     * while the car's own hotspot is on (Geely Galaxy E8, #604), and DiPlay then refused every connection.
+     * while the car's own hotspot is on (Geely Galaxy E8, #604), and OSNPlay then refused every connection.
      */
     fun offReportIgnored(context: Context): Boolean = prefs(context).getBoolean("ignore_off_report", false)
 

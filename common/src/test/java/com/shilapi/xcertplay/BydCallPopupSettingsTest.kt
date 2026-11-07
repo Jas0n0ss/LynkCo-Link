@@ -38,7 +38,7 @@ class BydCallPopupSettingsTest {
     @Test
     @Config(sdk = [29, 32])
     fun popupOptInDefaultsOffAndChangesOnlyItsPreferenceWithoutReconnect() {
-        val activity = Robolectric.buildActivity(DiPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         val prefs = activity.getSharedPreferences("xcertplay_airplay", 0)
         prefs.edit().clear().commit()
@@ -60,7 +60,7 @@ class BydCallPopupSettingsTest {
     @Test
     @Config(sdk = [28])
     fun popupControlIsHiddenBelowAndroid10() {
-        val activity = Robolectric.buildActivity(DiPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         ReflectionHelpers.setField(activity, "settingsSectionFilter", setOf(SettingsSection.ADVANCED_MEDIA))
         val content = LinearLayout(activity)
@@ -74,7 +74,7 @@ class BydCallPopupSettingsTest {
     @Test
     @Config(sdk = [29, 32])
     fun popupControlIsHiddenOnNonBydHeadUnits() {
-        val activity = Robolectric.buildActivity(DiPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         shadowOf(activity.packageManager).removePackage("com.byd.carsettings")
         assertFalse(CarHotspotSetup.isBydHeadUnit(activity))
@@ -98,7 +98,7 @@ class BydCallPopupSettingsTest {
     fun fullWidthArabicLargeFontPopupRowRendersWithoutClipping() = renderPopupRow("full-ar", 600)
 
     private fun renderPopupRow(name: String, widthDp: Int) {
-        val activity = Robolectric.buildActivity(DiPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
         activity.applicationInfo.flags = activity.applicationInfo.flags or android.content.pm.ApplicationInfo.FLAG_SUPPORTS_RTL
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         val configuration = android.content.res.Configuration(activity.resources.configuration).apply { fontScale = 1.6f }

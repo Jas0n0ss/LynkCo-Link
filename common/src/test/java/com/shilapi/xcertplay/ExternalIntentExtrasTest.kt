@@ -25,19 +25,19 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import org.robolectric.util.ReflectionHelpers
 
-/** DiPlayActivity is exported, so any app can send it extras. */
+/** OSNPlayActivity is exported, so any app can send it extras. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28], qualifiers = "en", manifest = Config.NONE)
 @LooperMode(LooperMode.Mode.PAUSED)
 class ExternalIntentExtrasTest {
     private val app get() = RuntimeEnvironment.getApplication()
     private val phone = "12:34:56:78:9A:BC"
-    private val controllers = mutableListOf<ActivityController<DiPlayActivity>>()
+    private val controllers = mutableListOf<ActivityController<OSNPlayActivity>>()
 
     @Before fun reset() {
-        app.getSharedPreferences("diplay", 0).edit().clear().commit()
+        app.getSharedPreferences("osnplay", 0).edit().clear().commit()
         app.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
-        app.getSharedPreferences("diplay_phone_wake", Context.MODE_PRIVATE).edit().clear().commit()
+        app.getSharedPreferences("osnplay_phone_wake", Context.MODE_PRIVATE).edit().clear().commit()
         CarPlayBackgroundSession.clear()
     }
 
@@ -46,8 +46,8 @@ class ExternalIntentExtrasTest {
         CarPlayBackgroundSession.clear()
     }
 
-    private fun open(intent: Intent): ActivityController<DiPlayActivity> {
-        val controller = Robolectric.buildActivity(DiPlayActivity::class.java, intent).create()
+    private fun open(intent: Intent): ActivityController<OSNPlayActivity> {
+        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java, intent).create()
         controllers += controller
         // Source-only test builds have no authentication assets.
         ReflectionHelpers.setField(controller.get(), "setupError", null)
@@ -56,12 +56,12 @@ class ExternalIntentExtrasTest {
         return controller
     }
 
-    private fun page(activity: DiPlayActivity) = ReflectionHelpers.getField<String>(activity, "page")
+    private fun page(activity: OSNPlayActivity) = ReflectionHelpers.getField<String>(activity, "page")
 
-    private fun backupServer(activity: DiPlayActivity) =
+    private fun backupServer(activity: OSNPlayActivity) =
         ReflectionHelpers.getField<Any?>(activity, "backupServer")
 
-    private fun external(vararg extras: Pair<String, Any>) = Intent(app, DiPlayActivity::class.java).apply {
+    private fun external(vararg extras: Pair<String, Any>) = Intent(app, OSNPlayActivity::class.java).apply {
         for ((key, value) in extras) when (value) {
             is Boolean -> putExtra(key, value)
             else -> putExtra(key, value.toString())
@@ -75,37 +75,37 @@ class ExternalIntentExtrasTest {
     }
 
     @Test fun externalNewIntentCannotOpenTheBackupPage() {
-        val controller = open(Intent(app, DiPlayActivity::class.java))
+        val controller = open(Intent(app, OSNPlayActivity::class.java))
         controller.newIntent(external("page" to "backup"))
         shadowOf(Looper.getMainLooper()).idle()
         assertEquals("home", page(controller.get()))
         assertNull(backupServer(controller.get()))
     }
 
-    @Test fun pagesDiPlayOpensItselfStillOpen() {
+    @Test fun pagesOSNPlayOpensItselfStillOpen() {
         for (name in listOf("home", "settings")) {
             assertEquals(name, page(open(external("page" to name)).get()))
         }
-        val controller = open(Intent(app, DiPlayActivity::class.java))
+        val controller = open(Intent(app, OSNPlayActivity::class.java))
         controller.newIntent(external("page" to "settings"))
         assertEquals("settings", page(controller.get()))
     }
 
     @Test fun launcherStartShowsHome() {
         val launcher = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-            .setClassName(app, DiPlayActivity::class.java.name)
-        app.getSharedPreferences("diplay", 0).edit().putBoolean("setup_seen", true).commit()
+            .setClassName(app, OSNPlayActivity::class.java.name)
+        app.getSharedPreferences("osnplay", 0).edit().putBoolean("setup_seen", true).commit()
         assertEquals("home", page(open(launcher).get()))
     }
 
     private fun enableBluetoothWake() {
-        DiPlayPreferences.saveConnectOnPhoneBluetooth(app, true)
-        DiPlayPreferences.savePhone(app, phone, "iPhone")
+        OSNPlayPreferences.saveConnectOnPhoneBluetooth(app, true)
+        OSNPlayPreferences.savePhone(app, phone, "iPhone")
         AirPlayPersistence.saveWirelessHotspotMode(app, WirelessHotspotMode.WIFI_P2P)
-        app.getSharedPreferences("diplay", 0).edit().putBoolean("notification_asked", true).commit()
+        app.getSharedPreferences("osnplay", 0).edit().putBoolean("notification_asked", true).commit()
     }
 
-    private fun startedCarPlay(activity: DiPlayActivity): Boolean {
+    private fun startedCarPlay(activity: OSNPlayActivity): Boolean {
         shadowOf(Looper.getMainLooper()).idle()
         return generateSequence { shadowOf(activity).nextStartedActivity }
             .any { it.component?.className == CarPlayHostActivity::class.java.name }
@@ -113,9 +113,9 @@ class ExternalIntentExtrasTest {
 
     @Test fun externalIntentCannotTriggerThePhoneBluetoothConnect() {
         enableBluetoothWake()
-        val controller = open(Intent(app, DiPlayActivity::class.java))
+        val controller = open(Intent(app, OSNPlayActivity::class.java))
         controller.newIntent(external(PhoneBluetoothReceiver.EXTRA_AUTO_CONNECT to true))
-        assertFalse("an app other than DiPlay started a connection", startedCarPlay(controller.get()))
+        assertFalse("an app other than OSNPlay started a connection", startedCarPlay(controller.get()))
     }
 
     @Test fun receiverLaunchStillConnects() {
@@ -128,7 +128,7 @@ class ExternalIntentExtrasTest {
         PhoneBluetoothReceiver().onReceive(context,
             Intent(BluetoothDevice.ACTION_ACL_CONNECTED).putExtra(BluetoothDevice.EXTRA_DEVICE, device))
         val launch = launches.single()
-        val controller = open(Intent(app, DiPlayActivity::class.java))
+        val controller = open(Intent(app, OSNPlayActivity::class.java))
         controller.newIntent(launch)
         assertTrue("the receiver's own launch no longer connects", startedCarPlay(controller.get()))
     }
@@ -145,8 +145,8 @@ class ExternalIntentExtrasTest {
     }
 
     /** A cold start runs onCreate with the launch intent, the usual case for the real wake. */
-    private fun coldStart(intent: Intent): DiPlayActivity {
-        val controller = Robolectric.buildActivity(DiPlayActivity::class.java, intent)
+    private fun coldStart(intent: Intent): OSNPlayActivity {
+        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java, intent)
         controllers += controller
         // Source-only test builds have no authentication assets; a remote target skips loading them.
         AirPlayPersistence.saveMfiTarget(app, MfiTarget.REMOTE)
@@ -169,7 +169,7 @@ class ExternalIntentExtrasTest {
     @Test fun newIntentWithAnotherProcessesTokenDoesNotConnect() {
         enableBluetoothWake()
         val stale = receiverLaunch().putExtra(PhoneBluetoothReceiver.EXTRA_AUTO_CONNECT, "00000000-0000-0000-0000-000000000000")
-        val controller = open(Intent(app, DiPlayActivity::class.java))
+        val controller = open(Intent(app, OSNPlayActivity::class.java))
         controller.newIntent(stale)
         assertFalse(startedCarPlay(controller.get()))
     }

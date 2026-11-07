@@ -32,7 +32,7 @@ class NavigationWidget : AppWidgetProvider() {
 internal object NavigationWidgetUpdater {
     private const val MIN_INTERVAL_MILLIS = 1_000L
 
-    private val worker = Handler(HandlerThread("diplay-widget").apply { start() }.looper)
+    private val worker = Handler(HandlerThread("osnplay-widget").apply { start() }.looper)
     @Volatile private var context: Context? = null
     private var lastRender = 0L // worker thread
     private var pending = false // worker thread
@@ -66,7 +66,7 @@ internal object NavigationWidgetUpdater {
 
     fun views(context: Context, glance: CarPlayGlance.Snapshot): RemoteViews {
         val views = RemoteViews(context.packageName, R.layout.widget_navigation)
-        val target = if (glance.connected) CarPlayScreen.target(context) else DiPlayActivity::class.java
+        val target = if (glance.connected) CarPlayScreen.target(context) else OSNPlayActivity::class.java
         views.setOnClickPendingIntent(
             R.id.widget_root,
             PendingIntent.getActivity(
@@ -107,7 +107,7 @@ internal object NavigationWidgetUpdater {
         return views
     }
 
-    /** Apple's RouteGuidanceManeuverType, grouped as DiPlay's BYD outputs group it. */
+    /** Apple's RouteGuidanceManeuverType, grouped as OSNPlay's BYD outputs group it. */
     fun arrow(type: Int, drivingSide: Int): Int = when (type) {
         1, 20 -> R.drawable.ic_maneuver_left
         2, 21 -> R.drawable.ic_maneuver_right

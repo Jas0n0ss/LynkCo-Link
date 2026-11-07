@@ -44,7 +44,7 @@ internal object ConnectionEnvironmentSnapshot {
         section("Location") { "enabled=${context.getSystemService(LocationManager::class.java)?.isLocationEnabled}" }
         section("Bluetooth") {
             val adapter = context.getSystemService(BluetoothManager::class.java)?.adapter
-            val selected = DiPlayPreferences.phoneAddress(context)
+            val selected = OSNPlayPreferences.phoneAddress(context)
             "present=${adapter != null} state=${adapter?.state} bondedCount=${adapter?.bondedDevices?.size} " +
                 "phoneSelected=${selected != null} selectedBonded=${adapter?.bondedDevices?.any { it.address == selected }} " +
                 "a2dpSource=${adapter?.getProfileConnectionState(2)} a2dpSink=${adapter?.getProfileConnectionState(11)} " +

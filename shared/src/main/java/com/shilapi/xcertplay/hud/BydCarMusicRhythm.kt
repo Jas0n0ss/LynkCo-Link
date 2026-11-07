@@ -17,20 +17,20 @@ import java.util.concurrent.Executors
  * (`com.android.server.audio.visualizer`). A music app calls BYD's `IAudioService.startAudioOutput(package, token)`,
  * and system_server starts a Visualizer on the output mix and sends colours to the lamp ECU, following whatever
  * plays, until `stopAudioOutput` or the token's process dies. It starts only for BYD's own music apps (its media
- * centre, Kuwo, Kugou, NetEase, QQ Music), so DiPlay names the media centre. The car's ambient-light menu
+ * centre, Kuwo, Kugou, NetEase, QQ Music), so OSNPlay names the media centre. The car's ambient-light menu
  * keeps the colours and effects, and its music rhythm switch must be on.
  *
- * DiPlay first makes that call from its own process ([BydCarMusicRhythmDirect]). Where that fails,
- * [BydCarMusicRhythmTool] makes it instead, as the shell user over DiPlay's existing network ADB access, which this
+ * OSNPlay first makes that call from its own process ([BydCarMusicRhythmDirect]). Where that fails,
+ * [BydCarMusicRhythmTool] makes it instead, as the shell user over OSNPlay's existing network ADB access, which this
  * never asks for. A rhythm is stopped the way it was started: on the Tang the head unit keeps each session under
  * its token.
  */
 object BydCarMusicRhythm {
-    private const val TAG = "DiPlay-CarRhythm"
+    private const val TAG = "OSNPlay-CarRhythm"
     // A failed start is tried again, a little later each time, while the music still plays.
     private const val RETRY_MILLIS = 2_000L
     private const val MAX_RETRIES = 3
-    private val executor = Executors.newSingleThreadScheduledExecutor { Thread(it, "diplay-car-rhythm").apply { isDaemon = true } }
+    private val executor = Executors.newSingleThreadScheduledExecutor { Thread(it, "osnplay-car-rhythm").apply { isDaemon = true } }
     /** Tried first; tests replace it. */
     internal var direct: BydCarMusicRhythmCall = BydCarMusicRhythmDirect
     /** Used only when [direct] cannot; tests replace it. */
@@ -70,7 +70,7 @@ object BydCarMusicRhythm {
     private val waitingBands = java.util.concurrent.atomic.AtomicReference<IntArray?>(null)
 
     /**
-     * Whether this head unit's audio service has the call, reachable from DiPlay itself or else over DiPlay's ADB
+     * Whether this head unit's audio service has the call, reachable from OSNPlay itself or else over OSNPlay's ADB
      * access; nothing is started.
      */
     fun checkSupport(context: Context): CompletableFuture<Boolean> {
@@ -123,14 +123,14 @@ internal interface BydCarMusicRhythmCall {
 }
 
 /**
- * Makes the call from DiPlay's own process, by reflection on the hidden `IAudioService`. On a 2024 Tang (DiLink 5,
+ * Makes the call from OSNPlay's own process, by reflection on the hidden `IAudioService`. On a 2024 Tang (DiLink 5,
  * Android 12L) ART logs the access as `blocked, reflection, denied` and still lets it through. A head unit that
  * enforces the block hides the method, so [supported] and [start] return false there.
  */
 internal object BydCarMusicRhythmDirect : BydCarMusicRhythmCall {
-    private const val TAG = "DiPlay-CarRhythm"
+    private const val TAG = "OSNPlay-CarRhythm"
     // One token for the whole process, so a stop ends the session its start opened; the head unit also drops the
-    // session when DiPlay's process dies.
+    // session when OSNPlay's process dies.
     private val token = Binder()
 
     override fun supported(context: Context): Boolean = runCatching { BydCarMusicRhythmTool.audio() }
@@ -148,9 +148,9 @@ internal object BydCarMusicRhythmDirect : BydCarMusicRhythmCall {
     private fun describe(error: Throwable): String = (error.cause ?: error).let { "${it.javaClass.simpleName}: ${it.message}" }
 }
 
-/** [BydCarMusicRhythmTool] kept open over DiPlay's network ADB access, one helper at a time. */
+/** [BydCarMusicRhythmTool] kept open over OSNPlay's network ADB access, one helper at a time. */
 internal object BydCarMusicRhythmHelper : BydCarMusicRhythmCall {
-    private const val TAG = "DiPlay-CarRhythm"
+    private const val TAG = "OSNPlay-CarRhythm"
     private var adb: LocalAdb? = null
     private var shell: LocalAdb.InteractiveShell? = null
 
@@ -221,7 +221,7 @@ internal object BydCarMusicRhythmHelper : BydCarMusicRhythmCall {
 }
 
 /**
- * Runs under the head unit's adb shell through app_process, not in DiPlay. `--probe` prints `supported` when the
+ * Runs under the head unit's adb shell through app_process, not in OSNPlay. `--probe` prints `supported` when the
  * audio service has BYD's start/stop calls. `--stdin` serves one request per line (`ping`, `start`, `stop`, and
  * `bands` with 16 values from 1 to 15), each answered with one line and `done`; stdin closing stops the rhythm.
  */

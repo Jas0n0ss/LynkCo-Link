@@ -27,7 +27,7 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [29], qualifiers = "en-w1000dp-h700dp-land")
 class SiriLongPressSwitchTest {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private val opened = mutableListOf<DiPlayActivity>()
+    private val opened = mutableListOf<OSNPlayActivity>()
 
     @Before fun setUp() = WheelZoomSettings.setSiriLongPressOnly(context, false)
 
@@ -48,14 +48,14 @@ class SiriLongPressSwitchTest {
     }
 
     /** Settings → Vehicle, where the wheel keys are. */
-    private fun vehicleSettings(): DiPlayActivity = Robolectric.buildActivity(DiPlayActivity::class.java,
-        Intent(context, DiPlayActivity::class.java).putExtra("page", "settings")).setup().get().also {
+    private fun vehicleSettings(): OSNPlayActivity = Robolectric.buildActivity(OSNPlayActivity::class.java,
+        Intent(context, OSNPlayActivity::class.java).putExtra("page", "settings")).setup().get().also {
         opened += it
         ReflectionHelpers.setField(it, "settingsCategory", SettingsCategory.VEHICLE)
         ReflectionHelpers.callInstanceMethod<Unit>(it, "render")
     }
 
-    private fun texts(screen: DiPlayActivity): List<String> =
+    private fun texts(screen: OSNPlayActivity): List<String> =
         descendants(screen.window.decorView).filterIsInstance<TextView>().map { it.text.toString() }.toList()
 
     private fun descendants(view: View): Sequence<View> = sequence {
@@ -63,8 +63,8 @@ class SiriLongPressSwitchTest {
         if (view is ViewGroup) for (index in 0 until view.childCount) yieldAll(descendants(view.getChildAt(index)))
     }
 
-    private fun searchTitles(screen: DiPlayActivity): List<String> =
-        ReflectionHelpers.callInstanceMethod<List<DiPlayActivity.SettingsSearchResult>>(screen, "buildSettingsSearchIndex")
+    private fun searchTitles(screen: OSNPlayActivity): List<String> =
+        ReflectionHelpers.callInstanceMethod<List<OSNPlayActivity.SettingsSearchResult>>(screen, "buildSettingsSearchIndex")
             .map { it.title }
 
     @Test fun anotherHeadUnitIsNotOfferedASwitchThatWouldDoNothing() {

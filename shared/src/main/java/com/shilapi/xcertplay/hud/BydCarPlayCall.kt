@@ -107,17 +107,17 @@ class CarPlayCallState(private val clock: () -> Long = System::currentTimeMillis
  * the instrument's call state, caller and call time, the car's call state (which also turns the fan
  * down). The audio system's CarPlay call status is only reset to idle, never set in a call (see
  * [BydCarPlayCallTool]). Apps cannot write these, autoservice accepts the
- * adb shell, so DiPlay runs [BydCarPlayCallTool] from its APK under the shell. While a call lasts a
+ * adb shell, so OSNPlay runs [BydCarPlayCallTool] from its APK under the shell. While a call lasts a
  * small watcher under the shell sends the call time every second and ends the call on the car if
- * DiPlay goes away mid-call.
+ * OSNPlay goes away mid-call.
  */
 object BydCarPlayCall {
-    private const val TAG = "DiPlay-BYD-Call"
+    private const val TAG = "OSNPlay-BYD-Call"
     @Volatile internal var watcherReadyMillis = 8_000L
     private const val WATCHER_PROBE_INTERVAL_MILLIS = 250L
 
     private val shell = BydAdbShell(TAG)
-    private val writer = Executors.newSingleThreadScheduledExecutor { Thread(it, "diplay-carplay-call").apply { isDaemon = true } }
+    private val writer = Executors.newSingleThreadScheduledExecutor { Thread(it, "osnplay-carplay-call").apply { isDaemon = true } }
     private val state = CarPlayCallState()
     @Volatile private var context: Context? = null
     private var shown: CarPlayCallCard? = null // writer thread
@@ -159,7 +159,7 @@ object BydCarPlayCall {
         if (BydOutputSettings.carPlayCalls(app)) writer.execute { apply(app, card); if (card == null) arm(app) }
     }
 
-    /** The setting changed: show the current call now, or end the one DiPlay showed. */
+    /** The setting changed: show the current call now, or end the one OSNPlay showed. */
     fun settingChanged(enabled: Boolean) {
         val app = context ?: return
         val card = if (enabled) current() else null
@@ -170,7 +170,7 @@ object BydCarPlayCall {
         }
     }
 
-    /** The session ended: forget the calls and end the one DiPlay showed. */
+    /** The session ended: forget the calls and end the one OSNPlay showed. */
     fun end() {
         sessionActive = false
         PhoneAudioRoute.carPlayCall(false)
@@ -181,7 +181,7 @@ object BydCarPlayCall {
 
     /**
      * Prepares a token and starts its watcher with no call on the car. A prepared token never writes
-     * to the car, and its watcher retires it silently if DiPlay dies; [apply] reuses it for the next call.
+     * to the car, and its watcher retires it silently if OSNPlay dies; [apply] reuses it for the next call.
      */
     private fun arm(app: Context) {
         if (!sessionActive || !BydOutputSettings.carPlayCalls(app) || current() != null) return
@@ -341,10 +341,10 @@ object BydCarPlayCall {
 }
 
 /**
- * Runs under the head unit's adb shell through app_process, not in DiPlay. Writes what BYD's CarPlay app
+ * Runs under the head unit's adb shell through app_process, not in OSNPlay. Writes what BYD's CarPlay app
  * writes for a call, resolving the feature ids on the car (they differ between CAN and CAN FD cars):
  * `ringing|dialing|active <base64 name>` and `end -`. `watch <token> <package>` sends the call time
- * every second while the token says `active <start seconds>`, and ends the call on the car when DiPlay's
+ * every second while the token says `active <start seconds>`, and ends the call on the car when OSNPlay's
  * process is gone; it exits once the token is removed. Prints "name=result" per write; 0 is success.
  * A failed call write attempts compensation (see [CarPlayCallWrites]) and reports write=ERR.
  * Recovery ownership remains pending until an end succeeds; write=0 confirms completed commands.
@@ -418,7 +418,7 @@ object BydCarPlayCallTool {
         val name = encodedName?.takeIf { it != "-" }
             ?.let { String(Base64Compat.decode(it), Charsets.UTF_8) }.orEmpty()
         // No AUDIO_CARPLAY_CALL_STATUS in-call write: it switches the amplifier to the stock CarPlay call
-        // channel, while BYD's AudioService reclassifies DiPlay's voice stream as music, so callers go silent.
+        // channel, while BYD's AudioService reclassifies OSNPlay's voice stream as music, so callers go silent.
         val writes = listOf(
             CarPlayCallWrite("car", 1, 0),
             CarPlayCallWrite("bt", bt, BT_IDLE),

@@ -8,11 +8,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /** DiLink 3 cluster modes have their own recovery journal; OEM package holds are independent. */
 internal object BydDiLink3ClusterOutput {
-    private const val TAG = "DiPlay-BYD-DiLink3"
+    private const val TAG = "OSNPlay-BYD-DiLink3"
     private const val JOURNAL = "restore_stock_mode"
     private val shell = BydAdbShell(TAG)
     private val worker = Executors.newSingleThreadScheduledExecutor {
-        Thread(it, "diplay-byd-cluster-mode").apply { isDaemon = true }
+        Thread(it, "osnplay-byd-cluster-mode").apply { isDaemon = true }
     }
     private val retryStarted = AtomicBoolean()
     private val applyQueued = AtomicBoolean()
@@ -110,5 +110,5 @@ internal object BydDiLink3ClusterOutput {
                 it.getBoolean("platform21_cluster_enabled", false)
         }
 
-    private fun prefs(context: Context) = context.getSharedPreferences("diplay_dilink3_cluster", Context.MODE_PRIVATE)
+    private fun prefs(context: Context) = context.getSharedPreferences("osnplay_dilink3_cluster", Context.MODE_PRIVATE)
 }

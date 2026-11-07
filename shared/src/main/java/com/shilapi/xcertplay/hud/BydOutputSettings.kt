@@ -8,7 +8,7 @@ import com.shilapi.xcertplay.transport.EvChargingConnectors
  * instrument cluster receives, so separate HUD/cluster switches cannot behave independently.
  */
 object BydOutputSettings {
-    private const val PREFS = "diplay_byd_outputs"
+    private const val PREFS = "osnplay_byd_outputs"
     private const val KEY_ENABLED = "navigation_enabled"
     private const val KEY_CLUSTER_STREAM_PAUSE = "cluster_stream_pause"
     private const val KEY_CLUSTER_PROJECTION_SHAPE = "cluster_projection_shape"
@@ -45,7 +45,7 @@ object BydOutputSettings {
      * How the CarPlay map is projected on the cluster: half screen (default) keeps the cluster's own
      * speed and status readouts beside the map, full screen lets the map fill it.
      *
-     * DiPlay switches the cluster to half screen whenever the map appears, which overrides the shape
+     * OSNPlay switches the cluster to half screen whenever the map appears, which overrides the shape
      * picked on the car, so the choice lives here. The setting is not DiLink 3 specific: a DiLink 4.0
      * cluster asks for the same one (#728).
      */
@@ -57,7 +57,7 @@ object BydOutputSettings {
     fun setClusterProjectionShape(context: Context, shape: BydClusterProjectionShape) =
         prefs(context).edit().putString(KEY_CLUSTER_PROJECTION_SHAPE, shape.key).apply()
 
-    /** Head units whose cluster shape DiPlay can set today: DiLink 3 takes the AutoContainer commands. */
+    /** Head units whose cluster shape OSNPlay can set today: DiLink 3 takes the AutoContainer commands. */
     fun projectionShapeAvailable(context: Context): Boolean =
         BydAmapAdapter.find { packageName -> installed(context, packageName) } == BydAmapAdapter.DILINK3
 
@@ -105,10 +105,10 @@ object BydOutputSettings {
         prefs(context).edit().putBoolean(KEY_CLUSTER_SONG, enabled).apply()
 
     /**
-     * Open the gate so the dashboard music card appears. DiPlay writes the song to the instrument
+     * Open the gate so the dashboard music card appears. OSNPlay writes the song to the instrument
      * cluster (device 1007), but BYD's card stays hidden until the car's media stack has been opened
      * once; opening the gate launches the media app, which briefly covers the screen and then returns
-     * to DiPlay. Off keeps the write but the card may stay hidden unless the media stack was already
+     * to OSNPlay. Off keeps the write but the card may stay hidden unless the media stack was already
      * active. Applies at once. Defaults on so the song keeps showing as before.
      */
     fun clusterSongGate(context: Context): Boolean = prefs(context).getBoolean(KEY_CLUSTER_SONG_GATE, false)
@@ -131,7 +131,7 @@ object BydOutputSettings {
 
     /**
      * Hold a Telecom call during CarPlay calls so the car's own phone audio state, and its echo canceller,
-     * handle the call. Replaces DiPlay's own canceller for those calls; applies at the next call.
+     * handle the call. Replaces OSNPlay's own canceller for those calls; applies at the next call.
      */
     fun phoneAudioRoute(context: Context): Boolean = prefs(context).getBoolean(KEY_PHONE_AUDIO_ROUTE, false)
 

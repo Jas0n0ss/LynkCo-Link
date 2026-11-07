@@ -55,7 +55,7 @@ OSNPlay 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac、A
 1. **先重启车机**，再到“所有应用 / 应用管理 / 更多应用”里找 **OSNPlay**。有些 OSN 版本只刷新桌面缓存后才会出现。
 2. **用替代入口打开一次**：
    ```sh
-   adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+   adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
    ```
    或安装社区用的 **小八启动器 / 应用页 / 应用管家**，它们会列出所有已安装应用。
 3. **使用本仓库的 lynk 包**：`lynk` 版本默认开启“开机后自动启动”，并在开机时发一条“打开 OSNPlay”通知；即使桌面没有图标，也能从通知或开机画面进入。**注意：Android 的 stopped state 会让新安装应用在第一次手动启动前收不到 `BOOT_COMPLETED`，所以首次安装后仍需用 ADB 或第三方启动器打开一次；之后开机自启/通知才会生效。**

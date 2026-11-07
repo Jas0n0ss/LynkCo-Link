@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
-import com.shilapi.xcertplay.DiPlayPalette
+import com.shilapi.xcertplay.OSNPlayPalette
 import com.shilapi.xcertplay.airplay.CarPlayDisplayScale
 import com.shilapi.xcertplay.orchestration.MfiTarget
 import com.shilapi.xcertplay.orchestration.WirelessHotspotMode
@@ -97,23 +97,23 @@ class SettingsWidgetsTest {
     }
 
     @Test fun lightCardUsesTheResolvedSemanticPalette() {
-        val theme = SettingsTheme.card(DiPlayPalette.LIGHT)
+        val theme = SettingsTheme.card(OSNPlayPalette.LIGHT)
         val row = SettingsWidgets.createSwitchRow(context, "Title", "Details", false,
             theme, onChanged = {})
         val texts = views(row.rowView).filterIsInstance<TextView>().filter { it !== row.switch }.toList()
-        assertEquals(DiPlayPalette.LIGHT.primaryText, texts[0].currentTextColor)
-        assertEquals(DiPlayPalette.LIGHT.secondaryText, texts[1].currentTextColor)
-        assertEquals(DiPlayPalette.LIGHT.trackOff, row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled), 0))
+        assertEquals(OSNPlayPalette.LIGHT.primaryText, texts[0].currentTextColor)
+        assertEquals(OSNPlayPalette.LIGHT.secondaryText, texts[1].currentTextColor)
+        assertEquals(OSNPlayPalette.LIGHT.trackOff, row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled), 0))
         assertEquals(
-            DiPlayPalette.LIGHT.accent,
+            OSNPlayPalette.LIGHT.accent,
             row.switch.thumbTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled, android.R.attr.state_checked), 0),
         )
-        assertEquals(DiPlayPalette.LIGHT.ripple, theme.ripple)
-        assertEquals(DiPlayPalette.LIGHT.focusRing, theme.focusRing)
+        assertEquals(OSNPlayPalette.LIGHT.ripple, theme.ripple)
+        assertEquals(OSNPlayPalette.LIGHT.focusRing, theme.focusRing)
     }
 
     @Test fun lightOverlayUsesSemanticTextAndControlColors() {
-        val theme = SettingsTheme.overlay(DiPlayPalette.LIGHT)
+        val theme = SettingsTheme.overlay(OSNPlayPalette.LIGHT)
         val row = SettingsWidgets.createSwitchRow(
             context,
             "Title",
@@ -124,17 +124,17 @@ class SettingsWidgetsTest {
         )
         val label = (row.rowView as ViewGroup).getChildAt(0) as TextView
 
-        assertEquals(DiPlayPalette.LIGHT.overlaySecondaryText, label.currentTextColor)
+        assertEquals(OSNPlayPalette.LIGHT.overlaySecondaryText, label.currentTextColor)
         assertEquals(
-            DiPlayPalette.LIGHT.overlayAccent,
+            OSNPlayPalette.LIGHT.overlayAccent,
             row.switch.thumbTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled, android.R.attr.state_checked), 0),
         )
         assertEquals(
-            DiPlayPalette.LIGHT.overlayAccentTrack,
+            OSNPlayPalette.LIGHT.overlayAccentTrack,
             row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled, android.R.attr.state_checked), 0),
         )
         assertEquals(
-            DiPlayPalette.LIGHT.overlayTrackOff,
+            OSNPlayPalette.LIGHT.overlayTrackOff,
             row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled), 0),
         )
     }

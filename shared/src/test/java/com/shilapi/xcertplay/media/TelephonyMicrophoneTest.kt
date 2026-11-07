@@ -54,13 +54,13 @@ class TelephonyMicrophoneTest {
         ConfigurableAudioEffect.resetStatus()
         ShadowAudioModeRequests.clearRequests()
         shadowOf(context).grantPermissions(Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS)
-        context.getSharedPreferences("diplay_bt_suspend", 0).edit().clear().commit()
+        context.getSharedPreferences("osnplay_bt_suspend", 0).edit().clear().commit()
         shadowOf(context.getSystemService(BluetoothManager::class.java).adapter).setState(BluetoothAdapter.STATE_ON)
         manager = context.getSystemService(AudioManager::class.java)
         sink = AndroidMediaSink(context = context)
         for (type in listOf(AudioEffect.EFFECT_TYPE_AEC, AudioEffect.EFFECT_TYPE_NS)) {
             ShadowAudioEffect.addEffect(AudioEffect.Descriptor(type.toString(), type.toString(),
-                "Pre Processing", "Test effect", "DiPlay"))
+                "Pre Processing", "Test effect", "OSNPlay"))
         }
         ShadowAudioRecord.setSourceProvider { record ->
             recorder.compareAndSet(null, record)
@@ -103,7 +103,7 @@ class TelephonyMicrophoneTest {
 
     @Test fun aCallLeavesCommunicationModeOnceItsOtherOwnerLetsGo() {
         // #987: the Telecom call for the car's phone audio, or the car's own phone app, enters communication mode
-        // before DiPlay's call does. DiPlay asked for that mode again after the call and kept the head unit in it,
+        // before OSNPlay's call does. OSNPlay asked for that mode again after the call and kept the head unit in it,
         // with no music or navigation, after the other owner had let go.
         val diagnostics = CopyOnWriteArrayList<String>()
         sink.close()
@@ -132,7 +132,7 @@ class TelephonyMicrophoneTest {
 
     @Test fun aCallWhileCarBluetoothIsOffUsesTheCabinMicrophone() {
         val diagnostics = recordDiagnostics()
-        context.getSharedPreferences("diplay_bt_suspend", 0).edit().putBoolean("restore_initially_enabled", true).commit()
+        context.getSharedPreferences("osnplay_bt_suspend", 0).edit().putBoolean("restore_initially_enabled", true).commit()
         shadowOf(context.getSystemService(BluetoothManager::class.java).adapter).setState(BluetoothAdapter.STATE_OFF)
         manager.mode = AudioManager.MODE_NORMAL
         sink.onMicrophoneStarted(telephony, config("telephony"))
@@ -192,7 +192,7 @@ class TelephonyMicrophoneTest {
     }
 
     @Test fun anUnverifiedPauseFlagDoesNotSwitchCallAudioRouting() {
-        context.getSharedPreferences("diplay_bt_suspend", 0).edit()
+        context.getSharedPreferences("osnplay_bt_suspend", 0).edit()
             .putBoolean("suspended_by_us", true).putBoolean("restore_initially_enabled", true).commit()
         sink.onMicrophoneStarted(telephony, config("telephony"))
         assertEquals(MediaRecorder.AudioSource.VOICE_COMMUNICATION, awaitCapture().audioSource)

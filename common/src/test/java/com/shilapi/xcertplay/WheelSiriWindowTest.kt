@@ -40,15 +40,15 @@ import org.robolectric.shadows.ShadowToast
 @LooperMode(LooperMode.Mode.PAUSED)
 class WheelSiriWindowTest {
     private lateinit var host: CarPlayHostActivity
-    private lateinit var settings: DiPlayActivity
+    private lateinit var settings: OSNPlayActivity
     private lateinit var controller: CarPlayController
 
     @Before fun setUp() {
         BydCarPlayCall.end()
         CarPlayBackgroundSession.clear()
         host = Robolectric.buildActivity(CarPlayHostActivity::class.java).get()
-        settings = Robolectric.buildActivity(DiPlayActivity::class.java).get()
-        host.getSharedPreferences("diplay_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
+        settings = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        host.getSharedPreferences("osnplay_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
         host.getSharedPreferences("xcertplay_airplay", Context.MODE_PRIVATE).edit().clear().commit()
         WheelZoomSettings.setSiriKey(host, true)
         WheelZoomSettings.assign(host, WheelZoomSettings.Role.SIRI, WheelKey(KeyEvent.KEYCODE_F6, 0, "?"))

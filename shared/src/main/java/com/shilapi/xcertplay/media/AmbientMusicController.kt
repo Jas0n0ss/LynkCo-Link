@@ -51,13 +51,13 @@ object AmbientMusicController {
         },
         dispatch = { executor.execute(it) },
         now = { android.os.SystemClock.uptimeMillis() },
-        log = { Log.i("DiPlay-Ambient", it) },
+        log = { Log.i("OSNPlay-Ambient", it) },
         applied = { desired ->
             appliedCount++
             val now = android.os.SystemClock.uptimeMillis()
             if (now - lastLogMillis >= 5_000) {
                 lastLogMillis = now
-                Log.i("DiPlay-Ambient", "applied=$appliedCount area=${desired.first} color=${desired.second} brightness=${desired.third} colorMode=${settings.colorMode} estimatedBpm=${colors.estimatedBpm?.toInt() ?: 0}")
+                Log.i("OSNPlay-Ambient", "applied=$appliedCount area=${desired.first} color=${desired.second} brightness=${desired.third} colorMode=${settings.colorMode} estimatedBpm=${colors.estimatedBpm?.toInt() ?: 0}")
             }
         },
     )
@@ -75,7 +75,7 @@ object AmbientMusicController {
             ticking = null
         } else if (ticking == null) {
             ticking = executor.scheduleWithFixedDelay({ runCatching { tick() }.onFailure {
-                Log.w("DiPlay-Ambient", "lamp update failed", it)
+                Log.w("OSNPlay-Ambient", "lamp update failed", it)
                 lampSession.recover()
             } }, 50, 50, TimeUnit.MILLISECONDS)
         }
@@ -264,7 +264,7 @@ object AmbientMusicController {
 
     private fun restoreOriginal() { lampSession.setEnabled(false) }
 
-    // The car's own rhythm follows CarPlay music while it plays; DiPlay does not set the lamps meanwhile. On head
+    // The car's own rhythm follows CarPlay music while it plays; OSNPlay does not set the lamps meanwhile. On head
     // units whose audio service makes no spectrum of its own, the feed option sends the played music's 16 bands.
     private var lastBandsMillis = 0L
     private fun carRhythm() {

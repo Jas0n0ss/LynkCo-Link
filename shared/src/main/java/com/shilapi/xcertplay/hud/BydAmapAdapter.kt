@@ -21,7 +21,7 @@ internal enum class BydAmapAdapter(val packageName: String, val needsSimpleNavig
  * 18 "projection off" (the stock state) and 39 "simple navigation".
  */
 /**
- * The shape the cluster shows DiPlay's map in. Deliberately not DiLink 3 specific: a DiLink 4.0
+ * The shape the cluster shows OSNPlay's map in. Deliberately not DiLink 3 specific: a DiLink 4.0
  * cluster asks for the same choice (#728), so only the availability check has to grow when that
  * route learns to set a shape too.
  */
@@ -45,7 +45,7 @@ internal object BydDiLink3ClusterMode {
         // cluster ignores 17 alone and stays empty; it shows the projection display again only once 16
         // has been sent first (tested on a GCC Han).
         PROJECTION(17, enterVia = 16),
-        // Full screen: the map fills the cluster. DiPlay switches the cluster to 17 whenever the map
+        // Full screen: the map fills the cluster. OSNPlay switches the cluster to 17 whenever the map
         // appears, which overrides the shape picked on the car, so the driver can pick 16 here.
         FULL_PROJECTION(16),
         SIMPLE_NAVIGATION(39),
@@ -61,7 +61,7 @@ internal object BydDiLink3ClusterMode {
 
     private fun call(info: Int) = "service call AutoContainer 2 i32 1000 i32 $info s16 \"\""
 
-    /** The mode to request now, or null while DiPlay has never changed the stock mode. */
+    /** The mode to request now, or null while OSNPlay has never changed the stock mode. */
     fun desired(
         mapShown: Boolean,
         guidanceActive: Boolean,

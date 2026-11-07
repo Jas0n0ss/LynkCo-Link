@@ -10,11 +10,11 @@ object SettingsLayoutPreferences {
         context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     fun forceFull(context: Context): Boolean =
-        context.getSharedPreferences("diplay", Context.MODE_PRIVATE)
+        context.getSharedPreferences("osnplay", Context.MODE_PRIVATE)
             .getBoolean("settings_force_full_layout", false)
 
     fun saveForceFull(context: Context, enabled: Boolean) {
-        context.getSharedPreferences("diplay", Context.MODE_PRIVATE).edit()
+        context.getSharedPreferences("osnplay", Context.MODE_PRIVATE).edit()
             .putBoolean("settings_force_full_layout", enabled).apply()
     }
 }

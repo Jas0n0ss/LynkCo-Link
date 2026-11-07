@@ -18,7 +18,7 @@
 
 ### 3. 认证资产可能误入公开预览包
 
-**问题**：`DIPLAY_AUTH_ASSETS_DIR` 原先对所有变体生效。如果发布者环境里残留该变量，`assembleStandardPreview` 会把认证私钥打进公开包，而文档又声称预览包不含身份。
+**问题**：`OSNPLAY_AUTH_ASSETS_DIR` 原先对所有变体生效。如果发布者环境里残留该变量，`assembleStandardPreview` 会把认证私钥打进公开包，而文档又声称预览包不含身份。
 
 **处理**：`mobile/build.gradle.kts` 只在任务名包含 `Standalone` 时读取该变量；其他构建忽略并打印警告。若同一次调用同时请求 `assembleStandalone*` 和其他 assemble 任务，配置阶段直接失败，避免共享 `main` assets 把凭据带进公开变体。新增 `assembleStandalonePreview` 供发布者显式构建带身份的预览包。CI 与 release 工作流在发布前用 `unzip -l` 断言公开 APK 不含 `offline-mfi` / `.pk8` / `.p7b`。
 
@@ -42,7 +42,7 @@
 
 ### 7. 许可边界未说明
 
-**问题**：根 `LICENSE` 是 GPL-3.0，但 `DiPlayActivity.kt`、`AppLocale.kt`、`InterfaceSize.kt`、`SettingsLayoutPreferences.kt` 标注 AGPL-3.0-only。仅写“整体 GPL-3.0”会误导再分发者。
+**问题**：根 `LICENSE` 是 GPL-3.0，但 `OSNPlayActivity.kt`、`AppLocale.kt`、`InterfaceSize.kt`、`SettingsLayoutPreferences.kt` 标注 AGPL-3.0-only。仅写“整体 GPL-3.0”会误导再分发者。
 
 **处理**：新增 [LICENSING.md](../LICENSING.md)，列明组件许可、GPLv3 §13 的组合关系、再分发义务和“纯 GPL 需替换四个文件”的边界；README 与文档索引已链接。
 

@@ -30,7 +30,7 @@ import com.shilapi.xcertplay.host.R
  * inside its own screen. The app binds with [ACTION], sends [MSG_ATTACH] with its SurfaceView's
  * host token and size, and gets back a SurfaceControlViewHost.SurfacePackage to put into that
  * SurfaceView; the map then lives in the launcher's layout. Each attached view gets its own decoder.
- * Off until the driver allows it in DiPlay. Android 11+. See the upstream launcher integration notes.
+ * Off until the driver allows it in OSNPlay. Android 11+. See the upstream launcher integration notes.
  */
 class MapEmbedService : Service() {
     private val main = Handler(Looper.getMainLooper())
@@ -215,7 +215,7 @@ class MapEmbedService : Service() {
     }
 
     companion object {
-        private const val TAG = "DiPlay-MapEmbed"
+        private const val TAG = "OSNPlay-MapEmbed"
         private const val RELEASE_DELAY_MILLIS = 1_000L
 
         // Each embed holds a decoder surface and a view host. Any app can bind once the driver allows sharing,
@@ -223,15 +223,15 @@ class MapEmbedService : Service() {
         private const val MAX_EMBEDS_PER_UID = 4
         private const val MAX_EMBEDS = 8
 
-        /** Bind to DiPlay's service with this action (the package differs between builds). */
-        const val ACTION = "com.shihab.diplay.action.EMBED_MAP"
+        /** Bind to OSNPlay's service with this action (the package differs between builds). */
+        const val ACTION = "com.osnplay.action.EMBED_MAP"
 
-        // Launcher -> DiPlay. Every message needs replyTo.
+        // Launcher -> OSNPlay. Every message needs replyTo.
         const val MSG_ATTACH = 1 // KEY_HOST_TOKEN, KEY_DISPLAY_ID, KEY_WIDTH, KEY_HEIGHT
         const val MSG_RESIZE = 2 // KEY_WIDTH, KEY_HEIGHT
         const val MSG_DETACH = 3
 
-        // DiPlay -> launcher.
+        // OSNPlay -> launcher.
         const val MSG_ATTACHED = 101 // KEY_SURFACE_PACKAGE, KEY_STREAM_ACTIVE
         const val MSG_STREAM_STATE = 102 // KEY_STREAM_ACTIVE
         const val MSG_ERROR = 199 // KEY_ERROR
@@ -244,7 +244,7 @@ class MapEmbedService : Service() {
         const val KEY_STREAM_ACTIVE = "streamActive"
         const val KEY_ERROR = "error"
 
-        const val ERROR_DISABLED = "disabled" // the driver has not allowed sharing in DiPlay
+        const val ERROR_DISABLED = "disabled" // the driver has not allowed sharing in OSNPlay
         const val ERROR_UNSUPPORTED = "unsupported" // Android 10 or older
         const val ERROR_BAD_REQUEST = "bad_request"
         const val ERROR_TOO_MANY = "too_many" // this app or all apps already show the most maps allowed

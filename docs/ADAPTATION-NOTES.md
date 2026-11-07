@@ -74,7 +74,7 @@ OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功�
 - **比亚迪专属功能代码不删除。** HUD、仪表卡片、氛围灯、摇杆键、BYD 设置入口等在 OSN 上不生效，但删除会牵动大量引用和测试；文档标注为“不适用”。
 - **`BYD_SUPPORT_SPLIT_ACTIVITY` 等 meta-data 保留。** 对 OSN 无副作用，分屏行为不同。
 - **`Theme.Xcertplay` 样式名保留。** 非用户可见。
-- **`com.shihab.diplay.action.EMBED_MAP` 等 intent action 字符串保留。** 属 opaque 标识符，上游组件仍可能使用。
+- **Intent action 已从 `com.shihab.diplay.*` 改为 `com.osnplay.*`。** OSNPlay 使用自己的 action 命名空间。
 
 ## LynkCo-DiPlay 整合边界
 

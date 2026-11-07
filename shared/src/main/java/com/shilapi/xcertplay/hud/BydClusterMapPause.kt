@@ -8,21 +8,21 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Optional, needs ADB over network: the iPhone draws and streams the cluster map for the whole
- * session, but the cluster shows it only in Small and Full screen navi. DiPlay reads the mode the
+ * session, but the cluster shows it only in Small and Full screen navi. OSNPlay reads the mode the
  * driver picked on the wheel every second and asks the iPhone to stop drawing the map while the
  * cluster hides it (Off, Turn on by navi, where it shows arrows only), and to draw it again when the
  * driver picks Small or Full. Without ADB access, or when the mode cannot be read, the map streams
  * as before.
  */
 internal object BydClusterMapPause {
-    private const val TAG = "DiPlay-BYD-ClusterMap"
+    private const val TAG = "OSNPlay-BYD-ClusterMap"
     private const val READ_MILLIS = 1_000L
 
     private val tickerStarted = AtomicBoolean(false)
     private val shell = BydAdbShell(TAG)
     @Volatile private var context: Context? = null
 
-    /** Whether DiPlay's map window is on the cluster. */
+    /** Whether OSNPlay's map window is on the cluster. */
     @Volatile var clusterMapShown = false
 
     /** The running CarPlay session, told every second whether the iPhone should draw the cluster map. */
@@ -45,7 +45,7 @@ internal object BydClusterMapPause {
         context = appContext.applicationContext
         if (tickerStarted.compareAndSet(false, true)) {
             Executors.newSingleThreadScheduledExecutor { runnable ->
-                Thread(runnable, "diplay-cluster-map").apply { isDaemon = true }
+                Thread(runnable, "osnplay-cluster-map").apply { isDaemon = true }
             }.scheduleAtFixedRate(::tick, READ_MILLIS, READ_MILLIS, TimeUnit.MILLISECONDS)
         }
     }

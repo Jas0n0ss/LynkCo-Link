@@ -106,15 +106,15 @@
     <string name="a_familiar_drive">Знайома подорож.</string>
     <string name="a_previous_wi_fi_direct_connection_is_still_running_reset">Попереднє з’єднання Wi-Fi Direct ще активне. Скиньте його, щоб підключитися.</string>
     <string name="about">Про застосунок</string>
-    <string name="about_diplay">Про OSNPlay</string>
+    <string name="about_osnplay">Про OSNPlay</string>
     <string name="active">Активно</string>
     <string name="advanced_audio_channel_mapping">Розширене налаштування аудіоканалів</string>
     <string name="airplay_icon">Значок AirPlay</string>
     <string name="allow_carplay_ui_outside_the_safe_area">Дозволити інтерфейс CarPlay поза безпечною областю</string>
     <string name="allow_nearby_devices_and_on_older_android_versions_locatio">Надайте дозвіл «Пристрої поблизу», а на старіших версіях Android також «Місцезнаходження», перш ніж скидати Wi-Fi CarPlay.</string>
-    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">Надайте OSNPlay дозвіл «Пристрої поблизу» в налаштуваннях дозволів застосунку на головному пристрої.</string>
-    <string name="allow_nearby_devices_so_diplay_can_connect_to_your_paired">Надайте дозвіл «Пристрої поблизу», щоб OSNPlay міг підключитися до спареного iPhone.</string>
-    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Дозвольте OSNPlay доступ до точного місцезнаходження в налаштуваннях дозволів застосунку на головному пристрої.</string>
+    <string name="allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per">Надайте OSNPlay дозвіл «Пристрої поблизу» в налаштуваннях дозволів застосунку на головному пристрої.</string>
+    <string name="allow_nearby_devices_so_osnplay_can_connect_to_your_paired">Надайте дозвіл «Пристрої поблизу», щоб OSNPlay міг підключитися до спареного iPhone.</string>
+    <string name="allow_precise_location_for_osnplay_in_the_head_unit_s_app_p">Дозвольте OSNPlay доступ до точного місцезнаходження в налаштуваннях дозволів застосунку на головному пристрої.</string>
     <string name="allow_the_connection_permission_to_continue">Надайте дозвіл на підключення, щоб продовжити</string>
     <string name="an_independent_carplay_receiver_for_android_head_units_wir">Незалежний приймач CarPlay для головних пристроїв Android. Дротове й бездротове підключення працюють на головному пристрої з локальною автентифікацією. Звичайний iPhone може підключитися без джейлбрейка, Mac, адаптера чи входу в обліковий запис.\n\nУ цій попередній версії використовується експериментальна ідентичність аксесуара. Сумісність з усіма iPhone та головними пристроями ще перевіряється. Цей продукт не сертифіковано Apple.</string>
     <string name="android_9_compatibility">Сумісність з Android 9</string>
@@ -131,7 +131,7 @@
     <string name="automatic_map_setup_adb">Автоматичне налаштування карти · ADB</string>
     <string name="availability_depends_on_your_head_unit_s_startup_settings">Доступність залежить від налаштувань запуску головного пристрою.</string>
     <string name="back">Назад</string>
-    <string name="back_to_diplay">Повернутися до OSNPlay</string>
+    <string name="back_to_osnplay">Повернутися до OSNPlay</string>
     <string name="band">Діапазон</string>
     <string name="bluetooth_settings">Налаштування Bluetooth</string>
     <string name="byd_navigation">Навігація BYD</string>
@@ -170,7 +170,7 @@
     <string name="cluster_map_size">Розмір карти на панелі приладів</string>
     <string name="connect">Підключити</string>
     <string name="connect_phone">Підключити телефон</string>
-    <string name="connect_when_diplay_opens">Підключати під час відкриття OSNPlay</string>
+    <string name="connect_when_osnplay_opens">Підключати під час відкриття OSNPlay</string>
     <string name="connect_when_iphone_bluetooth_connects">Підключати після повторного з’єднання вибраного iPhone</string>
     <string name="connect_when_iphone_bluetooth_connects_description">Після пробудження авто відкривати OSNPlay і запускати бездротовий CarPlay, коли вибраний iPhone підключиться через Bluetooth. Деякі пристрої обмежують фоновий запуск.</string>
     <string name="connect_with_usb">Підключити через USB</string>
@@ -189,14 +189,14 @@
     <string name="could_not_reset_wi_fi_direct_close_the_other_projection_ap">Не вдалося скинути Wi-Fi Direct. Закрийте інший застосунок проєкції та спробуйте знову.</string>
     <string name="could_not_save_image">Не вдалося зберегти зображення</string>
     <string name="could_not_save_the_report">Не вдалося зберегти звіт</string>
-    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">Не вдалося запустити CarPlay. Поверніться до OSNPlay та перевірте дозволи застосунку.</string>
+    <string name="could_not_start_carplay_return_to_osnplay_and_check_app_per">Не вдалося запустити CarPlay. Поверніться до OSNPlay та перевірте дозволи застосунку.</string>
     <string name="custom_1_1_icon">Власний значок 1:1</string>
     <string name="debug_logs">Журнали налагодження</string>
     <string name="default_icon">Типовий значок</string>
     <string name="default_placeholder_icon">Типовий значок-заповнювач</string>
     <string name="diagnostic_report_saved">Діагностичний звіт збережено</string>
     <string name="diagnostics">Діагностика</string>
-    <string name="diplay">OSNPlay</string>
+    <string name="osnplay">OSNPlay</string>
     <string name="discard_changes_and_exit_settings">Скасувати зміни й вийти з налаштувань</string>
     <string name="disconnect">Відключити</string>
     <string name="discovering_iphone">Пошук iPhone</string>
@@ -244,7 +244,7 @@
     <string name="i2c_device_path_contains_u_0000">Шлях пристрою I2C містить U+0000</string>
     <string name="i2c_device_path_is_required">Укажіть шлях пристрою I2C</string>
     <string name="image_is_not_ready">Зображення ще не готове</string>
-    <string name="in_carplay_swipe_down_with_three_fingers_to_open_diplay_se">У CarPlay проведіть трьома пальцями вниз, щоб відкрити налаштування OSNPlay.</string>
+    <string name="in_carplay_swipe_down_with_three_fingers_to_open_osnplay_se">У CarPlay проведіть трьома пальцями вниз, щоб відкрити налаштування OSNPlay.</string>
     <string name="instrument_contrast">Контрастність панелі приладів</string>
     <string name="instrument_theme">Тема панелі приладів</string>
     <string name="keep_bluetooth_and_wi_fi_on_your_iphone_pair_with_the_car">Тримайте Bluetooth і Wi-Fi на iPhone увімкненими. Спарте його з Bluetooth автомобіля, а потім виберіть тут. Надайте дозвіл «Пристрої поблизу», коли з’явиться запит.</string>
@@ -259,7 +259,7 @@
     <string name="longest_height">Найбільша висота</string>
     <string name="looking_for_your_paired_iphone">Пошук спареного iPhone…</string>
     <string name="made_possible_by_open_source">Створено завдяки відкритому коду</string>
-    <string name="make_diplay_feel_right_for_your_car">Налаштуйте OSNPlay під свій автомобіль.</string>
+    <string name="make_osnplay_feel_right_for_your_car">Налаштуйте OSNPlay під свій автомобіль.</string>
     <string name="manual_hotspot">Точка доступу вручну</string>
     <string name="manual_mode_match_the_cluster_theme_here_the_map_cannot_fo">Ручний режим: виберіть тут тему, яка відповідає панелі приладів. Без доступу до даних використання карта не може реагувати на видимість картки.</string>
     <string name="manufacturer">Виробник</string>
@@ -306,7 +306,7 @@
     <string name="preparing_mfi_authentication">Підготовка автентифікації MFi</string>
     <string name="ready">Готово</string>
     <string name="ready_when_you_are">Готово до підключення</string>
-    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_diplay">Приймач створено на основі xcertplay за ліцензією GPL-3.0. Інтерфейс OSNPlay наслідує дизайн DiAuto за ліцензією AGPL-3.0.\n\nВикористовуються AndroidX, Bouncy Castle, JmDNS і SLF4J. Вихідний код і повідомлення про ліцензії додаються до цього випуску.\n\nCarPlay і його значок належать Apple Inc. OSNPlay — незалежний проєкт.</string>
+    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_osnplay">Приймач створено на основі xcertplay за ліцензією GPL-3.0. Інтерфейс OSNPlay наслідує дизайн DiAuto за ліцензією AGPL-3.0.\n\nВикористовуються AndroidX, Bouncy Castle, JmDNS і SLF4J. Вихідний код і повідомлення про ліцензії додаються до цього випуску.\n\nCarPlay і його значок належать Apple Inc. OSNPlay — незалежний проєкт.</string>
     <string name="reconnecting_to_your_iphone">Повторне підключення до iPhone…</string>
     <string name="remote">Віддалено</string>
     <string name="remote_server_address_contains_u_0000">Адреса віддаленого сервера містить U+0000</string>
@@ -316,7 +316,7 @@
     <string name="report_android_location_to_the_iphone">Передавати геопозицію Android на iPhone</string>
     <string name="report_location_to_iphone">Передавати геопозицію на iPhone</string>
     <string name="report_saved_open_it_from_your_file_manager_to_share_it">Звіт збережено. Щоб поділитися ним, відкрийте його у файловому менеджері.</string>
-    <string name="reports_save_to_downloads_diplay">Звіти зберігаються в Downloads/OSNPlay.\u0020</string>
+    <string name="reports_save_to_downloads_osnplay">Звіти зберігаються в Downloads/OSNPlay.\u0020</string>
     <string name="requesting_iphone_usb_permission">Запит дозволу на USB-доступ до iPhone</string>
     <string name="requesting_mfi_usb_permission">Запит дозволу на USB-доступ до MFi</string>
     <string name="reset">Скинути</string>
@@ -325,7 +325,7 @@
     <string name="reset_carplay_wi_fi">Скинути Wi-Fi CarPlay</string>
     <string name="reset_carplay_wi_fi_2">Скинути Wi-Fi CarPlay?</string>
     <string name="resolution">Роздільна здатність</string>
-    <string name="return_from_car_settings_to_diplay_then_connect_accept_the">Поверніться з налаштувань автомобіля до OSNPlay та підключіться. Підтвердьте запит CarPlay на iPhone. Інтернет-план для автомобіля не потрібен; доступність мобільних даних залежить від мережевих налаштувань телефона.</string>
+    <string name="return_from_car_settings_to_osnplay_then_connect_accept_the">Поверніться з налаштувань автомобіля до OSNPlay та підключіться. Підтвердьте запит CarPlay на iPhone. Інтернет-план для автомобіля не потрібен; доступність мобільних даних залежить від мережевих налаштувань телефона.</string>
     <string name="review_app_permissions">Перевірити дозволи застосунку</string>
     <string name="right_hand_drive">Кермо праворуч</string>
     <string name="running">Працює</string>
@@ -394,7 +394,7 @@
     <string name="turn_on_wi_fi_in_the_head_unit_s_settings_to_connect">Увімкніть Wi-Fi у налаштуваннях головного пристрою, щоб підключитися.</string>
     <string name="turn_the_car_s_wi_fi_switch_on_allow_location_nearby_devic">Увімкніть Wi-Fi автомобіля. Надайте доступ до місцезнаходження та пристроїв поблизу, якщо з’явиться запит, і ввімкніть геолокацію на запит Android. Якщо відтворення переривається, спробуйте вбудовану точку доступу автомобіля на частоті 5 ГГц.</string>
     <string name="usage_access_enabled">Доступ до даних використання: надано</string>
-    <string name="usage_access_lets_diplay_follow_the_instrument_theme_and_m">Доступ до даних використання дозволяє OSNPlay стежити за темою панелі приладів та карткою карти. Локально обробляються лише події екрана панелі приладів BYD. У цьому автомобілі сторінка налаштування такого дозволу не працює.</string>
+    <string name="usage_access_lets_osnplay_follow_the_instrument_theme_and_m">Доступ до даних використання дозволяє OSNPlay стежити за темою панелі приладів та карткою карти. Локально обробляються лише події екрана панелі приладів BYD. У цьому автомобілі сторінка налаштування такого дозволу не працює.</string>
     <string name="usage_access_setup_needed_for_automatic_mode">Доступ до даних використання: потрібне налаштування для автоматичного режиму</string>
     <string name="usb_ch341">USB/CH341</string>
     <string name="use_a_usb_data_cable_and_the_car_s_usb_data_port_unlock_yo">Скористайтеся USB-кабелем для передавання даних і відповідним портом автомобіля. Розблокуйте iPhone та дозвольте CarPlay. Налаштовувати точку доступу не потрібно.</string>
@@ -586,7 +586,7 @@
     <string name="turn_card_distance_m">%1$d м</string>
     <string name="turn_card_distance_km">%1$.1f км</string>
     <string name="turn_card_exit">Зʼїзд %1$d</string>
-    <string name="open_diplay_settings_hint">У CarPlay проведіть вниз %1$d пальцями, щоб відкрити швидке меню.</string>
+    <string name="open_osnplay_settings_hint">У CarPlay проведіть вниз %1$d пальцями, щоб відкрити швидке меню.</string>
     <string name="carplay_controls">Керування CarPlay</string>
     <string name="settings_gesture_fingers">Швидке меню · свайп %1$d пальцями (торкніться, щоб змінити)</string>
     <string name="settings_gesture_fingers_label">Швидке меню · кількість пальців</string>

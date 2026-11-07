@@ -11,13 +11,13 @@ import java.util.concurrent.TimeUnit
 
 /** Optional radio pause using already-authorized local ADB; pairing is never changed. */
 object BydBluetoothSuspend {
-    private const val TAG = "DiPlay-BT-Suspend"
-    private const val PREFS = "diplay_bt_suspend"
+    private const val TAG = "OSNPlay-BT-Suspend"
+    private const val PREFS = "osnplay_bt_suspend"
     private const val KEY_RESTORE_ENABLED = "restore_initially_enabled"
     private const val STATE_TIMEOUT_MILLIS = 8_000L
     private val shell = BydAdbShell(TAG)
     private val worker = Executors.newSingleThreadScheduledExecutor { task ->
-        Thread(task, "diplay-bt-suspend").apply { isDaemon = true }
+        Thread(task, "osnplay-bt-suspend").apply { isDaemon = true }
     }
     private val gate = Any()
     private var lease: BluetoothSuspendLease? = null
@@ -117,7 +117,7 @@ object BydBluetoothSuspend {
         val wasPaused = state.isSuspended()
         if (!state.restore(ticket)) {
             Log.w(TAG, "Bluetooth recovery incomplete or superseded")
-            if (wasPaused) log("car Bluetooth recovery incomplete; DiPlay retries when it opens again")
+            if (wasPaused) log("car Bluetooth recovery incomplete; OSNPlay retries when it opens again")
         } else if (wasPaused) {
             log("car Bluetooth back on")
         }

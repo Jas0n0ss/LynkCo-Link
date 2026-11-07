@@ -10,14 +10,14 @@ data class SettingsImportOutcome(val applied: Int, val skipped: Int, val invalid
 
 /** Reads and writes the settings documents exchanged through the backup web page. */
 object SettingsBackupCodec {
-    const val FORMAT = "diplay-settings"
+    const val FORMAT = "osnplay-settings"
     const val VERSION = 1
 
     /**
      * The settings of the main file that travel, by name. That file also holds the iPhones' pairing keys
      * (`pairing.<id>`), lockdown records, the authentication target and the car's hotspot name and
      * passphrase. An imported file must never set those: a pairing key from someone else's file would make
-     * DiPlay trust their device. So a key travels only once it is listed here; car-specific values (the
+     * OSNPlay trust their device. So a key travels only once it is listed here; car-specific values (the
      * detected screen size, the car's hotspot) and consents (sharing the map with other apps) stay out too.
      */
     private val AIRPLAY_KEYS = setOf(
@@ -47,7 +47,7 @@ object SettingsBackupCodec {
 
     /** Families of layout settings with many keys and nothing sensitive in them. */
     private val AIRPLAY_PREFIXES = listOf("cluster_", "carplay_night_")
-    private val DIPLAY_KEYS = setOf(
+    private val OSNPLAY_KEYS = setOf(
         "auto_connect",
         "connect_on_phone_bluetooth",
         "default_connection_mode",
@@ -62,11 +62,11 @@ object SettingsBackupCodec {
     private val CAR_HOTSPOT_KEYS = setOf("auto_enable", "config_write")
     private val FILES = mapOf(
         "xcertplay_airplay" to Policy.Allow(AIRPLAY_KEYS, AIRPLAY_PREFIXES),
-        "diplay" to Policy.Allow(DIPLAY_KEYS),
+        "osnplay" to Policy.Allow(OSNPLAY_KEYS),
         // These readers call getInt and getBoolean, which throw on any other stored type. A key that is not stored yet
         // has no type to compare with, so the type is declared here.
         "carplay_picture" to Policy.Allow(PICTURE_KEYS, types = PICTURE_KEYS.associateWith { KeyType.INT }),
-        "diplay_car_hotspot" to Policy.Allow(CAR_HOTSPOT_KEYS, types = CAR_HOTSPOT_KEYS.associateWith { KeyType.BOOLEAN }),
+        "osnplay_car_hotspot" to Policy.Allow(CAR_HOTSPOT_KEYS, types = CAR_HOTSPOT_KEYS.associateWith { KeyType.BOOLEAN }),
     )
 
     private enum class KeyType { BOOLEAN, INT }

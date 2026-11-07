@@ -18,7 +18,7 @@ import org.robolectric.shadows.ShadowBuild
 class BydOptionalOutputSettingsTest {
     @Test fun optionalOutputsDefaultOffAndKeepExplicitPreviousSelections() {
         val app = RuntimeEnvironment.getApplication()
-        val prefs = app.getSharedPreferences("diplay_byd_outputs", Context.MODE_PRIVATE)
+        val prefs = app.getSharedPreferences("osnplay_byd_outputs", Context.MODE_PRIVATE)
         prefs.edit().clear().commit()
         assertFalse(BydOutputSettings.hudSong(app))
         assertEquals(BydOemClusterHold.OFF, BydOutputSettings.oemClusterHold(app))
@@ -31,7 +31,7 @@ class BydOptionalOutputSettingsTest {
     @Test fun installedStockReceiverDoesNotEnableUnverifiedDilink4Hud() {
         val app = RuntimeEnvironment.getApplication()
         val knownApp = object : ContextWrapper(app) {
-            override fun getPackageName(): String = "com.shihab.diplay"
+            override fun getPackageName(): String = "com.osnplay"
         }
         ShadowBuild.setFingerprint("BYD/DiLink4:10/unverified")
         val info = PackageInfo().apply {

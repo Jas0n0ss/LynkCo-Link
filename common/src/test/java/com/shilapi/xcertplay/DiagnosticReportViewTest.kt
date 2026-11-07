@@ -18,13 +18,13 @@ import org.robolectric.shadows.ShadowAlertDialog
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [29], qualifiers = "en-w600dp-h700dp")
 class DiagnosticReportViewTest {
-    private var activity: DiPlayActivity? = null
+    private var activity: OSNPlayActivity? = null
 
     @After fun tearDown() { activity?.finish() }
 
     // Same shape as the exported report: a header, then 8 logs capped at SessionLogFile.MAX_BYTES each.
     private fun maxSizeReport(): String = buildString {
-        appendLine("DiPlay 1.0 · private beta diagnostic report")
+        appendLine("OSNPlay 1.0 · private beta diagnostic report")
         for (name in SessionLogFile.REPORT_NAMES) {
             appendLine("--- $name ---")
             var bytes = 0L
@@ -39,11 +39,11 @@ class DiagnosticReportViewTest {
 
     private fun showReport(report: String): Pair<String, Long> {
         val screen = Robolectric.buildActivity(
-            DiPlayActivity::class.java,
-            Intent(RuntimeEnvironment.getApplication(), DiPlayActivity::class.java).putExtra("page", "settings"),
+            OSNPlayActivity::class.java,
+            Intent(RuntimeEnvironment.getApplication(), OSNPlayActivity::class.java).putExtra("page", "settings"),
         ).setup().get().also { activity = it }
         val started = System.nanoTime()
-        DiPlayActivity::class.java.getDeclaredMethod("showDiagnosticReport", String::class.java)
+        OSNPlayActivity::class.java.getDeclaredMethod("showDiagnosticReport", String::class.java)
             .apply { isAccessible = true }.invoke(screen, report)
         val millis = (System.nanoTime() - started) / 1_000_000
         val dialog = ShadowAlertDialog.getLatestAlertDialog()
@@ -64,7 +64,7 @@ class DiagnosticReportViewTest {
     }
 
     @Test fun smallReportIsShownInFull() {
-        val report = "DiPlay 1.0\n--- diplay.log ---\n12:00:00.000  CarPlay connected\n"
+        val report = "OSNPlay 1.0\n--- osnplay.log ---\n12:00:00.000  CarPlay connected\n"
         assertEquals(report, showReport(report).first)
     }
 
@@ -72,10 +72,10 @@ class DiagnosticReportViewTest {
 
     private fun tail(report: String): String {
         val screen = activity ?: Robolectric.buildActivity(
-            DiPlayActivity::class.java,
-            Intent(RuntimeEnvironment.getApplication(), DiPlayActivity::class.java).putExtra("page", "settings"),
+            OSNPlayActivity::class.java,
+            Intent(RuntimeEnvironment.getApplication(), OSNPlayActivity::class.java).putExtra("page", "settings"),
         ).setup().get().also { activity = it }
-        return DiPlayActivity::class.java.getDeclaredMethod("reportTail", String::class.java)
+        return OSNPlayActivity::class.java.getDeclaredMethod("reportTail", String::class.java)
             .apply { isAccessible = true }.invoke(screen, report) as String
     }
 
@@ -144,7 +144,7 @@ class DiagnosticReportViewTest {
     }
 
     @Test fun aHeaderOverTheCapIsCutAtALineBoundary() {
-        val report = headLines(5_000) + "--- diplay.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
+        val report = headLines(5_000) + "--- osnplay.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
         val shown = tail(report)
         val head = shown.substringBefore("…\n")
         assertTrue("head is ${head.length} chars", head.length in 19_000..20_000)
@@ -159,13 +159,13 @@ class DiagnosticReportViewTest {
 
     @Test fun aHeaderThatTheTailAlreadyReachesIsNotRepeated() {
         // About 205,000 chars: the tail starts near 5,000, inside the 16,000-char header.
-        val report = headLines(1_000) + "--- diplay.log ---\n" + "12:00:01.000  filler\n".repeat(9_000)
+        val report = headLines(1_000) + "--- osnplay.log ---\n" + "12:00:01.000  filler\n".repeat(9_000)
         assertTrue(report.length > max)
         assertEquals(report, tail(report))
     }
 
     @Test fun aSurrogatePairAtTheHeaderCapIsNotSplit() {
-        val report = "x".repeat(19_999) + "\uD83D\uDE00" + "\n--- diplay.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
+        val report = "x".repeat(19_999) + "\uD83D\uDE00" + "\n--- osnplay.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
         val head = tail(report).substringBefore("…\n")
         assertTrue("head ends in a lone high surrogate", head.isEmpty() || !Character.isHighSurrogate(head.last()))
     }

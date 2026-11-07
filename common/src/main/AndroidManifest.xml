@@ -58,7 +58,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/update_apk_paths" />
         </provider>
-        <activity android:name="com.shilapi.xcertplay.DiPlayActivity"
+        <activity android:name="com.shilapi.xcertplay.OSNPlayActivity"
             android:exported="true" android:launchMode="singleTop"
             android:icon="@drawable/ic_carplay"
             android:label="@string/app_name"
@@ -76,7 +76,7 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.shilapi.xcertplay.DiPlaySessionService"
+        <service android:name="com.shilapi.xcertplay.OSNPlaySessionService"
             android:exported="false" android:foregroundServiceType="connectedDevice|microphone|location" />
 
         <activity
@@ -97,7 +97,7 @@
                 android:resource="@xml/usb_device_filter" />
         </activity>
 
-        <!-- The same CarPlay screen in DiPlay's own task, declared as it was up to 0.2.11, for launchers that show
+        <!-- The same CarPlay screen in OSNPlay's own task, declared as it was up to 0.2.11, for launchers that show
              that task in a card or picture-in-picture window (#463). CarPlayScreen chooses between the two. -->
         <activity
             android:name="com.shilapi.xcertplay.SameTaskCarPlayHostActivity"
@@ -160,7 +160,7 @@
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
-                <action android:name="com.shihab.diplay.action.EMBED_MAP" />
+                <action android:name="com.osnplay.action.EMBED_MAP" />
             </intent-filter>
         </service>
 

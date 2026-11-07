@@ -48,7 +48,7 @@ class CarPlayNoPictureTest {
 
     @Before fun setUp() {
         CarPlayBackgroundSession.clear()
-        log = folder.newFile("diplay.log")
+        log = folder.newFile("osnplay.log")
     }
 
     @After fun tearDown() {

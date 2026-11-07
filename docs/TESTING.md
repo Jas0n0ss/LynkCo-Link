@@ -6,10 +6,11 @@
 
 ```sh
 ./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
-  :mobile:lintStandardDebug :mobile:assembleLynkRelease
+  :mobile:lintStandardDebug :mobile:assembleLynkRelease \
+  :launcher-entry:assembleRelease
 ```
 
-CI 只构建 `:mobile:assembleLynkRelease` 源码包，不再构建 debug / preview 变体；发布工作流只构建 `:mobile:assembleStandaloneLynkRelease`，见 [.github/workflows/android.yml](../.github/workflows/android.yml)。
+CI 构建主程序源码包和白名单入口，不构建 debug / preview 变体；发布工作流构建 `:mobile:assembleStandaloneLynkRelease` 和 `:launcher-entry:assembleRelease`，见 [.github/workflows/android.yml](../.github/workflows/android.yml)。
 
 ## 自动化与构建验证
 
@@ -22,6 +23,7 @@ CI 只构建 `:mobile:assembleLynkRelease` 源码包，不再构建 debug / prev
 | `:mobile:lintStandardDebug` | ✅ 0 阻断 | lint 报告见 `mobile/build/reports/` |
 | `:mobile:assembleLynkRelease` | ✅ | `com.osnplay.lynk` / `0.1.2-lynk`，源码包无认证资产 |
 | `:mobile:assembleStandaloneLynkRelease` | ✅ | 同一包名/版本，含显式认证资产，release 签名 |
+| `:launcher-entry:assembleRelease` | ✅ | `com.kugou.android.auto` / 1.0，白名单入口，无认证资产 |
 | release 签名路径 | ✅ | 使用本地 release keystore 构建成功 |
 | standalone 凭据门禁 | ✅ | 单独调用会打包显式资产；与公开构建混合调用会被拒绝 |
 | `scripts/check_public_tree.py` | ✅ | 源码树无凭据容器或私钥块 |
@@ -43,6 +45,7 @@ unzip -l mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk | grep -i
 | --- | --- | --- | --- |
 | `assembleLynkRelease` 源码包 | `com.osnplay.lynk` | `0.1.2-lynk` | 无 |
 | `assembleStandaloneLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | 有 |
+| `:launcher-entry:assembleRelease` | `com.kugou.android.auto` | `1.0` | 无 |
 
 ## 自动化测试覆盖
 

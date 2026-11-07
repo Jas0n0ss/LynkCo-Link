@@ -22,27 +22,27 @@ import org.robolectric.annotation.Implementation
 import org.robolectric.annotation.LooperMode
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [29], shadows = [DiPlayAuthenticationTest.NavigationOutputs::class])
+@Config(sdk = [29], shadows = [OSNPlayAuthenticationTest.NavigationOutputs::class])
 @LooperMode(LooperMode.Mode.PAUSED)
-class DiPlayAuthenticationTest {
+class OSNPlayAuthenticationTest {
     private val context get() = RuntimeEnvironment.getApplication()
     private val directory get() = File(context.noBackupFilesDir, "offline-mfi")
 
     @Before fun setUp() {
         // The JVM test host has no vehicle SOME/IP gateway.
         shadowOf(context).declareActionUnbindable("com.ts.car.someip.SomeIpServerService")
-        DiPlayBootstrap::class.java.getDeclaredField("ready").apply { isAccessible = true }
+        OSNPlayBootstrap::class.java.getDeclaredField("ready").apply { isAccessible = true }
             .setBoolean(null, false)
     }
 
     @Test fun freshInstallStillDefaultsToLocalAuthentication() {
         assertEquals(MfiTarget.LOCAL, AirPlayPersistence.loadMfiTarget(context))
-        assertThrows(Exception::class.java) { DiPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
+        assertThrows(Exception::class.java) { OSNPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
     }
 
     @Test fun savedUsbChoiceSurvivesBootstrapWithoutLocalAssets() {
         AirPlayPersistence.saveMfiTarget(context, MfiTarget.USB_CH341)
-        DiPlayBootstrap.ensure(context, AirPlayPersistence.loadMfiTarget(context))
+        OSNPlayBootstrap.ensure(context, AirPlayPersistence.loadMfiTarget(context))
         assertEquals(MfiTarget.USB_CH341, AirPlayPersistence.loadMfiTarget(context))
         assertFalse(directory.exists())
         assertFalse(File(context.noBackupFilesDir, "offline-mfi-staging").exists())
@@ -51,15 +51,15 @@ class DiPlayAuthenticationTest {
     @Test fun usbBootstrapDoesNotReadAnExistingBrokenLocalIdentity() {
         assertTrue(directory.mkdirs())
         File(directory, "identity.pk8").writeText("invalid local identity")
-        DiPlayBootstrap.ensure(context, MfiTarget.USB_CH341)
+        OSNPlayBootstrap.ensure(context, MfiTarget.USB_CH341)
         assertEquals("invalid local identity", File(directory, "identity.pk8").readText())
         assertFalse(File(directory, "certificate.p7b").exists())
-        assertThrows(Exception::class.java) { DiPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
+        assertThrows(Exception::class.java) { OSNPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
     }
 
     @Test fun switchingFromUsbToLocalStillRequiresLocalIdentity() {
-        DiPlayBootstrap.ensure(context, MfiTarget.USB_CH341)
-        assertThrows(Exception::class.java) { DiPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
+        OSNPlayBootstrap.ensure(context, MfiTarget.USB_CH341)
+        assertThrows(Exception::class.java) { OSNPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
     }
 
     @Test fun usbControllerWaitsForHardwareWithoutLocalAssets() {

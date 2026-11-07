@@ -65,14 +65,14 @@ internal class BackgroundUpdateWorker(context: Context, parameters: WorkerParame
     }
 
     private companion object {
-        const val TAG = "DiPlay-Update"
+        const val TAG = "OSNPlay-Update"
         const val MAX_ATTEMPTS = 5
     }
 }
 
 internal object BackgroundUpdateScheduler {
-    private const val PERIODIC_WORK = "diplay-periodic-update-check"
-    private const val OPEN_WORK = "diplay-open-update-check"
+    private const val PERIODIC_WORK = "osnplay-periodic-update-check"
+    private const val OPEN_WORK = "osnplay-open-update-check"
 
     fun schedule(context: Context) {
         val constraints = Constraints.Builder()

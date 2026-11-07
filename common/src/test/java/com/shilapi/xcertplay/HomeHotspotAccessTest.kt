@@ -33,7 +33,7 @@ import org.robolectric.annotation.Implements
 import org.robolectric.util.ReflectionHelpers
 
 /**
- * What Home says when DiPlay could not turn the car hotspot on at start-up for lack of the
+ * What Home says when OSNPlay could not turn the car hotspot on at start-up for lack of the
  * "Modify system settings" access, and what happens once the driver allows it.
  */
 @RunWith(RobolectricTestRunner::class)
@@ -42,7 +42,7 @@ import org.robolectric.util.ReflectionHelpers
         HomeHotspotAccessTest.PlatformStart::class])
 class HomeHotspotAccessTest {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private val controllers = mutableListOf<ActivityController<DiPlayActivity>>()
+    private val controllers = mutableListOf<ActivityController<OSNPlayActivity>>()
 
     @Before fun setUp() {
         clearSettings()
@@ -65,15 +65,15 @@ class HomeHotspotAccessTest {
     }
 
     private fun clearSettings() {
-        context.getSharedPreferences("diplay", 0).edit().clear().commit()
+        context.getSharedPreferences("osnplay", 0).edit().clear().commit()
         context.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
     }
 
-    private fun openHome(): ActivityController<DiPlayActivity> = Robolectric.buildActivity(DiPlayActivity::class.java,
-        Intent(context, DiPlayActivity::class.java).putExtra("page", "home")).setup().also { controllers += it }
+    private fun openHome(): ActivityController<OSNPlayActivity> = Robolectric.buildActivity(OSNPlayActivity::class.java,
+        Intent(context, OSNPlayActivity::class.java).putExtra("page", "home")).setup().also { controllers += it }
 
     /** Waits until the start-up attempt's result has reached Home. An attempt that began cancelled never delivers one. */
-    private fun awaitResult(home: DiPlayActivity, expected: CarHotspotTethering.Result) {
+    private fun awaitResult(home: OSNPlayActivity, expected: CarHotspotTethering.Result) {
         repeat(250) {
             shadowOf(Looper.getMainLooper()).idle()
             if (result(home) == expected) return
@@ -82,10 +82,10 @@ class HomeHotspotAccessTest {
         throw AssertionError("Home has ${result(home)}, not $expected")
     }
 
-    private fun result(home: DiPlayActivity): CarHotspotTethering.Result? =
+    private fun result(home: OSNPlayActivity): CarHotspotTethering.Result? =
         ReflectionHelpers.getField(home, "hotspotStartupResult")
 
-    private fun texts(screen: DiPlayActivity): List<String> =
+    private fun texts(screen: OSNPlayActivity): List<String> =
         descendants(screen.window.decorView).filterIsInstance<TextView>().map { it.text.toString() }.toList()
 
     private fun descendants(view: View): Sequence<View> = sequence {
@@ -93,7 +93,7 @@ class HomeHotspotAccessTest {
         if (view is ViewGroup) for (index in 0 until view.childCount) yieldAll(descendants(view.getChildAt(index)))
     }
 
-    private fun tap(screen: DiPlayActivity, text: Int) = descendants(screen.window.decorView)
+    private fun tap(screen: OSNPlayActivity, text: Int) = descendants(screen.window.decorView)
         .filterIsInstance<TextView>().single { it.text == screen.getString(text) }.performClick()
 
     @Test fun offBydUnitsHomeAsksForTheSystemAccessAndOpensItsScreen() {
@@ -132,13 +132,13 @@ class HomeHotspotAccessTest {
         val controller = openHome()
         val home = controller.get()
         awaitResult(home, CarHotspotTethering.Result.PERMISSION_REQUIRED)
-        // Android's screen, opened from Home or from Settings, covers DiPlay, which stops it; the driver
+        // Android's screen, opened from Home or from Settings, covers OSNPlay, which stops it; the driver
         // allows the access there.
         controller.pause().stop()
         WritePermission.allowed = true
         controller.restart().start().resume()
 
-        // A new attempt, not one cancelled by DiPlay having been stopped, and the platform was asked once.
+        // A new attempt, not one cancelled by OSNPlay having been stopped, and the platform was asked once.
         awaitResult(home, CarHotspotTethering.Result.READY)
         assertEquals(1, PlatformStart.calls.get())
         val shown = texts(home)

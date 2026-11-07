@@ -15,13 +15,13 @@ if (standaloneTasks.isNotEmpty() && standaloneTasks.size != requestedAssembleTas
     )
 }
 val standaloneBuild = standaloneTasks.isNotEmpty()
-val configuredAuthenticationAssets = providers.environmentVariable("DIPLAY_AUTH_ASSETS_DIR").orNull
+val configuredAuthenticationAssets = providers.environmentVariable("OSNPLAY_AUTH_ASSETS_DIR").orNull
 val localAuthenticationAssets = configuredAuthenticationAssets
     ?.takeIf { standaloneBuild }
     ?.let { file(it).canonicalFile }
 if (configuredAuthenticationAssets != null && !standaloneBuild) {
     logger.warn(
-        "DIPLAY_AUTH_ASSETS_DIR is set but ignored: use an assembleStandalone* task to bundle credentials.",
+        "OSNPLAY_AUTH_ASSETS_DIR is set but ignored: use an assembleStandalone* task to bundle credentials.",
     )
 }
 
@@ -147,7 +147,7 @@ val verifyStandaloneAuthentication by tasks.registering {
     val directory = localAuthenticationAssets
     doLast {
         check(directory != null) {
-            "Standalone car builds require DIPLAY_AUTH_ASSETS_DIR; assembleStandardDebug alone is source-only."
+            "Standalone car builds require OSNPLAY_AUTH_ASSETS_DIR; assembleStandardDebug alone is source-only."
         }
         check(listOf("identity.pk8", "certificate.p7b").all {
             directory.resolve("offline-mfi/$it").let { file -> file.isFile && file.length() > 0 }

@@ -100,15 +100,15 @@
     <string name="a_familiar_drive">Tanıdık bir sürüş deneyimi.</string>
     <string name="a_previous_wi_fi_direct_connection_is_still_running_reset">Önceki bir Wi-Fi Direct bağlantısı hala çalışıyor. Bağlanmak için sıfırlayın.</string>
     <string name="about">Hakkında</string>
-    <string name="about_diplay">OSNPlay Hakkında</string>
+    <string name="about_osnplay">OSNPlay Hakkında</string>
     <string name="active">Etkin</string>
     <string name="advanced_audio_channel_mapping">Gelişmiş ses kanalı eşleme</string>
     <string name="airplay_icon">AirPlay simgesi</string>
     <string name="allow_carplay_ui_outside_the_safe_area">CarPlay arayüzünün güvenli alan dışına taşmasına izin ver</string>
     <string name="allow_nearby_devices_and_on_older_android_versions_locatio">CarPlay Wi-Fi\'ını sıfırlamadan önce Yakındaki cihazlara ve eski Android sürümlerinde Konum\'a izin verin.</string>
-    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">Ana ünitenin uygulama izinlerinde OSNPlay için Yakındaki cihazlara izin verin.</string>
-    <string name="allow_nearby_devices_so_diplay_can_connect_to_your_paired">OSNPlay\'in eşleştirilmiş iPhone\'unuza bağlanabilmesi için Yakındaki cihazlara izin verin.</string>
-    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Ana ünitenin uygulama izinlerinde OSNPlay için tam Konum\'a izin verin.</string>
+    <string name="allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per">Ana ünitenin uygulama izinlerinde OSNPlay için Yakındaki cihazlara izin verin.</string>
+    <string name="allow_nearby_devices_so_osnplay_can_connect_to_your_paired">OSNPlay\'in eşleştirilmiş iPhone\'unuza bağlanabilmesi için Yakındaki cihazlara izin verin.</string>
+    <string name="allow_precise_location_for_osnplay_in_the_head_unit_s_app_p">Ana ünitenin uygulama izinlerinde OSNPlay için tam Konum\'a izin verin.</string>
     <string name="allow_the_connection_permission_to_continue">Devam etmek için bağlantı iznine izin verin</string>
     <string name="an_independent_carplay_receiver_for_android_head_units_wir">Android ana üniteleri için bağımsız bir CarPlay alıcısı. Kablolu ve kablosuz bağlantılar, yerel kimlik doğrulamasıyla ana ünitede çalışır. Standart bir iPhone jailbreak, Mac, dongle veya oturum açma olmadan bağlanabilir.\n\nBu önizleme deneysel bir aksesuar kimliği kullanır. Her iPhone ve ana üniteyle uyumluluk test edilmeye devam etmektedir. Apple sertifikalı bir ürün değildir.</string>
     <string name="android_9_compatibility">Android 9 uyumluluğu</string>
@@ -128,7 +128,7 @@
     <string name="automatic_map_setup_adb">Otomatik harita kurulumu · ADB</string>
     <string name="availability_depends_on_your_head_unit_s_startup_settings">Kullanılabilirlik ana ünitenizin başlangıç ayarlarına bağlıdır.</string>
     <string name="back">Geri</string>
-    <string name="back_to_diplay">OSNPlay\'e Geri Dön</string>
+    <string name="back_to_osnplay">OSNPlay\'e Geri Dön</string>
     <string name="band">Bant</string>
     <string name="bluetooth_settings">Bluetooth ayarları</string>
     <string name="byd_navigation">BYD navigasyonu</string>
@@ -166,7 +166,7 @@
     <string name="cluster_map_size">Gösterge paneli harita boyutu</string>
     <string name="connect">Bağlan</string>
     <string name="connect_phone">Telefonu bağla</string>
-    <string name="connect_when_diplay_opens">OSNPlay açıldığında bağlan</string>
+    <string name="connect_when_osnplay_opens">OSNPlay açıldığında bağlan</string>
     <string name="connect_when_iphone_bluetooth_connects">Seçilen iPhone yeniden bağlandığında bağlan</string>
     <string name="connect_when_iphone_bluetooth_connects_description">Araç uyandıktan sonra, seçilen iPhone Bluetooth üzerinden bağlandığında OSNPlay\'i açın ve kablosuz CarPlay\'i başlatın. Bazı ana üniteler arka planda başlatmayı kısıtlar.</string>
     <string name="connect_with_usb">USB ile bağlan</string>
@@ -185,7 +185,7 @@
     <string name="could_not_reset_wi_fi_direct_close_the_other_projection_ap">Wi-Fi Direct sıfırlanamadı. Diğer yansıtma uygulamasını kapatın ve tekrar deneyin.</string>
     <string name="could_not_save_image">Görsel kaydedilemedi</string>
     <string name="could_not_save_the_report">Rapor kaydedilemedi</string>
-    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">CarPlay başlatılamadı. OSNPlay\'e dönün ve uygulama izinlerini kontrol edin.</string>
+    <string name="could_not_start_carplay_return_to_osnplay_and_check_app_per">CarPlay başlatılamadı. OSNPlay\'e dönün ve uygulama izinlerini kontrol edin.</string>
     <string name="custom_1_1_icon">Özel 1:1 simge</string>
     <string name="debug_logs">Hata ayıklama günlükleri</string>
     <string name="default_icon">Varsayılan simge</string>
@@ -238,7 +238,7 @@
     <string name="i2c_device_path_contains_u_0000">I2C cihaz yolu U+0000 içeriyor</string>
     <string name="i2c_device_path_is_required">I2C cihaz yolu gereklidir</string>
     <string name="image_is_not_ready">Görsel hazır değil</string>
-    <string name="in_carplay_swipe_down_with_three_fingers_to_open_diplay_se">CarPlay\'de, OSNPlay ayarlarını açmak için üç parmağınızla aşağı kaydırın.</string>
+    <string name="in_carplay_swipe_down_with_three_fingers_to_open_osnplay_se">CarPlay\'de, OSNPlay ayarlarını açmak için üç parmağınızla aşağı kaydırın.</string>
     <string name="instrument_contrast">Gösterge kontrastı</string>
     <string name="instrument_theme">Gösterge teması</string>
     <string name="keep_bluetooth_and_wi_fi_on_your_iphone_pair_with_the_car">iPhone\'unuzda Bluetooth ve Wi-Fi\'ı açık tutun. Aracın Bluetooth\'u ile eşleştirin, ardından iPhone\'unuzu buradan seçin. Sorulduğunda Yakındaki cihazlara izin verin.</string>
@@ -252,7 +252,7 @@
     <string name="longest_height">En uzun yükseklik</string>
     <string name="looking_for_your_paired_iphone">Eşleştirilmiş iPhone\'unuz aranıyor…</string>
     <string name="made_possible_by_open_source">Açık kaynak sayesinde mümkün kılındı</string>
-    <string name="make_diplay_feel_right_for_your_car">OSNPlay\'i aracınıza tam uyumlu hale getirin.</string>
+    <string name="make_osnplay_feel_right_for_your_car">OSNPlay\'i aracınıza tam uyumlu hale getirin.</string>
     <string name="manual_hotspot">Manuel erişim noktası</string>
     <string name="manual_mode_match_the_cluster_theme_here_the_map_cannot_fo">Manuel mod: gösterge temasını buradan eşleştirin. Harita, Kullanım Erişimi olmadan kart görünürlüğünü takip edemez.</string>
     <string name="manufacturer">Üretici</string>
@@ -298,7 +298,7 @@
     <string name="preparing_mfi_authentication">MFi kimlik doğrulaması hazırlanıyor</string>
     <string name="ready">Hazır</string>
     <string name="ready_when_you_are">Hazır olduğunuzda hazır</string>
-    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_diplay">xcertplay tabanlı alıcı, GPL-3.0 altında lisanslanmıştır. OSNPlay arayüzü, AGPL-3.0 altında lisanslanmış DiAuto tasarımını takip eder.\n\nAndroidX, Bouncy Castle, JmDNS ve SLF4J içerir. Kaynak kod ve lisans bildirimleri bu sürüme eşlik eder.\n\nCarPlay ve CarPlay simgesi Apple Inc.\'e aittir. OSNPlay bağımsız bir projedir.</string>
+    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_osnplay">xcertplay tabanlı alıcı, GPL-3.0 altında lisanslanmıştır. OSNPlay arayüzü, AGPL-3.0 altında lisanslanmış DiAuto tasarımını takip eder.\n\nAndroidX, Bouncy Castle, JmDNS ve SLF4J içerir. Kaynak kod ve lisans bildirimleri bu sürüme eşlik eder.\n\nCarPlay ve CarPlay simgesi Apple Inc.\'e aittir. OSNPlay bağımsız bir projedir.</string>
     <string name="reconnecting_to_your_iphone">iPhone\'unuza yeniden bağlanılıyor…</string>
     <string name="remote">Uzak</string>
     <string name="remote_server_address_contains_u_0000">Uzak sunucu adresi U+0000 içeriyor</string>
@@ -308,7 +308,7 @@
     <string name="report_android_location_to_the_iphone">Android konumunu iPhone\'a bildir</string>
     <string name="report_location_to_iphone">Konumu iPhone\'a bildir</string>
     <string name="report_saved_open_it_from_your_file_manager_to_share_it">Rapor kaydedildi. Paylaşmak için dosya yöneticinizden açın.</string>
-    <string name="reports_save_to_downloads_diplay">Raporlar İndirilenler/OSNPlay klasörüne kaydedilir.\u0020</string>
+    <string name="reports_save_to_downloads_osnplay">Raporlar İndirilenler/OSNPlay klasörüne kaydedilir.\u0020</string>
     <string name="requesting_iphone_usb_permission">iPhone USB izni isteniyor</string>
     <string name="requesting_mfi_usb_permission">MFi USB izni isteniyor</string>
     <string name="reset">Sıfırla</string>
@@ -317,7 +317,7 @@
     <string name="reset_carplay_wi_fi">CarPlay Wi-Fi\'ını sıfırla</string>
     <string name="reset_carplay_wi_fi_2">CarPlay Wi-Fi sıfırlansın mı?</string>
     <string name="resolution">Çözünürlük</string>
-    <string name="return_from_car_settings_to_diplay_then_connect_accept_the">Araç ayarlarından OSNPlay\'e dönün ve bağlanın. iPhone\'unuzdaki CarPlay istemini kabul edin. Araç internet paketi gerekmez; hücresel veri kullanılabilirliği telefonunuzun ağ ayarlarına bağlıdır.</string>
+    <string name="return_from_car_settings_to_osnplay_then_connect_accept_the">Araç ayarlarından OSNPlay\'e dönün ve bağlanın. iPhone\'unuzdaki CarPlay istemini kabul edin. Araç internet paketi gerekmez; hücresel veri kullanılabilirliği telefonunuzun ağ ayarlarına bağlıdır.</string>
     <string name="review_app_permissions">Uygulama izinlerini incele</string>
     <string name="right_hand_drive">Sağdan direksiyon</string>
     <string name="running">Çalışıyor</string>
@@ -424,7 +424,7 @@
     <string name="turn_on_wi_fi_in_the_head_unit_s_settings_to_connect">Bağlanmak için ana ünitenin ayarlarından Wi-Fi\'ı açın.</string>
     <string name="turn_the_car_s_wi_fi_switch_on_allow_location_nearby_devic">Aracın Wi-Fi anahtarını açın. İstenirse Konum / Yakındaki cihazlara izin verin ve Android sorduğunda Konum\'u etkinleştirin. Oynatma takılırsa 5 GHz\'de yerleşik araç erişim noktasını deneyin.</string>
     <string name="usage_access_enabled">Kullanım Erişimi: etkin</string>
-    <string name="usage_access_lets_diplay_follow_the_instrument_theme_and_m">Kullanım Erişimi, OSNPlay\'in gösterge temasını ve harita kartını takip etmesini sağlar. Yalnızca BYD gösterge paneli etkinlikleri yerel olarak işlenir. Bu araç çalışan bir izin ayarları sayfası sağlamaz.</string>
+    <string name="usage_access_lets_osnplay_follow_the_instrument_theme_and_m">Kullanım Erişimi, OSNPlay\'in gösterge temasını ve harita kartını takip etmesini sağlar. Yalnızca BYD gösterge paneli etkinlikleri yerel olarak işlenir. Bu araç çalışan bir izin ayarları sayfası sağlamaz.</string>
     <string name="usage_access_setup_needed_for_automatic_mode">Kullanım Erişimi: otomatik mod için kurulum gerekli</string>
     <string name="usb_ch341">USB/CH341</string>
     <string name="use_a_usb_data_cable_and_the_car_s_usb_data_port_unlock_yo">Bir USB veri kablosu ve aracın USB veri bağlantı noktasını kullanın. iPhone\'unuzun kilidini açın ve CarPlay\'e izin verin. Erişim noktası kurulumu gerekmez.</string>
@@ -634,7 +634,7 @@
     <string name="adb_cluster_routing">Gösterge haritası ADB üzerinden başlatılıyor…</string>
     <string name="adb_cluster_routed">Gösterge görevi yönlendirildi; iPhone haritası bekleniyor</string>
     <string name="adb_cluster_route_failed">Gösterge başlatma başarısız oldu; teşhis raporunu dışa aktarın.</string>
-    <string name="open_diplay_settings_hint">CarPlay\'de, hızlı menüyü açmak için %1$d parmağınızla aşağı kaydırın.</string>
+    <string name="open_osnplay_settings_hint">CarPlay\'de, hızlı menüyü açmak için %1$d parmağınızla aşağı kaydırın.</string>
     <string name="carplay_controls">CarPlay denetimleri</string>
     <string name="settings_gesture_fingers">Hızlı menü · %1$d parmakla kaydırma (değiştirmek için dokunun)</string>
     <string name="settings_gesture_fingers_label">Hızlı menü · aşağı kaydırma parmak sayısı</string>

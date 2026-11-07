@@ -33,23 +33,36 @@ Requires JDK 17+, Android SDK Platform 37.2, Build-Tools 37.0.0 and NDK 28.2.136
 Build only the functional package:
 
 ```sh
-export DIPLAY_AUTH_ASSETS_DIR=/path/to/auth
+export OSNPLAY_AUTH_ASSETS_DIR=/path/to/auth
 export ANDROID_KEYSTORE_PATH=/path/to/release.jks
 export ANDROID_KEYSTORE_PASSWORD='...'
 export ANDROID_KEY_ALIAS='...'
 export ANDROID_KEY_PASSWORD='...'
 
 ./gradlew :mobile:assembleStandaloneLynkRelease
+./gradlew :launcher-entry:assembleRelease
 ```
 
-Output: `mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk`  
+Output:
+
+```text
+mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
+launcher-entry/build/outputs/apk/release/launcher-entry-release.apk
+```  
 Application ID `com.osnplay.lynk`, version `0.1.2-lynk`, release-signed, with the explicitly supplied authentication assets.
 
 Source/CI builds contain no accessory identity; they only verify UI/settings. A **real CarPlay connection needs authentication assets**. The public `0.1.2` release package includes them; the source tree itself does not distribute the private key.
 
 ## Install (beginner)
 
-> Install only **`OSNPlay-<version>-lynk-release-standalone.apk`**. The public `0.1.2` release provides the functional package with authentication assets; older preview APKs cannot connect to CarPlay.
+The public release contains two APKs:
+
+| APK | Purpose | Required |
+| --- | --- | --- |
+| `OSNPlay-<version>-lynk-release-standalone.apk` | Main app with authentication assets, handles CarPlay | Yes |
+| `OSNPlay-Whitelist-Entry-1.0.apk` | Whitelist launcher entry; makes OSNPlay appear in the stock app list and opens the main app | Only when the stock list hides it |
+
+> Older preview APKs cannot connect to CarPlay. Install the main app; add the entry only if needed.
 
 ### Prepare
 
@@ -84,8 +97,15 @@ Allow the USB-debugging prompt on the car.
 ### Step 2: install
 
 ```sh
+# Required: main app
 adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
+
+# Optional: stock launcher entry
+adb install -r OSNPlay-Whitelist-Entry-1.0.apk
 ```
+
+> The entry uses `com.kugou.android.auto` (an OSN Launcher3 whitelisted music package), displays as OSNPlay and opens the main app. Check for a conflict first:
+> `adb shell pm list packages | grep com.kugou.android.auto`. Do not overwrite the real Kugou app.
 
 | Error | Fix |
 | --- | --- |
@@ -99,7 +119,7 @@ adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
 A newly installed app is in Android's stopped state; boot auto-start will not run until it is launched once:
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
 Without ADB, tap **Open** in the installer or open OSNPlay once from an alternative launcher.
@@ -113,10 +133,11 @@ The stock OSN Launcher3 uses a **package whitelist**, so sideloaded apps may not
 3. Or launch it from ADB:
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.DiPlayActivity
+adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
-4. A stock home-screen icon requires modifying the system whitelist (root/engineering mode) or using an alternative launcher; a normal APK cannot bypass it.
+4. Install `OSNPlay-Whitelist-Entry-1.0.apk` to add an OSNPlay entry to the stock app list; it borrows a whitelisted package name, so check for conflicts first (see [INSTALL](docs/INSTALL.md)).
+5. A stock home-screen icon requires modifying the system whitelist (root/engineering mode) or using an alternative launcher; a normal APK cannot bypass it.
 
 ### Step 5: connect the iPhone
 
