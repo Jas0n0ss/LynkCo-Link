@@ -45,11 +45,11 @@ export ANDROID_KEY_PASSWORD='...'
 Output: `mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk`  
 Application ID `com.osnplay.lynk`, version `0.1.2-lynk`, release-signed, with the explicitly supplied authentication assets.
 
-Source/CI builds contain no accessory identity; they only verify UI/settings. A **real CarPlay connection needs your own lawful `DIPLAY_AUTH_ASSETS_DIR`**. This repository does not distribute accessory private keys.
+Source/CI builds contain no accessory identity; they only verify UI/settings. A **real CarPlay connection needs authentication assets**. The public `0.1.2` release package includes them; the source tree itself does not distribute the private key.
 
 ## Install (beginner)
 
-> Install only **`OSNPlay-<version>-lynk-release-standalone.apk`**. The public preview APK has no accessory identity and cannot connect to CarPlay.
+> Install only **`OSNPlay-<version>-lynk-release-standalone.apk`**. The public `0.1.2` release provides the functional package with authentication assets; older preview APKs cannot connect to CarPlay.
 
 ### Prepare
 

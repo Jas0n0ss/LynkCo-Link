@@ -1,4 +1,6 @@
-# OSNPlay 0.1.2 Preview
+# OSNPlay 0.1.2 Release
+
+> 当前 `v0.1.2-preview` Release 已更新为 `OSNPlay-0.1.2-lynk-release-standalone.apk`（含认证资产，release 签名）。下面保留最初预览版说明，部分“预览包不含身份”的描述已不适用于当前 Release。
 
 发布日期：2026-11-07
 标签：`v0.1.2-preview`

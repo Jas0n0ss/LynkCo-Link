@@ -45,11 +45,11 @@ export ANDROID_KEY_PASSWORD='...'
 产物：`mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk`  
 包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
 
-源码/CI 构建不含认证身份，只能验证界面和设置；**真实 CarPlay 连接需要你自己合法持有的 `DIPLAY_AUTH_ASSETS_DIR`**。本仓库不分发认证私钥。
+源码/CI 构建不含认证身份，只能验证界面和设置；**真实 CarPlay 连接需要认证资产**。公开 Release 的 `0.1.2` 功能包已包含该资产；源码树本身不分发私钥。
 
 ## 安装（小白版）
 
-> 只安装 **`OSNPlay-<version>-lynk-release-standalone.apk`**。公开 Release 里的 preview 包不含认证身份，不能连接 CarPlay。
+> 只安装 **`OSNPlay-<version>-lynk-release-standalone.apk`**。公开 Release 的 `0.1.2` 已提供含认证资产的功能包；旧 preview 包不能连接 CarPlay。
 
 ### 准备
 

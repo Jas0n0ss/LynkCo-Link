@@ -40,7 +40,7 @@ Concentus uses the Opus BSD-style license. The full copyright notices, redistrib
 
 ## Experimental authentication data
 
-The public source tree, default CI artifacts and preview APKs do **not** include the accessory certificate/key pair. An optional `-standalone` release asset may contain it when the maintainer explicitly configures the authentication secret. A locally built standalone APK may bundle an explicitly supplied pair recovered from public Carlinkit firmware; those data are not Apple-issued credentials for OSNPlay and are not relicensed as project source code. Anyone who possesses such an APK can extract the pair. Its continued acceptance and suitability for general distribution are unresolved. The separate Android APK-signing key is never distributed.
+The public source tree and CI artifacts do **not** include the accessory certificate/key pair. The current public `v0.1.2-preview` release asset `OSNPlay-0.1.2-lynk-release-standalone.apk` does include the experimental pair; anyone who downloads it can extract the key. A locally built standalone APK may bundle an explicitly supplied pair recovered from public Carlinkit firmware; those data are not Apple-issued credentials for OSNPlay and are not relicensed as project source code. Anyone who possesses such an APK can extract the pair. Its continued acceptance and suitability for general distribution are unresolved. The separate Android APK-signing key is never distributed.
 
 ## BYD HUD maneuver icons
 
