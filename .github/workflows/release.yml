@@ -87,7 +87,7 @@ jobs:
           TITLE="OSNPlay ${VERSION} — 领克 01 / OSN 2.0 Lynk Release"
           NOTES_FILE="docs/RELEASE-${VERSION^^}.md"
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            gh release edit "$RELEASE_TAG" --title "$TITLE"
+            gh release edit "$RELEASE_TAG" --title "$TITLE" --prerelease=false --latest
             if [ -f "$NOTES_FILE" ]; then
               gh release edit "$RELEASE_TAG" --notes-file "$NOTES_FILE"
             fi
@@ -95,9 +95,11 @@ jobs:
           elif [ -f "$NOTES_FILE" ]; then
             gh release create "$RELEASE_TAG" release-assets/* \
               --title "$TITLE" \
-              --notes-file "$NOTES_FILE"
+              --notes-file "$NOTES_FILE" \
+              --prerelease=false --latest
           else
             gh release create "$RELEASE_TAG" release-assets/* \
               --title "$TITLE" \
-              --generate-notes
+              --generate-notes \
+              --prerelease=false --latest
           fi
