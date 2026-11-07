@@ -16,6 +16,14 @@ https://developer.apple.com/assets/elements/icons/carplay/carplay-96x96_2x.png
 
 CarPlay and the CarPlay icon are Apple Inc. marks/assets. This asset is not covered by the project's open-source code license. It is used as the OSNPlay launcher icon and for in-app CarPlay artwork. Its use here does not imply Apple approval or certification.
 
+## Lynk & Co wordmark
+
+The default CarPlay car-button icon at `common/src/main/res/raw/ic_car_home.png` uses the Lynk & Co 2016 wordmark from Wikimedia Commons:
+
+https://commons.wikimedia.org/wiki/Special:FilePath/Lynk_%26_Co_2016_logo.svg
+
+“Lynk & Co” and its wordmark are trademarks of their respective owner. It is used here only to identify the target vehicle; this project is not affiliated with or endorsed by Lynk & Co.
+
 ## Runtime dependencies
 
 - AndroidX and Jetpack Compose — Android Open Source Project; Apache License 2.0.
