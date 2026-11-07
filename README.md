@@ -3,94 +3,74 @@
 **面向领克（Lynk & Co）OSN 车机的独立 CarPlay 接收端。**
 
 [![Android checks](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml)
-[![Latest preview](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?include_prereleases&label=preview)](https://github.com/Jas0n0ss/OSN-Play/releases)
-[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0%20%2F%20AGPL--3.0-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?label=release)](https://github.com/Jas0n0ss/OSN-Play/releases)
+[![License](https://img.shields.io/badge/license-GPL--3.0%20%2F%20AGPL--3.0-blue.svg)](LICENSING.md)
 
-OSNPlay 是 [DiPlay](https://github.com/shihabal3amri/DiPlay)（GPL-3.0，0.2.22 基线）面向领克 OSN 车机平台的二创项目，并整合了 [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) 的领克适配成果（构建风味、环境检测、连接诊断与实车记录）。
-
-- 安装在**车机**上，不越狱 iPhone、不需要外设或认证服务器。
-- 包名 `com.osnplay`，可与原版 DiPlay 及领克测试包并存安装。
-- 当前开发目标：**领克 01 2023 款（骁龙 8155 / OSN）**；同平台已有 2023 款领克 03 的有线实测记录。
+OSNPlay 基于 [DiPlay](https://github.com/shihabal3amri/DiPlay) 0.2.22，整合 [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay)、[xcertplay](https://github.com/shilapi/xcertplay) 和 [diplay-ecarx](https://github.com/jianyun8023/diplay-ecarx) 的领克适配经验。应用安装在**车机**上，不需要越狱 iPhone、外设或认证服务器。
 
 ## 适配车型
 
-| 车型 | 平台 / 系统 | OSNPlay 状态 | 说明 |
-| --- | --- | --- | --- |
-| 领克 01 2023 款 | 骁龙 8155 / OSN | 🎯 开发目标，待实车验证 | 默认目标；分辨率、热点和按键行为需按实车确认 |
-| 领克 03 2023 款 | OS N 2.0 / Android 9（API 28） | 🧪 同平台参考验证 | 同平台 LynkCo-DiPlay R1 确认有线可用；USB-A 为数据口，USB-C 仅充电；无线未调通 |
-| 领克 OSN 系列其他车型 | OSN / Android 7.0+（API 24+） | ⚪ 未验证 | APK 可安装，但连接、音频和显示行为需逐车实测 |
+| 车型 | 平台 / 系统 | 状态 |
+| --- | --- | --- |
+| 领克 01 2023 款 | 骁龙 8155 / OSN | 🎯 开发目标，待 OSNPlay 实车验收 |
+| 领克 03 2023 款 | OS N 2.0 / Android 9 | 🧪 同平台参考：有线可用，无线未调通 |
+| 其他领克 OSN 车型 | OSN / Android 7.0+ | ⚪ 未验证 |
 
-OSNPlay 自身的实车验收仍在进行中。上表中的“参考验证”来自同平台兄弟项目，不等同于 OSNPlay 在当前固件上的验收结论。逐项证据、风险和实车清单见 [兼容性说明](docs/COMPATIBILITY.md)。
+“参考”结论来自同平台 LynkCo-DiPlay，不等同于 OSNPlay 的实车验收。详见 [兼容性说明](docs/COMPATIBILITY.md)。
 
 ## 功能
 
-- **有线 / 无线 CarPlay**：USB、车机热点、Wi-Fi Direct、Existing Wi-Fi / Same LAN；认证在本地完成。
-- **环境检测**：设置 → 诊断中只读检查应用、USB、无线三组就绪状态，并提供对应修复入口。
-- **连接诊断**：保留最近一次致命栈，导出 USB 描述符、网络、蓝牙、热点和媒体运行时快照；报告仅在你主动分享时离开车机。
-- **显示适配**：分辨率、画面尺寸、帧率、日夜模式、系统栏和分屏区域。
-- **音频与按键**：音乐缓冲、导航音量、可选的方向盘媒体键 / Siri 键（部分功能需要 ADB 或无障碍服务）。
-- **上游能力**：自动连接、开机启动、车机热点自动化、诊断报告等 DiPlay 0.2.22 能力。
-- **OSN 桌面兼容**：自适应图标、开机通知和桌面悬浮球，缓解 OSN 原厂 Launcher3 白名单不显示第三方应用的问题。
+- **有线 / 无线 CarPlay**：USB、车机热点、Wi-Fi Direct、Existing Wi-Fi，认证在本地完成。
+- **环境检测与诊断**：设置 → 诊断中检查应用 / USB / 无线状态；可导出脱敏诊断报告。
+- **车机适配**：分辨率、画面尺寸、帧率、日夜模式、音频缓冲、方向盘媒体键 / Siri 键。
+- **OSN 桌面兼容**：自适应图标、开机自启/通知、桌面悬浮球；原厂 Launcher3 白名单限制见 [安装指南](docs/INSTALL.md#安装成功但桌面不显示-osnplay)。
+- BYD 固件专属功能（HUD、仪表卡片、氛围灯等）不在 OSN 适配范围内。
 
-比亚迪固件专属能力（HUD 导航、仪表卡片、氛围灯、BYD 设置入口等）不在 OSN 的适配范围内，相关代码仅为兼容上游而保留。
+## 构建
 
-## 下载与安装
+需要 JDK 17+、Android SDK Platform 37.2、Build-Tools 37.0.0、NDK 28.2.13676358。
 
-从 [Releases](https://github.com/Jas0n0ss/OSN-Play/releases) 下载预览版 APK，按 [安装指南](docs/INSTALL.md) 安装到车机。
-
-| 包 | applicationId | 用途 |
-| --- | --- | --- |
-| `OSNPlay-<version>-standard.apk` | `com.osnplay`（正式）/ `com.osnplay.preview`（预览） | 主包 |
-| `OSNPlay-<version>-lynk.apk` | `com.osnplay.lynk`（正式）/ `com.osnplay.lynk.preview`（预览） | 领克 A/B 包，可与主包并存 |
-
-> **默认预览包不含 CarPlay 配件认证身份。** 公开源码和 CI 构建只包含应用代码，可安装、浏览界面和验证设置，但**无法完成真实 CarPlay 连接**。需要实车连接时，请按 [构建说明](docs/BUILD.md) 用你自己合法持有的 `DIPLAY_AUTH_ASSETS_DIR` 构建 standalone 包。仓库不会分发认证私钥。
-
-## 从源码构建
-
-需要 JDK 17+（CI 使用 25）、Android SDK Platform 37.2、Build-Tools 37.0.0 和 NDK 28.2.13676358。
+只构建功能包：
 
 ```sh
-# 只构建功能包（需要认证资产 + release keystore）
-DIPLAY_AUTH_ASSETS_DIR=/path/to/assets \
-  ./gradlew :mobile:assembleStandaloneLynkRelease
+export DIPLAY_AUTH_ASSETS_DIR=/path/to/auth
+export ANDROID_KEYSTORE_PATH=/path/to/release.jks
+export ANDROID_KEYSTORE_PASSWORD='...'
+export ANDROID_KEY_ALIAS='...'
+export ANDROID_KEY_PASSWORD='...'
 
-# 源码检查（不含认证资产）
-./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
-  :mobile:lintStandardDebug :mobile:assembleLynkRelease
+./gradlew :mobile:assembleStandaloneLynkRelease
 ```
 
-本项目不再构建 preview / debug 交付包。完整环境、签名和 standalone 构建说明见 [docs/BUILD.md](docs/BUILD.md)。
+产物：`mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk`  
+包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
 
-## 版本与构建
+源码/CI 构建不含认证身份，只能验证界面和设置；**真实 CarPlay 连接需要你自己合法持有的 `DIPLAY_AUTH_ASSETS_DIR`**。本仓库不分发认证私钥。
 
-本项目只交付 **lynkRelease standalone** 功能包：
+## 安装与桌面显示
 
-| 构建 | 包名 | 版本示例 | 签名 | 用途 |
-| --- | --- | --- | --- | --- |
-| `assembleLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | 源码检查包，不含认证资产 |
-| `assembleStandaloneLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | **唯一交付包**，含显式提供的认证资产 |
+按 [安装指南](docs/INSTALL.md) 安装。注意：
 
-不再构建 debug / preview 交付变体。CI 只跑单元测试、lint 和 `assembleLynkRelease` 源码检查；发布工作流只接受 `assembleStandaloneLynkRelease`。
+- 全新安装后需手动启动一次（Android stopped state），之后开机自启/通知才生效；
+- 领克 OSN 原厂 Launcher3 使用包名白名单，第三方 APK 可能不出现在应用列表；可用 ADB `am start`、替代启动器或桌面悬浮球打开；
+- 原厂首页图标只能通过系统白名单或替代启动器解决，普通 APK 无法绕过。
 
 ## 文档
 
-- [文档索引](docs/README.md)
-- [构建与 CI](docs/BUILD.md) · [安装指南](docs/INSTALL.md) · [兼容性矩阵](docs/COMPATIBILITY.md)
-- [改造说明与路线图](docs/ADAPTATION-NOTES.md) · [测试与验收](docs/TESTING.md)
-- [设计评审](docs/DESIGN-REVIEW.md) · [0.1.2 发布说明](docs/RELEASE-0.1.2-PREVIEW.md) · [0.1.1 发布说明](docs/RELEASE-0.1.1-PREVIEW.md)
-- [隐私](docs/PRIVACY.md) · [安全](SECURITY.md) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)
-- [English README](README.en.md)
+- [构建与 CI](docs/BUILD.md) · [安装](docs/INSTALL.md) · [兼容性](docs/COMPATIBILITY.md)
+- [测试与验收](docs/TESTING.md) · [四个上游项目整合](docs/UPSTREAM-INTEGRATION.md)
+- [隐私](docs/PRIVACY.md) · [安全](SECURITY.md) · [许可](LICENSING.md) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)
 
-## 重要声明
+## 声明
 
-- **非 Apple 认证产品。** 本项目与 Apple Inc.、领克汽车无隶属或背书关系。CarPlay 与相关图标归 Apple Inc. 所有。
-- 认证身份来自公开固件恢复的实验性配件身份，并非 Apple 新颁发的 MFi 身份；未来 iOS 更新后可能失效，公开分发的适宜性未获保证。
-- 在车机上安装第三方 APK 可能影响质保或违反车厂用户协议；请自行评估风险。
-- 驾驶时请勿操作与驾驶无关的功能。安装、调试和抓取日志请在驻车状态下进行。
+- **非 Apple 认证产品**，与 Apple Inc.、领克汽车无隶属或背书关系；CarPlay 图标归 Apple Inc.。
+- 认证身份为公开固件恢复的实验性身份，未来 iOS 更新可能失效；公开分发适宜性未获保证。
+- 在车机安装第三方 APK 可能影响质保或违反车厂协议；安装、调试请在驻车状态进行，风险自担。
 
 ## 许可与致谢
 
-- 基于 [DiPlay](https://github.com/shihabal3amri/DiPlay) / [xcertplay](https://github.com/shilapi/xcertplay)（GPL-3.0）二次开发；仓库以 **GPL-3.0** 为主，设置 UI 的四个文件为 **AGPL-3.0-only**，整体为两者组成的作品，详见 [LICENSING.md](LICENSING.md) 与 [LICENSE](LICENSE)。
-- 设置界面改编自 [DiAuto](https://github.com/wycomco/diauto)（AGPL-3.0），许可文本见 `docs/licenses/`。
-- 感谢 [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) 提供的领克 OSN 适配经验与诊断模块。
-- 依赖和素材许可见 [docs/THIRD_PARTY_NOTICES.md](docs/THIRD_PARTY_NOTICES.md)。
+- 基于 DiPlay / xcertplay（GPL-3.0）二次开发；设置 UI 的四个文件为 AGPL-3.0-only，整体为 GPL/AGPL 组合作品，详见 [LICENSING.md](LICENSING.md)。
+- 设置界面改编自 [DiAuto](https://github.com/wycomco/diauto)（AGPL-3.0）；感谢 LynkCo-DiPlay 的领克适配经验。
+- 第三方依赖与素材许可见 [THIRD_PARTY_NOTICES.md](docs/THIRD_PARTY_NOTICES.md)。
+
+[English](README.en.md)
