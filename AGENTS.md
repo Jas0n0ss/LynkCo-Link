@@ -8,7 +8,8 @@ Run the CI command from `.github/workflows/android.yml` before you report a chan
 
 ```sh
 ./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
-  :mobile:lintStandardDebug :mobile:assembleLynkRelease
+  :mobile:lintStandardDebug :mobile:assembleLynkRelease \
+  :launcher-entry:assembleRelease
 ```
 
 `assembleLynkRelease` needs a release keystore. Use your release key, or a throwaway key as CI does:
