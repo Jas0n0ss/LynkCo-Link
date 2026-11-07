@@ -65,29 +65,24 @@ launcher-entry/build/outputs/apk/release/launcher-entry-release.apk    # 白名�
 <dir>/offline-mfi/certificate.p7b
 ```
 
-显式提供后构建 standalone 包：
+显式提供资产和 release keystore 后构建唯一主程序包：
 
 ```sh
-OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneDebug
-# 或带认证身份的 preview 包（包名仍为 .preview）
-OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandalonePreview
-# 领克 A/B 版（debug 签名）
-OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkPreview
-
-# 正式签名版（需同时提供 ANDROID_KEYSTORE_* 环境变量）
-OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneStandardRelease
-OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets ./gradlew :mobile:assembleStandaloneLynkRelease
+OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets \
+ANDROID_KEYSTORE_PATH=/absolute/path/to/release.jks \
+ANDROID_KEYSTORE_PASSWORD='...' \
+ANDROID_KEY_ALIAS='...' \
+ANDROID_KEY_PASSWORD='...' \
+  ./gradlew :mobile:assembleStandaloneLynkRelease
 ```
 
-- 只有显式传入的资产目录会被打包，并且**只对 `assembleStandalone*` 任务生效**；其他 debug / preview / release 构建即使设置了该变量也会忽略并给出警告，避免凭据误入公开包。
+- 只有显式传入的资产目录会被打包，并且**只对 `assembleStandalone*` 任务生效**；其他构建即使设置了该变量也会忽略并给出警告。
 - `rejectBundledCredentials` 会拒绝其他 `.pk8` / `.p7b` / `.p12` / `.jks` 等凭据文件混入。
-- 构建使用 `com.osnplay.debug`（standard debug）；正式签名版请使用 release 流程。
 - 认证身份为公开固件恢复的实验性身份，不是 Apple 新颁发的 MFi 身份；持有者应自行评估分发风险。
 
 ## 签名
 
-- **debug / preview**：使用 Android debug keystore，可直接安装。preview 使用独立的 `.preview` 包名，因而可以与正式版并存，也不会因 debug 证书与正式证书不同而阻塞将来升级。preview **不是**正式发布签名。
-- **release**：需要以下环境变量；未配置时 release 构建会因找不到 keystore 失败，这是有意的保护。
+只交付 release 签名包。需要以下环境变量；未配置时构建会因找不到 keystore 失败，这是有意的保护。
 
 ```sh
 export ANDROID_KEYSTORE_PATH=/absolute/path/release.jks
