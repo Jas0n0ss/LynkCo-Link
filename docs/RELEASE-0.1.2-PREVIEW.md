@@ -4,7 +4,7 @@
 标签：`v0.1.2-preview`
 版本：`0.1.2-preview` / versionCode `102`
 目标：23 款领克 01 / OSN 2.0 / 骁龙 8155（同平台 03 参考）
-类型：Pre-release（预览版）
+类型：Preview（预览版；GitHub Release 不勾选 Pre-release，以便在 Releases 侧栏和最新版本中显示）
 
 本版重点解决 **领克 OSN 2.0 / 23 款领克 01** 上“ADB 安装成功但应用列表不显示图标”的可用性问题，并合并四个上游项目的相关经验。
 
