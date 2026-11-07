@@ -5,7 +5,7 @@ OSNPlay 的目标车机是 **领克 01 2023 / 骁龙 8155 / OSN**。四个参考
 | 项目 | 目标平台 | 本仓库采用的部分 | 没有直接并入的部分 |
 | --- | --- | --- | --- |
 | [DiPlay](https://github.com/shihabal3amri/DiPlay) | 通用 Android 车机，0.2.22 | CarPlay 传输、音频、视频、设置体系；桌面悬浮球；开机启动；Launcher 元数据 | BYD 固件专属功能 |
-| [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) | 领克 OS N 2.0 / Android 9 / 8155 同代 | 环境检测、连接诊断、`lynk` 构建约定、领克自适应图标做法、03 实车结论 | 基于 0.2.12 的深度会话/音频重构，未逐文件移植 |
+| [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) | 领克 OS N 2.0 / Android 9 / 8155 同代 | 环境检测、连接诊断、`lynk` 构建约定、领克图标/资源做法、03 实车结论 | 基于 0.2.12 的深度会话/音频重构，未逐文件移植 |
 | [xcertplay](https://github.com/shilapi/xcertplay) | DiPlay 的底座，Android Automotive 取向 | 工程结构、Manifest/Launcher 组织方式、部分兼容层 | Android Automotive 专属的 `automotive` 模块和 Car App 服务（本仓库已移除） |
 | [diplay-ecarx](https://github.com/jianyun8023/diplay-ecarx) | 领克 01 2021 / ECARX 753 / 骁龙 820A | 无 ADB 运行思路、平台权限清单、1920×1080 车机画像、01 实车经验 | 平台签名、ECARX DIM/媒体 Binder、0.2.12 基线代码；与 8155/OSN 不同代，不能直接套用 |
 
@@ -23,7 +23,7 @@ OSNPlay 的目标车机是 **领克 01 2023 / 骁龙 8155 / OSN**。四个参考
 
 ## 本版本的缓解措施
 
-- 自适应图标 + PNG 回退，显式 activity `label`/`icon`，兼容只读取 mipmap/图标的桌面。
+- 默认 CarPlay 图标，显式 activity `label`/`icon`，兼容只读取图标的桌面。
 - 增加 `LEANBACK_LAUNCHER` 入口，兼容只索引 leanback 类别的车机/TV 桌面。
 - `lynk` 版本默认开机自动启动，并在开机时发布“打开 OSNPlay”通知。
 - `lynk` 版本默认开启桌面悬浮球；首次运行提示授予“显示在其他应用上层”。授权后即使原厂桌面不列图标，也能从悬浮球打开。

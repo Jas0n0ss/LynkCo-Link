@@ -23,7 +23,7 @@ OSNPlay is based on [DiPlay](https://github.com/shihabal3amri/DiPlay) 0.2.22 and
 - **Wired / wireless CarPlay**: USB, car hotspot, Wi-Fi Direct and Existing Wi-Fi; local authentication.
 - **Environment check and diagnostics**: app/USB/wireless readiness in Settings → Diagnostics, plus redacted report export.
 - **Head-unit tuning**: resolution, picture size, frame rate, day/night, audio buffering, steering-wheel media/Siri keys.
-- **OSN launcher compatibility**: adaptive icon, boot auto-start/notification and home-screen bubble; see the stock Launcher3 whitelist note in [INSTALL](docs/INSTALL.md).
+- **OSN launcher compatibility**: CarPlay icon, boot auto-start/notification and home-screen bubble; see the stock Launcher3 whitelist note in [INSTALL](docs/INSTALL.md).
 - BYD-only features (HUD, cluster cards, ambient lighting) are out of scope.
 
 ## Build

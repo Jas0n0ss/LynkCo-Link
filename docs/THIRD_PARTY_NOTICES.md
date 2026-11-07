@@ -14,7 +14,7 @@ The unmodified icon was obtained from Apple's developer site at:
 
 https://developer.apple.com/assets/elements/icons/carplay/carplay-96x96_2x.png
 
-CarPlay and the CarPlay icon are Apple Inc. marks/assets. This asset is not covered by the project's open-source code license. Its use here does not imply Apple approval or certification.
+CarPlay and the CarPlay icon are Apple Inc. marks/assets. This asset is not covered by the project's open-source code license. It is used as the OSNPlay launcher icon and for in-app CarPlay artwork. Its use here does not imply Apple approval or certification.
 
 ## Runtime dependencies
 

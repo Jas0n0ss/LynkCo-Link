@@ -23,7 +23,7 @@ OSNPlay 基于 [DiPlay](https://github.com/shihabal3amri/DiPlay) 0.2.22，整合
 - **有线 / 无线 CarPlay**：USB、车机热点、Wi-Fi Direct、Existing Wi-Fi，认证在本地完成。
 - **环境检测与诊断**：设置 → 诊断中检查应用 / USB / 无线状态；可导出脱敏诊断报告。
 - **车机适配**：分辨率、画面尺寸、帧率、日夜模式、音频缓冲、方向盘媒体键 / Siri 键。
-- **OSN 桌面兼容**：自适应图标、开机自启/通知、桌面悬浮球；原厂 Launcher3 白名单限制见 [安装指南](docs/INSTALL.md#安装成功但桌面不显示-osnplay)。
+- **OSN 桌面兼容**：CarPlay 图标、开机自启/通知、桌面悬浮球；原厂 Launcher3 白名单限制见 [安装指南](docs/INSTALL.md#安装成功但桌面不显示-osnplay)。
 - BYD 固件专属功能（HUD、仪表卡片、氛围灯等）不在 OSN 适配范围内。
 
 ## 构建

@@ -52,7 +52,7 @@
 
 OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功不等于桌面出现图标。本版本从四个上游项目合并了以下可落地的缓解措施：
 
-- 自适应图标与 PNG 回退（参考 LynkCo-DiPlay 的领克启动图标做法），并显式声明 activity 的 label/icon；
+- 默认使用 CarPlay 图标（Apple 素材，按用户要求），并显式声明 activity 的 label/icon；
 - 增加 `LEANBACK_LAUNCHER` 入口，兼容部分只索引 leanback 类别的车机/TV 桌面；
 - `lynk` 版本默认开启“开机后自动启动”，并在 `BOOT_COMPLETED` 时发布“打开 OSNPlay”通知；
 - `lynk` 版本默认开启桌面悬浮球，首次运行提示授予“显示在其他应用上层”；授权后即使桌面没有图标也能从悬浮球打开；
@@ -132,7 +132,7 @@ LynkCo-DiPlay 基于 DiPlay **0.2.12**，OSNPlay 基于 **0.2.22**。其深度�
 
 - 分模块将命名空间改为 OSNPlay 命名空间，每步保持构建和测试通过。
 - 清理其他语言中残留的 DiPlay 长文案。
-- 生成 adaptive icon 各密度资源。
+- 评估 CarPlay 图标在不同桌面上的遮罩/裁剪效果。
 
 ### P4 — 发布
 

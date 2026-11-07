@@ -83,7 +83,7 @@
 - **包命名空间仍是 `com.shilapi.xcertplay`**：全量改名风险高，按路线图分模块进行。
 - **比亚迪专属代码仍保留**：删除会牵动大量引用和测试；文档标注不适用。
 - **部分非中英文长文案**：已统一品牌词，但语义仍是上游通用描述，未逐语言重写。
-- **自适应图标密度**：目前以矢量/单密度为主，后续补齐 adaptive icon。
+- **CarPlay 图标**：当前按用户要求使用 Apple 的 CarPlay 图标；不同桌面的圆角遮罩效果需实车确认。
 - **未做领克 01 实车验收**：预览版只能证明宿主测试和构建，不证明认证、无线和音频在车上的表现。
 - **更新检查会把预发布版视为可用版本**：`UpdateVersion` 只比较版本号，不区分 prerelease；后续应增加 stable/preview 通道。
 - **环境面板尚未纳入 `SettingsSection`**：已去掉重复的 page title、加入搜索索引，并用深色容器修复日间模式对比度；但它仍不是 `filteredSection`，`SettingsLayoutPolicyTest` 看不到它。后续应新增 `ENVIRONMENT` section 并改为卡片内渲染。
