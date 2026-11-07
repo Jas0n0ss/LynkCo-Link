@@ -8,9 +8,18 @@ Run the CI command from `.github/workflows/android.yml` before you report a chan
 
 ```sh
 ./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
-  :mobile:lintStandardDebug \
-  :mobile:assembleStandardDebug :mobile:assembleLynkDebug \
-  :mobile:assembleStandardPreview :mobile:assembleLynkPreview
+  :mobile:lintStandardDebug :mobile:assembleLynkRelease
+```
+
+`assembleLynkRelease` needs a release keystore. Use your release key, or a throwaway key as CI does:
+```sh
+keytool -genkeypair -noprompt -keystore /tmp/ci-release.jks \
+  -storepass ci-release-pass -keypass ci-release-pass \
+  -alias ci -dname "CN=OSNPlay CI" -keyalg RSA -keysize 2048 -validity 1
+ANDROID_KEYSTORE_PATH=/tmp/ci-release.jks \
+ANDROID_KEYSTORE_PASSWORD=ci-release-pass \
+ANDROID_KEY_ALIAS=ci ANDROID_KEY_PASSWORD=ci-release-pass \
+  ./gradlew :mobile:assembleLynkRelease
 ```
 
 Set `ANDROID_HOME` or `local.properties` if Gradle cannot find the SDK. Platform 37 uses the
@@ -22,10 +31,12 @@ Set `ANDROID_HOME` or `local.properties` if Gradle cannot find the SDK. Platform
 - `:shared` — CarPlay transport, audio, video and protocol code.
 - `:mobile` — the head-unit application.
 
-`standard` / `lynk` are product flavors; `debug` / `preview` / `release` are build types.
-The `lynk` flavor uses `com.osnplay.lynk`; the standard flavor uses `com.osnplay`.
+`standard` / `lynk` are product flavors; `release` is the only delivered build type.
+Debug and preview variants are not built for delivery. The `lynk` flavor uses
+`com.osnplay.lynk`; `com.osnplay` is the standard flavor.
 Ordinary source builds must not include authentication assets. Only `assembleStandalone*`
 tasks may bundle `DIPLAY_AUTH_ASSETS_DIR`, and only for the explicit car-test package.
+The only delivered APK is `:mobile:assembleStandaloneLynkRelease`.
 
 ## Adding or moving a setting
 
@@ -103,5 +114,6 @@ Spacing, size and shape in the Settings screen MUST come from one place.
 - Update `CHANGELOG.md` for user-visible changes and `docs/TESTING.md` for new verification evidence.
 - Never commit credentials, APKs, signing keys or `.pk8` / `.p7b` files.
   `scripts/check_public_tree.py` runs in CI.
-- A preview release is created by pushing a `v*` tag; `.github/workflows/release.yml` builds the
-  preview APKs and attaches `SHA256SUMS.txt`. Do not hand-upload a locally built APK as a release.
+- `.github/workflows/release.yml` is manual-only and builds only
+  `:mobile:assembleStandaloneLynkRelease`, using the authentication and keystore secrets.
+  Do not hand-upload a locally built APK as a release.

@@ -26,30 +26,27 @@
 
 仓库只保留这三个模块；上游的 `home`、`maphost`、`automotive` 示例已移除，避免构建与文档噪音。
 
-## 本地构建
+## 本地构建（只构建功能包）
+
+本仓库只维护一个需要交付的 APK：**`assembleStandaloneLynkRelease`**。不再构建 preview / debug 变体。
 
 ```sh
-# 单元测试
-./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest
+export DIPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets
+export ANDROID_KEYSTORE_PATH=/absolute/path/to/release.jks
+export ANDROID_KEYSTORE_PASSWORD='...'
+export ANDROID_KEY_ALIAS='...'
+export ANDROID_KEY_PASSWORD='...'
 
-# lint
-./gradlew :mobile:lintStandardDebug
-
-# 开发包（无认证身份）
-./gradlew :mobile:assembleStandardDebug :mobile:assembleLynkDebug
-
-# 预览包（debug 签名，独立 `.preview` 包名）
-./gradlew :mobile:assembleStandardPreview :mobile:assembleLynkPreview
+./gradlew :mobile:assembleStandaloneLynkRelease
 ```
 
 产物：
 
-| 任务 | APK 路径 | 包名 |
-| --- | --- | --- |
-| `assembleStandardDebug` | `mobile/build/outputs/apk/standard/debug/mobile-standard-debug.apk` | `com.osnplay.debug` |
-| `assembleLynkDebug` | `mobile/build/outputs/apk/lynk/debug/mobile-lynk-debug.apk` | `com.osnplay.lynk.debug` |
-| `assembleStandardPreview` | `mobile/build/outputs/apk/standard/preview/mobile-standard-preview.apk` | `com.osnplay.preview` |
-| `assembleLynkPreview` | `mobile/build/outputs/apk/lynk/preview/mobile-lynk-preview.apk` | `com.osnplay.lynk.preview` |
+```text
+mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
+```
+
+包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
 
 ## 认证资产与 standalone 车机包
 
@@ -101,12 +98,19 @@ export ANDROID_KEY_PASSWORD='...'
 1. `scripts/check_public_tree.py`：拒绝凭据容器和私钥块进入公开源码树。
 2. 单元测试：`:shared:testDebugUnitTest`、`:common:testDebugUnitTest`。
 3. lint：`:mobile:lintStandardDebug`。
-4. 构建：`:mobile:assembleStandardDebug`、`:mobile:assembleLynkDebug`、`:mobile:assembleStandardPreview`、`:mobile:assembleLynkPreview`。
-5. 断言 preview APK 中不含 `offline-mfi` / `.pk8` / `.p7b`。
-6. 用临时 keystore 验证 `:mobile:assembleStandardRelease` 的签名路径。
-7. 上传 APK、单元测试报告和 lint 报告为 artifact。
+4. 用临时 keystore 构建 `:mobile:assembleLynkRelease`（源码包，不含认证资产）。
+5. 断言构建产物不含 `offline-mfi` / `.pk8` / `.p7b`。
+6. 上传 APK、单元测试报告和 lint 报告为 artifact。
 
-`.github/workflows/release.yml` 在推送 `v*` 标签时先跑单元测试和 lint，再构建预览 APK、断言公开包无认证资产、生成 `SHA256SUMS.txt` 并创建 GitHub Pre-release。若仓库配置了 `DIPLAY_AUTH_ASSETS_BASE64` secret，可额外构建带认证资产的 `-standalone.apk`；该包包含可提取的认证材料，发布说明必须明确风险。未配置时只发布源码预览包。
+`.github/workflows/release.yml` 只手动触发，并且**只构建** `:mobile:assembleStandaloneLynkRelease`。它要求以下 Actions Secrets：
+
+- `DIPLAY_AUTH_ASSETS_BASE64`：包含 `offline-mfi/identity.pk8` + `certificate.p7b` 的 zip（base64）
+- `ANDROID_KEYSTORE_BASE64`：release keystore（base64）
+- `ANDROID_KEYSTORE_PASSWORD`
+- `ANDROID_KEY_ALIAS`
+- `ANDROID_KEY_PASSWORD`
+
+产物只有 `OSNPlay-<version>-lynk-release-standalone.apk` 和 `SHA256SUMS.txt`。该 APK 含可提取的认证材料，发布前必须确认分发范围。
 
 ## 常见问题
 

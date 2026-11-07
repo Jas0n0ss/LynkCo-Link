@@ -50,30 +50,27 @@ OSNPlay 自身的实车验收仍在进行中。上表中的“参考验证”来
 需要 JDK 17+（CI 使用 25）、Android SDK Platform 37.2、Build-Tools 37.0.0 和 NDK 28.2.13676358。
 
 ```sh
-# 单元测试 + lint
-./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest :mobile:lintStandardDebug
+# 只构建功能包（需要认证资产 + release keystore）
+DIPLAY_AUTH_ASSETS_DIR=/path/to/assets \
+  ./gradlew :mobile:assembleStandaloneLynkRelease
 
-# 源码 APK（无认证身份）
-./gradlew :mobile:assembleStandardDebug :mobile:assembleLynkDebug
-
-# 预览包（debug 签名，独立 `.preview` 包名）
-./gradlew :mobile:assembleStandardPreview :mobile:assembleLynkPreview
+# 源码检查（不含认证资产）
+./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
+  :mobile:lintStandardDebug :mobile:assembleLynkRelease
 ```
 
-完整环境、签名、standalone 构建和 CI 说明见 [docs/BUILD.md](docs/BUILD.md)。
+本项目不再构建 preview / debug 交付包。完整环境、签名和 standalone 构建说明见 [docs/BUILD.md](docs/BUILD.md)。
 
 ## 版本与构建
 
-| 构建类型 | 包名 | 版本示例 | 签名 | 用途 |
-| --- | --- | --- | --- | --- |
-| `standardDebug` | `com.osnplay.debug` | `0.1.2-debug` | debug | 开发调试 |
-| `lynkDebug` | `com.osnplay.lynk.debug` | `0.1.2-lynk-debug` | debug | 领克开发调试 |
-| `standardPreview` | `com.osnplay.preview` | `0.1.2-preview` | debug | 公开预览 / UI 验收（与正式版独立） |
-| `lynkPreview` | `com.osnplay.lynk.preview` | `0.1.2-lynk-preview` | debug | 领克公开预览（与正式版独立） |
-| `standardRelease` | `com.osnplay` | `0.1.2` | release | 正式签名发布 |
-| `lynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | 领克正式签名发布 |
+本项目只交付 **lynkRelease standalone** 功能包：
 
-`standard` / `lynk` 是产品风味（distribution edition），`debug` / `preview` / `release` 是构建类型。CI 在每次 push 和 PR 上运行单元测试、lint、debug / preview 四个变体构建和 release 签名验证，并上传 APK 与测试报告。
+| 构建 | 包名 | 版本示例 | 签名 | 用途 |
+| --- | --- | --- | --- | --- |
+| `assembleLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | 源码检查包，不含认证资产 |
+| `assembleStandaloneLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | **唯一交付包**，含显式提供的认证资产 |
+
+不再构建 debug / preview 交付变体。CI 只跑单元测试、lint 和 `assembleLynkRelease` 源码检查；发布工作流只接受 `assembleStandaloneLynkRelease`。
 
 ## 文档
 

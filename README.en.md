@@ -50,30 +50,27 @@ Download the preview APK from [Releases](https://github.com/Jas0n0ss/OSN-Play/re
 Requires JDK 17+ (CI uses 25), Android SDK Platform 37.2, Build-Tools 37.0.0 and NDK 28.2.13676358.
 
 ```sh
-# Unit tests + lint
-./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest :mobile:lintStandardDebug
+# Build only the functional package (authentication assets + release keystore)
+DIPLAY_AUTH_ASSETS_DIR=/path/to/assets \
+  ./gradlew :mobile:assembleStandaloneLynkRelease
 
-# Source APK (no accessory identity)
-./gradlew :mobile:assembleStandardDebug :mobile:assembleLynkDebug
-
-# Preview packages (debug-signed, separate `.preview` application ID)
-./gradlew :mobile:assembleStandardPreview :mobile:assembleLynkPreview
+# Source checks (no authentication assets)
+./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
+  :mobile:lintStandardDebug :mobile:assembleLynkRelease
 ```
 
-See [docs/BUILD.md](docs/BUILD.md) for the full environment, signing, standalone and CI instructions.
+Preview/debug delivery packages are no longer built. See [docs/BUILD.md](docs/BUILD.md).
 
 ## Versions and build variants
 
-| Build type | Application ID | Example version | Signing | Purpose |
-| --- | --- | --- | --- | --- |
-| `standardDebug` | `com.osnplay.debug` | `0.1.2-debug` | debug | Development |
-| `lynkDebug` | `com.osnplay.lynk.debug` | `0.1.2-lynk-debug` | debug | Lynk development |
-| `standardPreview` | `com.osnplay.preview` | `0.1.2-preview` | debug | Public preview / UI review (separate from stable) |
-| `lynkPreview` | `com.osnplay.lynk.preview` | `0.1.2-lynk-preview` | debug | Lynk public preview (separate from stable) |
-| `standardRelease` | `com.osnplay` | `0.1.2` | release | Signed release |
-| `lynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | Signed Lynk release |
+Only the **lynkRelease standalone** functional package is delivered:
 
-`standard` / `lynk` are product flavors (distribution editions); `debug` / `preview` / `release` are build types. CI runs unit tests, lint, all four debug/preview variants and a release-signing check on every push and pull request, then uploads the APKs and reports.
+| Build | Application ID | Example version | Signing | Purpose |
+| --- | --- | --- | --- | --- |
+| `assembleLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | Source check, no accessory identity |
+| `assembleStandaloneLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | release | **Only delivered package**, with explicitly supplied identity |
+
+Debug/preview delivery variants are no longer built. CI runs unit tests, lint and `assembleLynkRelease` only; the release workflow accepts only `assembleStandaloneLynkRelease`.
 
 ## Documentation
 
