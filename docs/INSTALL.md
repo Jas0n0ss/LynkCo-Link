@@ -33,7 +33,7 @@ LynkCo-Link 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac
 
    ```sh
    adb devices
-   adb install -r LynkCo-Link-0.3.2-lynk-release-standalone.apk
+   adb install -r LynkCo-Link-0.3.3-lynk-release-standalone.apk
    ```
 
 3. 若系统拦截未知来源：

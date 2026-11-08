@@ -1022,4 +1022,10 @@
     <string name="lynk_compat_unsupported">不在支持列表内。支持：领克 01、02、03、05、06。</string>
     <string name="lynk_compat_evidence">识别依据：%1$s</string>
     <string name="lynk_compat_hint">如果识别错误，请把这一行附在诊断报告中。</string>
+    <string name="debug_logs_export">导出调试日志（ZIP）</string>
+    <string name="debug_logs_description">包含诊断报告、本应用 logcat、Android 崩溃缓冲区和保留的会话日志。密钥与标识会自动脱敏。</string>
+    <string name="debug_logs_saved">调试日志已保存</string>
+    <string name="debug_logs_saved_to">已保存到 %1$s</string>
+    <string name="debug_logs_share">分享调试日志</string>
+    <string name="debug_logs_description_short">请将 ZIP 附到问题反馈中。不会自动上传。</string>
 </resources>

@@ -36,6 +36,115 @@ internal object DiagnosticExportStore {
      *  3. App-specific external storage (Android/data/<package>, hidden on many head units).
      *  4. Internal app storage, shared through the report viewer.
      */
+
+    /** Binary equivalent of [saveWithoutPicker], used for the debug-log zip. */
+    fun saveBytesWithoutPicker(context: Context, fileName: String, bytes: ByteArray): SavedReport {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            try {
+                return SavedReport(saveBytesToDownloads(context.contentResolver, fileName, bytes))
+            } catch (error: Exception) {
+                Log.w(TAG, "MediaStore Downloads unavailable for debug logs; trying the public folder", error)
+            }
+        }
+        if (canWritePublicDownloads(context)) {
+            try {
+                return saveBytesToPublicDownloads(context, fileName, bytes)
+            } catch (error: Exception) {
+                Log.w(TAG, "Public Downloads folder unavailable for debug logs; saving in app storage", error)
+            }
+        }
+        try {
+            val externalFiles = context.getExternalFilesDir(null)
+            if (externalFiles != null) {
+                return saveBytesInDirectory(context, File(externalFiles, "debug-logs"), fileName, bytes)
+            }
+        } catch (_: Exception) {
+            // Fall through to internal storage.
+        }
+        return saveBytesInDirectory(context, File(context.filesDir, "debug-logs"), fileName, bytes, savedInApp = true)
+    }
+
+    private fun saveBytesInDirectory(
+        context: Context,
+        directory: File,
+        fileName: String,
+        bytes: ByteArray,
+        savedInApp: Boolean = false,
+    ): SavedReport {
+        if (!directory.isDirectory && !directory.mkdirs()) throw IOException("Debug-log storage is unavailable")
+        val extension = fileName.substringAfterLast('.', "zip")
+        val file = File.createTempFile(fileName.removeSuffix(".$extension") + "-", ".$extension", directory)
+        try {
+            file.writeBytes(bytes)
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.diagnostic-reports", file)
+            directory.listFiles()?.filter { it != file && it.isFile }
+                ?.sortedByDescending { it.lastModified() }?.drop(7)?.forEach { it.delete() }
+            return SavedReport(uri, savedInApp = savedInApp, savedPath = if (savedInApp) null else file.absolutePath)
+        } catch (error: Exception) {
+            file.delete()
+            throw error
+        }
+    }
+
+    private fun saveBytesToPublicDownloads(context: Context, fileName: String, bytes: ByteArray): SavedReport {
+        val directory = publicDownloadsDirectory()
+        if (!directory.isDirectory && !directory.mkdirs()) throw IOException("Downloads/LynkCo-Link is unavailable")
+        val base = fileName.substringBeforeLast('.', fileName)
+        val extension = fileName.substringAfterLast('.', "zip")
+        var file = File(directory, fileName)
+        var copy = 1
+        while (file.exists()) file = File(directory, "$base-${copy++}.$extension")
+        try {
+            file.writeBytes(bytes)
+            if (file.length() == 0L && bytes.isNotEmpty()) throw IOException("Downloads/LynkCo-Link did not keep the debug logs")
+        } catch (error: Exception) {
+            file.delete()
+            throw error
+        }
+        runCatching {
+            MediaScannerConnection.scanFile(context.applicationContext, arrayOf(file.absolutePath), arrayOf("application/zip"), null)
+        }
+        val uri = try {
+            FileProvider.getUriForFile(context, "${context.packageName}.diagnostic-reports", file)
+        } catch (error: IllegalArgumentException) {
+            Log.w(TAG, "Debug-log zip is not shareable from Downloads; sharing a private copy", error)
+            privateShareCopyBytes(context, fileName, bytes)
+        }
+        return SavedReport(uri, savedPath = file.absolutePath)
+    }
+
+    private fun privateShareCopyBytes(context: Context, fileName: String, bytes: ByteArray): Uri {
+        val external = runCatching { context.getExternalFilesDir(null) }.getOrNull()
+        if (external != null) {
+            runCatching { return saveBytesInDirectory(context, File(external, "debug-logs"), fileName, bytes).uri }
+        }
+        return saveBytesInDirectory(context, File(context.filesDir, "debug-logs"), fileName, bytes, savedInApp = true).uri
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun saveBytesToDownloads(resolver: ContentResolver, fileName: String, bytes: ByteArray): Uri {
+        val values = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, fileName)
+            put(MediaStore.Downloads.MIME_TYPE, "application/zip")
+            put(MediaStore.Downloads.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/LynkCo-Link")
+            put(MediaStore.Downloads.IS_PENDING, 1)
+        }
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
+            ?: throw IOException("Downloads could not create the debug logs")
+        try {
+            resolver.openOutputStream(uri, "wt")?.use { it.write(bytes) }
+                ?: throw IOException("Downloads could not open the debug logs")
+            val published = resolver.update(uri, ContentValues().apply {
+                put(MediaStore.Downloads.IS_PENDING, 0)
+            }, null, null)
+            if (published != 1) throw IOException("Downloads could not publish the debug logs")
+            return uri
+        } catch (error: Exception) {
+            runCatching { resolver.delete(uri, null, null) }
+            throw error
+        }
+    }
+
     fun saveWithoutPicker(context: Context, fileName: String, report: String): SavedReport {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             try {

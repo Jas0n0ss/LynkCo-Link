@@ -1064,4 +1064,10 @@
     <string name="lynk_compat_unsupported">サポート対象外です。対応: Lynk 01、02、03、05、06。</string>
     <string name="lynk_compat_evidence">検出根拠: %1$s</string>
     <string name="lynk_compat_hint">誤っている場合は、この行を診断レポートに含めてください。</string>
+    <string name="debug_logs_export">デバッグログをエクスポート（ZIP）</string>
+    <string name="debug_logs_description">診断レポート、このアプリの logcat、Android のクラッシュバッファ、保持されているセッションログが含まれます。認証情報と識別子は自動的に難読化されます。</string>
+    <string name="debug_logs_saved">デバッグログを保存しました</string>
+    <string name="debug_logs_saved_to">%1$s に保存しました</string>
+    <string name="debug_logs_share">デバッグログを共有</string>
+    <string name="debug_logs_description_short">ZIP を不具合報告に添付してください。自動アップロードはありません。</string>
 </resources>

@@ -189,6 +189,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
     private var testToneTrack: AudioTrack? = null
     private var toneStop: Runnable? = null
     private var exportButton: Button? = null
+    private var debugExportButton: Button? = null
     // Ported from LynkCo-LynkCoLink: read-only environment check state rendered on the DIAGNOSTICS page.
     private var environmentReport: EnvironmentReport? = null
     private var environmentRunning = false
@@ -632,6 +633,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         reconnectBar = null
         readinessCard = null
         exportButton = null
+        debugExportButton = null
         adbSwitches.clear()
         adbStatus = null
         val compact = isCompactLayout && when (page) {
@@ -1743,6 +1745,11 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                 saveReportToDownloads()
             }.apply { isEnabled = !exportInProgress }
             card.addView(exportButton, matchButton(10, 60))
+            debugExportButton = button(getString(R.string.debug_logs_export), false) {
+                exportDebugLogs()
+            }.apply { isEnabled = !exportInProgress }
+            card.addView(debugExportButton, matchButton(10, 60))
+            card.addView(label(getString(R.string.debug_logs_description), 14, MUTED).apply { setPadding(0, dp(10), 0, 0) })
             card.addView(button(getString(R.string.choose_save_location), false) { chooseReportDestination() }, matchButton(10, 60))
             card.addView(button(getString(R.string.settings_report_on_phone), false) { openBackup(SettingsCategory.DIAGNOSTICS) }, matchButton(10, 60))
             val destination = getString(R.string.reports_save_to_downloads_lynkco_link)
@@ -4348,6 +4355,61 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         refreshReadiness()
     }
     private fun reportFileName() = "LynkCo-Link-${SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(Date())}.txt"
+
+    /**
+     * One-tap field bundle: diagnostic report + this app's logcat + crash buffer + session logs.
+     * It is written off the main thread because logcat and the retained logs can be large.
+     */
+    private fun exportDebugLogs() {
+        if (exportInProgress) return
+        exportInProgress = true
+        exportButton?.isEnabled = false
+        debugExportButton?.apply { isEnabled = false; text = getString(R.string.saving_report) }
+        val appContext = applicationContext
+        val fileName = DebugLogExporter.fileName()
+        Thread({
+            val result = runCatching {
+                val report = diagnosticReportText(appContext)
+                val bytes = DebugLogExporter.export(appContext, report)
+                DiagnosticExportStore.saveBytesWithoutPicker(appContext, fileName, bytes)
+            }
+            runOnUiThread {
+                exportInProgress = false
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                exportButton?.isEnabled = true
+                debugExportButton?.apply {
+                    isEnabled = true
+                    text = getString(R.string.debug_logs_export)
+                }
+                if (result.isSuccess) {
+                    val saved = result.getOrThrow()
+                    val where = saved.savedPath
+                        ?: getString(R.string.debug_logs_description_short)
+                    appDialogBuilder()
+                        .setTitle(getString(R.string.debug_logs_saved))
+                        .setMessage(getString(R.string.debug_logs_saved_to, where))
+                        .setPositiveButton(getString(R.string.debug_logs_share)) { _, _ ->
+                            runCatching {
+                                startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                                    type = "application/zip"
+                                    putExtra(Intent.EXTRA_STREAM, saved.uri)
+                                    clipData = android.content.ClipData.newRawUri(getString(R.string.debug_logs_share), saved.uri)
+                                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                }, getString(R.string.debug_logs_share)))
+                            }
+                        }
+                        .setNegativeButton(getString(R.string.done), null)
+                        .show()
+                } else {
+                    appDialogBuilder()
+                        .setTitle(getString(R.string.could_not_save_the_report))
+                        .setMessage(getString(R.string.check_that_storage_is_available_or_choose_another_save_loc))
+                        .setPositiveButton(getString(R.string.close), null)
+                        .show()
+                }
+            }
+        }, "lynkco_link-debug-export").start()
+    }
 
     private fun saveReportToDownloads() {
         if (exportInProgress) return

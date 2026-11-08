@@ -1,5 +1,11 @@
 # 更新日志
 
+## 0.3.3 — 2026-11-09
+
+- 新增一键导出调试日志 ZIP：诊断报告、本应用 logcat、Android 崩溃缓冲区、会话日志。
+- 敏感字段自动脱敏；不自动上传。
+- 在“设置 → 诊断”中导出并分享。
+
 ## 0.3.2 — 2026-11-09
 
 - Default app language is English; all bundled locales remain available.
