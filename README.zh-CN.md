@@ -4,8 +4,8 @@
 
 **在领克（Lynk & Co）OSN 车机上使用 CarPlay。**
 
-[![Android checks](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml)
-[![Release](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?label=release)](https://github.com/Jas0n0ss/OSN-Play/releases)
+[![Android checks](https://github.com/Jas0n0ss/LynkCo-Link/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/LynkCo-Link/actions/workflows/android.yml)
+[![Release](https://img.shields.io/github/v/release/Jas0n0ss/LynkCo-Link?label=release)](https://github.com/Jas0n0ss/LynkCo-Link/releases)
 [![License](https://img.shields.io/badge/license-GPL--3.0%20%2F%20AGPL--3.0-blue.svg)](LICENSING.md)
 
 LynkCo-Link 安装在**车机**上，不需要越狱 iPhone、外设或认证服务器。公开 Release 的 APK 已内置认证资产，安装后可直接连接。
@@ -30,10 +30,10 @@ LynkCo-Link 安装在**车机**上，不需要越狱 iPhone、外设或认证服
 LynkCo-Link-<version>-lynk-release-standalone.apk
 ```
 
-从 [Releases](https://github.com/Jas0n0ss/OSN-Play/releases/latest) 下载，或：
+从 [Releases](https://github.com/Jas0n0ss/LynkCo-Link/releases/latest) 下载，或：
 
 ```sh
-gh release download --repo Jas0n0ss/OSN-Play
+gh release download --repo Jas0n0ss/LynkCo-Link
 ```
 
 > 包名是 `com.kugou.android.auto`，只用于通过 OSN 桌面白名单。应用本身是 LynkCo-Link，不含酷狗功能。安装前确认车机没有真正的酷狗车机版。

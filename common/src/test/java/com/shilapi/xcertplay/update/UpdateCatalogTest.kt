@@ -52,9 +52,9 @@ class UpdateCatalogTest {
         val json = """
             [
               {"tag_name": "v0.1.1-preview", "draft": false, "assets": [
-                {"name": "LynkCoLink-0.1.1-preview-lynk.apk", "browser_download_url": "https://github.com/Jas0n0ss/OSN-Play/releases/download/v0.1.1-preview/LynkCoLink-0.1.1-preview-lynk.apk"},
-                {"name": "LynkCoLink-0.1.1-preview-standard.apk", "browser_download_url": "https://github.com/Jas0n0ss/OSN-Play/releases/download/v0.1.1-preview/LynkCoLink-0.1.1-preview-standard.apk"},
-                {"name": "SHA256SUMS.txt", "browser_download_url": "https://github.com/Jas0n0ss/OSN-Play/releases/download/v0.1.1-preview/SHA256SUMS.txt"}
+                {"name": "LynkCoLink-0.1.1-preview-lynk.apk", "browser_download_url": "https://github.com/Jas0n0ss/LynkCo-Link/releases/download/v0.1.1-preview/LynkCoLink-0.1.1-preview-lynk.apk"},
+                {"name": "LynkCoLink-0.1.1-preview-standard.apk", "browser_download_url": "https://github.com/Jas0n0ss/LynkCo-Link/releases/download/v0.1.1-preview/LynkCoLink-0.1.1-preview-standard.apk"},
+                {"name": "SHA256SUMS.txt", "browser_download_url": "https://github.com/Jas0n0ss/LynkCo-Link/releases/download/v0.1.1-preview/SHA256SUMS.txt"}
               ]}
             ]
         """.trimIndent()

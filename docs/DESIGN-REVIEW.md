@@ -32,7 +32,7 @@
 
 **问题**：`UpdateClient.RELEASES_URL` 仍指向 `shihabal3amri/DiPlay`，LynkCo-Link 用户会被提示安装上游 DiPlay APK；多 APK 资产时也可能选中 `lynk` 包。
 
-**处理**：改为 `Jas0n0ss/OSN-Play`；`UpdateCatalog` 优先选择文件名含 `-standard` 的 APK，找不到时回退到第一个 APK。新增单测覆盖标准/领克双资产。
+**处理**：改为 `Jas0n0ss/LynkCo-Link`；`UpdateCatalog` 优先选择文件名含 `-standard` 的 APK，找不到时回退到第一个 APK。新增单测覆盖标准/领克双资产。
 
 ### 6. 公开文档对“是否含认证身份”自相矛盾
 

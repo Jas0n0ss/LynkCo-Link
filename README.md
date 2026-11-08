@@ -4,8 +4,8 @@
 
 **CarPlay for Lynk & Co OSN head units.**
 
-[![Android checks](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml)
-[![Release](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?label=release)](https://github.com/Jas0n0ss/OSN-Play/releases)
+[![Android checks](https://github.com/Jas0n0ss/LynkCo-Link/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/LynkCo-Link/actions/workflows/android.yml)
+[![Release](https://img.shields.io/github/v/release/Jas0n0ss/LynkCo-Link?label=release)](https://github.com/Jas0n0ss/LynkCo-Link/releases)
 
 LynkCo-Link runs on the **head unit**. It needs no jailbreak, dongle or authentication server. The public APK includes authentication assets and can connect directly.
 
@@ -29,10 +29,10 @@ Download one file:
 LynkCo-Link-<version>-lynk-release-standalone.apk
 ```
 
-From [Releases](https://github.com/Jas0n0ss/OSN-Play/releases/latest), or:
+From [Releases](https://github.com/Jas0n0ss/LynkCo-Link/releases/latest), or:
 
 ```sh
-gh release download --repo Jas0n0ss/OSN-Play
+gh release download --repo Jas0n0ss/LynkCo-Link
 ```
 
 > The package name is `com.kugou.android.auto`, used only to pass the OSN Launcher3 whitelist. The app is LynkCo-Link and contains no Kugou features. Remove any real Kugou head-unit app before installing.

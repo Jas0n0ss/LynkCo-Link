@@ -6,7 +6,7 @@ LynkCo-Link 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac
 
 - 领克 OSN 车机，系统允许安装 APK。
 - iPhone，iOS 版本支持 CarPlay。
-- LynkCo-Link APK（[Releases](https://github.com/Jas0n0ss/OSN-Play/releases) 或自行构建）。
+- LynkCo-Link APK（[Releases](https://github.com/Jas0n0ss/LynkCo-Link/releases) 或自行构建）。
 - 有线连接时使用支持数据传输的 USB 线；领克 03 的实测经验是接 **USB-A 数据口**，USB-C 仅充电。
 
 ## 选择 APK
