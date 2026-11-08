@@ -220,38 +220,7 @@ class WheelKeyServiceTest {
         assertTrue(knobs.isEmpty())
     }
 
-    @Test fun experimentalVoiceKeysRemainWithTheCarUntilOptIn() {
-        service.session = { "active-phone" }
-        BydOutputSettings.setCarPlayCallControls(service, false)
-        assertEquals(false to false, press(327))
-        assertEquals(false to false, press(328))
-        BydOutputSettings.setCarPlayCallControls(service, true)
-        assertEquals(true to true, press(327))
-        assertEquals(true to true, press(328))
-        BydOutputSettings.setCarPlayCallControls(service, false)
-        assertEquals(false to false, press(327))
-    }
-
-    @Test fun anAssignedBydVoiceKeyStillUsesVoiceKeyPairWhenDoublePressIsOff() {
-        val code = CarPlayMediaButton.KEYCODE_BYD_CARPLAY_VOICE
-        service.session = { "active-phone" }
-        BydOutputSettings.setCarPlayCallControls(service, true)
-        WheelZoomSettings.setSiriKey(service, true)
-        WheelZoomSettings.assign(service, WheelZoomSettings.Role.SIRI, WheelKey(code, 0, "?"))
-        WheelZoomSettings.setSiriDoublePress(service, false)
-        val controller = mock(CarPlayController::class.java)
-        `when`(controller.requestSiri()).thenReturn(true)
-        CarPlayBackgroundSession.store(controller, mock(AndroidMediaSink::class.java), 1, 1,
-            this, mock(CarPlaySessionDisplay::class.java)) { it() }
-
-        assertTrue(key(code, true, time = 10_000))
-        assertTrue(key(code, false, time = 10_000))
-
-        verify(controller, times(1)).requestSiri()
-        assertFalse(VoiceKeyPair.shared.allowGenericKey(10_460))
-    }
-
-    @Test
+            @Test
     fun theAllowedListKeepsOtherServicesAndRebindsAListedButStoppedService() {
         val ours = "com.osnplay/com.shilapi.xcertplay.WheelKeyService"
         val car = "com.byd.airconditioning/.gesture.AcGestureService:com.android.systemui/.custom.StatusBarAccessibilityService"

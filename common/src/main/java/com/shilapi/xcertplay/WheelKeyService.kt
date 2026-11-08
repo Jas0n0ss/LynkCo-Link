@@ -22,8 +22,6 @@ import com.shilapi.xcertplay.airplay.CarPlayMediaButton
 import com.shilapi.xcertplay.glance.CarPlayGlance
 import com.shilapi.xcertplay.host.R
 import com.shilapi.xcertplay.media.NavigationPlayback
-import com.shilapi.xcertplay.hud.BydNavigationOutputs
-import com.shilapi.xcertplay.hud.BydOutputSettings
 
 /**
  * Optional: steering-wheel keys zoom CarPlay's dashboard map and work as a CarPlay joystick. BYD's window
@@ -191,18 +189,6 @@ class WheelKeyService : AccessibilityService() {
         if (navigationKeys.owns(event.keyCode, event.deviceId, event.downTime)) return navigationKey(event)
         if (CarPlayCallKeys.onKey(this, event.keyCode, down)) return true
         val key = WheelKey.of(event)
-        if (BydOutputSettings.carPlayCallControls(this) &&
-            CarPlayMediaButton.opensSiriWhileCarPlay(event.keyCode) &&
-            !(WheelZoomSettings.siriDoublePress(this) && WheelZoomSettings.isSiriKey(this, key)) &&
-            session() != null) {
-            if (!down) {
-                val shortPressIgnored = WheelZoomSettings.siriLongPressOnly(this) && CarPlayMediaButton.isShortVoiceKey(event.keyCode)
-                val sent = !shortPressIgnored && VoiceKeyPair.shared.allowCarPlayKey(event.eventTime) &&
-                    CarPlayBackgroundSession.snapshot()?.controller?.requestSiri() == true
-                note("CarPlay voice key ${event.keyCode}: Siri sent=$sent")
-            }
-            return true
-        }
         refreshEligibility()
         val calling = inCall(this)
         if (calling) clearLearning()
@@ -430,7 +416,6 @@ class WheelKeyService : AccessibilityService() {
             if (on) Toast.makeText(this, "$text\n${getString(R.string.wheel_joystick_hint)}", Toast.LENGTH_LONG).show()
             else Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         }
-        BydNavigationOutputs.dashboardNote(text)
     }
 
     private fun clearLearning(notify: Boolean = true) {
@@ -475,16 +460,10 @@ class WheelKeyService : AccessibilityService() {
         handler.post {
             Toast.makeText(this, if (zoomOn) R.string.wheel_zoom_mode_on else R.string.wheel_zoom_mode_off, Toast.LENGTH_SHORT).show()
         }
-        if (zoomOn) {
-            BydNavigationOutputs.dashboardNote("🔍 ${getString(R.string.wheel_zoom_note_zoom)}", ZOOM_NOTE_SOURCE)
-        } else {
-            BydNavigationOutputs.dashboardNote("🔊 ${getString(R.string.wheel_zoom_note_volume)}")
-        }
     }
 
     companion object {
         internal const val TAG = "OSNPlay-WheelKeys"
-        private const val ZOOM_NOTE_SOURCE = 6
         private const val ELIGIBILITY_POLL_MILLIS = 250L
         private const val ROUTE_CHECK_MILLIS = 1_000L
         internal const val LEARNING_TIMEOUT_MILLIS = 10_000L
@@ -596,9 +575,7 @@ class WheelKeyService : AccessibilityService() {
          * only through it, and without it BYD's window manager opens its own phone app instead. So does the
          * watcher for other apps' calls, which runs only while something keeps OSNPlay alive.
          */
-        internal fun wanted(context: Context): Boolean = WheelZoomSettings.anyEnabled(context) ||
-            BydOutputSettings.carPlayCallControls(context) || NavigationWheelSettings.restoreAllowed(context) ||
-            BydOutputSettings.phoneAudioRouteApps(context)
+        internal fun wanted(context: Context): Boolean = WheelZoomSettings.anyEnabled(context)
 
         /**
          * Android takes the service off the allowed list when the app is force-stopped (BYD's system does
@@ -707,8 +684,7 @@ private fun note(message: String) {
 // CarPlay's iAP2 call state can be active even when the head unit leaves Android's mode normal.
 // Native Bluetooth calls also use a call/communication audio mode.
 internal fun inCall(context: Context): Boolean =
-    BydNavigationOutputs.carPlayCall() != null ||
-        (context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager)?.mode.let { it != null && it != AudioManager.MODE_NORMAL }
+    (context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager)?.mode.let { it != null && it != AudioManager.MODE_NORMAL }
 
 /** Use the input-device ID for a held press; saved assignments still use the stable device name. */
 private data class PhysicalWheelKey(val device: Int, val code: Int, val scan: Int)

@@ -210,19 +210,7 @@ class WheelSiriWindowTest {
         verify(controller, times(1)).requestSiri()
     }
 
-    @Test fun carPlayCallStateBlocksAssignedSiriWhileAndroidModeIsNormal() {
-        BydCarPlayCall.onFrame(Iap2Messages.buildRaw(CarPlayCallState.CALL_STATE_UPDATE) {
-            u8(2, 4); string(4, "active-call")
-        })
-        assertEquals(AudioManager.MODE_NORMAL, host.getSystemService(AudioManager::class.java).mode)
-        assertTrue(inCall(host))
-        host.dispatchKeyEvent(key(KeyEvent.KEYCODE_F6, true))
-        BydCarPlayCall.end()
-        host.dispatchKeyEvent(key(KeyEvent.KEYCODE_F6, false))
-        verify(controller, never()).requestSiri()
-    }
-
-    @Test fun windowLearningConsumesRepeatsAndReleaseAfterAssignmentFinishes() {
+        @Test fun windowLearningConsumesRepeatsAndReleaseAfterAssignmentFinishes() {
         var learned = 0
         learn { learned++ }
         assertTrue(settings.dispatchKeyEvent(key(KeyEvent.KEYCODE_F7, true)))

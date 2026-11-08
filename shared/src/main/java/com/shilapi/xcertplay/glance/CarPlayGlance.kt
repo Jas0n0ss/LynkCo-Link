@@ -1,7 +1,5 @@
 package com.shilapi.xcertplay.glance
 
-import com.shilapi.xcertplay.hud.BydHudRouteState
-import com.shilapi.xcertplay.hud.ClusterSongState
 import com.shilapi.xcertplay.iap2.message.Iap2LaneGuidance
 import com.shilapi.xcertplay.iap2.message.LaneGuidanceLane
 import com.shilapi.xcertplay.iap2.wire.Iap2Frame
@@ -29,8 +27,6 @@ object CarPlayGlance {
     private const val LANE_GUIDANCE_UPDATE = 0x5204
     private const val TAG = "OSNPlay-Lane"
 
-    private val route = BydHudRouteState()
-    private val song = ClusterSongState()
     private var connected = false
     private var last = Snapshot()
 
@@ -62,26 +58,14 @@ object CarPlayGlance {
             laneListener?.invoke(lanes)
             return
         }
-        val changed = synchronized(this) {
-            when (frame.messageId) {
-                BydHudRouteState.ROUTE_GUIDANCE_UPDATE, BydHudRouteState.ROUTE_GUIDANCE_MANEUVER_UPDATE ->
-                    runCatching { route.accept(frame.messageId, frame.payload) }
-                ClusterSongState.NOW_PLAYING_UPDATE -> runCatching { song.accept(frame) }
-                else -> return
-            }
-            publishLocked()
-        }
-        changed?.let { listener?.invoke(it) }
+        // This Lynk build has no BYD HUD/cluster consumer; lane guidance above is still logged.
+        return
     }
 
     fun setConnected(next: Boolean) {
         val changed = synchronized(this) {
             if (connected == next) return
             connected = next
-            if (!next) {
-                route.clear()
-                song.clear()
-            }
             publishLocked()
         }
         changed?.let { listener?.invoke(it) }
@@ -102,20 +86,7 @@ object CarPlayGlance {
     }
 
     private fun publishLocked(): Snapshot? {
-        val maneuver = route.currentApple()
-        val current = song.current()
-        val next = Snapshot(
-            connected = connected,
-            maneuverType = maneuver?.type,
-            drivingSide = maneuver?.drivingSide ?: 0,
-            distanceMeters = maneuver?.distanceMeters ?: 0,
-            road = maneuver?.road.orEmpty(),
-            arrivalEpochSeconds = maneuver?.arrivalEpochSeconds,
-            remainingSeconds = maneuver?.remainingSeconds,
-            remainingMeters = maneuver?.remainingMeters,
-            song = current?.text,
-            playing = current?.playing ?: false,
-        )
+        val next = Snapshot(connected = connected)
         if (next == last) return null
         last = next
         return next

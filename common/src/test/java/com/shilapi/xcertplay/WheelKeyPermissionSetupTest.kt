@@ -117,20 +117,7 @@ class WheelKeyPermissionSetupTest {
         assertEquals(1, commands.size)
     }
 
-    @Test fun navigationOnlyRestorationRequiresRecordedAuthorizationAndStopsWhenDisabled() {
-        val prefs = context.getSharedPreferences("osnplay_navigation_wheel", android.content.Context.MODE_PRIVATE)
-        assertFalse(NavigationWheelSettings.enabled(context))
-        prefs.edit().putBoolean("enabled", true).commit()
-        assertFalse(WheelKeyService.needsRestore(context))
-        NavigationWheelSettings.recordAuthorization(context)
-        assertTrue(WheelKeyService.needsRestore(context))
-        prefs.edit().putBoolean("enabled", false).commit()
-        assertFalse(WheelKeyService.needsRestore(context))
-        assertFalse(WheelKeyService.applyServiceSettings(context, ::shell) { WheelKeyService.needsRestore(context) })
-        assertTrue(commands.isEmpty())
-    }
-
-    private fun shell(command: String): String? {
+        private fun shell(command: String): String? {
         commands += command
         if (command.contains("settings get")) return "$reading\nOSNPLAY_WHEEL_EXIT:0"
         if (reply?.trim() != "OSNPLAY_WHEEL_EXIT:0") return reply
