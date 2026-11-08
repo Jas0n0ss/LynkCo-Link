@@ -99,7 +99,7 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivi
 
 ## 更新与卸载
 
-新版本会作为独立 Release 发布，保留最近两个版本。覆盖安装前确认包名和签名一致；从旧的 `com.osnplay.lynk` 升级需要先卸载。
+新版本会作为独立 Release 发布，所有历史版本都会保留。覆盖安装前确认包名和签名一致；从旧的 `com.osnplay.lynk` 升级需要先卸载。
 
 ```sh
 adb uninstall com.kugou.android.auto

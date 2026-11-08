@@ -92,7 +92,7 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivi
 
 ## Update and uninstall
 
-Each update is a separate Release; only the two newest are kept. From the old `com.osnplay.lynk` package, uninstall before installing.
+Each update is a separate Release; all historical releases are kept. From the old `com.osnplay.lynk` package, uninstall before installing.
 
 ```sh
 adb uninstall com.kugou.android.auto

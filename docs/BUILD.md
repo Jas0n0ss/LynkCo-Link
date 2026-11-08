@@ -116,7 +116,7 @@ export ANDROID_KEY_PASSWORD='...'
 
 - 每次更新递增 `versionCode` / `versionName`，创建新的 `vX.Y.Z` 标签和 Release，不覆盖旧 Release。
 - Release 说明只写本版变更和安装命令，不重复完整文档。
-- 发布工作流结束后只保留**最近两个 Release 和标签**，更旧的 Release、标签和资产自动删除。
+- 每个版本使用独立标签和 Release，**保留所有历史版本**，不覆盖、不删除旧 Release 和资产。
 
 ## 常见问题
 
