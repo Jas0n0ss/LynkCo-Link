@@ -57,15 +57,7 @@ import com.shilapi.xcertplay.backup.SettingsBackupEndpoint
 import com.shilapi.xcertplay.backup.SettingsBackupServer
 import com.shilapi.xcertplay.backup.SettingsQrCode
 import com.shilapi.xcertplay.compat.closeCompat
-import com.shilapi.xcertplay.hud.BydAdbAccess
-import com.shilapi.xcertplay.hud.BydNavigationOutputs
-import com.shilapi.xcertplay.hud.BydFieldSource
-import com.shilapi.xcertplay.hud.BydOutputSettings
-import com.shilapi.xcertplay.hud.BydVehicleCapabilities
 import com.shilapi.xcertplay.telecom.PhoneAudioRoute
-import com.shilapi.xcertplay.hud.BydVehicleField
-import com.shilapi.xcertplay.hud.BydVehicleFieldStore
-import com.shilapi.xcertplay.hud.BydVehicleProbeOutcome
 import com.shilapi.xcertplay.host.R
 import com.shilapi.xcertplay.media.AmbientColorMode
 import com.shilapi.xcertplay.media.AmbientColorSpeed
@@ -174,8 +166,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private val endWindowLearning = Runnable { cancelKeyLearning() }
     private var page = "home"
     internal var ambientSupportCheck: (Context) -> java.util.concurrent.CompletableFuture<Boolean> = AmbientMusicController::checkSupport
-    internal var carRhythmSupportCheck: (Context) -> java.util.concurrent.CompletableFuture<Boolean> =
-        com.shilapi.xcertplay.hud.BydCarMusicRhythm::checkSupport
     private var settingsCategory = SettingsCategory.OVERVIEW
     private var connectionSettingsReturnCategory: SettingsCategory? = null
     private var setupStep = SetupGuide.STEP_CONNECTION
@@ -233,13 +223,11 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var pendingRailScrollY: Int? = null
     private var pendingRailFocus = false
     private var bydVehicleAdvancedExpanded = false
-    private var adbAccessState: BydAdbAccess.State? = null
     private var adbCheckInProgress = false
     private var adbCheckMayAsk = false
     private var adbCheckFailed = false
     private var vehicleProbeAuthorizationInProgress = false
     private var vehicleProbeInProgress = false
-    private var vehicleProbeOutcome: BydVehicleProbeOutcome? = null
     private var adbCheckGeneration = 0
     private var adbStatus: TextView? = null
     private var availableUpdate: UpdateRelease? = null
@@ -272,32 +260,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var automaticVehicleValidationStarted = false
     private var automaticVehicleValidationInProgress = false
     private var automaticVehicleValidationPending = false
-    private var pendingVehicleReplacement: BydVehicleCapabilities? = null
-    // The saved snapshot [pendingVehicleReplacement] was compared with.
-    private var pendingVehicleReplacementExpected: BydVehicleCapabilities? = null
-    private var pendingVehicleLostFields: Set<BydVehicleField> = emptySet()
-    private var defaultVehicleStatus: BydAdbAccess.Status? = null
     private var vehicleDataReconnectPending = false
-    private val automaticVehicleValidation = Runnable {
-        automaticVehicleValidationPending = false
-        validateSavedVehicleConfigurationAutomatically()
-    }
-    private data class VehicleProbeAttempt(
-        val outcome: BydVehicleProbeOutcome,
-        val heldCandidate: BydVehicleCapabilities? = null,
-        val lostFields: Set<BydVehicleField> = emptySet(),
-        val snapshotChanged: Boolean = false,
-        val allowedOnlyOnce: Boolean = false,
-    )
-
-    private data class VehicleValidationAttempt(
-        val status: BydAdbAccess.Status,
-        val outcome: BydVehicleProbeOutcome? = null,
-        val heldCandidate: BydVehicleCapabilities? = null,
-        val lostFields: Set<BydVehicleField> = emptySet(),
-        val snapshotChanged: Boolean = false,
-        val savedFieldsReadable: Boolean = false,
-    )
+    private val automaticVehicleValidation = Runnable { }
     private val notificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         connect(notificationTransport)
     }
@@ -1405,12 +1369,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private fun navigationSettings(content: LinearLayout) {
         settingsPageTitle(content, getString(R.string.settings_navigation), getString(R.string.settings_navigation_summary))
         renderSections(content, SettingsInformationArchitecture.sectionsByCategory.getValue(SettingsCategory.NAVIGATION))
-        // The BYD card is hidden without its receiver; say so instead of leaving a gap.
-        if (!BydOutputSettings.available(this)) {
-            content.addView(label(getString(R.string.settings_byd_navigation_unavailable), 15, MUTED).apply {
-                setPadding(dp(4), 0, dp(4), dp(SETTINGS_BLOCK_GAP_DP))
-            })
-        }
     }
 
     private fun vehicleSettings(content: LinearLayout) {
@@ -1762,20 +1720,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         renderSections(content, SettingsInformationArchitecture.sectionsByCategory.getValue(SettingsCategory.ADVANCED))
     }
 
-    private fun advancedVehicleDataSettings(content: LinearLayout) {
-        section(content, getString(R.string.settings_vehicle), R.drawable.ic_dp_dashboard) { card ->
-            card.addView(button(getString(if (bydVehicleAdvancedExpanded)
-                R.string.hide_advanced_vehicle_data else R.string.advanced_vehicle_data), false) {
-                bydVehicleAdvancedExpanded = !bydVehicleAdvancedExpanded
-                render()
-            }, matchButton(0, 56))
-            if (bydVehicleAdvancedExpanded) {
-                advancedVehicleData(card)
-                if (!BydOutputSettings.available(this)) clusterSongSwitch(card)
-            }
-        }
-    }
-
     private fun renderSections(
         content: LinearLayout,
         sections: Set<SettingsSection>,
@@ -1899,8 +1843,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                     setPadding(0, dp(4), 0, dp(8))
                 })
             }
-            card.addView(button(getString(R.string.boot_start_repair), false) { repairBootStart() }, matchButton(6, 56))
-            card.addView(label(getString(R.string.boot_start_repair_desc), 14, MUTED).apply { setPadding(0, dp(8), 0, dp(6)) })
             card.addView(button(chooseIphoneTitle(), false) { choosePhone() }, matchButton(12, 60))
         }
         filteredSection(content, SettingsSection.USB_CONNECTION,
@@ -2101,21 +2043,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 AirPlayPersistence.loadCallVoiceFilter(this)) {
                 AirPlayPersistence.saveCallVoiceFilter(this, it)
                 markReconnectNeeded()
-            }
-            toggle(card, getString(R.string.phone_audio_route), getString(R.string.phone_audio_route_description),
-                BydOutputSettings.phoneAudioRoute(this)) {
-                BydOutputSettings.setPhoneAudioRoute(this, it)
-                PhoneAudioRoute.settingsChanged(this)
-            }
-            toggle(card, getString(R.string.phone_audio_route_apps), getString(R.string.phone_audio_route_apps_description),
-                BydOutputSettings.phoneAudioRouteApps(this)) {
-                BydOutputSettings.setPhoneAudioRouteApps(this, it)
-                PhoneAudioRoute.settingsChanged(this)
-                // The watcher for other apps' calls needs OSNPlay running outside a CarPlay session too, which
-                // the accessibility service provides.
-                if (it && !WheelKeyService.connected()) {
-                    Thread({ WheelKeyService.enableOverAdb(this) }, "osnplay-phone-audio-enable").start()
-                }
             }
             audioFocusControls(card)
             if (resources.getBoolean(R.bool.config_advanced_audio_channel_mapping)) {
@@ -2675,14 +2602,19 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         adbSwitches[title] = control to read
     }
 
+    private fun adbOffText(): Int {
+        val adbEnabled = Settings.Global.getInt(contentResolver, Settings.Global.ADB_ENABLED, 0) == 1
+        return if (adbEnabled) R.string.adb_network_not_answering else R.string.adb_off
+    }
+
+    private fun hasPreciseLocation() =
+        checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
     private fun requestAdbSwitchChange(permissions: List<CarHotspotSetup.Permission>, save: () -> Unit) {
         if (adbSwitchChangePending || vehicleAdbWorkInProgress()) {
             updateAdbSwitches()
             return
         }
-        cancelAutomaticVehicleValidationForUserOperation(
-            resumeAfter = automaticVehicleValidationInProgress || automaticVehicleValidationPending,
-        )
         val app = applicationContext
         adbSwitchChangePending = true
         updateAdbSwitches()
@@ -2904,34 +2836,9 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     // BYD maps the AOSP tether action to its own hotspot screen; other firmware falls back to Wi-Fi settings.
     // BYD shows that screen as a dialog and closes it unless its own settings or the car home screen is on top,
     // so the home screen goes first.
-    private fun repairBootStart() {
-        val dialog = appDialogBuilder()
-            .setTitle(getString(R.string.boot_start_repair))
-            .setMessage(getString(R.string.boot_start_repair_running))
-            .setNegativeButton(getString(R.string.common_cancel), null)
-            .show()
-        Thread({
-            val result = runCatching {
-                com.shilapi.xcertplay.hud.BydBootStartRepair.apply(applicationContext, packageName)
-            }.getOrNull()
-            runOnUiThread {
-                if (isFinishing || isDestroyed) return@runOnUiThread
-                dialog.dismiss()
-                val text = result?.lines?.joinToString("\n")?.let { getString(R.string.boot_start_repair_result, it) }
-                    ?: getString(R.string.adb_check_failed)
-                appDialogBuilder()
-                    .setTitle(getString(R.string.boot_start_repair))
-                    .setMessage(text)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
-            }
-        }, "osnplay-boot-repair").start()
-    }
-
     /**
      * True on the head units this BYD settings work is for, and only those.
      *
-     * DiLink 1.0 ships Android 7.1, the only version anyone has checked. Every BYD path below is behind
      * this so that no other head unit changes behaviour — a stock Android build of any version has no
      * such package to find, and an older or newer BYD build stays exactly as it is today until it can
      * be measured on a car.
@@ -3084,7 +2991,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         content.addView(card, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(SETTINGS_BLOCK_GAP_DP) })
     }
 
-    /** The warning and the button that turn both DiLink 4 cluster routes off (saving the ADB route clears both). */
     private fun clusterRouteConflict(parent: LinearLayout) {
         parent.addView(label(getString(R.string.setup_cluster_route_conflict), 16, WARNING))
         parent.addView(button(getString(R.string.setup_cluster_route_turn_off), true) {
@@ -3645,47 +3551,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         }
     }
 
-    private fun showClusterAccessSetup() {
-        val command = "adb shell appops set $packageName GET_USAGE_STATS allow"
-        val body = column().apply { setPadding(dp(24), dp(12), dp(24), dp(12)) }
-        body.addView(label(getString(R.string.one_time_setup_on_this_car), 20, TEXT, true))
-        body.addView(label(getString(R.string.usage_access_lets_osnplay_follow_the_instrument_theme_and_m), 15, MUTED))
-        body.addView(label(getString(R.string.s_1_connect_a_computer_with_adb_installed_to_the_car_using), 16, TEXT))
-        body.addView(label(command, 16, TEXT).apply {
-            typeface = android.graphics.Typeface.MONOSPACE
-            setTextIsSelectable(true)
-            setPadding(0, dp(16), 0, dp(16))
-        })
-        body.addView(button(getString(R.string.copy_command), false) {
-            getSystemService(android.content.ClipboardManager::class.java).setPrimaryClip(
-                android.content.ClipData.newPlainText(getString(R.string.clipboard_usage_access), command))
-            toast(getString(R.string.copied_to_the_car_clipboard_run_the_command_on_your_comput))
-        }, matchButton(0, 56))
-        body.addView(label(getString(R.string.cluster_adb_multi_device, packageName), 14, MUTED))
-        body.addView(label(getString(R.string.s_3_tap_check_and_enable_below_this_enables_the_cluster_ma), 16, TEXT))
-        val status = label(if (DiLink51ClusterMonitor.hasAccess(this)) getString(R.string.permission_enabled_ready) else getString(R.string.permission_not_enabled), 16, TEXT)
-        body.addView(status)
-        val dialog = appDialogBuilder().setTitle(getString(R.string.automatic_cluster_map_setup))
-            .setView(ScrollView(appDialogContext()).apply { addView(body) })
-            .setNegativeButton(getString(R.string.close), null)
-            .setPositiveButton(getString(R.string.check_and_enable), null).create()
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                if (DiLink51ClusterMonitor.hasAccess(this)) {
-                    AirPlayPersistence.saveClusterMapEnabled(this, true)
-                    DiLink51ClusterLayout.saveAutomatic(this, true)
-                    dialog.dismiss()
-                    render()
-                    toast(getString(R.string.automatic_map_enabled_open_the_cluster_map_card_or_select))
-                    reconnectIfRunning()
-                } else {
-                    status.text = getString(R.string.still_waiting_for_usage_access_check_that_the_command_ran)
-                }
-            }
-        }
-        dialog.show()
-    }
-
     private fun promptEnableUsbAutoConfirm() {
         if (UsbPermissionSetup.Permission.ACCESSIBILITY.granted(this)) {
             toast(getString(R.string.usb_auto_confirm_status_on))
@@ -3836,8 +3701,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     // One place for the key service setup, above every feature that needs it.
     private fun wheelKeysSettings(card: LinearLayout) {
         // The joystick and map zoom use BYD's media and custom keys.
-        val byd = CarHotspotSetup.isBydHeadUnit(this)
-        val zoomAvailable = wheelMapZoomAvailable()
+        val byd = false
+        val zoomAvailable = false
         val vehicleKeysOn = WheelZoomSettings.joystick(this) ||
             (zoomAvailable && WheelZoomSettings.enabled(this))
         if (WheelZoomSettings.siriKey(this) || WheelZoomSettings.mediaPlayPause(this) || vehicleKeysOn) {
@@ -3868,17 +3733,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     }
 
     // Map zoom only works where the dashboard map card used to show these controls.
-    private fun wheelMapZoomAvailable(): Boolean {
-        if (!AirPlayPersistence.loadClusterMapEnabled(this)) return false
-        val adbCluster = AdbClusterRouter.enabled(this)
-        if (DiLink51ClusterLayout.supported() && !adbCluster) return false
-        // The wheel map zoom is driven by BYD media/custom keys; the Geely cluster has no such source yet.
-        if (GeelyClusterDisplay.supported()) return false
-        return adbCluster || ClusterMapPresentation.findDisplay(this) != null
-    }
-
     private fun wheelKeyControls(card: LinearLayout) {
-        val zoomAvailable = wheelMapZoomAvailable()
+        val zoomAvailable = false
         if (zoomAvailable) {
             toggle(card, getString(R.string.wheel_map_zoom), getString(R.string.wheel_map_zoom_description),
                 WheelZoomSettings.enabled(this)) {
@@ -4094,699 +3950,16 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     }
 
     /** The 0.2.9 Dashboard song setting, shown once: in the BYD navigation card, or under Advanced vehicle data. */
-    private fun clusterSongSwitch(card: LinearLayout) {
-        toggle(card, getString(R.string.cluster_song),
-            getString(R.string.cluster_song_description),
-            BydOutputSettings.clusterSong(this), enabled = !adbSwitchChangePending) {
-            BydOutputSettings.setClusterSong(this, it)
-            if (it) checkAdbState(mayAsk = true)
-            BydNavigationOutputs.clusterSongChanged(it)
-            // The gate switch below depends on this one, so rebuild the card to show or hide it.
-            render()
-        }
-        // Shown only while Dashboard song is on: the gate that makes BYD's music card appear.
-        if (BydOutputSettings.clusterSong(this)) {
-            toggle(card, getString(R.string.cluster_song_gate), getString(R.string.cluster_song_gate_description),
-                BydOutputSettings.clusterSongGate(this), enabled = !adbSwitchChangePending) {
-                BydOutputSettings.setClusterSongGate(this, it)
-            }
-        }
-        toggle(card, getString(R.string.cluster_song_on_change), getString(R.string.cluster_song_on_change_description),
-            BydOutputSettings.clusterSongOnChange(this), enabled = !adbSwitchChangePending) {
-            BydOutputSettings.setClusterSongOnChange(this, it)
-            BydNavigationOutputs.clusterSongOnChangeChanged()
-        }
-        toggle(card, getString(R.string.carplay_call_controls_experimental),
-            getString(R.string.carplay_call_controls_experimental_description),
-            BydOutputSettings.carPlayCallControls(this)) { applyCallKeys(it) }
-        toggle(card, getString(R.string.carplay_calls_on_dashboard),
-            getString(R.string.carplay_calls_on_dashboard_description),
-            BydOutputSettings.carPlayCalls(this), enabled = !adbSwitchChangePending) { applyCarPlayCalls(it) }
-    }
-
-    private fun applyCallKeys(enabled: Boolean) {
-        BydOutputSettings.setCarPlayCallControls(this, enabled)
-        if (enabled && !WheelKeyService.connected()) {
-            Thread({
-                val access = WheelKeyService.enableOverAdb(this)
-                if (access != com.shilapi.xcertplay.adb.LocalAdb.Access.READY) {
-                    runOnUiThread { toast(getString(R.string.wheel_keys_adb_failed, access.name)) }
-                }
-            }, "osnplay-call-keys-enable").start()
-        }
-    }
-
-    private fun applyCarPlayCalls(enabled: Boolean) {
-        BydOutputSettings.setCarPlayCalls(this, enabled)
-        if (enabled) checkAdbState(mayAsk = true)
-        BydNavigationOutputs.carPlayCallsChanged(enabled)
-    }
-
-    private fun advancedVehicleData(card: LinearLayout) {
-        val legacyMode = BydOutputSettings.legacyVehicleProbe(this)
-        card.addView(label(getString(R.string.advanced_vehicle_data_description), 14, MUTED)
-            .apply { setPadding(0, dp(12), 0, 0) })
-        choice(
-            card,
-            getString(R.string.vehicle_data_mode),
-            listOf(
-                getString(R.string.vehicle_data_mode_default),
-                getString(R.string.vehicle_data_mode_legacy),
-            ),
-            if (legacyMode) 1 else 0,
-            reconnects = false,
-            announcesReconnect = vehicleDataSwitchesOn(),
-            // A switch during ADB work would be dropped by the running step.
-            enabled = !adbSwitchChangePending && !vehicleAdbWorkInProgress(),
-        ) { selectVehicleDataMode(it == 1) }
-        if (!legacyMode) {
-            defaultVehicleData(card)
-            return
-        }
-        val capabilities = displayedVehicleCapabilities()
-        val adbText = when {
-            vehicleProbeAuthorizationInProgress -> getString(R.string.adb_checking_may_ask)
-            adbCheckInProgress -> getString(if (adbCheckMayAsk)
-                R.string.adb_checking_may_ask else R.string.adb_checking)
-            vehicleProbeInProgress || automaticVehicleValidationInProgress ->
-                getString(R.string.probing_vehicle_data)
-            adbCheckFailed -> getString(R.string.adb_check_failed)
-            adbAccessState == null && capabilities != null -> getString(R.string.vehicle_probe_saved_automatic)
-            adbAccessState == null -> getString(R.string.adb_not_checked)
-            else -> adbLinkStatusText(requireNotNull(adbAccessState))
-        }
-        val healthy = capabilities != null && !adbCheckFailed && vehicleProbeOutcome?.error == null &&
-            pendingVehicleLostFields.isEmpty() &&
-            (adbAccessState == null || adbAccessState == BydAdbAccess.State.READY)
-        card.addView(label(adbText, 14, if (healthy) MUTED else WARNING)
-            .apply { setPadding(0, dp(12), 0, 0) })
-        if (capabilities != null) {
-            showVehicleProbeResults(card, capabilities)
-            showVehicleDataSettings(card, capabilities)
-        }
-        if (vehicleProbeAuthorizationInProgress || adbCheckInProgress ||
-            vehicleProbeInProgress || automaticVehicleValidationInProgress) return
-        vehicleProbeOutcome?.error?.let {
-            card.addView(label(getString(R.string.vehicle_probe_failed, it), 14, WARNING)
-                .apply { setPadding(0, dp(10), 0, 0) })
-        }
-        if (pendingVehicleLostFields.isNotEmpty()) {
-            card.addView(label(
-                getString(
-                    R.string.vehicle_probe_lost_saved_fields,
-                    localizedVehicleFields(pendingVehicleLostFields),
-                ),
-                14,
-                WARNING,
-            ).apply { setPadding(0, dp(10), 0, 0) })
-            card.addView(button(getString(R.string.replace_saved_vehicle_data_anyway), false) {
-                replaceSavedVehicleDataAnyway()
-            }, matchButton(10, 56))
-        }
-        val needsUserAction = capabilities == null || adbCheckFailed || vehicleProbeOutcome?.error != null ||
-            pendingVehicleLostFields.isNotEmpty() ||
-            adbAccessState in setOf(BydAdbAccess.State.NOT_APPROVED, BydAdbAccess.State.ADB_OFF, BydAdbAccess.State.PAIRING_ONLY)
-        if (needsUserAction) {
-            val title = if (adbAccessState == BydAdbAccess.State.NOT_APPROVED) {
-                R.string.request_adb_authorization
-            } else if (capabilities == null) {
-                R.string.probe_adb_and_vehicle_data
-            } else {
-                R.string.probe_vehicle_data_again
-            }
-            card.addView(button(getString(title), false) {
-                probeVehicleData(mayAsk = true)
-            }.apply { isEnabled = !adbSwitchChangePending && !adbCheckInProgress }, matchButton(10, 56))
-        }
-    }
-
-    private fun defaultVehicleData(card: LinearLayout) {
-        val adbText = when {
-            vehicleProbeAuthorizationInProgress -> getString(R.string.adb_checking_may_ask)
-            adbCheckInProgress -> getString(if (adbCheckMayAsk)
-                R.string.adb_checking_may_ask else R.string.adb_checking)
-            vehicleProbeInProgress -> getString(R.string.probing_vehicle_data)
-            adbCheckFailed -> getString(R.string.adb_check_failed)
-            adbAccessState == null -> getString(R.string.adb_not_checked)
-            else -> adbLinkStatusText(requireNotNull(adbAccessState))
-        }
-        val healthy = !adbCheckFailed && vehicleProbeOutcome?.error == null &&
-            (adbAccessState == null || adbAccessState == BydAdbAccess.State.READY)
-        card.addView(label(adbText, 14, if (healthy) MUTED else WARNING)
-            .apply { setPadding(0, dp(12), 0, 0) })
-        val busy = vehicleProbeAuthorizationInProgress || adbCheckInProgress || vehicleProbeInProgress
-        if (!busy && adbAccessState == BydAdbAccess.State.READY) {
-            defaultVehicleStatus?.let { showDefaultVehicleReadings(card, it) }
-        }
-        vehicleProbeOutcome?.error?.let {
-            card.addView(label(getString(R.string.vehicle_probe_failed, it), 14, WARNING)
-                .apply { setPadding(0, dp(10), 0, 0) })
-        }
-        showVehicleDataSettings(card, capabilities = null)
-        if (!busy) {
-            card.addView(button(getString(R.string.check_adb_access), false) {
-                checkAdbState(mayAsk = true)
-            }.apply { isEnabled = !adbSwitchChangePending }, matchButton(10, 56))
-        }
-    }
-
     /** The last default-mode reads; a value an enabled switch needs is a warning when missing. */
-    private fun showDefaultVehicleReadings(card: LinearLayout, status: BydAdbAccess.Status) {
-        fun reading(value: String?, unreadable: Int, needed: Boolean) {
-            val text = value ?: getString(unreadable).takeIf { needed } ?: return
-            card.addView(label(text, 14, if (value != null) MUTED else WARNING))
-        }
-        val battery = status.batteryPercent?.let { percent ->
-            status.rangeKm?.let { getString(R.string.adb_battery_reading, percent.roundToInt(), it) }
-        }
-        reading(battery, R.string.adb_battery_unreadable, BydOutputSettings.batteryToIphone(this))
-        reading(status.speedKmh?.let { getString(R.string.adb_vehicle_speed_reading, it.roundToInt()) },
-            R.string.adb_vehicle_speed_unreadable, BydOutputSettings.wheelSpeedToIphone(this))
-        reading(status.gear?.let { getString(R.string.adb_vehicle_gear_reading, it.letter.toString()) },
-            R.string.adb_vehicle_gear_unreadable,
-            BydOutputSettings.wheelSpeedToIphone(this) || BydOutputSettings.videoWhileParked(this))
-    }
-
-    private fun selectVehicleDataMode(legacyMode: Boolean) {
-        if (adbSwitchChangePending) return
-        // A stale mode dialog must also invalidate a probe when the Boolean stays the same.
-        synchronized(vehicleOperationLock) { vehicleProbeGeneration++ }
-        vehicleProbeAuthorizationInProgress = false
-        vehicleProbeInProgress = false
-        if (!legacyMode) {
-            cancelAutomaticVehicleValidationForUserOperation(resumeAfter = false)
-            synchronized(vehicleOperationLock) {
-                BydOutputSettings.setLegacyVehicleProbe(this, false)
-            }
-            vehicleProbeOutcome = null
-            pendingVehicleReplacement = null
-            pendingVehicleLostFields = emptySet()
-            defaultVehicleStatus = null
-            render()
-            // The session was built from the legacy probe; apply once the default reads succeed.
-            vehicleDataReconnectPending = vehicleDataSwitchesOn()
-            if (vehicleDataReconnectPending) checkAdbState(mayAsk = true)
-            return
-        }
-        if (BydVehicleFieldStore.load(this) == null) {
-            probeVehicleData(mayAsk = true, activateLegacyModeOnSuccess = true)
-            return
-        }
-        synchronized(vehicleOperationLock) {
-            BydOutputSettings.setLegacyVehicleProbe(this, true)
-        }
-        vehicleProbeOutcome = null
-        pendingVehicleReplacement = null
-        pendingVehicleLostFields = emptySet()
-        render()
-        // With every vehicle-data switch off, the mode changes nothing CarPlay was told.
-        if (vehicleDataSwitchesOn()) reconnectForVehicleSetting()
-    }
-
     // Probe results are saved before they are shown, so the saved snapshot is the newest without
     // trusting the clock.
-    private fun displayedVehicleCapabilities(): BydVehicleCapabilities? =
-        BydVehicleFieldStore.load(this) ?: vehicleProbeOutcome?.capabilities
-
-    private fun localizedVehicleFields(fields: Set<BydVehicleField>): String = fields.map { field ->
-        getString(when (field) {
-            BydVehicleField.SPEED -> R.string.vehicle_field_speed
-            BydVehicleField.GEAR -> R.string.vehicle_field_gear
-            BydVehicleField.SOC, BydVehicleField.RANGE, BydVehicleField.REMAINING_KWH ->
-                R.string.vehicle_field_battery
-            BydVehicleField.BMS_STATE -> R.string.vehicle_field_charging
-        })
-    }.distinct().joinToString()
-
-    private fun replaceSavedVehicleDataAnyway() {
-        val candidate = pendingVehicleReplacement ?: return
-        // Never over a snapshot saved since the comparison; a failed write is shown, not thrown.
-        val error = runCatching {
-            BydVehicleFieldStore.replaceAnyway(applicationContext, pendingVehicleReplacementExpected, candidate)
-        }.fold(
-            onSuccess = { replaced -> if (replaced) null else getString(R.string.vehicle_probe_snapshot_changed) },
-            onFailure = { it.message ?: it.javaClass.simpleName },
-        )
-        Log.i(BYD_VEHICLE_TAG, "user replaced saved vehicle data error=${error ?: "none"}")
-        pendingVehicleReplacement = null
-        pendingVehicleLostFields = emptySet()
-        vehicleProbeOutcome = error?.let { BydVehicleProbeOutcome(BydAdbAccess.State.READY, error = it) }
-        render()
-    }
-
-    private fun showVehicleProbeResults(card: LinearLayout, capabilities: BydVehicleCapabilities) {
-        val catalogFields = capabilities.fields.values.count { it.address?.source == BydFieldSource.FIRMWARE }
-        card.addView(label(getString(if (capabilities.catalogAvailable)
-            R.string.vehicle_probe_catalog_ready else R.string.vehicle_probe_catalog_fallback, catalogFields),
-            14, if (capabilities.catalogAvailable) MUTED else WARNING).apply { setPadding(0, dp(14), 0, 0) })
-
-        val speed = capabilities.result(BydVehicleField.SPEED)
-        val speedValue = speed.value
-        val speedText = when {
-            speedValue != null -> getString(R.string.adb_vehicle_speed_reading, speedValue.roundToInt())
-            speed.supported -> getString(R.string.vehicle_probe_cached_supported, getString(R.string.vehicle_field_speed))
-            else -> getString(R.string.adb_vehicle_speed_unreadable)
-        }
-        card.addView(label(speedText, 14, if (speed.supported) MUTED else WARNING))
-        val gear = capabilities.result(BydVehicleField.GEAR)
-        val gearValue = gear.value
-        val gearText = when {
-            gearValue != null -> getString(R.string.adb_vehicle_gear_reading, gearLetter(gearValue.toInt()))
-            gear.supported -> getString(R.string.vehicle_probe_cached_supported, getString(R.string.vehicle_field_gear))
-            else -> getString(R.string.adb_vehicle_gear_unreadable)
-        }
-        card.addView(label(gearText, 14, if (gear.supported) MUTED else WARNING))
-
-        if (capabilities.batterySupported) {
-            val percentValue = capabilities.result(BydVehicleField.SOC).value
-            val rangeValue = capabilities.result(BydVehicleField.RANGE).value
-            val energy = capabilities.result(BydVehicleField.REMAINING_KWH).value
-            card.addView(label(if (percentValue == null || rangeValue == null) {
-                getString(R.string.vehicle_probe_cached_supported, getString(R.string.vehicle_field_battery))
-            } else if (energy != null) {
-                getString(R.string.vehicle_probe_battery_reading,
-                    percentValue.roundToInt(), rangeValue.roundToInt(), energy)
-            } else {
-                getString(R.string.vehicle_probe_battery_without_energy,
-                    percentValue.roundToInt(), rangeValue.roundToInt())
-            }, 14, if (energy != null || percentValue == null) MUTED else WARNING))
-        } else {
-            card.addView(label(getString(R.string.adb_battery_unreadable), 14, WARNING))
-        }
-        val charging = capabilities.result(BydVehicleField.BMS_STATE)
-        val chargingValue = charging.value
-        val chargingText = when {
-            chargingValue != null -> getString(R.string.vehicle_probe_charging_state, chargingValue.toInt())
-            charging.supported -> getString(R.string.vehicle_probe_cached_supported, getString(R.string.vehicle_field_charging))
-            else -> getString(R.string.vehicle_probe_charging_unreadable)
-        }
-        card.addView(label(chargingText, 14, if (charging.supported) MUTED else WARNING))
-    }
-
-    private fun showVehicleDataSettings(card: LinearLayout, capabilities: BydVehicleCapabilities?) {
-        toggle(card, getString(R.string.bt_suspend_during_carplay), getString(R.string.bt_suspend_during_carplay_description),
-            AirPlayPersistence.loadBtSuspendDuringCarplay(this), enabled = !adbSwitchChangePending) {
-            AirPlayPersistence.saveBtSuspendDuringCarplay(this, it)
-            markReconnectNeeded()
-            if (it) checkAdbState(mayAsk = true)
-        }
-        if (AirPlayPersistence.loadBtSuspendDuringCarplay(this)) {
-            val delays = listOf(5, 10, 15, 30)
-            choice(card, getString(R.string.bt_suspend_delay), delays.map { getString(R.string.bt_suspend_delay_option, it) },
-                delays.indexOf(AirPlayPersistence.loadBtSuspendDelaySeconds(this)).coerceAtLeast(0), reconnects = false) {
-                AirPlayPersistence.saveBtSuspendDelaySeconds(this, delays[it])
-                markReconnectNeeded()
-            }
-        }
-        if (capabilities == null || capabilities.batterySupported) {
-            toggle(card, getString(R.string.car_battery_for_the_iphone),
-                getString(R.string.car_battery_for_the_iphone_description),
-                BydOutputSettings.batteryToIphone(this), enabled = !adbSwitchChangePending) {
-                BydOutputSettings.setBatteryToIphone(this, it)
-                onVehicleDataSettingChanged(it)
-            }
-            val connectors = EvChargingConnectors.entries
-            choice(card, getString(R.string.charging_connectors), connectors.map { it.localizedLabel(this) },
-                connectors.indexOf(BydOutputSettings.chargingConnectors(this))) {
-                BydOutputSettings.setChargingConnectors(this, connectors[it])
-            }
-            val lowCharge = BydOutputSettings.lowChargePresets
-            choice(card, getString(R.string.low_charge_warning), lowCharge.map {
-                    getString(if (it == BydOutputSettings.DEFAULT_LOW_CHARGE_PERCENT)
-                        R.string.percent_default else R.string.percent_value, it)
-                }, lowCharge.indexOf(BydOutputSettings.lowChargePercent(this)).coerceAtLeast(0), reconnects = false) {
-                BydOutputSettings.setLowChargePercent(this, lowCharge[it])
-            }
-        }
-        if (capabilities == null || capabilities.motionSupported) {
-            toggle(card, getString(R.string.wheel_speed_for_tunnels),
-                getString(R.string.wheel_speed_for_tunnels_description),
-                BydOutputSettings.wheelSpeedToIphone(this), enabled = !adbSwitchChangePending) {
-                BydOutputSettings.setWheelSpeedToIphone(this, it)
-                onVehicleDataSettingChanged(it)
-            }
-        }
-        if (capabilities == null || capabilities.gearSupported) {
-            toggle(card, getString(R.string.video_while_parked),
-                getString(R.string.video_while_parked_description),
-                BydOutputSettings.videoWhileParked(this), enabled = !adbSwitchChangePending) {
-                BydOutputSettings.setVideoWhileParked(this, it)
-                onVehicleDataSettingChanged(it)
-            }
-        }
-    }
-
-    private fun onVehicleDataSettingChanged(enabled: Boolean) {
-        if (!enabled) {
-            reconnectForVehicleSetting()
-        } else if (BydOutputSettings.legacyVehicleProbe(this)) {
-                reconnectForVehicleSetting()
-        } else {
-            // Default mode applies the switch once a check reads what the enabled switches need.
-            vehicleDataReconnectPending = true
-            checkAdbState(mayAsk = true)
-        }
-    }
-
     // The approval dialog can open only after an explicit user action.
-    private fun checkAdbState(mayAsk: Boolean) {
-        if (adbSwitchChangePending || vehicleAdbWorkInProgress()) return
-        val legacy = BydOutputSettings.legacyVehicleProbe(this)
-        // Only a validation this check interrupts runs again; a Dashboard switch needs no vehicle check.
-        cancelAutomaticVehicleValidationForUserOperation(
-            resumeAfter = automaticVehicleValidationInProgress || automaticVehicleValidationPending,
-        )
-        val generation = ++adbCheckGeneration
-        adbCheckInProgress = true
-        adbCheckMayAsk = mayAsk
-        adbCheckFailed = false
-        render()
-        val backend = BydVehicleSettingsBackendProvider.current
-        backend.execute("osnplay-adb-state") {
-            val result = runCatching {
-                if (legacy) {
-                    BydAdbAccess.Status(backend.checkState(applicationContext, mayAsk))
-                } else {
-                    // The default battery path must publish its first sample before CarPlay reconnects.
-                    backend.check(applicationContext, mayAsk)
-                }
-            }
-            runOnUiThread {
-                val current = generation == adbCheckGeneration
-                if (current) {
-                    adbCheckInProgress = false
-                    adbCheckMayAsk = false
-                }
-                if (!current || isFinishing || isDestroyed) return@runOnUiThread
-                adbCheckFailed = result.isFailure
-                val status = result.getOrNull()
-                adbAccessState = status?.state
-                if (!legacy) defaultVehicleStatus = status
-                if (!legacy && adbAccessState == BydAdbAccess.State.READY) {
-                    vehicleProbeOutcome = null
-                }
-                render()
-                // A check the driver asked for also says its result where they look: the status line
-                // above the button changed so quietly that the button seemed to do nothing (#724).
-                if (mayAsk) toast(status?.state?.let(::adbLinkStatusText) ?: getString(R.string.adb_check_failed))
-                // Unreadable data keeps the current connection; the page shows what is missing.
-                if (!legacy && vehicleDataReconnectPending && status?.state == BydAdbAccess.State.READY &&
-                    enabledVehicleDataReadable(null, status)) {
-                    vehicleDataReconnectPending = false
-                    reconnectForVehicleSetting()
-                }
-                runPendingAutomaticVehicleValidation()
-            }
-        }
-    }
-
     /** First probe or user retry: one click handles ADB authorization, probing and persistence. */
-    private fun probeVehicleData(mayAsk: Boolean) =
-        probeVehicleData(mayAsk, activateLegacyModeOnSuccess = false)
-
-    private fun probeVehicleData(mayAsk: Boolean, activateLegacyModeOnSuccess: Boolean) {
-        if (adbSwitchChangePending || vehicleAdbWorkInProgress()) return
-        val expectedLegacyMode = BydOutputSettings.legacyVehicleProbe(this)
-        val expectedSnapshot = cancelAutomaticVehicleValidationForUserOperation(resumeAfter = false)
-        val generation = ++vehicleProbeGeneration
-        vehicleProbeAuthorizationInProgress = mayAsk
-        vehicleProbeInProgress = !mayAsk
-        adbCheckFailed = false
-        pendingVehicleReplacement = null
-        pendingVehicleLostFields = emptySet()
-        Log.i(BYD_VEHICLE_TAG, "user vehicle probe starting mayAsk=$mayAsk")
-        render()
-        val backend = BydVehicleSettingsBackendProvider.current
-        backend.execute("osnplay-byd13-probe") {
-            val app = applicationContext
-            val attempt = runCatching {
-                val access = backend.checkState(app, mayAsk)
-                if (access != BydAdbAccess.State.READY) {
-                    VehicleProbeAttempt(BydVehicleProbeOutcome(access))
-                } else {
-                    runOnUiThread {
-                        if (generation == vehicleProbeGeneration && !isFinishing && !isDestroyed) {
-                            vehicleProbeAuthorizationInProgress = false
-                            vehicleProbeInProgress = true
-                            render()
-                        }
-                    }
-                    var candidate = backend.probe(app, persist = false)
-                    if (candidate.access == BydAdbAccess.State.NOT_APPROVED) {
-                        // adbd confirms "Always allow" before it saves the key, so this new connection can be early.
-                        Log.i(BYD_VEHICLE_TAG, "probe connection not approved yet; retrying once")
-                        Thread.sleep(ADB_KEY_SAVE_WAIT_MILLIS)
-                        candidate = backend.probe(app, persist = false)
-                    }
-                    val candidateCapabilities = candidate.capabilities
-                    when {
-                        candidate.access == BydAdbAccess.State.NOT_APPROVED -> VehicleProbeAttempt(
-                            outcome = candidate,
-                            allowedOnlyOnce = true,
-                        )
-                        candidateCapabilities == null -> VehicleProbeAttempt(candidate)
-                        else -> {
-                            // Invalidation must guard persistence/publication, not only the UI callback.
-                            val replacement = synchronized(vehicleOperationLock) {
-                                if (generation != vehicleProbeGeneration ||
-                                    BydOutputSettings.legacyVehicleProbe(app) != expectedLegacyMode) null
-                                else BydVehicleFieldStore.replaceAutomatically(
-                                    app,
-                                    expectedSnapshot,
-                                    candidateCapabilities,
-                                )
-                            } ?: return@runCatching VehicleProbeAttempt(
-                                outcome = BydVehicleProbeOutcome(candidate.access),
-                                snapshotChanged = true,
-                            )
-                            when {
-                                replacement.saved -> VehicleProbeAttempt(candidate)
-                                replacement.snapshotChanged -> VehicleProbeAttempt(
-                                    outcome = candidate,
-                                    snapshotChanged = true,
-                                )
-                                else -> VehicleProbeAttempt(
-                                    outcome = BydVehicleProbeOutcome(candidate.access),
-                                    heldCandidate = candidateCapabilities,
-                                    lostFields = replacement.lostFields,
-                                )
-                            }
-                        }
-                    }
-                }
-            }.getOrElse { error ->
-                VehicleProbeAttempt(
-                    BydVehicleProbeOutcome(
-                        BydAdbAccess.State.READY,
-                        error = error.message ?: error.javaClass.simpleName,
-                    ),
-                )
-            }
-            runOnUiThread {
-                val current = generation == vehicleProbeGeneration
-                if (current) {
-                    vehicleProbeAuthorizationInProgress = false
-                    vehicleProbeInProgress = false
-                }
-                if (!current || isFinishing || isDestroyed) return@runOnUiThread
-                pendingVehicleReplacement = attempt.heldCandidate
-                pendingVehicleReplacementExpected = expectedSnapshot
-                pendingVehicleLostFields = attempt.lostFields
-                vehicleProbeOutcome = when {
-                    attempt.allowedOnlyOnce -> attempt.outcome.copy(
-                        error = getString(R.string.vehicle_probe_allowed_once),
-                    )
-                    attempt.snapshotChanged -> attempt.outcome.copy(
-                        capabilities = null,
-                        error = getString(R.string.vehicle_probe_snapshot_changed),
-                    )
-                    else -> attempt.outcome
-                }
-                adbAccessState = attempt.outcome.access
-                val activatedLegacyMode = activateLegacyModeOnSuccess &&
-                    vehicleProbeOutcome?.capabilities != null
-                if (activatedLegacyMode) {
-                    BydOutputSettings.setLegacyVehicleProbe(this, true)
-                }
-                if (vehicleProbeOutcome?.capabilities != null) automaticVehicleValidationStarted = true
-                Log.i(
-                    BYD_VEHICLE_TAG,
-                    "user vehicle probe access=${attempt.outcome.access} " +
-                        "saved=${vehicleProbeOutcome?.capabilities != null} " +
-                        "lost=${attempt.lostFields.joinToString()} " +
-                        "error=${vehicleProbeOutcome?.error ?: "none"}",
-                )
-                render()
-                if (activatedLegacyMode && vehicleDataSwitchesOn()) reconnectForVehicleSetting()
-                runPendingAutomaticVehicleValidation()
-            }
-        }
-    }
-
     /**
      * After the first saved probe, validation is automatic and never asks for authorization. ADB
      * transport failure keeps the saved snapshot; only two complete READY-but-unreadable checks
      * trigger one automatic field re-probe.
      */
-    private fun validateSavedVehicleConfigurationAutomatically() {
-        if (!BydOutputSettings.legacyVehicleProbe(this)) return
-        val saved = BydVehicleFieldStore.load(applicationContext) ?: return
-        if (adbSwitchChangePending || vehicleAdbWorkInProgress()) {
-            automaticVehicleValidationPending = true
-            return
-        }
-        if (automaticVehicleValidationInProgress) {
-            // A request during a run, such as a switch just turned on, runs once this one ends.
-            automaticVehicleValidationPending = true
-            return
-        }
-        if (automaticVehicleValidationStarted) return
-        automaticVehicleValidationStarted = true
-        automaticVehicleValidationInProgress = true
-        val generation = ++vehicleValidationGeneration
-        Log.i(BYD_VEHICLE_TAG, "automatic vehicle validation starting savedFirmware=${saved.firmwareKey}")
-        if (page == "settings" && bydVehicleAdvancedExpanded) render()
-        val backend = BydVehicleSettingsBackendProvider.current
-        backend.execute("osnplay-byd13-auto-validate") {
-            val app = applicationContext
-            val validation = runCatching {
-                var status = backend.check(app, mayAsk = false)
-                var outcome: BydVehicleProbeOutcome? = null
-                var heldCandidate: BydVehicleCapabilities? = null
-                var lostFields: Set<BydVehicleField> = emptySet()
-                var snapshotChanged = false
-                var readable = status.state == BydAdbAccess.State.READY && enabledVehicleDataReadable(saved, status)
-                if (status.state == BydAdbAccess.State.READY && !enabledVehicleDataReadable(saved, status)) {
-                    Log.w(BYD_VEHICLE_TAG, "saved vehicle fields unreadable; validating once more")
-                    try {
-                        Thread.sleep(VEHICLE_VALIDATION_RETRY_MILLIS)
-                    } catch (_: InterruptedException) {
-                        Thread.currentThread().interrupt()
-                    }
-                    // A cancelled validation reads nothing more alongside the operation that replaced it.
-                    if (generation != vehicleValidationGeneration) {
-                        return@runCatching VehicleValidationAttempt(
-                            status = status,
-                            snapshotChanged = true,
-                        )
-                    }
-                    status = backend.check(app, mayAsk = false)
-                    readable = status.state == BydAdbAccess.State.READY && enabledVehicleDataReadable(saved, status)
-                    if (status.state == BydAdbAccess.State.READY && !readable) {
-                        if (generation != vehicleValidationGeneration) {
-                            return@runCatching VehicleValidationAttempt(
-                                status = status,
-                                snapshotChanged = true,
-                            )
-                        }
-                        Log.w(BYD_VEHICLE_TAG, "saved vehicle fields still unreadable; automatic re-probe starting")
-                        val candidate = backend.probe(app, persist = false)
-                        if (generation != vehicleValidationGeneration) {
-                            return@runCatching VehicleValidationAttempt(
-                                status = status,
-                                snapshotChanged = true,
-                            )
-                        }
-                        outcome = candidate
-                        candidate.capabilities?.let { next ->
-                            val replacement = synchronized(vehicleOperationLock) {
-                                if (generation != vehicleValidationGeneration) null
-                                else BydVehicleFieldStore.replaceAutomatically(app, saved, next)
-                            } ?: return@runCatching VehicleValidationAttempt(
-                                status = status,
-                                snapshotChanged = true,
-                            )
-                            when {
-                                replacement.saved -> Unit
-                                replacement.snapshotChanged -> {
-                                    snapshotChanged = true
-                                    outcome = null
-                                }
-                                else -> {
-                                    heldCandidate = next
-                                    lostFields = replacement.lostFields
-                                    outcome = BydVehicleProbeOutcome(candidate.access)
-                                }
-                            }
-                        }
-                    }
-                }
-                VehicleValidationAttempt(
-                    status = status,
-                    outcome = outcome,
-                    heldCandidate = heldCandidate,
-                    lostFields = lostFields,
-                    snapshotChanged = snapshotChanged,
-                    savedFieldsReadable = readable,
-                )
-            }
-            runOnUiThread {
-                val current = generation == vehicleValidationGeneration
-                if (current) automaticVehicleValidationInProgress = false
-                if (!current || isFinishing || isDestroyed) return@runOnUiThread
-                adbCheckFailed = validation.isFailure
-                validation.exceptionOrNull()?.let { Log.w(BYD_VEHICLE_TAG, "automatic vehicle validation failed", it) }
-                validation.getOrNull()?.let { result ->
-                    adbAccessState = result.outcome?.access ?: result.status.state
-                    when {
-                        result.snapshotChanged -> Unit
-                        result.savedFieldsReadable && result.outcome == null -> {
-                            // An open offer to replace stays: this check may not have read its lost fields.
-                            vehicleProbeOutcome = null
-                        }
-                        result.lostFields.isNotEmpty() -> {
-                            vehicleProbeOutcome = result.outcome
-                            pendingVehicleReplacement = result.heldCandidate
-                            pendingVehicleReplacementExpected = saved
-                            pendingVehicleLostFields = result.lostFields
-                        }
-                        result.outcome != null -> {
-                            vehicleProbeOutcome = result.outcome
-                            pendingVehicleReplacement = null
-                            pendingVehicleLostFields = emptySet()
-                        }
-                    }
-                    Log.i(
-                        BYD_VEHICLE_TAG,
-                        "automatic vehicle validation access=${adbAccessState} " +
-                            "reprobed=${result.outcome != null} " +
-                            "saved=${result.outcome?.capabilities != null && result.lostFields.isEmpty()} " +
-                            "lost=${result.lostFields.joinToString()} " +
-                            "snapshotChanged=${result.snapshotChanged} " +
-                            "error=${result.outcome?.error ?: "none"}",
-                    )
-                }
-                if (page == "settings" && bydVehicleAdvancedExpanded) {
-                    render()
-                }
-                runPendingAutomaticVehicleValidation()
-            }
-        }
-    }
-
-    private fun scheduleAutomaticVehicleValidation() {
-        if (!BydOutputSettings.legacyVehicleProbe(this)) {
-            automaticVehicleValidationPending = false
-            handler.removeCallbacks(automaticVehicleValidation)
-            return
-        }
-        automaticVehicleValidationStarted = false
-        automaticVehicleValidationPending = true
-        handler.removeCallbacks(automaticVehicleValidation)
-        handler.post(automaticVehicleValidation)
-    }
-
-    private fun cancelAutomaticVehicleValidationForUserOperation(
-        resumeAfter: Boolean,
-    ): BydVehicleCapabilities? = synchronized(vehicleOperationLock) {
-        handler.removeCallbacks(automaticVehicleValidation)
-        automaticVehicleValidationPending = resumeAfter
-        if (resumeAfter) automaticVehicleValidationStarted = false
-        vehicleValidationGeneration++
-        automaticVehicleValidationInProgress = false
-        BydVehicleFieldStore.load(applicationContext)
-    }
-
     private fun runPendingAutomaticVehicleValidation() {
         if (!automaticVehicleValidationPending || adbSwitchChangePending ||
             vehicleAdbWorkInProgress() || automaticVehicleValidationInProgress) return
@@ -4795,31 +3968,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     }
 
     /** Whether [status] has every reading an enabled switch needs; null [capabilities] is default mode. */
-    private fun enabledVehicleDataReadable(
-        capabilities: BydVehicleCapabilities?,
-        status: BydAdbAccess.Status,
-    ): Boolean {
-        if (BydOutputSettings.batteryToIphone(this) && capabilities?.batterySupported != false &&
-            (status.batteryPercent == null || status.rangeKm == null)) return false
-        if (BydOutputSettings.wheelSpeedToIphone(this) && capabilities?.motionSupported != false &&
-            (status.speedKmh == null || status.gear == null)) return false
-        if (BydOutputSettings.videoWhileParked(this) && capabilities?.gearSupported != false && status.gear == null) return false
-        return true
-    }
-
-    private fun adbOffText(): Int {
-        // #1002: on DiLink UI7.0 the developer-options switch can stay on while nothing listens on 5555.
-        val adbEnabled = Settings.Global.getInt(contentResolver, Settings.Global.ADB_ENABLED, 0) == 1
-        return if (adbEnabled) R.string.adb_network_not_answering else R.string.adb_off
-    }
-
-    private fun adbLinkStatusText(state: BydAdbAccess.State): String = when (state) {
-        BydAdbAccess.State.READY -> getString(R.string.adb_access_ready)
-        BydAdbAccess.State.NOT_APPROVED -> getString(R.string.adb_enabled_not_approved)
-        BydAdbAccess.State.ADB_OFF -> getString(adbOffText())
-        BydAdbAccess.State.PAIRING_ONLY -> getString(R.string.adb_pairing_only)
-    }
-
     private fun gearLetter(value: Int): String = when (value) {
         1 -> "P"
         2 -> "R"
@@ -4829,78 +3977,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     private fun reconnectForVehicleSetting() {
         if (CarPlayBackgroundSession.hasSession()) connect(AirPlayPersistence.loadWirelessEnabled(this))
-    }
-
-    private fun vehicleDataSwitchesOn() = BydOutputSettings.batteryToIphone(this) ||
-        BydOutputSettings.wheelSpeedToIphone(this) || BydOutputSettings.videoWhileParked(this)
-
-    private fun hasPreciseLocation() =
-        checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-
-    // The cluster screen is described at connection time, so a running session reconnects over
-    // its current link. The position choices need no call: getString(R.string.apply_and_reconnect) already does it.
-    private fun clusterSafeAreaControls(card: LinearLayout) {
-        val rect = AirPlayPersistence.loadClusterSafeAreaRect(this)
-            ?: DiLink4ClusterDisplay.defaultSafeAreaRect(
-                markerXPercent = AirPlayPersistence.loadClusterMarkerXPercent(this),
-                markerYPercent = AirPlayPersistence.loadClusterMarkerYPercent(this))
-        card.addView(label(getString(R.string.safe_area_mapping_summary,
-            rect.width, rect.height, rect.left, rect.top, 1920, 720), 14, MUTED))
-        card.addView(actionButton(getString(R.string.cluster_safe_area_edit), false) {
-            openClusterSafeAreaEditor()
-        }, matchButton(10, 56))
-        card.addView(button(getString(R.string.cluster_safe_area_reset), false) {
-            AirPlayPersistence.clearClusterSafeAreaRect(this)
-            render()
-            markReconnectNeeded()
-        }, matchButton(10, 56))
-        card.addView(label(getString(R.string.cluster_safe_area_hint), 14, MUTED))
-    }
-
-    private fun openClusterSafeAreaEditor() {
-        clusterSafeAreaDialog?.dismiss()
-        val previewOwner = Any()
-        val initial = AirPlayPersistence.loadClusterSafeAreaRect(this)
-            ?: DiLink4ClusterDisplay.defaultSafeAreaRect(
-                markerXPercent = AirPlayPersistence.loadClusterMarkerXPercent(this),
-                markerYPercent = AirPlayPersistence.loadClusterMarkerYPercent(this))
-        val editor = SafeAreaEditorView(this).apply {
-            setBackgroundColor(SURFACE)
-            setRect(initial, 1920, 720)
-        }
-        // A standalone dialog gives the weighted preview an exact available height.
-        // AlertDialog's wrap-content custom panel can collapse it to zero.
-        val dialog = appDialog().apply { requestWindowFeature(Window.FEATURE_NO_TITLE) }
-        val panel = column().apply {
-            setPadding(dp(16), dp(8), dp(16), dp(8))
-            setBackgroundColor(SURFACE)
-        }
-        panel.addView(label(getString(R.string.cluster_safe_area_edit), 18, TEXT, true))
-        panel.addView(label(getString(R.string.cluster_safe_area_live_hint), 14, MUTED))
-        panel.addView(ClusterSafeAreaPreviewFrame(this, editor), LinearLayout.LayoutParams(-1, 0, 1f))
-        val actions = row()
-        actions.addView(button(getString(R.string.cancel), false) { dialog.dismiss() },
-            LinearLayout.LayoutParams(0, dp(56), 1f))
-        actions.addView(button(getString(if (CarPlayBackgroundSession.hasSession())
-            R.string.apply_and_reconnect else R.string.save), true) {
-            editor.currentRectForSource()?.let { AirPlayPersistence.saveClusterSafeAreaRect(this, it) }
-            dialog.dismiss()
-            render()
-            reconnectIfRunning()
-        }, LinearLayout.LayoutParams(0, dp(56), 1f))
-        panel.addView(actions)
-        dialog.setContentView(panel, ViewGroup.LayoutParams(-1, -1))
-        editor.onRectChanged = { ClusterActivityOutput.updateSafeAreaPreview(previewOwner, it) }
-        clusterSafeAreaDialog = dialog
-        dialog.setOnDismissListener {
-            editor.onRectChanged = null
-            ClusterActivityOutput.endSafeAreaPreview(previewOwner)
-            if (clusterSafeAreaDialog === dialog) clusterSafeAreaDialog = null
-        }
-        dialog.show()
-        dialog.window?.setLayout((resources.displayMetrics.widthPixels * 0.9f).toInt(),
-            (resources.displayMetrics.heightPixels * 0.85f).toInt())
-        ClusterActivityOutput.beginSafeAreaPreview(previewOwner, initial, this)
     }
 
     private fun reconnectIfRunning() {
@@ -5632,34 +4708,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             DiagnosticRedactor.redact(line)?.let { appendLine(it) }
         }
         appendLine()
-        appendLine("--- Standalone HUD compatibility ---")
-        appendLine(BydOutputSettings.standaloneHudDiagnosticReport(appContext))
-        appendLine()
-        appendLine("--- BYD vehicle-data probe ---")
-        appendLine(
-            "mode=${if (BydOutputSettings.legacyVehicleProbe(appContext)) "legacy-probe" else "default"} " +
-                "switches location=${AirPlayPersistence.loadLocationReportingEnabled(appContext)} " +
-                "battery=${BydOutputSettings.batteryToIphone(appContext)} " +
-                "wheelSpeed=${BydOutputSettings.wheelSpeedToIphone(appContext)} " +
-                "parkedVideo=${BydOutputSettings.videoWhileParked(appContext)}",
-        )
-        val bydCapabilities = BydVehicleFieldStore.load(appContext)
-        if (bydCapabilities == null) {
-            appendLine("no saved successful probe")
-        } else {
-            appendLine(
-                "catalog=${bydCapabilities.catalogAvailable} detectedAt=${bydCapabilities.detectedAtMillis} " +
-                    "savedFirmware=${bydCapabilities.firmwareKey} " +
-                    "currentFirmware=${BydVehicleFieldStore.firmwareKey()}",
-            )
-            for (field in BydVehicleField.entries) {
-                val probe = bydCapabilities.result(field)
-                appendLine("${field.name}: supported=${probe.supported} " +
-                    (probe.address?.let { "tx=${it.transaction} dev=${it.device} fid=${it.fid} source=${it.source}" }
-                        ?: "address=none"))
-            }
-        }
-        appendLine()
         appendLine("--- Last display negotiation (timestamps distinguish it from current settings) ---")
         appendLine(DisplayDiagnosticSnapshot.report(appContext))
         appendLine()
@@ -5945,30 +4993,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     }
     // The car's own music rhythm: saved on only once the head unit's audio call is reachable, from OSNPlay itself or
     // over its ADB access.
-    private fun carRhythmControl(card: LinearLayout) {
-        var row: Switch? = null
-        row = toggle(card, getString(R.string.settings_ambient_car_rhythm),
-            getString(R.string.settings_ambient_car_rhythm_description), AmbientMusicSettings.load(this).carRhythm) { on ->
-            if (!on) {
-                AmbientMusicSettings.save(this, AmbientMusicSettings.load(this).copy(carRhythm = false))
-                return@toggle
-            }
-            carRhythmSupportCheck(applicationContext).whenComplete { supported, _ ->
-                runOnUiThread {
-                    if (isFinishing || isDestroyed) return@runOnUiThread
-                    // Switched off again while the check ran (over ADB it takes seconds): that was saved last.
-                    if (row?.isChecked != true) return@runOnUiThread
-                    if (supported == true) {
-                        AmbientMusicSettings.save(this, AmbientMusicSettings.load(this).copy(carRhythm = true))
-                    } else {
-                        toast(getString(R.string.settings_ambient_car_rhythm_unavailable))
-                        row?.isChecked = false
-                    }
-                }
-            }
-        }
-    }
-
     private fun ambientConfigurationLabel(value: AmbientMusicSettings.Values): String {
         val mode = if (!value.music) getString(R.string.settings_ambient_static) else when (value.colorMode) {
             AmbientColorMode.ENERGY -> getString(R.string.settings_ambient_energy)
