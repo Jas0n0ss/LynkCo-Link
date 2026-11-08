@@ -71,6 +71,8 @@ launcher-entry/build/outputs/apk/release/launcher-entry-release.apk
 - 一根**公对公 USB 数据线**（电脑装 APK），或一个 FAT32 格式 U 盘（车机文件管理器装 APK）。
 - 电脑安装 [Android Platform-Tools](https://developer.android.com/tools/releases/platform-tools)（含 `adb`）。
 
+第一次打开 OSNPlay 会直接进入“连接设置 → 选择 iPhone”，不再询问 DiLink 版本。
+
 ### 第一步：让车机允许安装
 
 **方法 A：U 盘安装（固件允许时最简单）**

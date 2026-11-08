@@ -6,6 +6,7 @@
 
 - 领克 OSN 桌面可见性适配：CarPlay 图标、Lynk & Co 车辆按钮图标、显式 activity label/icon、`LEANBACK_LAUNCHER` 入口。
 - 运行时/资源清理：`DiPlay*` 类、资源键、action、日志标记和环境变量统一改为 `OSNPlay*`；APK 内不再包含旧品牌字符串。
+- 首次设置改为“连接 → iPhone → 完成”，移除 DiLink 版本选择和比亚迪功能页；`lynk` 包隐藏 BYD 专属设置卡片。
 - 发布两个 APK：`OSNPlay-0.1.2-lynk-release-standalone.apk`（主程序，含认证资产）和 `OSNPlay-Whitelist-Entry-1.0.apk`（白名单入口，无认证资产）。
 - `lynk` 版本默认开启开机自动启动和桌面悬浮球；首次运行提示授予“显示在其他应用上层”。
 - 开机时发布“打开 OSNPlay”通知，即使原厂 Launcher3 的包名白名单不显示图标也能进入应用。
