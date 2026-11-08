@@ -7,8 +7,12 @@ This is the real-car gate for LynkCo-Link. Unit tests and the emulator cannot pr
 With USB debugging enabled and the phone connected:
 
 ```sh
-scripts/lynk-acceptance.sh <adb-serial>
+scripts/lynk-collect.sh <adb-serial>
 ```
+
+This runs the adb checks, pulls the latest in-app vehicle report and writes one
+merged `LynkCo-Link-evidence-*.tar.gz`. To collect only the adb side, use
+`scripts/lynk-acceptance.sh`.
 
 The archive contains device/build identity, display, audio, Bluetooth, Wi-Fi, package permissions, logcat, a screenshot and the UI hierarchy. Attach it to a GitHub issue with the manual results below.
 

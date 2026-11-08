@@ -240,17 +240,33 @@ adb shell am force-stop com.kugou.android.auto
 ```text
 1. 本页 A4-A8 的填写结果
 2. head-unit checks 截图
-3. LynkCo-Link-debug-*.zip
-4. acceptance-*.tar.gz
+3. LynkCo-Link-vehicle-report-*.zip
+4. LynkCo-Link-evidence-*.tar.gz
 5. wheel-keys.txt（如有）
 6. 故障截图/录屏
 ```
 
-生成取证包：
+`acceptance-*.tar.gz` 不是 APK 内的文件，而是电脑通过 adb 采集的系统证据。
+最省事的方式是一次生成合并包：
 
 ```sh
-./scripts/lynk-acceptance.sh <设备序列号>
+./scripts/lynk-collect.sh <设备序列号>
 ```
+
+它会：
+
+1. 采集 adb 系统证据（`acceptance-*.tar.gz`）
+2. 拉取 APK 内最新的车辆报告 ZIP
+3. 合并成 `LynkCo-Link-evidence-*.tar.gz`
+
+如果提示 “No in-app vehicle report was found”，先执行：
+
+```text
+设置 → 诊断 → Collect vehicle report (ZIP)
+```
+
+然后再运行脚本。释放版无法通过 `run-as` 读取应用目录，脚本使用
+`adb pull /sdcard/Android/data/com.kugou.android.auto/files/debug-logs/`
 
 提交前删除：
 
