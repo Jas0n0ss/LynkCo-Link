@@ -63,7 +63,7 @@ internal enum class DefaultConnectionMode(val key: String) {
 }
 
 internal object LynkCoLinkPreferences {
-    private fun prefs(context: Context) = context.getSharedPreferences("osnplay", Context.MODE_PRIVATE)
+    private fun prefs(context: Context) = context.getSharedPreferences("lynkco_link", Context.MODE_PRIVATE)
     fun phoneAddress(context: Context): String? = prefs(context).getString("phone_address", null)
     fun phoneName(context: Context): String = prefs(context).getString("phone_name", null) ?: "Your iPhone"
     fun savePhone(context: Context, address: String, name: String) {

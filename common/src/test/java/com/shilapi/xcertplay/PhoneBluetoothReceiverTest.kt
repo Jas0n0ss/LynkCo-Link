@@ -21,8 +21,8 @@ class PhoneBluetoothReceiverTest {
 
     @Before fun reset() {
         LynkCoLinkPreferences.saveConnectOnPhoneBluetooth(app, false)
-        app.getSharedPreferences("osnplay_phone_wake", Context.MODE_PRIVATE).edit().clear().commit()
-        app.getSharedPreferences("osnplay_phone_wake_diagnostics", Context.MODE_PRIVATE).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link_phone_wake", Context.MODE_PRIVATE).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link_phone_wake_diagnostics", Context.MODE_PRIVATE).edit().clear().commit()
         CarPlayBackgroundSession.clear()
         // Saved in lowercase on purpose: the receiver must match the (always uppercase) device
         // address case-insensitively; Robolectric refuses to build a lowercase remote device.

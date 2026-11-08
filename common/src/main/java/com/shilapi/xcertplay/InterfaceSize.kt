@@ -20,7 +20,7 @@ object InterfaceSize {
 
     // Auto scales up until the shorter side is this wide; screens already narrower stay at 100%.
     private const val AUTO_SMALLEST_WIDTH_DP = 720
-    private const val PREFS = "osnplay"
+    private const val PREFS = "lynkco_link"
     private const val KEY = "interface_size"
 
     fun preference(context: Context): Int =

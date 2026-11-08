@@ -22,7 +22,7 @@ object AdbKeys {
     private const val PRIVATE = "adbkey.private"
     private const val PUBLIC = "adbkey.public"
     private const val KEY_BITS = 2048
-    private const val NAME = " osnplay@headunit"
+    private const val NAME = " lynkco_link@headunit"
 
     // ADB signs the token as if it were a SHA-1 digest: the host prepends SHA-1's DigestInfo header.
     private val SHA1_DIGEST_INFO = byteArrayOf(

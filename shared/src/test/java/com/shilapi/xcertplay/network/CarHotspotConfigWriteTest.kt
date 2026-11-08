@@ -144,7 +144,7 @@ class CarHotspotConfigWriteTest {
         assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.WRITTEN, "Car-Original"), CarHotspotConfigWrite.writeAdb(
             { sent, _, pushed -> command = sent; stdin = pushed;
                 "noise\nLYNKCO_LINK_HOTSPOT_APCONFIG_V1|ok|Q2FyLU9yaWdpbmFs\n" },
-            "/data/app/osnplay.apk", credentials, 4_000, ::log))
+            "/data/app/lynkco_link.apk", credentials, 4_000, ::log))
         command!!.let {
             assertTrue(it.contains("app_process /system/bin com.shilapi.xcertplay.network.CarHotspotStartMain"))
             assertTrue(it.contains(" apconfig "))

@@ -5,7 +5,7 @@ import com.shilapi.xcertplay.adb.LocalAdb
 import com.shilapi.xcertplay.orchestration.WirelessHotspotMode
 
 object CarHotspotSettings {
-    private fun prefs(context: Context) = context.getSharedPreferences("osnplay_car_hotspot", Context.MODE_PRIVATE)
+    private fun prefs(context: Context) = context.getSharedPreferences("lynkco_link_car_hotspot", Context.MODE_PRIVATE)
 
     fun enabled(context: Context): Boolean = prefs(context).getBoolean("auto_enable", false)
 

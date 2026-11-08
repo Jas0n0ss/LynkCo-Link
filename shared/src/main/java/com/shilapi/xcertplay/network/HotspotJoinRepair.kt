@@ -57,7 +57,7 @@ class HotspotJoinRepair {
                         it.shell(command(application.packageCodePath, application.packageName, "cancel", operation, null))
                 }
             }
-        }, "osnplay-hotspot-cancel").apply { isDaemon = true; start() }
+        }, "lynkco_link-hotspot-cancel").apply { isDaemon = true; start() }
     }
 
     companion object {

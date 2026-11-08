@@ -181,7 +181,7 @@ class SettingsBackupServerTest {
 
     @Test
     fun importAppliesTheDocumentAndReportsTheOutcome() {
-        val document = "{\"format\":\"osnplay-settings\",\"version\":1,\"settings\":{}}"
+        val document = "{\"format\":\"lynkco_link-settings\",\"version\":1,\"settings\":{}}"
         val (status, body) = get("/b/${endpoint.token}/import", method = "POST", body = document.toByteArray())
         assertEquals(200, status)
         assertTrue(body.contains("\"applied\":4"))

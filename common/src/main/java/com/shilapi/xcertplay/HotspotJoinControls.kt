@@ -30,7 +30,7 @@ internal class HotspotJoinControls(private val activity: Activity, private val s
         }
         override fun execute(block: () -> Unit) {
             cancelled.set(false)
-            Thread(block, "osnplay-hotspot-join").start()
+            Thread(block, "lynkco_link-hotspot-join").start()
         }
         override fun cancel() { cancelled.set(true); repair?.cancel() }
     }

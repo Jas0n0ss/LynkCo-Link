@@ -141,7 +141,7 @@ class LocalAdb(
         @Volatile private var closed = false
         private companion object {
             val deadlines = java.util.concurrent.Executors.newSingleThreadScheduledExecutor { runnable ->
-                Thread(runnable, "osnplay-adb-stream-deadline").apply { isDaemon = true }
+                Thread(runnable, "lynkco_link-adb-stream-deadline").apply { isDaemon = true }
             }
         }
         @Synchronized

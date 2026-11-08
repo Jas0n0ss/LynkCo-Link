@@ -34,7 +34,7 @@ class LynkCoLinkSessionService : Service() {
         val open = PendingIntent.getActivity(this, 0, CarPlayScreen.intent(this), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val stop = PendingIntent.getService(this, 1, Intent(this, LynkCoLinkSessionService::class.java).setAction(ACTION_STOP), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val notification = builder
-            .setSmallIcon(R.drawable.ic_osnplay_notification)
+            .setSmallIcon(R.drawable.ic_lynkco_link_notification)
             .setContentTitle("LynkCoLink")
             .setContentText("CarPlay connection running")
             .setContentIntent(open).setOngoing(true)
@@ -62,6 +62,6 @@ class LynkCoLinkSessionService : Service() {
     companion object {
         const val ACTION_STOP = "com.lynkco.link.DISCONNECT"
         // Widened from private so the head-unit diagnostic can report the same channel the session uses.
-        const val CHANNEL = "osnplay_connection"
+        const val CHANNEL = "lynkco_link_connection"
     }
 }

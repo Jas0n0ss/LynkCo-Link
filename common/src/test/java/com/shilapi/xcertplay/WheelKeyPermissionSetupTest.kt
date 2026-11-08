@@ -23,7 +23,7 @@ class WheelKeyPermissionSetupTest {
     private var allow = true
 
     @Before fun setup() {
-        context.getSharedPreferences("osnplay_navigation_wheel", android.content.Context.MODE_PRIVATE).edit().clear().commit()
+        context.getSharedPreferences("lynkco_link_navigation_wheel", android.content.Context.MODE_PRIVATE).edit().clear().commit()
         WheelZoomSettings.setEnabled(context, false)
         WheelZoomSettings.setJoystick(context, false)
         Settings.Secure.putString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, other)

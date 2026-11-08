@@ -71,8 +71,8 @@ internal class BackgroundUpdateWorker(context: Context, parameters: WorkerParame
 }
 
 internal object BackgroundUpdateScheduler {
-    private const val PERIODIC_WORK = "osnplay-periodic-update-check"
-    private const val OPEN_WORK = "osnplay-open-update-check"
+    private const val PERIODIC_WORK = "lynkco_link-periodic-update-check"
+    private const val OPEN_WORK = "lynkco_link-open-update-check"
 
     fun schedule(context: Context) {
         val constraints = Constraints.Builder()

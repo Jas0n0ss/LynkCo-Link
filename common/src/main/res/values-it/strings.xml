@@ -104,15 +104,15 @@
     <string name="a_familiar_drive">Una guida familiare.</string>
     <string name="a_previous_wi_fi_direct_connection_is_still_running_reset">Una precedente connessione Wi-Fi Direct è ancora attiva. Reimpostala per connetterti.</string>
     <string name="about">Info</string>
-    <string name="about_osnplay">Informazioni su LynkCo-Link</string>
+    <string name="about_lynkco_link">Informazioni su LynkCo-Link</string>
     <string name="active">Attivo</string>
     <string name="advanced_audio_channel_mapping">Mappatura avanzata dei canali audio</string>
     <string name="airplay_icon">Icona AirPlay</string>
     <string name="allow_carplay_ui_outside_the_safe_area">Consenti all’interfaccia di CarPlay di uscire dall’area sicura</string>
     <string name="allow_nearby_devices_and_on_older_android_versions_locatio">Consenti Dispositivi nelle vicinanze e, sulle versioni di Android meno recenti, Posizione prima di reimpostare il Wi-Fi di CarPlay.</string>
-    <string name="allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per">Consenti Dispositivi nelle vicinanze per LynkCo-Link nei permessi app della head unit.</string>
-    <string name="allow_nearby_devices_so_osnplay_can_connect_to_your_paired">Consenti Dispositivi nelle vicinanze affinché LynkCo-Link possa connettersi all’iPhone associato.</string>
-    <string name="allow_precise_location_for_osnplay_in_the_head_unit_s_app_p">Consenti la Posizione precisa per LynkCo-Link nei permessi app della head unit.</string>
+    <string name="allow_nearby_devices_for_lynkco_link_in_the_head_unit_s_app_per">Consenti Dispositivi nelle vicinanze per LynkCo-Link nei permessi app della head unit.</string>
+    <string name="allow_nearby_devices_so_lynkco_link_can_connect_to_your_paired">Consenti Dispositivi nelle vicinanze affinché LynkCo-Link possa connettersi all’iPhone associato.</string>
+    <string name="allow_precise_location_for_lynkco_link_in_the_head_unit_s_app_p">Consenti la Posizione precisa per LynkCo-Link nei permessi app della head unit.</string>
     <string name="allow_the_connection_permission_to_continue">Consenti il permesso di connessione per continuare</string>
     <string name="an_independent_carplay_receiver_for_android_head_units_wir">Un ricevitore CarPlay indipendente per head unit Android. Le connessioni cablate e wireless funzionano sulla head unit, con autenticazione locale. Un normale iPhone può connettersi senza jailbreak, Mac, dongle o accesso con account.\n\nQuesta anteprima usa un’identità accessorio sperimentale. La compatibilità con ogni iPhone e head unit è ancora in fase di test. Non è un prodotto certificato Apple.</string>
     <string name="android_9_compatibility">Compatibilità con Android 9</string>
@@ -132,7 +132,7 @@
     <string name="automatic_map_setup_adb">Configurazione automatica della mappa · ADB</string>
     <string name="availability_depends_on_your_head_unit_s_startup_settings">La disponibilità dipende dalle impostazioni di avvio della head unit.</string>
     <string name="back">Indietro</string>
-    <string name="back_to_osnplay">Torna a LynkCo-Link</string>
+    <string name="back_to_lynkco_link">Torna a LynkCo-Link</string>
     <string name="band">Banda</string>
     <string name="bluetooth_settings">Impostazioni Bluetooth</string>
     <string name="byd_navigation">Navigazione BYD</string>
@@ -170,7 +170,7 @@
     <string name="cluster_map_size">Dimensione della mappa sul cruscotto</string>
     <string name="connect">Connetti</string>
     <string name="connect_phone">Connetti telefono</string>
-    <string name="connect_when_osnplay_opens">Connetti all’apertura di LynkCo-Link</string>
+    <string name="connect_when_lynkco_link_opens">Connetti all’apertura di LynkCo-Link</string>
     <string name="connect_when_iphone_bluetooth_connects">Connetti quando l’iPhone selezionato si riconnette</string>
     <string name="connect_when_iphone_bluetooth_connects_description">Dopo l’accensione dell’auto, apri LynkCo-Link e avvia CarPlay wireless quando l’iPhone selezionato si connette via Bluetooth. Alcune head unit limitano l’avvio in background.</string>
     <string name="connect_with_usb">Connetti via USB</string>
@@ -189,7 +189,7 @@
     <string name="could_not_reset_wi_fi_direct_close_the_other_projection_ap">Impossibile reimpostare Wi-Fi Direct. Chiudi l’altra app di proiezione e riprova.</string>
     <string name="could_not_save_image">Impossibile salvare l’immagine</string>
     <string name="could_not_save_the_report">Impossibile salvare il report</string>
-    <string name="could_not_start_carplay_return_to_osnplay_and_check_app_per">Impossibile avviare CarPlay. Torna a LynkCo-Link e controlla i permessi dell’app.</string>
+    <string name="could_not_start_carplay_return_to_lynkco_link_and_check_app_per">Impossibile avviare CarPlay. Torna a LynkCo-Link e controlla i permessi dell’app.</string>
     <string name="custom_1_1_icon">Icona 1:1 personalizzata</string>
     <string name="debug_logs">Log di debug</string>
     <string name="default_icon">Icona predefinita</string>
@@ -242,7 +242,7 @@
     <string name="i2c_device_path_contains_u_0000">Il percorso del dispositivo I2C contiene U+0000</string>
     <string name="i2c_device_path_is_required">Il percorso del dispositivo I2C è obbligatorio</string>
     <string name="image_is_not_ready">L’immagine non è pronta</string>
-    <string name="in_carplay_swipe_down_with_three_fingers_to_open_osnplay_se">In CarPlay, scorri verso il basso con tre dita per aprire le impostazioni di LynkCo-Link.</string>
+    <string name="in_carplay_swipe_down_with_three_fingers_to_open_lynkco_link_se">In CarPlay, scorri verso il basso con tre dita per aprire le impostazioni di LynkCo-Link.</string>
     <string name="instrument_contrast">Contrasto del quadro strumenti</string>
     <string name="instrument_theme">Tema del quadro strumenti</string>
     <string name="keep_bluetooth_and_wi_fi_on_your_iphone_pair_with_the_car">Tieni attivi Bluetooth e Wi-Fi sull’iPhone. Associalo al Bluetooth dell’auto, poi seleziona qui il tuo iPhone. Consenti Dispositivi nelle vicinanze quando richiesto.</string>
@@ -256,7 +256,7 @@
     <string name="longest_height">Altezza maggiore</string>
     <string name="looking_for_your_paired_iphone">Ricerca dell’iPhone associato…</string>
     <string name="made_possible_by_open_source">Reso possibile dall’open source</string>
-    <string name="make_osnplay_feel_right_for_your_car">Rendi LynkCo-Link perfetto per la tua auto.</string>
+    <string name="make_lynkco_link_feel_right_for_your_car">Rendi LynkCo-Link perfetto per la tua auto.</string>
     <string name="manual_hotspot">Hotspot manuale</string>
     <string name="manual_mode_match_the_cluster_theme_here_the_map_cannot_fo">Modalità manuale: adatta qui il tema del quadro strumenti. Senza l’accesso ai dati di utilizzo, la mappa non può seguire la visibilità delle schede.</string>
     <string name="manufacturer">Produttore</string>
@@ -303,7 +303,7 @@
     <string name="preparing_mfi_authentication">Preparazione dell’autenticazione MFi</string>
     <string name="ready">Pronto</string>
     <string name="ready_when_you_are">Pronto quando vuoi</string>
-    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_osnplay">Ricevitore basato su xcertplay, con licenza GPL-3.0. L’interfaccia di LynkCo-Link segue il design di DiAuto, con licenza AGPL-3.0.\n\nInclude AndroidX, Bouncy Castle, JmDNS e SLF4J. Il codice sorgente e gli avvisi di licenza accompagnano questa versione.\n\nCarPlay e l’icona di CarPlay appartengono ad Apple Inc. LynkCo-Link è un progetto indipendente.</string>
+    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_lynkco_link">Ricevitore basato su xcertplay, con licenza GPL-3.0. L’interfaccia di LynkCo-Link segue il design di DiAuto, con licenza AGPL-3.0.\n\nInclude AndroidX, Bouncy Castle, JmDNS e SLF4J. Il codice sorgente e gli avvisi di licenza accompagnano questa versione.\n\nCarPlay e l’icona di CarPlay appartengono ad Apple Inc. LynkCo-Link è un progetto indipendente.</string>
     <string name="reconnecting_to_your_iphone">Riconnessione all’iPhone…</string>
     <string name="remote">Remoto</string>
     <string name="remote_server_address_contains_u_0000">L’indirizzo del server remoto contiene U+0000</string>
@@ -313,7 +313,7 @@
     <string name="report_android_location_to_the_iphone">Invia all’iPhone la posizione di Android</string>
     <string name="report_location_to_iphone">Invia la posizione all’iPhone</string>
     <string name="report_saved_open_it_from_your_file_manager_to_share_it">Report salvato. Aprilo dal gestore file per condividerlo.</string>
-    <string name="reports_save_to_downloads_osnplay">I report vengono salvati in Download/LynkCo-Link.\u0020</string>
+    <string name="reports_save_to_downloads_lynkco_link">I report vengono salvati in Download/LynkCo-Link.\u0020</string>
     <string name="requesting_iphone_usb_permission">Richiesta del permesso USB per l’iPhone</string>
     <string name="requesting_mfi_usb_permission">Richiesta del permesso USB per MFi</string>
     <string name="reset">Reimposta</string>
@@ -322,7 +322,7 @@
     <string name="reset_carplay_wi_fi">Reimposta Wi-Fi di CarPlay</string>
     <string name="reset_carplay_wi_fi_2">Reimpostare il Wi-Fi di CarPlay?</string>
     <string name="resolution">Risoluzione</string>
-    <string name="return_from_car_settings_to_osnplay_then_connect_accept_the">Torna a LynkCo-Link dalle impostazioni dell’auto, poi connettiti. Accetta la richiesta di CarPlay sull’iPhone. Non serve un piano internet per l’auto; la disponibilità dei dati mobili dipende dalle impostazioni di rete del tuo telefono.</string>
+    <string name="return_from_car_settings_to_lynkco_link_then_connect_accept_the">Torna a LynkCo-Link dalle impostazioni dell’auto, poi connettiti. Accetta la richiesta di CarPlay sull’iPhone. Non serve un piano internet per l’auto; la disponibilità dei dati mobili dipende dalle impostazioni di rete del tuo telefono.</string>
     <string name="review_app_permissions">Controlla i permessi app</string>
     <string name="right_hand_drive">Guida a destra</string>
     <string name="running">In esecuzione</string>
@@ -429,7 +429,7 @@
     <string name="turn_on_wi_fi_in_the_head_unit_s_settings_to_connect">Attiva il Wi-Fi nelle impostazioni della head unit per connetterti.</string>
     <string name="turn_the_car_s_wi_fi_switch_on_allow_location_nearby_devic">Attiva l’interruttore Wi-Fi dell’auto. Consenti Posizione / Dispositivi nelle vicinanze se richiesto e attiva la Posizione quando Android lo chiede. Se la riproduzione scatta, prova l’hotspot integrato dell’auto a 5 GHz.</string>
     <string name="usage_access_enabled">Accesso ai dati di utilizzo: attivo</string>
-    <string name="usage_access_lets_osnplay_follow_the_instrument_theme_and_m">L’accesso ai dati di utilizzo permette a LynkCo-Link di seguire il tema del quadro strumenti e la scheda della mappa. Solo gli eventi di attività del quadro strumenti BYD vengono elaborati in locale. Questa auto non offre una pagina di impostazioni dei permessi funzionante.</string>
+    <string name="usage_access_lets_lynkco_link_follow_the_instrument_theme_and_m">L’accesso ai dati di utilizzo permette a LynkCo-Link di seguire il tema del quadro strumenti e la scheda della mappa. Solo gli eventi di attività del quadro strumenti BYD vengono elaborati in locale. Questa auto non offre una pagina di impostazioni dei permessi funzionante.</string>
     <string name="usage_access_setup_needed_for_automatic_mode">Accesso ai dati di utilizzo: configurazione necessaria per la modalità automatica</string>
     <string name="usb_ch341">USB/CH341</string>
     <string name="use_a_usb_data_cable_and_the_car_s_usb_data_port_unlock_yo">Usa un cavo dati USB e la porta dati USB dell’auto. Sblocca l’iPhone e consenti CarPlay. Non serve configurare l’hotspot.</string>
@@ -646,7 +646,7 @@
     <string name="adb_cluster_routing">Avvio della mappa sul quadro strumenti tramite ADB…</string>
     <string name="adb_cluster_routed">Attività del quadro strumenti instradata; in attesa della mappa dell’iPhone</string>
     <string name="adb_cluster_route_failed">Avvio sul quadro strumenti non riuscito; esporta la diagnostica.</string>
-    <string name="open_osnplay_settings_hint">In CarPlay, scorri verso il basso con %1$d dita per aprire il menu rapido.</string>
+    <string name="open_lynkco_link_settings_hint">In CarPlay, scorri verso il basso con %1$d dita per aprire il menu rapido.</string>
     <string name="carplay_controls">Controlli CarPlay</string>
     <string name="settings_gesture_fingers">Menu rapido · scorri con %1$d dita (tocca per cambiare)</string>
     <string name="settings_gesture_fingers_label">Menu rapido · dita per scorrere verso il basso</string>

@@ -53,7 +53,7 @@ class TelephonyMicrophoneTest {
         ConfigurableAudioEffect.resetStatus()
         ShadowAudioModeRequests.clearRequests()
         shadowOf(context).grantPermissions(Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS)
-        context.getSharedPreferences("osnplay_bt_suspend", 0).edit().clear().commit()
+        context.getSharedPreferences("lynkco_link_bt_suspend", 0).edit().clear().commit()
         shadowOf(context.getSystemService(BluetoothManager::class.java).adapter).setState(BluetoothAdapter.STATE_ON)
         manager = context.getSystemService(AudioManager::class.java)
         sink = AndroidMediaSink(context = context)
@@ -158,7 +158,7 @@ class TelephonyMicrophoneTest {
     }
 
     @Test fun anUnverifiedPauseFlagDoesNotSwitchCallAudioRouting() {
-        context.getSharedPreferences("osnplay_bt_suspend", 0).edit()
+        context.getSharedPreferences("lynkco_link_bt_suspend", 0).edit()
             .putBoolean("suspended_by_us", true).putBoolean("restore_initially_enabled", true).commit()
         sink.onMicrophoneStarted(telephony, config("telephony"))
         assertEquals(MediaRecorder.AudioSource.VOICE_COMMUNICATION, awaitCapture().audioSource)

@@ -110,7 +110,7 @@ class AdaptiveSettingsUiTest {
         activity?.finish()
         RuntimeEnvironment.setFontScale(1f)
         AppAppearanceRuntime.resetForTest()
-        context.getSharedPreferences("osnplay", 0).edit().clear().commit()
+        context.getSharedPreferences("lynkco_link", 0).edit().clear().commit()
         context.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
     }
 

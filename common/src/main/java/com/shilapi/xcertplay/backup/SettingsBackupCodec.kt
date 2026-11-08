@@ -10,7 +10,7 @@ data class SettingsImportOutcome(val applied: Int, val skipped: Int, val invalid
 
 /** Reads and writes the settings documents exchanged through the backup web page. */
 object SettingsBackupCodec {
-    const val FORMAT = "osnplay-settings"
+    const val FORMAT = "lynkco_link-settings"
     const val VERSION = 1
 
     /**
@@ -61,11 +61,11 @@ object SettingsBackupCodec {
     private val CAR_HOTSPOT_KEYS = setOf("auto_enable", "config_write")
     private val FILES = mapOf(
         "xcertplay_airplay" to Policy.Allow(AIRPLAY_KEYS, AIRPLAY_PREFIXES),
-        "osnplay" to Policy.Allow(LYNKCO_LINK_KEYS),
+        "lynkco_link" to Policy.Allow(LYNKCO_LINK_KEYS),
         // These readers call getInt and getBoolean, which throw on any other stored type. A key that is not stored yet
         // has no type to compare with, so the type is declared here.
         "carplay_picture" to Policy.Allow(PICTURE_KEYS, types = PICTURE_KEYS.associateWith { KeyType.INT }),
-        "osnplay_car_hotspot" to Policy.Allow(CAR_HOTSPOT_KEYS, types = CAR_HOTSPOT_KEYS.associateWith { KeyType.BOOLEAN }),
+        "lynkco_link_car_hotspot" to Policy.Allow(CAR_HOTSPOT_KEYS, types = CAR_HOTSPOT_KEYS.associateWith { KeyType.BOOLEAN }),
     )
 
     private enum class KeyType { BOOLEAN, INT }

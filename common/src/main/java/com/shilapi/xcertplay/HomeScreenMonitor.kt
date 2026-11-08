@@ -47,7 +47,7 @@ internal class HomeScreenMonitor(context: Context, private val onChange: (Boolea
             since = System.currentTimeMillis() - FIRST_LOOK_BACK_MILLIS
             newestTime = 0L
             newestPackage = null
-            executor = Executors.newSingleThreadScheduledExecutor { Thread(it, "osnplay-home-monitor").apply { isDaemon = true } }
+            executor = Executors.newSingleThreadScheduledExecutor { Thread(it, "lynkco_link-home-monitor").apply { isDaemon = true } }
                 .also { it.scheduleWithFixedDelay(::poll, 0, POLL_MILLIS, TimeUnit.MILLISECONDS) }
         }
     }

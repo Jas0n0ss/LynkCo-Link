@@ -35,9 +35,9 @@ class ExternalIntentExtrasTest {
     private val controllers = mutableListOf<ActivityController<LynkCoLinkActivity>>()
 
     @Before fun reset() {
-        app.getSharedPreferences("osnplay", 0).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link", 0).edit().clear().commit()
         app.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
-        app.getSharedPreferences("osnplay_phone_wake", Context.MODE_PRIVATE).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link_phone_wake", Context.MODE_PRIVATE).edit().clear().commit()
         CarPlayBackgroundSession.clear()
     }
 
@@ -94,7 +94,7 @@ class ExternalIntentExtrasTest {
     @Test fun launcherStartShowsHome() {
         val launcher = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
             .setClassName(app, LynkCoLinkActivity::class.java.name)
-        app.getSharedPreferences("osnplay", 0).edit().putBoolean("setup_seen", true).commit()
+        app.getSharedPreferences("lynkco_link", 0).edit().putBoolean("setup_seen", true).commit()
         assertEquals("home", page(open(launcher).get()))
     }
 
@@ -102,7 +102,7 @@ class ExternalIntentExtrasTest {
         LynkCoLinkPreferences.saveConnectOnPhoneBluetooth(app, true)
         LynkCoLinkPreferences.savePhone(app, phone, "iPhone")
         AirPlayPersistence.saveWirelessHotspotMode(app, WirelessHotspotMode.WIFI_P2P)
-        app.getSharedPreferences("osnplay", 0).edit().putBoolean("notification_asked", true).commit()
+        app.getSharedPreferences("lynkco_link", 0).edit().putBoolean("notification_asked", true).commit()
     }
 
     private fun startedCarPlay(activity: LynkCoLinkActivity): Boolean {

@@ -10,7 +10,7 @@ import android.content.Context
  * over it, so CarPlay knows nothing about its contents.
  */
 object SidePanelSettings {
-    private const val PREFS = "osnplay_side_panel"
+    private const val PREFS = "lynkco_link_side_panel"
     private const val KEY_ENABLED = "enabled"
 
     fun enabled(context: Context): Boolean =

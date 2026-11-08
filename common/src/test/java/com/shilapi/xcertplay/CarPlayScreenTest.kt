@@ -46,7 +46,7 @@ class CarPlayScreenTest {
         bootstrapReady = ReflectionHelpers.getField(LynkCoLinkBootstrap, "ready")
         ReflectionHelpers.setField(LynkCoLinkBootstrap, "ready", true)
         app.getSharedPreferences("xcertplay_airplay", Context.MODE_PRIVATE).edit().clear().commit()
-        app.getSharedPreferences("osnplay", Context.MODE_PRIVATE).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link", Context.MODE_PRIVATE).edit().clear().commit()
         CarPlayBackgroundSession.clear()
         ReflectionHelpers.setField(CarPlayScreen, "open", null)
         AirPlayPersistence.overlaySettingsListener = null

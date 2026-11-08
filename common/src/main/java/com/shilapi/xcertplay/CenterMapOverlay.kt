@@ -42,7 +42,7 @@ internal object CenterMapOverlay {
 
     /** The CarPlay screen, asked to show the card once no LynkCoLink screen is in front. */
     var requestShow: (() -> Unit)? = null
-    private val showIfBackground = Runnable { if (!osnPlayInFront()) requestShow?.invoke() }
+    private val showIfBackground = Runnable { if (!lynkCoLinkInFront()) requestShow?.invoke() }
 
     fun permitted(context: Context): Boolean = Settings.canDrawOverlays(context)
 
@@ -260,13 +260,13 @@ internal object CenterMapOverlay {
     }
 
     // A LynkCoLink activity in front makes the process foreground; the session service alone does not.
-    fun osnPlayInFront(): Boolean {
+    fun lynkCoLinkInFront(): Boolean {
         val state = ActivityManager.RunningAppProcessInfo()
         ActivityManager.getMyMemoryState(state)
         return state.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
     }
 
-    private const val PREFS = "osnplay_center_map"
+    private const val PREFS = "lynkco_link_center_map"
     private const val KEY_X = "x"
     private const val KEY_Y = "y"
     private const val KEY_WIDTH = "width"

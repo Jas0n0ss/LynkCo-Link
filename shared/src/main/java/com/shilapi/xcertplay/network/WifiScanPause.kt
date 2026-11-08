@@ -95,7 +95,7 @@ internal interface WifiScanPauseControl {
 
 /** The single writer is shared across full controller rebuilds, including delayed restore retries. */
 private object ProcessWifiScanPause : WifiScanPauseControl {
-    private const val PREFS = "osnplay_wifi_scan_pause"
+    private const val PREFS = "lynkco_link_wifi_scan_pause"
     private const val JOURNAL = "restore_pending"
     private val worker: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor {
         Thread(it, WifiScanPause.TAG).apply { isDaemon = true }

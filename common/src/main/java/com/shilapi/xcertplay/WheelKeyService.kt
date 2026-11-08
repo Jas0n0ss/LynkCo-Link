@@ -606,7 +606,7 @@ class WheelKeyService : AccessibilityService() {
                 } finally {
                     restoring.set(false)
                 }
-            }, "osnplay-wheel-keys-restore").start()
+            }, "lynkco_link-wheel-keys-restore").start()
         }
 
         /**
@@ -929,7 +929,7 @@ class VoiceKeyPair {
 
 /** Settings for the wheel's dashboard map zoom, CarPlay joystick and Siri key. */
 object WheelZoomSettings {
-    private const val PREFS = "osnplay_wheel_map_zoom"
+    private const val PREFS = "lynkco_link_wheel_map_zoom"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_BEHAVIOUR = "behaviour"
     private const val KEY_JOYSTICK = "joystick"

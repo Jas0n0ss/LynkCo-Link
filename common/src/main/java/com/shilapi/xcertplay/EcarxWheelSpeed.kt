@@ -73,7 +73,7 @@ internal object EcarxWheelSpeed : VehicleSpeedSource {
         reads = 0
         firstSampleLogged = false
         executor = Executors.newSingleThreadScheduledExecutor { runnable ->
-            Thread(runnable, "osnplay-ecarx-speed").apply { isDaemon = true }
+            Thread(runnable, "lynkco_link-ecarx-speed").apply { isDaemon = true }
         }.also { it.scheduleWithFixedDelay(::poll, 0, READ_MILLIS, TimeUnit.MILLISECONDS) }
         Log.i(TAG, "wheel speed started")
     }

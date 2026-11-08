@@ -223,7 +223,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
     private var updateSavedPath: String? = null
     private var updateSavedUri: Uri? = null
     /** Runs the check of the public update copy; tests run it inline. */
-    internal var updateInstallWorker: (Runnable) -> Unit = { Thread(it, "osnplay-update-install").start() }
+    internal var updateInstallWorker: (Runnable) -> Unit = { Thread(it, "lynkco_link-update-install").start() }
     @Volatile private var updateStage = UpdateStage.IDLE
     @Volatile private var backupServer: SettingsBackupServer? = null
     @Volatile private var backupEndpoint: SettingsBackupEndpoint? = null
@@ -263,7 +263,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         }
     }
     private val bluetoothPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) choosePhone() else permissionHelp(getString(R.string.nearby_devices), getString(R.string.allow_nearby_devices_so_osnplay_can_connect_to_your_paired))
+        if (granted) choosePhone() else permissionHelp(getString(R.string.nearby_devices), getString(R.string.allow_nearby_devices_so_lynkco_link_can_connect_to_your_paired))
     }
     private val bluetoothAutoConnectPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) {
@@ -271,7 +271,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         } else {
             LynkCoLinkPreferences.saveConnectOnPhoneBluetooth(this, false)
             render()
-            permissionHelp(getString(R.string.nearby_devices), getString(R.string.allow_nearby_devices_so_osnplay_can_connect_to_your_paired))
+            permissionHelp(getString(R.string.nearby_devices), getString(R.string.allow_nearby_devices_so_lynkco_link_can_connect_to_your_paired))
         }
     }
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -279,7 +279,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
             applyLocationReporting(true)
         } else {
             render()
-            permissionHelp(getString(R.string.location), getString(R.string.allow_precise_location_for_osnplay_in_the_head_unit_s_app_p))
+            permissionHelp(getString(R.string.location), getString(R.string.allow_precise_location_for_lynkco_link_in_the_head_unit_s_app_p))
         }
     }
     private val iconPicker = registerForActivityResult(ActivityResultContracts.GetContent(), ::cropIcon)
@@ -737,7 +737,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
             setImageResource(R.drawable.ic_carplay)
             contentDescription = getString(R.string.carplay)
         }, LinearLayout.LayoutParams(logoSize, logoSize))
-        addView(label(getString(R.string.osnplay), if (compact) 20 else 26, TEXT, true,
+        addView(label(getString(R.string.lynkco_link), if (compact) 20 else 26, TEXT, true,
             centreGlyphs = resources.configuration.locales[0].language != "zh").apply {
             setPadding(if (compact) dp(8) else dp(12), 0, 0, 0)
         }, LinearLayout.LayoutParams(0, if (compact) dp(44) else dp(52), 1f))
@@ -945,7 +945,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         if (!compact) right.addView(label(getString(R.string.plug_your_iphone_into_a_usb_data_port_allow_carplay_when_y), 14, MUTED).apply { gravity = Gravity.CENTER; setPadding(dp(8), dp(10), dp(8), dp(24)) })
         else right.addView(space(16))
         right.addView(homeButton(getString(R.string.settings), false) { page = "settings"; render() }, matchButton(height = if (compact) 54 else 68))
-        if (!compact) right.addView(label(getString(R.string.make_osnplay_feel_right_for_your_car), 14, MUTED).apply { gravity = Gravity.CENTER; setPadding(0, dp(10), 0, dp(24)) })
+        if (!compact) right.addView(label(getString(R.string.make_lynkco_link_feel_right_for_your_car), 14, MUTED).apply { gravity = Gravity.CENTER; setPadding(0, dp(10), 0, dp(24)) })
         else right.addView(space(12))
         right.addView(label(getString(R.string.home_public_preview, version()), 12, MUTED).apply { letterSpacing = .08f })
         availableUpdate?.let { release ->
@@ -1151,7 +1151,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
             SettingsCategory.NAVIGATION to R.string.settings_navigation_summary,
             SettingsCategory.VEHICLE to R.string.settings_vehicle_summary,
             SettingsCategory.LANGUAGE to R.string.settings_language_summary,
-            SettingsCategory.ABOUT to R.string.about_osnplay,
+            SettingsCategory.ABOUT to R.string.about_lynkco_link,
             SettingsCategory.DIAGNOSTICS to R.string.settings_diagnostics_summary,
             SettingsCategory.ADVANCED to R.string.settings_advanced_subtitle,
         )
@@ -1240,7 +1240,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
     private fun quickSettingsCard(): LinearLayout = card().also(::buildQuickSettings).also(::normalizeSpacing)
 
     private fun buildQuickSettings(card: LinearLayout): Unit = card.run {
-        toggle(this, getString(R.string.connect_when_osnplay_opens),
+        toggle(this, getString(R.string.connect_when_lynkco_link_opens),
             getString(R.string.default_connection_description),
             LynkCoLinkPreferences.autoConnect(this@LynkCoLinkActivity)) { LynkCoLinkPreferences.saveAutoConnect(this@LynkCoLinkActivity, it) }
         appearanceControl(this)
@@ -1383,7 +1383,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                 }
                 if (settingsCategory == SettingsCategory.DIAGNOSTICS) render()
             }
-        }, "osnplay-environment-check").start()
+        }, "lynkco_link-environment-check").start()
     }
 
     private fun resolveEnvironmentIssue(action: EnvironmentAction) {
@@ -1745,14 +1745,14 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
             card.addView(exportButton, matchButton(10, 60))
             card.addView(button(getString(R.string.choose_save_location), false) { chooseReportDestination() }, matchButton(10, 60))
             card.addView(button(getString(R.string.settings_report_on_phone), false) { openBackup(SettingsCategory.DIAGNOSTICS) }, matchButton(10, 60))
-            val destination = getString(R.string.reports_save_to_downloads_osnplay)
+            val destination = getString(R.string.reports_save_to_downloads_lynkco_link)
             card.addView(label(destination + getString(R.string.nothing_is_sent_automatically_protocol_payloads_and_creden), 14, MUTED).apply { setPadding(0, dp(12), 0, 0) })
             toggle(card, getString(R.string.settings_fps_counter), getString(R.string.settings_fps_counter_description),
                 AirPlayPersistence.loadFpsCounter(this)) { AirPlayPersistence.saveFpsCounter(this, it) }
         }
         filteredSection(content, SettingsSection.AUTOMATIC_CONNECTION,
             getString(R.string.automatic_connection), R.drawable.ic_dp_automation) { card ->
-            toggle(card, getString(R.string.connect_when_osnplay_opens), getString(R.string.default_connection_description), LynkCoLinkPreferences.autoConnect(this)) { LynkCoLinkPreferences.saveAutoConnect(this, it) }
+            toggle(card, getString(R.string.connect_when_lynkco_link_opens), getString(R.string.default_connection_description), LynkCoLinkPreferences.autoConnect(this)) { LynkCoLinkPreferences.saveAutoConnect(this, it) }
             toggle(card, getString(R.string.connect_when_iphone_bluetooth_connects),
                 getString(R.string.connect_when_iphone_bluetooth_connects_description),
                 LynkCoLinkPreferences.connectOnPhoneBluetooth(this)) { enabled ->
@@ -2079,7 +2079,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
     }
 
     private fun about(content: LinearLayout) {
-        settingsPageTitle(content, getString(R.string.about_osnplay), getString(R.string.carplay_at_home_in_your_car))
+        settingsPageTitle(content, getString(R.string.about_lynkco_link), getString(R.string.carplay_at_home_in_your_car))
         section(content, getString(R.string.about_public_preview_prefix, version())) { card ->
             card.addView(label(getString(R.string.an_independent_carplay_receiver_for_android_head_units_wir), 17, TEXT))
             card.addView(updateRow())
@@ -2105,7 +2105,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
             card.addView(label(getString(R.string.backup_open_description), 14, MUTED).apply { setPadding(0, dp(10), 0, 0) })
         }
         section(content, getString(R.string.made_possible_by_open_source)) { card ->
-            card.addView(label(getString(R.string.receiver_based_on_xcertplay_licensed_under_gpl_3_0_osnplay), 16, MUTED))
+            card.addView(label(getString(R.string.receiver_based_on_xcertplay_licensed_under_gpl_3_0_lynkco_link), 16, MUTED))
         }
     }
 
@@ -2274,7 +2274,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                     },
                 )
             }
-        }, "osnplay-update-check").start()
+        }, "lynkco_link-update-check").start()
     }
 
     private fun latestRelease(): UpdateRelease? {
@@ -2353,7 +2353,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                     },
                 )
             }
-        }, "osnplay-update-download").start()
+        }, "lynkco_link-update-download").start()
     }
 
     private fun installUpdate() {
@@ -2499,7 +2499,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                 runPendingAutomaticVehicleValidation()
                 // Re-enable the vehicle controls disabled while this authorization was outstanding.
             }
-        }, "osnplay-adb-switch").start()
+        }, "lynkco_link-adb-switch").start()
     }
 
     private fun updateAdbSwitches() {
@@ -2527,7 +2527,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                 hotspotStartupResult = result
                 if (page == "home") render()
             }
-        }, "osnplay-hotspot-startup").start()
+        }, "lynkco_link-hotspot-startup").start()
     }
 
     private var carHotspotConfigStatus: Int? = null
@@ -2595,7 +2595,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                     }
                 }
             }
-        }, "osnplay-hotspot-config-read").start()
+        }, "lynkco_link-hotspot-config-read").start()
     }
 
     /** True when valid manual hotspot details are already saved, without generating any. */
@@ -2642,7 +2642,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                 }
                 render()
             }
-        }, "osnplay-hotspot-config-write").start()
+        }, "lynkco_link-hotspot-config-write").start()
     }
 
     private fun launchHotspotCredentials(): HotspotCredentials? {
@@ -2815,7 +2815,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
             }, matchButton(12, 60))
         }
         section(content, getString(R.string.s_3_connect)) { card ->
-            card.addView(label(getString(R.string.return_from_car_settings_to_osnplay_then_connect_accept_the), 16, MUTED))
+            card.addView(label(getString(R.string.return_from_car_settings_to_lynkco_link_then_connect_accept_the), 16, MUTED))
             card.addView(button(getString(R.string.connect_phone), true) { connect(true) }, matchButton(12, 60))
         }
         section(content, getString(R.string.prefer_a_cable)) { card ->
@@ -3383,7 +3383,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                     showManualPermissionDialog(reason)
                 }
             }
-        }, "osnplay-auto-permission").start()
+        }, "lynkco_link-auto-permission").start()
     }
 
     private fun showManualPermissionDialog(reason: String) {
@@ -3451,7 +3451,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                     }
                     render()
                 }
-            }, "osnplay-navigation-wheel-enable").start()
+            }, "lynkco_link-navigation-wheel-enable").start()
         }, matchButton(10, 56))
     }
 
@@ -3590,7 +3590,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                         }
                         render()
                     }
-                }, "osnplay-wheel-keys-enable").start()
+                }, "lynkco_link-wheel-keys-enable").start()
             }, matchButton(10, 56))
             card.addView(button(getString(R.string.wheel_keys_open_settings), false) {
                 if (!UsbAutoConfirmService.openSettings(this)) toast(getString(R.string.wheel_keys_no_settings))
@@ -4192,7 +4192,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         if (wireless && LynkCoLinkPreferences.phoneAddress(this) == null) {
             pendingWireless = true; choosePhone(); return
         }
-        val preferences = getSharedPreferences("osnplay", MODE_PRIVATE)
+        val preferences = getSharedPreferences("lynkco_link", MODE_PRIVATE)
         if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED && !preferences.getBoolean("notification_asked", false)) {
             preferences.edit().putBoolean("notification_asked", true).apply()
             notificationTransport = wireless
@@ -4410,7 +4410,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                         .setNegativeButton(getString(R.string.close), null).show()
                 }
             }
-        }, "osnplay-export").start()
+        }, "lynkco_link-export").start()
     }
 
     /** The text of a diagnostic report. It reads the session logs, so call it off the main thread. */

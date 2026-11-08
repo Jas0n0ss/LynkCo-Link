@@ -17,7 +17,7 @@ import kotlin.math.sin
 internal class AudioChannelPreview(private val onUnavailable: (Int) -> Unit) : Closeable {
     private val mainHandler = Handler(Looper.getMainLooper())
     private val worker = Executors.newSingleThreadExecutor { task ->
-        Thread(task, "osnplay-channel-preview").apply { isDaemon = true }
+        Thread(task, "lynkco_link-channel-preview").apply { isDaemon = true }
     }
     private val generation = AtomicInteger()
     private val activeTrack = AtomicReference<AudioTrack?>()

@@ -43,7 +43,7 @@ internal object CarPlayMediaKeys {
     private val mainHandler = Handler(Looper.getMainLooper())
     private val artworkQueue = NowPlayingArtworkQueue(
         worker = Executors.newSingleThreadExecutor { task ->
-            Thread(task, "osnplay-now-playing-artwork").apply { isDaemon = true }
+            Thread(task, "lynkco_link-now-playing-artwork").apply { isDaemon = true }
         },
         main = Executor { mainHandler.post(it) },
         decode = ::decodeAmbientArtwork,

@@ -95,7 +95,7 @@ object IphoneUsbGrantTool {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        Thread({ Thread.sleep(12_000); exitProcess(2) }, "osnplay-usb-grant-deadline")
+        Thread({ Thread.sleep(12_000); exitProcess(2) }, "lynkco_link-usb-grant-deadline")
             .apply { isDaemon = true; start() }
         val result = try {
             execute(args)

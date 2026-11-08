@@ -40,7 +40,7 @@ class CarHotspotNameTextTest {
     }
 
     private fun clearSettings() {
-        context.getSharedPreferences("osnplay", 0).edit().clear().commit()
+        context.getSharedPreferences("lynkco_link", 0).edit().clear().commit()
         context.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
     }
 

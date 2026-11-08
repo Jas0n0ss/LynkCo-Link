@@ -30,7 +30,7 @@ class DefaultConnectionModeTest {
     private val app get() = RuntimeEnvironment.getApplication()
 
     @Before fun clearPreferences() {
-        app.getSharedPreferences("osnplay", 0).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link", 0).edit().clear().commit()
         app.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
         CarPlayBackgroundSession.clear()
     }
@@ -43,7 +43,7 @@ class DefaultConnectionModeTest {
         LynkCoLinkPreferences.saveAutoConnect(app, true)
         LynkCoLinkPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
         AirPlayPersistence.saveWirelessHotspotMode(app, WirelessHotspotMode.WIFI_P2P)
-        app.getSharedPreferences("osnplay", 0).edit().putBoolean("notification_asked", true).commit()
+        app.getSharedPreferences("lynkco_link", 0).edit().putBoolean("notification_asked", true).commit()
         for (mode in listOf(DefaultConnectionMode.USB, DefaultConnectionMode.WIRELESS)) {
             val expectedWireless = mode == DefaultConnectionMode.WIRELESS
             LynkCoLinkPreferences.saveDefaultConnectionMode(app, mode)
@@ -81,7 +81,7 @@ class DefaultConnectionModeTest {
         for (lastWireless in listOf(false, true)) {
             AirPlayPersistence.saveWirelessEnabled(app, lastWireless)
             assertEquals(lastWireless, LynkCoLinkPreferences.autoConnectWireless(app))
-            app.getSharedPreferences("osnplay", 0).edit()
+            app.getSharedPreferences("lynkco_link", 0).edit()
                 .putString("default_connection_mode", "future_mode").commit()
             assertEquals(DefaultConnectionMode.LAST_USED, LynkCoLinkPreferences.defaultConnectionMode(app))
             assertEquals(lastWireless, LynkCoLinkPreferences.autoConnectWireless(app))

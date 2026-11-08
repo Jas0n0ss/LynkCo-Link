@@ -113,7 +113,7 @@ internal object CarHotspotAdbFallback {
     internal fun bounded(deadline: Long, cancelled: () -> Boolean, abort: () -> Unit, action: () -> Boolean): Boolean {
         if (cancelled() || Thread.currentThread().isInterrupted || System.nanoTime() >= deadline) return false
         val task = FutureTask(action)
-        Thread(task, "osnplay-hotspot-adb").apply { isDaemon = true; start() }
+        Thread(task, "lynkco_link-hotspot-adb").apply { isDaemon = true; start() }
         try {
             while (!cancelled() && !Thread.currentThread().isInterrupted) {
                 val remaining = deadline - System.nanoTime()

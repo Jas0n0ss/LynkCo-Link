@@ -72,7 +72,7 @@ class BootReceiver : BroadcastReceiver() {
             Notification.Builder(context).setPriority(Notification.PRIORITY_LOW)
         }
         val notification = builder
-            .setSmallIcon(R.drawable.ic_osnplay_notification)
+            .setSmallIcon(R.drawable.ic_lynkco_link_notification)
             .setContentTitle(context.applicationInfo.loadLabel(context.packageManager))
             .setContentText(context.getString(R.string.open))
             .setContentIntent(pending)
@@ -85,7 +85,7 @@ class BootReceiver : BroadcastReceiver() {
 
     private companion object {
         const val TAG = "xcertplay-boot"
-        const val CHANNEL = "osnplay_open"
+        const val CHANNEL = "lynkco_link_open"
         const val OPEN_NOTIFICATION_ID = 2
     }
 }

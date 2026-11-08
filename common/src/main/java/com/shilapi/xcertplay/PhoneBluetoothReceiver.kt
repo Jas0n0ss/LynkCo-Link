@@ -30,7 +30,7 @@ class PhoneBluetoothReceiver : BroadcastReceiver() {
 
         // The car can send several ACL events during one wake-up. Commit before launching so
         // another receiver instance cannot open a second connection from the same event burst.
-        val prefs = context.getSharedPreferences("osnplay_phone_wake", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("lynkco_link_phone_wake", Context.MODE_PRIVATE)
         val now = SystemClock.elapsedRealtime()
         val previous = prefs.getLong("last_launch_elapsed", 0)
         if (prefs.contains("last_launch_elapsed") && now >= previous && now - previous < 15_000) return
@@ -58,7 +58,7 @@ class PhoneBluetoothReceiver : BroadcastReceiver() {
 
 /** Only a timestamp and fixed outcome; the Bluetooth address and broadcast extras stay out of reports. */
 internal object PhoneWakeDiagnostics {
-    private const val PREFS = "osnplay_phone_wake_diagnostics"
+    private const val PREFS = "lynkco_link_phone_wake_diagnostics"
 
     fun record(context: Context, result: String, error: Throwable? = null) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()

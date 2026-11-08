@@ -30,7 +30,7 @@ class CarHotspotConfigReadTest {
     @Test fun aReadThatMayAskOffersTheKeyAndReadsTheCarHotspot() {
         val adbd = FakeAdbd(key, knowsKey = false, approves = true,
             output = "LYNKCO_LINK_HOTSPOT_APCONFIG_READ_V1|${reply("Car-Hotspot", "secret-pass", 1)}\n")
-        val outcome = CarHotspotConfigRead.readWithAdb(LocalAdb(key, port = adbd.port), "/data/app/osnplay.apk",
+        val outcome = CarHotspotConfigRead.readWithAdb(LocalAdb(key, port = adbd.port), "/data/app/lynkco_link.apk",
             mayAsk = true, log = ::log)
         assertTrue(adbd.offeredKey)
         assertEquals(CarHotspotSavedCredentials("Car-Hotspot", "secret-pass", ManualHotspotSecurity.WPA2), outcome.credentials)
@@ -39,7 +39,7 @@ class CarHotspotConfigReadTest {
 
     @Test fun aReadThatMayNotAskLeavesAnUnknownKeyUnapproved() {
         val adbd = FakeAdbd(key, knowsKey = false, approves = true)
-        val outcome = CarHotspotConfigRead.readWithAdb(LocalAdb(key, port = adbd.port), "/data/app/osnplay.apk",
+        val outcome = CarHotspotConfigRead.readWithAdb(LocalAdb(key, port = adbd.port), "/data/app/lynkco_link.apk",
             mayAsk = false, log = ::log)
         assertFalse(adbd.offeredKey)
         assertEquals(CarHotspotConfigRead.Reason.ADB_UNAVAILABLE, outcome.reason)
@@ -49,7 +49,7 @@ class CarHotspotConfigReadTest {
     @Test fun adbReadCarriesTheSavedCredentials() {
         val outcome = CarHotspotConfigRead.readAdb(
             { _, _ -> "noise\nLYNKCO_LINK_HOTSPOT_APCONFIG_READ_V1|${reply("Car-Hotspot", "pass|word", 1)}\n" },
-            "/data/app/osnplay.apk", 4_000, ::log)
+            "/data/app/lynkco_link.apk", 4_000, ::log)
         assertEquals(CarHotspotSavedCredentials("Car-Hotspot", "pass|word", ManualHotspotSecurity.WPA2), outcome.credentials)
         assertNull(outcome.reason)
     }

@@ -202,7 +202,7 @@ class CarPlayVpnConsentTest {
     }
 
     private fun awaitAdbConsent() = Thread.getAllStackTraces().keys
-        .filter { it.name == "osnplay-vpn-adb-consent" }.forEach { it.join(3_000) }
+        .filter { it.name == "lynkco_link-vpn-adb-consent" }.forEach { it.join(3_000) }
 
     private fun assertAdbStep(@StringRes cause: Int) {
         assertEquals(activity.getString(cause), stage())
@@ -238,7 +238,7 @@ class CarPlayVpnConsentTest {
     private fun field(name: String): Boolean = ReflectionHelpers.getField(activity, name)
     private fun log(): String {
         assertTrue(ReflectionHelpers.getField<SessionLogFile>(activity, "sessionLog").awaitIdle(2_000))
-        return File(activity.filesDir, "logs/osnplay.log").readText()
+        return File(activity.filesDir, "logs/lynkco_link.log").readText()
     }
     private fun invoke(name: String) {
         try { activity.javaClass.getDeclaredMethod(name).apply { isAccessible = true }.invoke(activity) }

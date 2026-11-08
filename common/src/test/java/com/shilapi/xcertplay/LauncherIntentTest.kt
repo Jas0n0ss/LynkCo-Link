@@ -30,7 +30,7 @@ class LauncherIntentTest {
 
     @Before fun setup() {
         val app = RuntimeEnvironment.getApplication()
-        app.getSharedPreferences("osnplay", 0).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link", 0).edit().clear().commit()
         app.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
         CarPlayBackgroundSession.clear()
         val stop: ((() -> Unit) -> Unit) = { done -> stops++; done() }
@@ -127,7 +127,7 @@ class LauncherIntentTest {
         val app = RuntimeEnvironment.getApplication()
         LynkCoLinkPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
         AirPlayPersistence.saveWirelessHotspotMode(app, WirelessHotspotMode.WIFI_P2P)
-        app.getSharedPreferences("osnplay", 0).edit().putBoolean("notification_asked", true).commit()
+        app.getSharedPreferences("lynkco_link", 0).edit().putBoolean("notification_asked", true).commit()
         for (autoConnect in listOf(false, true)) {
             LynkCoLinkPreferences.saveAutoConnect(app, autoConnect)
             val home = Robolectric.buildActivity(LynkCoLinkActivity::class.java, bootLaunch()).create()

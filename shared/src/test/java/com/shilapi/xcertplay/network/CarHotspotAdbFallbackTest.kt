@@ -146,7 +146,7 @@ class CarHotspotAdbFallbackTest {
         var on = false
         val commands = mutableListOf<String>()
         val logs = mutableListOf<String>()
-        val helper = CarHotspotStartMain.command("/data/app/osnplay/base.apk")
+        val helper = CarHotspotStartMain.command("/data/app/lynkco_link/base.apk")
         assertTrue(CarHotspotAdbFallback.start(deadline(), { false }, { on }, { command, _ ->
             commands += command
             when {

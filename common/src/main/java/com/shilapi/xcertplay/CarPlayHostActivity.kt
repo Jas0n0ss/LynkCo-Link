@@ -213,7 +213,7 @@ open class CarPlayHostActivity : ComponentActivity() {
             vehicleSpeedEnabled = locationReportingEnabled && EcarxWheelSpeed.present(),
         ),
         label = "LynkCoLink",
-        hostName = "osnplay-" + LynkCoLinkBootstrap.deviceId(airPlayIdentity).replace(":", "").lowercase(),
+        hostName = "lynkco_link-" + LynkCoLinkBootstrap.deviceId(airPlayIdentity).replace(":", "").lowercase(),
         hostMac = LynkCoLinkBootstrap.deviceId(airPlayIdentity).split(":").map { it.toInt(16).toByte() }.toByteArray(),
         wirelessBluetoothDeviceAddress = LynkCoLinkPreferences.phoneAddress(this),
         transport = if (wirelessEnabled) CarPlayTransport.WIRELESS else CarPlayTransport.WIRED,
@@ -358,7 +358,7 @@ open class CarPlayHostActivity : ComponentActivity() {
                     }
                 } else decoded?.blackPixels?.recycle()
             }
-        }, "osnplay-iphone-corner-mask").start()
+        }, "lynkco_link-iphone-corner-mask").start()
     }
     private var fallbackVideoView: SurfaceView? = null
     private var fallbackVideoBounds: CarPlaySurfaceBounds? = null
@@ -372,7 +372,7 @@ open class CarPlayHostActivity : ComponentActivity() {
     private var pictureCopyThreadStarted = false
     private val pictureCopyThread by lazy {
         pictureCopyThreadStarted = true
-        android.os.HandlerThread("osnplay-picture-copy").apply { start() }
+        android.os.HandlerThread("lynkco_link-picture-copy").apply { start() }
     }
     private val pictureHoldTick = object : Runnable {
         override fun run() {
@@ -1084,7 +1084,7 @@ open class CarPlayHostActivity : ComponentActivity() {
                     }
                 }
             }
-        }, "osnplay-vpn-adb-consent").start()
+        }, "lynkco_link-vpn-adb-consent").start()
     }
 
     private fun requestWirelessPermissions() {
@@ -1314,9 +1314,9 @@ open class CarPlayHostActivity : ComponentActivity() {
         appendLog("Centre map: home screen ${if (visible) "in front" else "not in front"}")
         if (!AirPlayPersistence.loadCenterMapAutoHide(this)) {
             homeMonitor?.stop()
-            if (!isActivityStarted && !CenterMapOverlay.osnPlayInFront()) showCenterMap()
+            if (!isActivityStarted && !CenterMapOverlay.lynkCoLinkInFront()) showCenterMap()
         } else if (!visible) CenterMapOverlay.hide()
-        else if (!isActivityStarted && !CenterMapOverlay.osnPlayInFront()) showCenterMap()
+        else if (!isActivityStarted && !CenterMapOverlay.lynkCoLinkInFront()) showCenterMap()
     }
 
     private fun onCenterMapSurface(surface: Surface?) {
@@ -1435,7 +1435,7 @@ open class CarPlayHostActivity : ComponentActivity() {
         }
         panel.addView(icon, LinearLayout.LayoutParams(dp(88), dp(88)))
         val title = TextView(this).apply {
-            text = getString(R.string.osnplay)
+            text = getString(R.string.lynkco_link)
             gravity = Gravity.CENTER
             typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
         }
@@ -1478,7 +1478,7 @@ open class CarPlayHostActivity : ComponentActivity() {
         }
         panel.addView(retry, LinearLayout.LayoutParams(dp(300), dp(64)).apply { bottomMargin = dp(12) })
         val back = LynkCoLinkButton(this).apply {
-            text = getString(R.string.back_to_osnplay)
+            text = getString(R.string.back_to_lynkco_link)
             setOnClickListener { showLynkCoLinkHome() }
         }
         panel.addView(back, LinearLayout.LayoutParams(dp(300), dp(64)))
@@ -2239,7 +2239,7 @@ open class CarPlayHostActivity : ComponentActivity() {
 
     private fun settingsGestureHintText(): String =
         if (gestureFingerCount == 0) getString(R.string.settings_gesture_disabled_hint)
-        else getString(R.string.open_osnplay_settings_hint, gestureFingerCount)
+        else getString(R.string.open_lynkco_link_settings_hint, gestureFingerCount)
 
     private fun settingsGestureButtonText(): String =
         if (gestureFingerCount == 0) getString(R.string.settings_gesture_disabled_action)
@@ -5053,7 +5053,7 @@ open class CarPlayHostActivity : ComponentActivity() {
         } catch (error: RuntimeException) {
             appendLog("Connection could not start: ${error.javaClass.simpleName}")
             shutdown(false, "foreground service could not start")
-            setConnectionStage(R.string.could_not_start_carplay_return_to_osnplay_and_check_app_per)
+            setConnectionStage(R.string.could_not_start_carplay_return_to_lynkco_link_and_check_app_per)
         }
     }
 
@@ -6053,7 +6053,7 @@ open class CarPlayHostActivity : ComponentActivity() {
         message == getString(R.string.vpn_authorization_unavailable) ||
             LocalAdb.Access.entries.any { message == getString(VpnPreConsent.stage(it)) } -> message
         // It says where to look itself; its word "permissions" would turn it into the generic permission line.
-        message == getString(R.string.could_not_start_carplay_return_to_osnplay_and_check_app_per) -> message
+        message == getString(R.string.could_not_start_carplay_return_to_lynkco_link_and_check_app_per) -> message
         message == getString(R.string.waiting_for_mfi_coprocessor) ||
             message == getString(R.string.requesting_mfi_usb_permission) -> message
         // A startup failure that names its cause, and a line saying the retries stopped, are shown as they are.
@@ -6067,8 +6067,8 @@ open class CarPlayHostActivity : ComponentActivity() {
         englishMessage.contains("CarPlay configuration request", true) -> getString(R.string.iphone_usb_mode_rejected)
         englishMessage.contains("Turn on Wi-Fi", true) -> getString(R.string.turn_on_wi_fi_in_the_head_unit_s_settings_to_connect)
         englishMessage.contains(BluetoothRadioCheck.RADIO_OFF_MARK, true) -> getString(R.string.turn_on_bluetooth_in_the_head_unit_s_settings_to_connect)
-        englishMessage.contains("Allow precise Location", true) -> getString(R.string.allow_precise_location_for_osnplay_in_the_head_unit_s_app_p)
-        englishMessage.contains("Allow Nearby devices", true) -> getString(R.string.allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per)
+        englishMessage.contains("Allow precise Location", true) -> getString(R.string.allow_precise_location_for_lynkco_link_in_the_head_unit_s_app_p)
+        englishMessage.contains("Allow Nearby devices", true) -> getString(R.string.allow_nearby_devices_for_lynkco_link_in_the_head_unit_s_app_per)
         englishMessage.contains("createGroup failed", true) -> getString(R.string.the_head_unit_couldn_t_start_carplay_wi_fi_check_wi_fi_and)
         englishMessage.contains("needs a reset", true) -> getString(R.string.a_previous_wi_fi_direct_connection_is_still_running_reset)
         englishMessage.contains(BluetoothLinkCheck.UNREAL_MARK, true) -> getString(R.string.bluetooth_connections_not_real)
@@ -6095,7 +6095,7 @@ open class CarPlayHostActivity : ComponentActivity() {
         "${SimpleDateFormat("HH:mm:ss.SSS", Locale.US).format(Date(nowMillis))}  $message"
 
     private fun initializeSessionLog() {
-        val logFile = File(File(filesDir, "logs"), "osnplay.log")
+        val logFile = File(File(filesDir, "logs"), "lynkco_link.log")
         val activeLog = SessionLogFile(logFile)
         runCatching {
             activeLog.reset(

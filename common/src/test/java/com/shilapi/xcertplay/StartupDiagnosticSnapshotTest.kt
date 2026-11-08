@@ -16,7 +16,7 @@ import org.robolectric.annotation.Config
 class StartupDiagnosticSnapshotTest {
     private val app get() = RuntimeEnvironment.getApplication()
     @Before fun reset() {
-        app.getSharedPreferences("osnplay_startup_diagnostics", Context.MODE_PRIVATE).edit().clear().commit()
+        app.getSharedPreferences("lynkco_link_startup_diagnostics", Context.MODE_PRIVATE).edit().clear().commit()
         AirPlayPersistence.saveAutoStartOnBoot(app, false)
     }
 

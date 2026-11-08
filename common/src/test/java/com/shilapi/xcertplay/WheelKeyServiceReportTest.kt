@@ -28,8 +28,8 @@ class WheelKeyServiceReportTest {
     @Before fun setUp() {
         WheelKeyLog.reset()
         service = Robolectric.buildService(WheelKeyService::class.java).create().get()
-        service.getSharedPreferences("osnplay_navigation_wheel", Context.MODE_PRIVATE).edit().clear().commit()
-        service.getSharedPreferences("osnplay_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
+        service.getSharedPreferences("lynkco_link_navigation_wheel", Context.MODE_PRIVATE).edit().clear().commit()
+        service.getSharedPreferences("lynkco_link_wheel_map_zoom", Context.MODE_PRIVATE).edit().clear().commit()
         service.javaClass.getDeclaredMethod("onServiceConnected").apply { isAccessible = true }.invoke(service)
         audio = service.getSystemService(AudioManager::class.java)
         audio.mode = AudioManager.MODE_NORMAL

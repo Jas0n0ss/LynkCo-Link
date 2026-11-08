@@ -34,7 +34,7 @@ class ChooseIphoneBluetoothDialogTest {
         activity?.finish()
         ShadowBluetoothAdapter.setIsBluetoothSupported(true)
         AppAppearanceRuntime.resetForTest()
-        context.getSharedPreferences("osnplay", 0).edit().clear().commit()
+        context.getSharedPreferences("lynkco_link", 0).edit().clear().commit()
         context.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
     }
 

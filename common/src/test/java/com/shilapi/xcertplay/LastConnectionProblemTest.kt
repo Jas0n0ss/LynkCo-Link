@@ -36,7 +36,7 @@ import org.robolectric.util.ReflectionHelpers.ClassParameter.from
 @LooperMode(LooperMode.Mode.PAUSED)
 class LastConnectionProblemTest {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private val prefs get() = context.getSharedPreferences("osnplay_last_problem", Context.MODE_PRIVATE)
+    private val prefs get() = context.getSharedPreferences("lynkco_link_last_problem", Context.MODE_PRIVATE)
     private val hosts = mutableListOf<CarPlayHostActivity>()
 
     @Before fun setUp() {
@@ -152,7 +152,7 @@ class LastConnectionProblemTest {
     @Test fun settingsBackupsLeaveItOut() {
         LastConnectionProblem.follow(context, notPaired)
         assertEquals(context.getString(R.string.chosen_iphone_not_paired), remembered())
-        assertFalse(String(SettingsBackupCodec.export(context, "test")).contains("osnplay_last_problem"))
+        assertFalse(String(SettingsBackupCodec.export(context, "test")).contains("lynkco_link_last_problem"))
     }
 
     @Test fun aValueThisVersionCannotReadReadsAsNoneAndIsRemoved() {

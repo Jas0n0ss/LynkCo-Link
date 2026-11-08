@@ -105,15 +105,15 @@
     <string name="a_familiar_drive">익숙한 길, 익숙한 주행.</string>
     <string name="a_previous_wi_fi_direct_connection_is_still_running_reset">이전 Wi-Fi Direct 연결이 아직 실행 중입니다. 연결하려면 재설정하세요.</string>
     <string name="about">정보</string>
-    <string name="about_osnplay">LynkCo-Link 정보</string>
+    <string name="about_lynkco_link">LynkCo-Link 정보</string>
     <string name="active">활성</string>
     <string name="advanced_audio_channel_mapping">고급 오디오 채널 매핑</string>
     <string name="airplay_icon">AirPlay 아이콘</string>
     <string name="allow_carplay_ui_outside_the_safe_area">안전 영역 밖에 CarPlay UI 표시 허용</string>
     <string name="allow_nearby_devices_and_on_older_android_versions_locatio">CarPlay Wi-Fi를 재설정하기 전에 주변 기기 권한과, 이전 Android 버전에서는 위치 권한도 허용하세요.</string>
-    <string name="allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per">헤드 유닛의 앱 권한에서 LynkCo-Link의 주변 기기 권한을 허용하세요.</string>
-    <string name="allow_nearby_devices_so_osnplay_can_connect_to_your_paired">LynkCo-Link가 페어링된 iPhone에 연결할 수 있도록 주변 기기 권한을 허용하세요.</string>
-    <string name="allow_precise_location_for_osnplay_in_the_head_unit_s_app_p">헤드 유닛의 앱 권한에서 LynkCo-Link의 정확한 위치 권한을 허용하세요.</string>
+    <string name="allow_nearby_devices_for_lynkco_link_in_the_head_unit_s_app_per">헤드 유닛의 앱 권한에서 LynkCo-Link의 주변 기기 권한을 허용하세요.</string>
+    <string name="allow_nearby_devices_so_lynkco_link_can_connect_to_your_paired">LynkCo-Link가 페어링된 iPhone에 연결할 수 있도록 주변 기기 권한을 허용하세요.</string>
+    <string name="allow_precise_location_for_lynkco_link_in_the_head_unit_s_app_p">헤드 유닛의 앱 권한에서 LynkCo-Link의 정확한 위치 권한을 허용하세요.</string>
     <string name="allow_the_connection_permission_to_continue">계속하려면 연결 권한을 허용하세요.</string>
     <string name="an_independent_carplay_receiver_for_android_head_units_wir">Android 헤드 유닛용 독립형 CarPlay 수신기입니다. 유선 및 무선 연결은 헤드 유닛에서 실행되며 로컬 인증을 사용합니다. 일반 iPhone은 탈옥, Mac, 동글 또는 로그인 없이 연결할 수 있습니다.\n\n이 미리보기는 실험적인 액세서리 식별 정보를 사용합니다. 모든 iPhone 및 헤드 유닛과의 호환성을 계속 테스트 중입니다. Apple 인증 제품이 아닙니다.</string>
     <string name="android_9_compatibility">Android 9 호환성</string>
@@ -133,7 +133,7 @@
     <string name="automatic_map_setup_adb">지도 자동 설정 · ADB</string>
     <string name="availability_depends_on_your_head_unit_s_startup_settings">사용 가능 여부는 헤드 유닛의 시작 설정에 따라 달라집니다.</string>
     <string name="back">뒤로</string>
-    <string name="back_to_osnplay">LynkCo-Link로 돌아가기</string>
+    <string name="back_to_lynkco_link">LynkCo-Link로 돌아가기</string>
     <string name="band">대역</string>
     <string name="bluetooth_settings">Bluetooth 설정</string>
     <string name="byd_navigation">BYD 내비게이션</string>
@@ -172,7 +172,7 @@
     <string name="cluster_map_size">계기판 지도 크기</string>
     <string name="connect">연결</string>
     <string name="connect_phone">휴대전화 연결</string>
-    <string name="connect_when_osnplay_opens">LynkCo-Link를 열 때 연결</string>
+    <string name="connect_when_lynkco_link_opens">LynkCo-Link를 열 때 연결</string>
     <string name="connect_when_iphone_bluetooth_connects">선택한 iPhone이 다시 연결되면 연결</string>
     <string name="connect_when_iphone_bluetooth_connects_description">차량이 깨어난 후 LynkCo-Link를 열고, 선택한 iPhone이 Bluetooth로 연결되면 무선 CarPlay를 시작합니다. 일부 헤드 유닛은 백그라운드 실행을 제한합니다.</string>
     <string name="connect_with_usb">USB로 연결</string>
@@ -191,14 +191,14 @@
     <string name="could_not_reset_wi_fi_direct_close_the_other_projection_ap">Wi-Fi Direct를 재설정할 수 없습니다. 다른 프로젝션 앱을 닫고 다시 시도하세요.</string>
     <string name="could_not_save_image">이미지를 저장할 수 없습니다.</string>
     <string name="could_not_save_the_report">보고서를 저장할 수 없습니다.</string>
-    <string name="could_not_start_carplay_return_to_osnplay_and_check_app_per">CarPlay를 시작할 수 없습니다. LynkCo-Link로 돌아가 앱 권한을 확인하세요.</string>
+    <string name="could_not_start_carplay_return_to_lynkco_link_and_check_app_per">CarPlay를 시작할 수 없습니다. LynkCo-Link로 돌아가 앱 권한을 확인하세요.</string>
     <string name="custom_1_1_icon">사용자 지정 1:1 아이콘</string>
     <string name="debug_logs">디버그 로그</string>
     <string name="default_icon">기본 아이콘</string>
     <string name="default_placeholder_icon">기본 자리표시자 아이콘</string>
     <string name="diagnostic_report_saved">진단 보고서를 저장했습니다.</string>
     <string name="diagnostics">진단</string>
-    <string name="osnplay">LynkCo-Link</string>
+    <string name="lynkco_link">LynkCo-Link</string>
     <string name="discard_changes_and_exit_settings">변경 사항을 버리고 설정 종료</string>
     <string name="disconnect">연결 해제</string>
     <string name="discovering_iphone">iPhone 검색 중</string>
@@ -246,7 +246,7 @@
     <string name="i2c_device_path_contains_u_0000">I2C 기기 경로에 U+0000이 포함되어 있습니다.</string>
     <string name="i2c_device_path_is_required">I2C 기기 경로가 필요합니다.</string>
     <string name="image_is_not_ready">이미지가 준비되지 않았습니다.</string>
-    <string name="in_carplay_swipe_down_with_three_fingers_to_open_osnplay_se">CarPlay에서 세 손가락으로 아래로 쓸어내려 LynkCo-Link 설정을 여세요.</string>
+    <string name="in_carplay_swipe_down_with_three_fingers_to_open_lynkco_link_se">CarPlay에서 세 손가락으로 아래로 쓸어내려 LynkCo-Link 설정을 여세요.</string>
     <string name="instrument_contrast">계기판 대비</string>
     <string name="instrument_theme">계기판 테마</string>
     <string name="keep_bluetooth_and_wi_fi_on_your_iphone_pair_with_the_car">iPhone에서 Bluetooth와 Wi-Fi를 켜 두세요. 차량 Bluetooth와 페어링한 다음 여기서 iPhone을 선택하세요. 메시지가 표시되면 주변 기기 권한을 허용하세요.</string>
@@ -261,7 +261,7 @@
     <string name="longest_height">최대 높이</string>
     <string name="looking_for_your_paired_iphone">페어링된 iPhone을 찾는 중…</string>
     <string name="made_possible_by_open_source">오픈 소스 덕분에 가능해졌습니다</string>
-    <string name="make_osnplay_feel_right_for_your_car">차량에 맞게 LynkCo-Link를 설정하세요.</string>
+    <string name="make_lynkco_link_feel_right_for_your_car">차량에 맞게 LynkCo-Link를 설정하세요.</string>
     <string name="manual_hotspot">수동 핫스팟</string>
     <string name="manual_mode_match_the_cluster_theme_here_the_map_cannot_fo">수동 모드: 여기서 계기판 테마를 맞추세요. 사용 정보 접근 권한이 없으면 지도가 카드 표시 여부를 따라갈 수 없습니다.</string>
     <string name="manufacturer">제조사</string>
@@ -307,7 +307,7 @@
     <string name="preparing_mfi_authentication">MFi 인증 준비 중</string>
     <string name="ready">준비됨</string>
     <string name="ready_when_you_are">언제든 시작할 수 있습니다</string>
-    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_osnplay">수신기는 GPL-3.0 라이선스를 따르는 xcertplay 기반입니다. LynkCo-Link 인터페이스는 AGPL-3.0 라이선스를 따르는 DiAuto 디자인을 따릅니다.\n\nAndroidX, Bouncy Castle, JmDNS 및 SLF4J를 포함합니다. 소스 코드와 라이선스 고지는 이 릴리스에 포함되어 있습니다.\n\nCarPlay와 CarPlay 아이콘은 Apple Inc.의 소유입니다. LynkCo-Link는 독립 프로젝트입니다.</string>
+    <string name="receiver_based_on_xcertplay_licensed_under_gpl_3_0_lynkco_link">수신기는 GPL-3.0 라이선스를 따르는 xcertplay 기반입니다. LynkCo-Link 인터페이스는 AGPL-3.0 라이선스를 따르는 DiAuto 디자인을 따릅니다.\n\nAndroidX, Bouncy Castle, JmDNS 및 SLF4J를 포함합니다. 소스 코드와 라이선스 고지는 이 릴리스에 포함되어 있습니다.\n\nCarPlay와 CarPlay 아이콘은 Apple Inc.의 소유입니다. LynkCo-Link는 독립 프로젝트입니다.</string>
     <string name="reconnecting_to_your_iphone">iPhone에 다시 연결하는 중…</string>
     <string name="remote">원격</string>
     <string name="remote_server_address_contains_u_0000">원격 서버 주소에 U+0000이 포함되어 있습니다.</string>
@@ -317,7 +317,7 @@
     <string name="report_android_location_to_the_iphone">Android 위치를 iPhone에 전송</string>
     <string name="report_location_to_iphone">위치를 iPhone에 전송</string>
     <string name="report_saved_open_it_from_your_file_manager_to_share_it">보고서를 저장했습니다. 파일 관리자에서 열어 공유하세요.</string>
-    <string name="reports_save_to_downloads_osnplay">보고서는 Downloads/LynkCo-Link에 저장됩니다. </string>
+    <string name="reports_save_to_downloads_lynkco_link">보고서는 Downloads/LynkCo-Link에 저장됩니다. </string>
     <string name="requesting_iphone_usb_permission">iPhone USB 권한 요청 중</string>
     <string name="requesting_mfi_usb_permission">MFi USB 권한 요청 중</string>
     <string name="reset">재설정</string>
@@ -326,7 +326,7 @@
     <string name="reset_carplay_wi_fi">CarPlay Wi-Fi 재설정</string>
     <string name="reset_carplay_wi_fi_2">CarPlay Wi-Fi를 재설정할까요?</string>
     <string name="resolution">해상도</string>
-    <string name="return_from_car_settings_to_osnplay_then_connect_accept_the">차량 설정에서 LynkCo-Link로 돌아와 연결하세요. iPhone에서 CarPlay 요청을 허용하세요. 차량 인터넷 요금제는 필요하지 않으며, 모바일 데이터 사용 가능 여부는 휴대전화의 네트워크 설정에 따라 다릅니다.</string>
+    <string name="return_from_car_settings_to_lynkco_link_then_connect_accept_the">차량 설정에서 LynkCo-Link로 돌아와 연결하세요. iPhone에서 CarPlay 요청을 허용하세요. 차량 인터넷 요금제는 필요하지 않으며, 모바일 데이터 사용 가능 여부는 휴대전화의 네트워크 설정에 따라 다릅니다.</string>
     <string name="review_app_permissions">앱 권한 확인</string>
     <string name="right_hand_drive">우핸들</string>
     <string name="running">실행 중</string>
@@ -434,7 +434,7 @@
     <string name="turn_on_wi_fi_in_the_head_unit_s_settings_to_connect">연결하려면 헤드 유닛 설정에서 Wi-Fi를 켜세요.</string>
     <string name="turn_the_car_s_wi_fi_switch_on_allow_location_nearby_devic">차량의 Wi-Fi 스위치를 켜세요. 요청되면 위치/주변 기기 권한을 허용하고 Android가 요청하면 위치를 켜세요. 재생이 끊기면 차량 내장 핫스팟을 5 GHz로 사용해 보세요.</string>
     <string name="usage_access_enabled">사용 정보 접근 권한: 사용 설정됨</string>
-    <string name="usage_access_lets_osnplay_follow_the_instrument_theme_and_m">사용 정보 접근 권한을 통해 LynkCo-Link가 계기판 테마와 지도 카드를 추적할 수 있습니다. BYD 계기판 활동 이벤트만 기기에서 처리됩니다. 이 차량에는 정상 작동하는 권한 설정 페이지가 없습니다.</string>
+    <string name="usage_access_lets_lynkco_link_follow_the_instrument_theme_and_m">사용 정보 접근 권한을 통해 LynkCo-Link가 계기판 테마와 지도 카드를 추적할 수 있습니다. BYD 계기판 활동 이벤트만 기기에서 처리됩니다. 이 차량에는 정상 작동하는 권한 설정 페이지가 없습니다.</string>
     <string name="usage_access_setup_needed_for_automatic_mode">사용 정보 접근 권한: 자동 모드 설정 필요</string>
     <string name="usb_ch341">USB/CH341</string>
     <string name="use_a_usb_data_cable_and_the_car_s_usb_data_port_unlock_yo">USB 데이터 케이블과 차량 USB 데이터 포트를 사용하세요. iPhone 잠금을 해제하고 CarPlay를 허용하세요. 핫스팟 설정은 필요하지 않습니다.</string>
@@ -651,7 +651,7 @@
     <string name="adb_cluster_routing">ADB를 통해 계기판 지도를 실행하는 중…</string>
     <string name="adb_cluster_routed">계기판 작업이 전달되었습니다. iPhone 지도를 기다리는 중</string>
     <string name="adb_cluster_route_failed">계기판 실행에 실패했습니다. 진단 정보를 내보내세요.</string>
-    <string name="open_osnplay_settings_hint">CarPlay에서 손가락 %1$d개로 아래로 쓸어 빠른 메뉴를 여세요.</string>
+    <string name="open_lynkco_link_settings_hint">CarPlay에서 손가락 %1$d개로 아래로 쓸어 빠른 메뉴를 여세요.</string>
     <string name="carplay_controls">CarPlay 제어</string>
     <string name="settings_gesture_fingers">빠른 메뉴 · 손가락 %1$d개로 쓸기(눌러 변경)</string>
     <string name="settings_gesture_fingers_label">빠른 메뉴 · 아래로 쓸 손가락 수</string>

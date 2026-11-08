@@ -42,7 +42,7 @@ class SettingsBackupCodecTest {
             .putString("mfi_target", "REMOTE")
             .putBoolean("cluster_map_enabled", true)
             .apply()
-        prefs("osnplay").edit()
+        prefs("lynkco_link").edit()
             .putBoolean("auto_connect", true)
             .putString("page", "settings")
             .putString("phone_name", "iphone-of-owner")
@@ -61,21 +61,21 @@ class SettingsBackupCodecTest {
         assertFalse(airplay.has("identity_private"))
         assertFalse(airplay.has("manual_hotspot_passphrase"))
         assertFalse(airplay.has("pairing_ids"))
-        val osnplay = document.getJSONObject("settings").getJSONObject("osnplay")
-        assertTrue(osnplay.getBoolean("auto_connect"))
-        assertFalse(osnplay.has("page"))
-        assertFalse(osnplay.has("phone_name"))
+        val lynkco_link = document.getJSONObject("settings").getJSONObject("lynkco_link")
+        assertTrue(lynkco_link.getBoolean("auto_connect"))
+        assertFalse(lynkco_link.has("page"))
+        assertFalse(lynkco_link.has("phone_name"))
         assertEquals(80, document.getJSONObject("settings").getJSONObject("carplay_picture").getInt("brightness"))
-        assertFalse(document.getJSONObject("settings").has("osnplay_car_hotspot"))
+        assertFalse(document.getJSONObject("settings").has("lynkco_link_car_hotspot"))
     }
 
     @Test
     fun importAppliesKnownKeysAndSkipsUnknownOrForbidden() {
         val document = """
-            {"format": "osnplay-settings", "version": 1, "settings": {
+            {"format": "lynkco_link-settings", "version": 1, "settings": {
               "xcertplay_airplay": {"display_fps": 48, "brand_new_key": 7, "manual_hotspot_passphrase": "x",
                 "pairing.attacker": "00ff"},
-              "osnplay": {"auto_connect": true, "page": "about"},
+              "lynkco_link": {"auto_connect": true, "page": "about"},
               "carplay_picture": {"brightness": 66}
             }}
         """.trimIndent()
@@ -88,8 +88,8 @@ class SettingsBackupCodecTest {
         // Only listed settings travel: an imported file cannot add an iPhone pairing key or any unknown key.
         assertFalse(prefs("xcertplay_airplay").contains("pairing.attacker"))
         assertFalse(prefs("xcertplay_airplay").contains("brand_new_key"))
-        assertEquals(true, prefs("osnplay").getBoolean("auto_connect", false))
-        assertFalse(prefs("osnplay").contains("page"))
+        assertEquals(true, prefs("lynkco_link").getBoolean("auto_connect", false))
+        assertFalse(prefs("lynkco_link").contains("page"))
         assertEquals(66, prefs("carplay_picture").getInt("brightness", 0))
     }
 
@@ -115,9 +115,9 @@ class SettingsBackupCodecTest {
     @Test
     fun importedPictureAndHotspotFilesTakeOnlyTheirOwnKeys() {
         val document = """
-            {"format": "osnplay-settings", "version": 1, "settings": {
+            {"format": "lynkco_link-settings", "version": 1, "settings": {
               "carplay_picture": {"brightness": 10, "contrast": 120, "saturation": 90, "warmth": -5, "planted_key": "x"},
-              "osnplay_car_hotspot": {"auto_enable": true, "config_write": true, "planted_key": true}
+              "lynkco_link_car_hotspot": {"auto_enable": true, "config_write": true, "planted_key": true}
             }}
         """.trimIndent()
         val outcome = SettingsBackupCodec.import(context, document.toByteArray())
@@ -127,10 +127,10 @@ class SettingsBackupCodecTest {
         assertEquals(120, prefs("carplay_picture").getInt("contrast", 0))
         assertEquals(90, prefs("carplay_picture").getInt("saturation", 0))
         assertEquals(-5, prefs("carplay_picture").getInt("warmth", 0))
-        assertTrue(prefs("osnplay_car_hotspot").getBoolean("auto_enable", false))
-        assertTrue(prefs("osnplay_car_hotspot").getBoolean("config_write", false))
+        assertTrue(prefs("lynkco_link_car_hotspot").getBoolean("auto_enable", false))
+        assertTrue(prefs("lynkco_link_car_hotspot").getBoolean("config_write", false))
         assertFalse(prefs("carplay_picture").contains("planted_key"))
-        assertFalse(prefs("osnplay_car_hotspot").contains("planted_key"))
+        assertFalse(prefs("lynkco_link_car_hotspot").contains("planted_key"))
     }
 
     @Test
@@ -138,7 +138,7 @@ class SettingsBackupCodecTest {
         // On a fresh install the key does not exist yet, so nothing tells the codec its type. The reader calls getInt.
         for (wrong in listOf("\"x\"", "1.5", "99999999999", "true")) {
             prefs("carplay_picture").edit().clear().commit()
-            SettingsBackupCodec.import(context, """{"format": "osnplay-settings", "version": 1, "settings": {"carplay_picture": {"brightness": $wrong}}}""".toByteArray())
+            SettingsBackupCodec.import(context, """{"format": "lynkco_link-settings", "version": 1, "settings": {"carplay_picture": {"brightness": $wrong}}}""".toByteArray())
             CarPlayPicture.value(prefs("carplay_picture"), "brightness") // ClassCastException when a String, Float or Long was stored
         }
     }
@@ -146,8 +146,8 @@ class SettingsBackupCodecTest {
     @Test
     fun anImportedHotspotValueOfAnotherTypeNeverReachesTheReaderOfThatKey() {
         for (wrong in listOf("\"yes\"", "1", "1.5")) {
-            prefs("osnplay_car_hotspot").edit().clear().commit()
-            SettingsBackupCodec.import(context, """{"format": "osnplay-settings", "version": 1, "settings": {"osnplay_car_hotspot": {"auto_enable": $wrong, "config_write": $wrong}}}""".toByteArray())
+            prefs("lynkco_link_car_hotspot").edit().clear().commit()
+            SettingsBackupCodec.import(context, """{"format": "lynkco_link-settings", "version": 1, "settings": {"lynkco_link_car_hotspot": {"auto_enable": $wrong, "config_write": $wrong}}}""".toByteArray())
             CarHotspotSettings.enabled(context) // ClassCastException when a String, Int or Float was stored
             CarHotspotSettings.configWrite(context)
         }
@@ -156,18 +156,18 @@ class SettingsBackupCodecTest {
     @Test
     fun exportKeepsUnlistedKeysOfPictureAndHotspotFilesOut() {
         prefs("carplay_picture").edit().putInt("brightness", 5).putString("stray", "x").apply()
-        prefs("osnplay_car_hotspot").edit().putBoolean("auto_enable", true).putString("stray", "x").apply()
+        prefs("lynkco_link_car_hotspot").edit().putBoolean("auto_enable", true).putString("stray", "x").apply()
         val settings = JSONObject(String(SettingsBackupCodec.export(context, "0.2.22"))).getJSONObject("settings")
         assertEquals(5, settings.getJSONObject("carplay_picture").getInt("brightness"))
-        assertTrue(settings.getJSONObject("osnplay_car_hotspot").getBoolean("auto_enable"))
+        assertTrue(settings.getJSONObject("lynkco_link_car_hotspot").getBoolean("auto_enable"))
         assertFalse(settings.getJSONObject("carplay_picture").has("stray"))
-        assertFalse(settings.getJSONObject("osnplay_car_hotspot").has("stray"))
+        assertFalse(settings.getJSONObject("lynkco_link_car_hotspot").has("stray"))
     }
 
     @Test
     fun importRejectsForeignOrNewerDocuments() {
         assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"other\",\"version\":1,\"settings\":{}}".toByteArray()).invalid)
-        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"osnplay-settings\",\"version\":99,\"settings\":{}}".toByteArray()).invalid)
+        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"lynkco_link-settings\",\"version\":99,\"settings\":{}}".toByteArray()).invalid)
         assertTrue(SettingsBackupCodec.import(context, "not json".toByteArray()).invalid)
         assertTrue(SettingsBackupCodec.import(context, "{}".toByteArray()).invalid)
     }
@@ -176,7 +176,7 @@ class SettingsBackupCodecTest {
     fun importMatchesTypesAgainstStoredValues() {
         prefs("xcertplay_airplay").edit().putInt("display_fps", 60).putBoolean("hevc_enabled", false).apply()
         val document = """
-            {"format": "osnplay-settings", "version": 1, "settings": {
+            {"format": "lynkco_link-settings", "version": 1, "settings": {
               "xcertplay_airplay": {"display_fps": "48", "hevc_enabled": true, "display_scale_tenths": 85}
             }}
         """.trimIndent()
@@ -190,9 +190,9 @@ class SettingsBackupCodecTest {
 
     @Test
     fun importRejectsMissingOrUnsupportedVersions() {
-        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"osnplay-settings\",\"settings\":{}}".toByteArray()).invalid)
-        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"osnplay-settings\",\"version\":0,\"settings\":{}}".toByteArray()).invalid)
-        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"osnplay-settings\",\"version\":-1,\"settings\":{}}".toByteArray()).invalid)
+        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"lynkco_link-settings\",\"settings\":{}}".toByteArray()).invalid)
+        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"lynkco_link-settings\",\"version\":0,\"settings\":{}}".toByteArray()).invalid)
+        assertTrue(SettingsBackupCodec.import(context, "{\"format\":\"lynkco_link-settings\",\"version\":-1,\"settings\":{}}".toByteArray()).invalid)
     }
 
     @Test
@@ -203,7 +203,7 @@ class SettingsBackupCodecTest {
             .putInt("display_fps", 60)
             .apply()
         val document = """
-            {"format": "osnplay-settings", "version": 1, "settings": {
+            {"format": "lynkco_link-settings", "version": 1, "settings": {
               "xcertplay_airplay": {"cluster_test_counter": 1.5, "ui_scale_percent": 1e300, "display_fps": 3000000000}
             }}
         """.trimIndent()
@@ -224,7 +224,7 @@ class SettingsBackupCodecTest {
             .putString("manual_hotspot_ssid", "car-ap")
             .putFloat("ui_scale_percent", 100f)
             .apply()
-        prefs("osnplay_car_hotspot").edit().putBoolean("auto_enable", true).apply()
+        prefs("lynkco_link_car_hotspot").edit().putBoolean("auto_enable", true).apply()
         val document = SettingsBackupCodec.export(context, "0.2.17")
         prefs("xcertplay_airplay").edit()
             .putInt("display_fps", 30)
@@ -233,7 +233,7 @@ class SettingsBackupCodecTest {
             .putString("manual_hotspot_ssid", "changed")
             .putFloat("ui_scale_percent", 120f)
             .apply()
-        prefs("osnplay_car_hotspot").edit().putBoolean("auto_enable", false).apply()
+        prefs("lynkco_link_car_hotspot").edit().putBoolean("auto_enable", false).apply()
         val outcome = SettingsBackupCodec.import(context, document)
         assertEquals(false, outcome.invalid)
         val airplay = prefs("xcertplay_airplay")
@@ -243,7 +243,7 @@ class SettingsBackupCodecTest {
         // The car's hotspot name is not part of a backup.
         assertEquals("changed", airplay.getString("manual_hotspot_ssid", ""))
         assertEquals(100f, airplay.getFloat("ui_scale_percent", 0f))
-        assertEquals(true, prefs("osnplay_car_hotspot").getBoolean("auto_enable", false))
+        assertEquals(true, prefs("lynkco_link_car_hotspot").getBoolean("auto_enable", false))
         assertFalse(airplay.contains("identity_private"))
     }
 }

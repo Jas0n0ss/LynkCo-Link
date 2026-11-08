@@ -33,7 +33,7 @@
 
 - `applicationId` 从 `com.shihab.diplay` 改为 `com.lynkco.link`，可与原版 DiPlay 并存安装。
 - 应用名、Launcher 图标、iAP2 配件名、AirPlay label、热点 SSID 前缀（`LynkCo-Link-XXXX`）、Telecom 账户标签、设置备份页等用户可见品牌位已改为 LynkCo-Link。
-- 新增原创矢量图标 `ic_osnplay` / `ic_osnplay_round`。
+- 新增原创矢量图标 `ic_lynkco_link` / `ic_lynkco_link_round`。
 - 英文与简体中文的 About / 致谢文案已改为 LynkCo-Link；其他语言的长文案仍部分沿用上游 DiPlay 表述，见路线图。
 
 ### 3. 领克 OSN 适配
@@ -58,7 +58,7 @@ OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功�
 - `lynk` 版本默认开启桌面悬浮球，首次运行提示授予“显示在其他应用上层”；授权后即使桌面没有图标也能从悬浮球打开；
 - 保留 `am start` 和第三方启动器（小八启动器/应用页）作为替代入口。
 
-说明见 [INSTALL.md](INSTALL.md#安装成功但桌面不显示-osnplay)。
+说明见 [INSTALL.md](INSTALL.md#安装成功但桌面不显示-lynkco-link)。
 
 ### 5. 文档与仓库整理
 

@@ -39,13 +39,13 @@ class SessionLogFileLatencyTest {
     /** Leaves every archive present and the current file empty. */
     private fun fillWithArchives(folder: File): SessionLogFile {
         repeat(SessionLogFile.REPORT_NAMES.size) { session ->
-            val log = SessionLogFile(folder.resolve("osnplay.log"))
+            val log = SessionLogFile(folder.resolve("lynkco_link.log"))
             log.reset("session=$session")
             repeat(linesPerCycle) { log.append(numbered()) }
             log.flushed()
             log.close()
         }
-        val log = SessionLogFile(folder.resolve("osnplay.log"))
+        val log = SessionLogFile(folder.resolve("lynkco_link.log"))
         log.reset("final")
         return log
     }
@@ -53,9 +53,9 @@ class SessionLogFileLatencyTest {
     private fun firstLineOf(file: File) = file.useLines { it.first() }
 
     @Test fun callerLatencyPerLineStaysFarBelowOneDiskOpenPerCall() {
-        val folder = Files.createTempDirectory("osnplay-latency").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-latency").toFile()
         try {
-            val log = SessionLogFile(folder.resolve("osnplay.log"))
+            val log = SessionLogFile(folder.resolve("lynkco_link.log"))
             log.reset("started")
             // Batches stay below the 4096-line queue, so every timed call is an accepted line.
             val samples = ArrayList<Long>()
@@ -72,7 +72,7 @@ class SessionLogFileLatencyTest {
     }
 
     @Test fun theCallThatCrossesTheSizeLimitDoesNotCopyArchivesOnTheCallerThread() {
-        val folder = Files.createTempDirectory("osnplay-rotation").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-rotation").toFile()
         try {
             val log = fillWithArchives(folder)
             val cycleMaxima = mutableListOf<Long>()
@@ -92,7 +92,7 @@ class SessionLogFileLatencyTest {
     }
 
     @Test(timeout = 120_000) fun aSecondThreadIsNotBlockedBehindTheRotatingCaller() {
-        val folder = Files.createTempDirectory("osnplay-contention").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-contention").toFile()
         try {
             val log = fillWithArchives(folder)
             val perThread = linesPerCycle / 2
@@ -121,9 +121,9 @@ class SessionLogFileLatencyTest {
     }
 
     @Test fun linesKeepTheirOrderAndFormatAndAreRedactedOnceAfterClose() {
-        val folder = Files.createTempDirectory("osnplay-order").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-order").toFile()
         try {
-            val file = folder.resolve("osnplay.log")
+            val file = folder.resolve("lynkco_link.log")
             SessionLogFile(file).use { log ->
                 log.reset("header")
                 repeat(300) { log.append("12:00:00.000  line $it peer=192.168.1.5") }
@@ -137,24 +137,24 @@ class SessionLogFileLatencyTest {
     }
 
     @Test fun rotationStillKeepsTheCurrentFileBoundedAndHistoryIntact() {
-        val folder = Files.createTempDirectory("osnplay-bound").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-bound").toFile()
         try {
             val log = fillWithArchives(folder)
             repeat(3_000) { log.append(line) }
             log.append("last line")
             log.flushed()
             log.close()
-            assertTrue(folder.resolve("osnplay.log").length() <= SessionLogFile.MAX_BYTES + 701)
-            assertTrue(folder.resolve("osnplay.log").readText().trimEnd().endsWith("last line"))
+            assertTrue(folder.resolve("lynkco_link.log").length() <= SessionLogFile.MAX_BYTES + 701)
+            assertTrue(folder.resolve("lynkco_link.log").readText().trimEnd().endsWith("last line"))
             assertTrue(folder.resolve("previous.log").length() > 0)
             assertEquals(8, folder.listFiles()!!.size)
         } finally { folder.deleteRecursively() }
     }
 
     @Test fun droppedTraceLinesNeverEvictLegitimateQueuedLines() {
-        val folder = Files.createTempDirectory("osnplay-trace").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-trace").toFile()
         try {
-            val log = SessionLogFile(folder.resolve("osnplay.log"))
+            val log = SessionLogFile(folder.resolve("lynkco_link.log"))
             log.reset("header")
             val stall = stallWriter(log, 1_000)
             log.append("first")
@@ -165,14 +165,14 @@ class SessionLogFileLatencyTest {
             stall.join()
             log.flushed()
             log.close()
-            assertEquals(listOf("header", "first") + legit, folder.resolve("osnplay.log").readLines())
+            assertEquals(listOf("header", "first") + legit, folder.resolve("lynkco_link.log").readLines())
         } finally { folder.deleteRecursively() }
     }
 
     @Test fun anOverflowLeavesOneMarkerWithTheNumberOfDroppedLines() {
-        val folder = Files.createTempDirectory("osnplay-overflow").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-overflow").toFile()
         try {
-            val log = SessionLogFile(folder.resolve("osnplay.log"))
+            val log = SessionLogFile(folder.resolve("lynkco_link.log"))
             log.reset("header")
             val stall = stallWriter(log, 1_000)
             val sent = 5_000
@@ -180,7 +180,7 @@ class SessionLogFileLatencyTest {
             stall.join()
             log.flushed()
             log.close()
-            val lines = folder.resolve("osnplay.log").readLines()
+            val lines = folder.resolve("lynkco_link.log").readLines()
             val markers = lines.filter { it.contains("lines dropped") }
             assertEquals(lines.toString().take(200), 1, markers.size)
             val dropped = Regex("(\\d+) lines dropped").find(markers.single())!!.groupValues[1].toInt()
@@ -192,9 +192,9 @@ class SessionLogFileLatencyTest {
     }
 
     @Test fun closeReturnsWithinItsCapWhileTheDiskIsStalled() {
-        val folder = Files.createTempDirectory("osnplay-close-time").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-close-time").toFile()
         try {
-            val log = SessionLogFile(folder.resolve("osnplay.log"))
+            val log = SessionLogFile(folder.resolve("lynkco_link.log"))
             log.reset("header")
             val stall = stallWriter(log, 1_500)
             log.append("Activity destroyed")
@@ -206,9 +206,9 @@ class SessionLogFileLatencyTest {
     }
 
     @Test fun linesStillQueuedWhenCloseGivesUpAreWrittenWhenTheDiskRecovers() {
-        val folder = Files.createTempDirectory("osnplay-close-flush").toFile()
+        val folder = Files.createTempDirectory("lynkco_link-close-flush").toFile()
         try {
-            val log = SessionLogFile(folder.resolve("osnplay.log"))
+            val log = SessionLogFile(folder.resolve("lynkco_link.log"))
             log.reset("header")
             val stall = stallWriter(log, 1_500)
             log.append("one")
@@ -216,7 +216,7 @@ class SessionLogFileLatencyTest {
             log.close()
             stall.join()
             log.flushed()
-            assertEquals(listOf("header", "one", "Activity destroyed"), folder.resolve("osnplay.log").readLines())
+            assertEquals(listOf("header", "one", "Activity destroyed"), folder.resolve("lynkco_link.log").readLines())
         } finally { folder.deleteRecursively() }
     }
 }

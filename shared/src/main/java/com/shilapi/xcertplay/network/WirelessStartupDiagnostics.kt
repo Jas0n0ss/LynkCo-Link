@@ -25,7 +25,7 @@ internal class WirelessStartupDiagnostics(
     private var firstStartRequestNs: Long? = null
     private var firstTcpAfterStartMs: Long? = null
     @Volatile private var lastSnapshot = ""
-    private val worker = Thread(::observe, "osnplay-wireless-diagnostics").apply { isDaemon = true }
+    private val worker = Thread(::observe, "lynkco_link-wireless-diagnostics").apply { isDaemon = true }
 
     init { require(intervalMillis > 0) }
 

@@ -290,7 +290,7 @@ class CarPlayController(
     @Volatile private var wirelessAlternateAddress: InetAddress? = null
     @Volatile private var wirelessAddressRecovery: HotspotAddressRecovery? = null
     private val startupTimer = java.util.concurrent.ScheduledThreadPoolExecutor(1) { task ->
-        Thread(task, "osnplay-first-tcp-timeout").apply { isDaemon = true }
+        Thread(task, "lynkco_link-first-tcp-timeout").apply { isDaemon = true }
     }.apply { removeOnCancelPolicy = true }
     @Volatile private var wirelessDiagnostics: WirelessStartupDiagnostics? = null
     @Volatile private var bluetoothSocket: BluetoothSocket? = null
@@ -1305,7 +1305,7 @@ class CarPlayController(
                         flipWirelessAddressFamily(generation)
                         fail(WirelessStartupException(WirelessStartupFailure.FIRST_TCP_TIMEOUT,
                             "No AirPlay TCP after CarPlay StartSession"), generation)
-                        Thread({ closeWirelessStack(generation = generation) }, "osnplay-startup-cleanup")
+                        Thread({ closeWirelessStack(generation = generation) }, "lynkco_link-startup-cleanup")
                             .apply { isDaemon = true; start() }
                     }
                 },
@@ -2662,7 +2662,7 @@ class CarPlayController(
             if (isStaleWirelessRun(link.generation)) return@Thread
             fail(failure, link.generation)
             closeWirelessStack(generation = link.generation)
-        }, "osnplay-bluetooth-link-check").apply { isDaemon = true; start() }
+        }, "lynkco_link-bluetooth-link-check").apply { isDaemon = true; start() }
     }
 
     /**
@@ -3223,7 +3223,7 @@ class CarPlayController(
         private const val WIFI_P2P_START_TIMEOUT_MILLIS = 20_000L
         private const val PAIR_TIMEOUT_MILLIS = 5 * 60_000L
         private const val VPN_CONNECT_TIMEOUT_MILLIS = 10_000L
-        private const val WIRELESS_PREFS = "osnplay_wireless"
+        private const val WIRELESS_PREFS = "lynkco_link_wireless"
         private const val HOTSPOT_FAMILY_PREFERENCE_KEY = "hotspot_address_family"
         private const val CONTROL_LOOP_TIMEOUT_MILLIS = 5 * 60_000L
         private const val LOCATION_CONTROL_LOOP_TIMEOUT_MILLIS = 24 * 60 * 60 * 1_000L

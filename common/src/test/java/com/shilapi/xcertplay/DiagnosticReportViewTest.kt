@@ -64,7 +64,7 @@ class DiagnosticReportViewTest {
     }
 
     @Test fun smallReportIsShownInFull() {
-        val report = "LynkCoLink 1.0\n--- osnplay.log ---\n12:00:00.000  CarPlay connected\n"
+        val report = "LynkCoLink 1.0\n--- lynkco_link.log ---\n12:00:00.000  CarPlay connected\n"
         assertEquals(report, showReport(report).first)
     }
 
@@ -144,7 +144,7 @@ class DiagnosticReportViewTest {
     }
 
     @Test fun aHeaderOverTheCapIsCutAtALineBoundary() {
-        val report = headLines(5_000) + "--- osnplay.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
+        val report = headLines(5_000) + "--- lynkco_link.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
         val shown = tail(report)
         val head = shown.substringBefore("…\n")
         assertTrue("head is ${head.length} chars", head.length in 19_000..20_000)
@@ -159,13 +159,13 @@ class DiagnosticReportViewTest {
 
     @Test fun aHeaderThatTheTailAlreadyReachesIsNotRepeated() {
         // About 205,000 chars: the tail starts near 5,000, inside the 16,000-char header.
-        val report = headLines(1_000) + "--- osnplay.log ---\n" + "12:00:01.000  filler\n".repeat(9_000)
+        val report = headLines(1_000) + "--- lynkco_link.log ---\n" + "12:00:01.000  filler\n".repeat(9_000)
         assertTrue(report.length > max)
         assertEquals(report, tail(report))
     }
 
     @Test fun aSurrogatePairAtTheHeaderCapIsNotSplit() {
-        val report = "x".repeat(19_999) + "\uD83D\uDE00" + "\n--- osnplay.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
+        val report = "x".repeat(19_999) + "\uD83D\uDE00" + "\n--- lynkco_link.log ---\n" + "12:00:01.000  filler\n".repeat(30_000)
         val head = tail(report).substringBefore("…\n")
         assertTrue("head ends in a lone high surrogate", head.isEmpty() || !Character.isHighSurrogate(head.last()))
     }

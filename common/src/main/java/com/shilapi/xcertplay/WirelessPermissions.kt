@@ -45,9 +45,9 @@ internal object WirelessPermissions {
     @StringRes
     fun refusalMessage(missing: Collection<String>): Int = when {
         Manifest.permission.ACCESS_FINE_LOCATION in missing || Manifest.permission.ACCESS_COARSE_LOCATION in missing ->
-            R.string.allow_precise_location_for_osnplay_in_the_head_unit_s_app_p
+            R.string.allow_precise_location_for_lynkco_link_in_the_head_unit_s_app_p
         Manifest.permission.BLUETOOTH_CONNECT in missing || Manifest.permission.NEARBY_WIFI_DEVICES in missing ->
-            R.string.allow_nearby_devices_for_osnplay_in_the_head_unit_s_app_per
-        else -> R.string.could_not_start_carplay_return_to_osnplay_and_check_app_per
+            R.string.allow_nearby_devices_for_lynkco_link_in_the_head_unit_s_app_per
+        else -> R.string.could_not_start_carplay_return_to_lynkco_link_and_check_app_per
     }
 }

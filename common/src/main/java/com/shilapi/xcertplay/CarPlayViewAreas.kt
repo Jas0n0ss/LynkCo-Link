@@ -192,7 +192,7 @@ class CarPlayViewAreas private constructor(
  * does not change, so the next connection declares an area of exactly that shape.
  */
 object SplitScreenSettings {
-    private const val PREFS = "osnplay_split_screen"
+    private const val PREFS = "lynkco_link_split_screen"
     private const val KEY_ENABLED = "enabled"
 
     fun enabled(context: Context): Boolean = prefs(context).getBoolean(KEY_ENABLED, false)

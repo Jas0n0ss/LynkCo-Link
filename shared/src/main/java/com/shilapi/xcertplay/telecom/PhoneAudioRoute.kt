@@ -123,7 +123,7 @@ object PhoneAudioRoute {
     private const val TAG = "LynkCoLink-PhoneAudio"
 
     private val executor: ScheduledExecutorService by lazy {
-        Executors.newSingleThreadScheduledExecutor { Thread(it, "osnplay-phone-audio").apply { isDaemon = true } }
+        Executors.newSingleThreadScheduledExecutor { Thread(it, "lynkco_link-phone-audio").apply { isDaemon = true } }
     }
     @Volatile private var controller: PhoneAudioRouteController? = null
     private var watcher: VoipCallWatcher? = null // guarded by this

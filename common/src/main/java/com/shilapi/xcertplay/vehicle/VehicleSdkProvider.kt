@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 
 object MockSettings {
-    private const val PREFS = "osnplay_dev"
+    private const val PREFS = "lynkco_link_dev"
     private const val KEY_MOCK = "vehicle_mock_enabled"
     private const val KEY_SCENARIO = "vehicle_mock_scenario"
 

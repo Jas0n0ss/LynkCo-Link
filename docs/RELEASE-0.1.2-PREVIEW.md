@@ -85,4 +85,4 @@ sha256sum -c SHA256SUMS.txt
 
 ## 反馈
 
-请附车型/年款、OSN/Android/固件、iPhone/iOS、APK 版本、安装方式和 `adb shell pm list packages | grep osnplay` 等脱敏信息。不要上传热点密码、认证文件或含个人信息的截图。
+请附车型/年款、OSN/Android/固件、iPhone/iOS、APK 版本、安装方式和 `adb shell pm list packages | grep com.kugou` 等脱敏信息。不要上传热点密码、认证文件或含个人信息的截图。

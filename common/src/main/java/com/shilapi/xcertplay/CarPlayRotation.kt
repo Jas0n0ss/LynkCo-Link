@@ -14,7 +14,7 @@ import android.util.Log
  */
 object CarPlayRotation {
     private const val TAG = "LynkCoLink-Rotation"
-    private const val PREFS = "osnplay_carplay_rotation"
+    private const val PREFS = "lynkco_link_carplay_rotation"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_PICTURE = "picture"
     private val SIDES = listOf(2560, 2304, 2048, 1920, 1600, 1280)

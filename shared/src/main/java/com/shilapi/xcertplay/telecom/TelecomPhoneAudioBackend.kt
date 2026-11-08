@@ -18,9 +18,9 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "LynkCoLink-PhoneAudio"
-private const val ACCOUNT_ID = "osnplay-car-phone-audio"
+private const val ACCOUNT_ID = "lynkco_link-car-phone-audio"
 private const val ACCOUNT_LABEL = "LynkCoLink call audio"
-private const val ADDRESS = "carplay@osnplay"
+private const val ADDRESS = "carplay@lynkco_link"
 private const val START_TIMEOUT_MILLIS = 3_000L
 
 /** Places the self-managed call through Telecom and waits until the system has accepted it. */

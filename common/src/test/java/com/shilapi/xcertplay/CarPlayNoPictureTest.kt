@@ -48,7 +48,7 @@ class CarPlayNoPictureTest {
 
     @Before fun setUp() {
         CarPlayBackgroundSession.clear()
-        log = folder.newFile("osnplay.log")
+        log = folder.newFile("lynkco_link.log")
     }
 
     @After fun tearDown() {

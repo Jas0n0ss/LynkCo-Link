@@ -9,7 +9,7 @@ object SetupGuide {
     const val STEP_DONE = 2
     const val STEP_COUNT = 3
 
-    private fun prefs(context: Context) = context.getSharedPreferences("osnplay", Context.MODE_PRIVATE)
+    private fun prefs(context: Context) = context.getSharedPreferences("lynkco_link", Context.MODE_PRIVATE)
 
     fun seen(context: Context): Boolean = prefs(context).getBoolean("setup_guide_seen", false)
 

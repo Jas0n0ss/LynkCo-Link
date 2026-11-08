@@ -14,7 +14,7 @@ enum class CarPlayDock(val edge: Int?) {
     BOTTOM(AirPlayInfoPlist.DOCK_EDGE_BOTTOM);
 
     companion object {
-        private const val PREFS = "osnplay_carplay_dock"
+        private const val PREFS = "lynkco_link_carplay_dock"
         private const val KEY_DOCK = "dock"
 
         fun load(context: Context): CarPlayDock =

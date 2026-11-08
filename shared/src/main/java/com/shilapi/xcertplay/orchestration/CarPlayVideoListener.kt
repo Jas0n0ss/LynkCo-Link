@@ -44,7 +44,7 @@ internal class VideoInCarGate(
                     return@Thread
                 }
             }
-        }, "osnplay-video-gate").apply { isDaemon = true }.start()
+        }, "lynkco_link-video-gate").apply { isDaemon = true }.start()
     }
 
     internal fun update(parked: Boolean?) {

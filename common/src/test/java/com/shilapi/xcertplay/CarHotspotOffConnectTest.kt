@@ -51,7 +51,7 @@ class CarHotspotOffConnectTest {
     }
 
     private fun clearSettings() {
-        for (name in listOf("osnplay", "xcertplay_airplay", "osnplay_car_hotspot")) {
+        for (name in listOf("lynkco_link", "xcertplay_airplay", "lynkco_link_car_hotspot")) {
             context.getSharedPreferences(name, 0).edit().clear().commit()
         }
     }

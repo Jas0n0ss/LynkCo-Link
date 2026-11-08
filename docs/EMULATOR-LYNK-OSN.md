@@ -329,7 +329,7 @@ core/vehicle/
 ```text
 package: com.kugou.android.auto
 versionCode: 300
-versionName: 0.3.0-lynk
+versionName: 0.3.1-lynk
 launchable-activity: com.shilapi.xcertplay.LynkCoLinkActivity
 ```
 

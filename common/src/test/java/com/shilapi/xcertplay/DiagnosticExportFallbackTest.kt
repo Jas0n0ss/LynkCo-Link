@@ -123,7 +123,7 @@ class DiagnosticExportFallbackTest {
 
     @Test fun providerCannotExposeSessionLogsOrOtherPrivateFiles() {
         DiagnosticExportStore.saveWithoutPicker(context, "LynkCoLink-test.txt", "report")
-        for (path in listOf("logs/osnplay.log", "other.txt")) {
+        for (path in listOf("logs/lynkco_link.log", "other.txt")) {
             val file = File(context.filesDir, path).apply { parentFile!!.mkdirs(); writeText("private") }
             assertThrows(IllegalArgumentException::class.java) {
                 FileProvider.getUriForFile(context, "${context.packageName}.diagnostic-reports", file)

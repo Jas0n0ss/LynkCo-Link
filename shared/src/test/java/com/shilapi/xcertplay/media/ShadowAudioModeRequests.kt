@@ -21,7 +21,7 @@ open class ShadowAudioModeRequests : ShadowAudioManager() {
     }
 
     companion object {
-        private const val LYNKCO_LINK = "osnplay"
+        private const val LYNKCO_LINK = "lynkco_link"
         private const val OTHER = "other"
         private val requests = mutableListOf<Pair<String, Int>>() // newest first
 

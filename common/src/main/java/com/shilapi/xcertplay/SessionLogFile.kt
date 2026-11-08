@@ -78,6 +78,6 @@ internal class SessionLogFile(val file: File) : Closeable {
         private const val CLOSE_FLUSH_MILLIS = 250L
         private const val UNKNOWN_SIZE = -1L
         private val ARCHIVE_NAMES = listOf("previous.log") + (2..7).map { "previous-$it.log" }
-        val REPORT_NAMES = ARCHIVE_NAMES.reversed() + "osnplay.log"
+        val REPORT_NAMES = ARCHIVE_NAMES.reversed() + "lynkco_link.log"
     }
 }

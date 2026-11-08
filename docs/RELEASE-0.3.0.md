@@ -1,6 +1,6 @@
 # LynkCo-Link 0.3.0 — Lynk&co
 
-- 品牌从 OSNPlay 统一改为 **LynkCo-Link**。
+- 品牌统一为 **LynkCo-Link**。
 - 应用名、类名、资源、文档和 CI 产物同步改名。
 - 标准包 applicationId 改为 `com.lynkco.link`；交付包仍为 `com.kugou.android.auto`。
 - 删除桌面悬浮球。
