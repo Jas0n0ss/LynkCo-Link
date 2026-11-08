@@ -22,7 +22,7 @@ LATEST_ZIP="$("${ADB[@]}" shell ls -t "$APP_DIR"/*.zip 2>/dev/null | tr -d '\r' 
 if [ -n "$LATEST_ZIP" ]; then
   mkdir -p "$OUT/app-report"
   "${ADB[@]}" pull "$LATEST_ZIP" "$OUT/app-report/" >/dev/null 2>&1 || true
-  cp "$LATEST_ZIP" "$OUT/app-report-path.txt" 2>/dev/null || true
+  printf '%s\n' "$LATEST_ZIP" > "$OUT/app-report-path.txt"
 else
   cat >"$OUT/app-report-missing.txt" <<TXT
 No in-app vehicle report was found.
