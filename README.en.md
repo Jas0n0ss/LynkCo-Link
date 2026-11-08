@@ -48,7 +48,7 @@ Output:
 mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 ```
 
-Application ID `com.kugou.android.auto`, version `0.1.2-lynk`, release-signed, with the explicitly supplied authentication assets. The package name comes from the OSN Launcher3 whitelist; the app itself is OSNPlay and contains no Kugou features.
+Application ID `com.kugou.android.auto`, version `0.1.3-lynk`, release-signed, with the explicitly supplied authentication assets. The package name comes from the OSN Launcher3 whitelist; the app itself is OSNPlay and contains no Kugou features.
 
 Source/CI builds contain no accessory identity; they only verify UI/settings. A **real CarPlay connection needs authentication assets**. The public `0.1.2` release package includes them; the source tree itself does not distribute the private key.
 
@@ -65,7 +65,7 @@ It uses the OSN whitelist package name `com.kugou.android.auto`, so it appears d
 ### Prepare
 
 - Park the car and have the iPhone ready.
-- APK file: `OSNPlay-0.1.2-lynk-release-standalone.apk`.
+- APK file: `OSNPlay-0.1.3-lynk-release-standalone.apk`.
 - A **USB-A data cable** (PC install) or a FAT32 USB drive (head-unit file manager).
 - [Android Platform-Tools](https://developer.android.com/tools/releases/platform-tools) on the PC (includes `adb`).
 
@@ -95,7 +95,7 @@ Allow the USB-debugging prompt on the car.
 ### Step 2: install
 
 ```sh
-adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
+adb install -r OSNPlay-0.1.3-lynk-release-standalone.apk
 ```
 
 > Check for the real Kugou app first: `adb shell pm list packages | grep com.kugou.android.auto`. Uninstall it if present, or the packages conflict. The package name is only for the OSN launcher whitelist; the app contains no Kugou features.

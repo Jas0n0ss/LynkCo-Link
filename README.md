@@ -48,7 +48,7 @@ export ANDROID_KEY_PASSWORD='...'
 mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 ```
 
-包名 `com.kugou.android.auto`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。这个包名来自 OSN Launcher3 白名单；应用本身是 OSNPlay，不包含酷狗功能。
+包名 `com.kugou.android.auto`，版本 `0.1.3-lynk`，release 签名，含显式提供的认证资产。这个包名来自 OSN Launcher3 白名单；应用本身是 OSNPlay，不包含酷狗功能。
 
 源码/CI 构建不含认证身份，只能验证界面和设置；**真实 CarPlay 连接需要认证资产**。公开 Release 的 `0.1.2` 功能包已包含该资产；源码树本身不分发私钥。
 
@@ -65,7 +65,7 @@ mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 ### 准备
 
 - 车停稳，准备好 iPhone。
-- APK 文件：`OSNPlay-0.1.2-lynk-release-standalone.apk`。
+- APK 文件：`OSNPlay-0.1.3-lynk-release-standalone.apk`。
 - 一根**公对公 USB 数据线**（电脑装 APK），或一个 FAT32 格式 U 盘（车机文件管理器装 APK）。
 - 电脑安装 [Android Platform-Tools](https://developer.android.com/tools/releases/platform-tools)（含 `adb`）。
 
@@ -98,7 +98,7 @@ adb devices
 ### 第二步：安装 APK
 
 ```sh
-adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
+adb install -r OSNPlay-0.1.3-lynk-release-standalone.apk
 ```
 
 > 安装前确认车机没有真正的酷狗车机版：`adb shell pm list packages | grep com.kugou.android.auto`。如果已有，先卸载它，否则会冲突。该包名只用于通过 OSN 桌面白名单，应用内没有酷狗功能。

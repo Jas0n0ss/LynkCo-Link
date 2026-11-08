@@ -33,7 +33,7 @@ OSNPlay 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac、A
 
    ```sh
    adb devices
-   adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
+   adb install -r OSNPlay-0.1.3-lynk-release-standalone.apk
    ```
 
 3. 若系统拦截未知来源：

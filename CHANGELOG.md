@@ -1,5 +1,19 @@
 # 更新日志
 
+## 0.1.3 — 2026-11-08
+
+### 新增
+
+- 合并为单 APK：`OSNPlay-0.1.3-lynk-release-standalone.apk`，applicationId `com.kugou.android.auto`，同时包含主程序、桌面入口和认证资产。
+- 首次设置直接进入“连接 → iPhone”，删除 DiLink 版本选择。
+- 删除 BYD ADB、导航/HUD、仪表盘地图、氛围灯、导航滚轮设置。
+- 默认应用图标为 CarPlay，车辆按钮使用 Lynk & Co 标识。
+
+### 变更
+
+- versionCode 103 / versionName `0.1.3`。
+- 每次更新发布新 Release，只保留最近两个版本。
+
 ## 0.1.2 — 2026-11-05
 
 ### 新增

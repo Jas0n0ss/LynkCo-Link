@@ -46,7 +46,7 @@ export ANDROID_KEY_PASSWORD='...'
 mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 ```
 
-包名 `com.kugou.android.auto`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
+包名 `com.kugou.android.auto`，版本 `0.1.3-lynk`，release 签名，含显式提供的认证资产。
 
 ## 认证资产与 standalone 车机包
 
