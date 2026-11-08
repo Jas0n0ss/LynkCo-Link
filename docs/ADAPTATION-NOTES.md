@@ -62,7 +62,7 @@ OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功�
 
 ### 5. 文档与仓库整理
 
-- 根目录只保留一份简体中文 README 和一份英文 README；移除重复的 `README.zh-CN.md`、`README.zh-TW.md`。
+- 根目录 `README.md` 默认英文，`README.zh-CN.md` 为简体中文，两者顶部互相切换。
 - 文档从 `docs/lynk/` 提升到 `docs/` 顶层，新增文档索引、设计评审、预览发布说明。
 - 删除上游 BYD 专属文档、逐版本发布说明、静态站点、截图和站点脚本。
 - 仅保留 LynkCo-DiPlay 的两份原始参考材料在 `docs/reference/`。

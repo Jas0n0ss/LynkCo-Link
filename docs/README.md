@@ -6,11 +6,12 @@
 
 | 文档 | 内容 |
 | --- | --- |
-| [README](../README.md) | 项目简介、适配车型、功能、下载与源码构建入口 |
+| [README](../README.md) | English: overview, supported cars, download and build |
+| [README.zh-CN](../README.zh-CN.md) | 简体中文：项目简介、适配车型、下载与源码构建 |
 | [INSTALL.md](INSTALL.md) | 车机安装、有线/无线连接、更新与故障排查 |
 | [COMPATIBILITY.md](COMPATIBILITY.md) | 适配车型矩阵、功能适用性、风险和实车验证清单 |
 | [PRIVACY.md](PRIVACY.md) | 本地数据、诊断报告、权限和更新检查的隐私说明 |
-| [RELEASE-0.1.2-PREVIEW.md](RELEASE-0.1.2-PREVIEW.md) | 0.1.2 桌面可见性修复与新预览包 |
+| [RELEASE-0.1.3.md](RELEASE-0.1.3.md) | 0.1.3 单 APK、领克首次设置与去 BYD 设置 |
 | [RELEASE-0.1.1-PREVIEW.md](RELEASE-0.1.1-PREVIEW.md) | 首个预览版的变更、产物、验证和限制 |
 
 ## 开发

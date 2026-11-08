@@ -1,141 +1,136 @@
 # OSNPlay
 
-**在领克（Lynk & Co）OSN 车机上使用 CarPlay。**
+**[English](README.md) | [简体中文](README.zh-CN.md)**
+
+**CarPlay for Lynk & Co OSN head units.**
 
 [![Android checks](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml)
 [![Release](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?label=release)](https://github.com/Jas0n0ss/OSN-Play/releases)
-[![License](https://img.shields.io/badge/license-GPL--3.0%20%2F%20AGPL--3.0-blue.svg)](LICENSING.md)
 
-OSNPlay 安装在**车机**上，不需要越狱 iPhone、外设或认证服务器。公开 Release 的 APK 已内置认证资产，安装后可直接连接。
+OSNPlay runs on the **head unit**. It needs no jailbreak, dongle or authentication server. The public APK includes authentication assets and can connect directly.
 
-## 适配车型
+## Supported cars
 
-| 车型 | 平台 / 系统 | 状态 |
+| Car | Platform / OS | Status |
 | --- | --- | --- |
-| 领克 01 2023 款 | 骁龙 8155 / OSN | 开发目标，待实车验收 |
-| 领克 03 2023 款 | OSN 2.0 / Android 9 | 同平台参考：有线可用，无线未调通 |
-| 其他领克 OSN 车型 | OSN / Android 7.0+ | 未验证 |
+| Lynk & Co 01 2023 | Snapdragon 8155 / OSN | Development target; awaiting real-car acceptance |
+| Lynk & Co 03 2023 | OSN 2.0 / Android 9 | Same-platform reference: wired works, wireless not tuned |
+| Other Lynk & Co OSN cars | OSN / Android 7.0+ | Unverified |
 
-详见 [兼容性说明](docs/COMPATIBILITY.md)。
+See [compatibility](docs/COMPATIBILITY.md).
 
-## 下载与安装
+## Download and install
 
-只下载一个文件：
+Download one file:
 
 ```text
 OSNPlay-<version>-lynk-release-standalone.apk
 ```
 
-从 [Releases](https://github.com/Jas0n0ss/OSN-Play/releases/latest) 下载，或：
+From [Releases](https://github.com/Jas0n0ss/OSN-Play/releases/latest), or:
 
 ```sh
 gh release download --repo Jas0n0ss/OSN-Play
 ```
 
-> 包名是 `com.kugou.android.auto`，只用于通过 OSN 桌面白名单。应用本身是 OSNPlay，不含酷狗功能。安装前确认车机没有真正的酷狗车机版。
+> The package name is `com.kugou.android.auto`, used only to pass the OSN Launcher3 whitelist. The app is OSNPlay and contains no Kugou features. Remove any real Kugou head-unit app before installing.
 
-### 准备
+### Install
 
-- 车停稳，准备好 iPhone。
-- 一根支持数据传输的 USB 线，或 FAT32 U 盘。
-- 可选：电脑安装 [Android Platform-Tools](https://developer.android.com/tools/releases/platform-tools)。
+**USB drive**: copy the APK to a FAT32 drive, open it from the head-unit file manager, allow unknown sources and install.
 
-### 安装
+**ADB**:
 
-**U 盘**：把 APK 拷到 U 盘，插车机 USB 口，用文件管理器打开安装。
-
-**ADB**：
-
-1. 车机进入原生 Android 设置（常见入口：拨号输入 `2468789`）。
-2. 关于设备 → 连续点击版本号 7 次 → 开发者选项 → 打开 USB 调试。
-3. 连接电脑，执行：
+1. Open native Android settings (common entry: dial `2468789`).
+2. About device → tap Build number 7 times → Developer options → enable USB debugging.
+3. Connect to a computer:
 
 ```sh
 adb devices
 adb install -r OSNPlay-<version>-lynk-release-standalone.apk
 ```
 
-安装后首次必须手动打开一次，否则 Android stopped state 会让开机自启失效：
+Launch once after installing; Android stopped state keeps boot start disabled until then:
 
 ```sh
 adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
-首次打开会直接进入“连接 → 选择 iPhone”，不会询问 DiLink 版本。
+The first run goes straight to “Connection → Choose iPhone”; it does not ask for a DiLink version.
 
-### 桌面没有图标
+### No icon in the app list
 
-OSNPlay 已使用原厂 Launcher3 白名单包名，正常会出现在应用列表。如果仍没有：
+OSNPlay uses a whitelisted Launcher3 package name, so it should appear. If it does not:
 
-1. 重启车机，再找“所有应用 / 应用管理”。
-2. 设置 → 高级 → 桌面悬浮球，允许“显示在其他应用上层”。
-3. 或用 ADB 启动：
+1. Reboot the head unit and check “All apps”.
+2. Settings → Advanced → Launcher bubble; allow “Display over other apps”.
+3. Or start it with ADB:
 
 ```sh
 adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
-### 连接 iPhone
+### Connect iPhone
 
-- **有线**：数据线接车机 USB-A 数据口，打开 OSNPlay，iPhone 点“允许”。
-- **无线**：OSNPlay → 连接设置，选择车机热点 / Wi-Fi Direct / Existing Wi-Fi，按提示配对。
-- 失败时：设置 → 诊断 → 保存诊断报告。
+- **Wired**: connect to the USB-A data port, open OSNPlay, tap Allow on the iPhone.
+- **Wireless**: OSNPlay → Connection, choose car hotspot / Wi-Fi Direct / Existing Wi-Fi and pair.
+- On failure: Settings → Diagnostics → Save diagnostic report.
 
-## 常见问题
+## FAQ
 
-| 问题 | 处理 |
+| Problem | Fix |
 | --- | --- |
-| `adb: command not found` | 安装 Platform-Tools，或在 Platform-Tools 目录执行 |
-| `device unauthorized` | 车机上允许 USB 调试；仍失败就撤销授权后重连 |
-| `INSTALL_FAILED_USER_RESTRICTED` | 开发者选项打开“USB 安装/未知来源” |
-| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 先卸载旧的 `com.osnplay.lynk` 或旧入口包，再安装（会丢设置） |
-| 装完桌面找不到 | 重启车机；或开启桌面悬浮球；或 ADB 启动 |
-| 无法连接 CarPlay | 确认 iPhone 已解锁、蓝牙/Wi-Fi 已开，并导出诊断报告 |
-| 有真正的酷狗车机版 | 两者包名冲突，先卸载酷狗车机版 |
+| `adb: command not found` | Install Platform-Tools or run from its directory |
+| `device unauthorized` | Allow USB debugging on the car; revoke and reconnect if needed |
+| `INSTALL_FAILED_USER_RESTRICTED` | Enable USB install / unknown sources |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Uninstall the old `com.osnplay.lynk` or entry package first (settings are lost) |
+| Installed but no icon | Reboot; enable the launcher bubble; or start with ADB |
+| CarPlay does not connect | Unlock the iPhone, enable Bluetooth/Wi-Fi, export diagnostics |
+| Real Kugou app installed | Package conflict; uninstall the Kugou head-unit app |
 
-## 更新与卸载
+## Update and uninstall
 
-新版本会作为独立 Release 发布，保留最近两个版本。覆盖安装前确认包名和签名一致；从旧的 `com.osnplay.lynk` 升级需要先卸载。
+Each update is a separate Release; only the two newest are kept. From the old `com.osnplay.lynk` package, uninstall before installing.
 
 ```sh
 adb uninstall com.kugou.android.auto
 ```
 
-卸载会清除设置和配对记录。
+Uninstalling removes settings and pairing records.
 
-## 从源码构建
+## Build from source
 
-需要 JDK 17+、Android SDK Platform 37.2、Build-Tools 37.0.0、NDK 28.2.13676358。认证资产和 release keystore 不进入仓库。
+Requires JDK 17+, Android SDK Platform 37.2, Build-Tools 37.0.0 and NDK 28.2.13676358. Authentication assets and the release keystore are never committed.
 
-完整步骤见 [构建说明](docs/BUILD.md)。
+See [build instructions](docs/BUILD.md).
 
-## 文档
+## Docs
 
-- [安装](docs/INSTALL.md) · [构建](docs/BUILD.md) · [兼容性](docs/COMPATIBILITY.md)
-- [测试](docs/TESTING.md) · [隐私](docs/PRIVACY.md) · [安全](SECURITY.md)
-- [许可](LICENSING.md) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)
+- [Install](docs/INSTALL.md) · [Build](docs/BUILD.md) · [Compatibility](docs/COMPATIBILITY.md)
+- [Testing](docs/TESTING.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
+- [License](LICENSING.md) · [Third-party notices](docs/THIRD_PARTY_NOTICES.md)
 
-## 来源与致谢
+## Sources and credits
 
-OSNPlay 的代码和领克适配来自以下公开项目：
+OSNPlay is based on these public projects:
 
-| 项目 | 作用 |
+| Project | Role |
 | --- | --- |
-| [DiPlay](https://github.com/shihabal3amri/DiPlay) | 主基线（0.2.22），CarPlay 传输、音频、视频和设置体系 |
-| [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) | 领克 OSN 的环境检测、连接诊断和车机适配经验 |
-| [xcertplay](https://github.com/shilapi/xcertplay) | DiPlay 的接收端底座和工程结构 |
-| [diplay-ecarx](https://github.com/jianyun8023/diplay-ecarx) | 领克 01 / ECARX 平台权限和实车经验参考 |
+| [DiPlay](https://github.com/shihabal3amri/DiPlay) | Main baseline (0.2.22): CarPlay transport, audio, video and settings |
+| [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) | Lynk & Co OSN environment checks, diagnostics and head-unit work |
+| [xcertplay](https://github.com/shilapi/xcertplay) | Receiver base and project structure behind DiPlay |
+| [diplay-ecarx](https://github.com/jianyun8023/diplay-ecarx) | Lynk & Co 01 / ECARX platform permissions and real-car notes |
 
-各项目的许可证和版权声明见 [LICENSING.md](LICENSING.md) 与 [第三方声明](docs/THIRD_PARTY_NOTICES.md)。
+See [LICENSING.md](LICENSING.md) and [third-party notices](docs/THIRD_PARTY_NOTICES.md) for licenses and copyright.
 
-## 声明
+## Disclaimer
 
-- 非 Apple 认证产品，与 Apple Inc.、领克汽车无隶属或背书关系；CarPlay 图标归 Apple Inc.。
-- APK 含可提取的实验性认证身份，未来 iOS 更新可能失效，公开分发风险自担。
-- 在车机安装第三方 APK 可能影响质保；请在驻车状态操作。
+- Not an Apple-certified product; not affiliated with or endorsed by Apple Inc. or Lynk & Co. CarPlay and its icon belong to Apple Inc.
+- The APK contains an extractable experimental identity; future iOS updates may break it, and public distribution is at your own risk.
+- Installing third-party APKs may affect the warranty; do it while parked.
 
-## 许可
+## License
 
-基于 DiPlay / xcertplay（GPL-3.0）二次开发，部分设置 UI 为 AGPL-3.0-only，整体为 GPL/AGPL 组合作品。详见 [LICENSING.md](LICENSING.md)。
+Based on DiPlay / xcertplay (GPL-3.0); some settings UI files are AGPL-3.0-only. See [LICENSING.md](LICENSING.md).
 
-[English](README.en.md)
+[简体中文](README.zh-CN.md)
