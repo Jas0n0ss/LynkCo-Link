@@ -59,12 +59,6 @@ import com.shilapi.xcertplay.backup.SettingsQrCode
 import com.shilapi.xcertplay.compat.closeCompat
 import com.shilapi.xcertplay.telecom.PhoneAudioRoute
 import com.shilapi.xcertplay.host.R
-import com.shilapi.xcertplay.media.AmbientColorMode
-import com.shilapi.xcertplay.media.AmbientColorSpeed
-import com.shilapi.xcertplay.media.AmbientIdleBehavior
-import com.shilapi.xcertplay.media.AmbientMusicController
-import com.shilapi.xcertplay.media.AmbientColorSource
-import com.shilapi.xcertplay.media.AmbientMusicSettings
 import com.shilapi.xcertplay.media.MtkDecoderTuning
 import com.shilapi.xcertplay.network.CarHotspotConfigRead
 import com.shilapi.xcertplay.network.CarHotspotConfigWrite
@@ -165,7 +159,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private val windowLearningPresses = WheelKeyPresses()
     private val endWindowLearning = Runnable { cancelKeyLearning() }
     private var page = "home"
-    internal var ambientSupportCheck: (Context) -> java.util.concurrent.CompletableFuture<Boolean> = AmbientMusicController::checkSupport
     private var settingsCategory = SettingsCategory.OVERVIEW
     private var connectionSettingsReturnCategory: SettingsCategory? = null
     private var setupStep = SetupGuide.STEP_CONNECTION
@@ -4993,160 +4986,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     }
     // The car's own music rhythm: saved on only once the head unit's audio call is reachable, from OSNPlay itself or
     // over its ADB access.
-    private fun ambientConfigurationLabel(value: AmbientMusicSettings.Values): String {
-        val mode = if (!value.music) getString(R.string.settings_ambient_static) else when (value.colorMode) {
-            AmbientColorMode.ENERGY -> getString(R.string.settings_ambient_energy)
-            AmbientColorMode.BEAT -> getString(R.string.settings_ambient_beat)
-            AmbientColorMode.TEMPO -> getString(R.string.settings_ambient_tempo)
-            AmbientColorMode.BASS -> getString(R.string.settings_ambient_bass)
-            AmbientColorMode.SMART -> getString(R.string.settings_ambient_smart)
-        }
-        val speed = when (value.speed) { AmbientColorSpeed.SLOW -> getString(R.string.settings_ambient_slow); AmbientColorSpeed.STANDARD -> getString(R.string.settings_ambient_standard); AmbientColorSpeed.FAST -> getString(R.string.settings_ambient_fast) }
-        return getString(R.string.settings_ambient_configuration) + " · " + getString(R.string.settings_ambient_summary, getString(if (value.enabled) R.string.settings_ambient_enabled else R.string.settings_ambient_disabled), mode, speed, value.selectedColors.size, value.brightness)
-    }
-
-    private fun ambientModeDescription(mode: AmbientColorMode): String = getString(when (mode) {
-        AmbientColorMode.ENERGY -> R.string.settings_ambient_mode_energy_desc
-        AmbientColorMode.BEAT -> R.string.settings_ambient_mode_beat_desc
-        AmbientColorMode.TEMPO -> R.string.settings_ambient_mode_tempo_desc
-        AmbientColorMode.BASS -> R.string.settings_ambient_mode_bass_desc
-        AmbientColorMode.SMART -> R.string.settings_ambient_mode_smart_desc
-    })
-
-    private fun ambientBrightnessText(level: Int): String =
-        if (level <= 0) getString(R.string.settings_ambient_minimum) else getString(R.string.settings_ambient_brightness_value, level)
-
-    private fun showAmbientConfiguration() {
-        var draft = AmbientMusicSettings.load(this)
-        val body = column().apply { setPadding(dp(24), dp(12), dp(24), dp(12)) }
-        body.addView(label(getString(R.string.settings_ambient_parked_notice), 14, MUTED))
-        body.addView(space(12))
-        body.addView(label(getString(R.string.settings_ambient_behavior_title), 16, ACCENT, bold = true))
-        val behavior = label("", 14, MUTED)
-        body.addView(behavior)
-        body.addView(space(12))
-        lateinit var colorGrid: AmbientSwatchGrid
-        lateinit var colorHint: TextView
-        lateinit var musicOptions: LinearLayout
-        fun refreshAmbient() {
-            behavior.text = AmbientBehaviorText.lines(this, draft).joinToString("\n") { "• $it" }
-            musicOptions.visibility = if (draft.music) View.VISIBLE else View.GONE
-            val album = draft.colorSource == AmbientColorSource.ALBUM
-            colorGrid.single = !draft.music
-            colorGrid.setInteractive(!album)
-            colorHint.text = getString(when {
-                album -> R.string.settings_ambient_colors_hint_album
-                draft.music -> R.string.settings_ambient_colors_hint_follow
-                else -> R.string.settings_ambient_colors_hint_fixed
-            })
-        }
-        toggle(body, getString(R.string.settings_ambient_enable), getString(R.string.settings_ambient_enable_description), draft.enabled) {
-            draft = draft.copy(enabled = it)
-            refreshAmbient()
-        }
-        toggle(body, getString(R.string.settings_ambient_music), getString(R.string.settings_ambient_music_description), draft.music) {
-            draft = draft.copy(music = it)
-            if (!it) {
-                // Fixed mode shows a single color, the first of the selection, as the lamps do.
-                val only = draft.selectedColors.first()
-                draft = draft.copy(selectedColors = listOf(only), color = only)
-                colorGrid.setSelection(setOf(only))
-            }
-            refreshAmbient()
-        }
-        musicOptions = column()
-        val modeNote = choiceNote(ambientModeDescription(draft.colorMode))
-        choice(musicOptions, getString(R.string.settings_ambient_color_mode), listOf(getString(R.string.settings_ambient_energy), getString(R.string.settings_ambient_beat), getString(R.string.settings_ambient_tempo), getString(R.string.settings_ambient_bass), getString(R.string.settings_ambient_smart)), draft.colorMode.ordinal, reconnects = false) {
-            draft = draft.copy(colorMode = AmbientColorMode.entries[it])
-            modeNote.text = ambientModeDescription(draft.colorMode)
-        }
-        musicOptions.addView(modeNote)
-        choice(musicOptions, getString(R.string.settings_ambient_speed), listOf(getString(R.string.settings_ambient_slow), getString(R.string.settings_ambient_standard), getString(R.string.settings_ambient_fast)), draft.speed.ordinal, reconnects = false) {
-            draft = draft.copy(speed = AmbientColorSpeed.entries[it])
-        }
-        body.addView(musicOptions)
-        choice(body, getString(R.string.settings_ambient_idle), listOf(getString(R.string.settings_ambient_idle_steady), getString(R.string.settings_ambient_idle_car), getString(R.string.settings_ambient_idle_off)), draft.idle.ordinal, reconnects = false) {
-            draft = draft.copy(idle = AmbientIdleBehavior.entries[it])
-            refreshAmbient()
-        }
-        toggle(body, getString(R.string.settings_ambient_album), getString(R.string.settings_ambient_album_description), draft.colorSource == AmbientColorSource.ALBUM) {
-            draft = draft.copy(colorSource = if (it) AmbientColorSource.ALBUM else AmbientColorSource.SELECTED)
-            refreshAmbient()
-        }
-        body.addView(space(12))
-        body.addView(label(getString(R.string.settings_ambient_colors_title), 16, ACCENT, bold = true))
-        colorHint = label("", 13, MUTED)
-        body.addView(colorHint)
-        body.addView(space(8))
-        colorGrid = AmbientSwatchGrid(
-            this, ACCENT,
-            initial = if (draft.music) draft.selectedColors.toSet() else setOf(draft.selectedColors.first()),
-            single = !draft.music,
-            onChanged = { colors ->
-                val sorted = colors.sorted()
-                draft = draft.copy(selectedColors = sorted, color = sorted.first())
-            },
-            onLastDeselected = { toast(getString(R.string.settings_ambient_select_one)) },
-        )
-        body.addView(colorGrid)
-        body.addView(space(12))
-        body.addView(label(getString(R.string.settings_ambient_brightness), 16, ACCENT, bold = true))
-        val brightnessValue = label(ambientBrightnessText(draft.brightness), 14, MUTED)
-        body.addView(brightnessValue)
-        body.addView(SeekBar(this).apply {
-            max = 6
-            progress = draft.brightness
-            contentDescription = getString(R.string.settings_ambient_brightness)
-            progressTintList = android.content.res.ColorStateList.valueOf(ACCENT)
-            thumbTintList = android.content.res.ColorStateList.valueOf(ACCENT)
-            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(bar: SeekBar, level: Int, fromUser: Boolean) {
-                    draft = draft.copy(brightness = level)
-                    brightnessValue.text = ambientBrightnessText(level)
-                    refreshAmbient()
-                }
-                override fun onStartTrackingTouch(bar: SeekBar) = Unit
-                override fun onStopTrackingTouch(bar: SeekBar) = Unit
-            })
-        }, LinearLayout.LayoutParams(-1, dp(48)))
-        body.addView(space(12))
-        choice(body, getString(R.string.settings_ambient_area), listOf(getString(R.string.settings_ambient_front), getString(R.string.settings_ambient_rear), getString(R.string.settings_ambient_all)), draft.area - 1, reconnects = false) {
-            draft = draft.copy(area = it + 1)
-            refreshAmbient()
-        }
-        refreshAmbient()
-        val dialog = AlertDialog.Builder(this).setTitle(getString(R.string.settings_ambient_configuration))
-            .setView(ScrollView(this).apply { addView(body) })
-            .setPositiveButton(getString(R.string.save), null)
-            .setNegativeButton(getString(R.string.cancel), null).create()
-        dialog.setOnShowListener {
-            val save = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            save.setOnClickListener {
-                val selected = draft.copy(colorCycle = draft.music)
-                fun commit() {
-                    AmbientMusicSettings.save(this, selected)
-                    dialog.dismiss()
-                    render()
-                }
-                if (!selected.enabled) commit()
-                else {
-                    save.isEnabled = false
-                    save.text = getString(R.string.settings_ambient_checking)
-                    ambientSupportCheck(applicationContext).whenComplete { supported, _ ->
-                        runOnUiThread {
-                            if (!dialog.isShowing || isFinishing || isDestroyed) return@runOnUiThread
-                            save.isEnabled = true
-                            save.text = getString(R.string.save)
-                            if (supported == true) commit()
-                            else toast(getString(R.string.settings_ambient_unavailable))
-                        }
-                    }
-                }
-            }
-        }
-        dialog.show()
-    }
-
     /** Music buffer for one transport. A change reconnects only a running session of that transport. */
     private fun musicBufferChoice(card: LinearLayout, wireless: Boolean) {
         val buffer = com.shilapi.xcertplay.media.MediaAudioBuffer

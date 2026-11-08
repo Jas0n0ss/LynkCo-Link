@@ -79,9 +79,7 @@ internal object CarPlayMediaKeys {
         appContext = context.applicationContext
         controller = next
         GeelyWheelKeys.start(context)
-        com.shilapi.xcertplay.media.AmbientMusicController.claimPlaybackOwner(next)
         next.playbackListener = { playing ->
-            com.shilapi.xcertplay.media.AmbientMusicController.phonePlaybackChanged(next, playing)
             onIphonePlaying(next, playing)
         }
         next.nowPlayingListener = { _ -> onNowPlayingChanged(next) }
@@ -95,7 +93,6 @@ internal object CarPlayMediaKeys {
     @Synchronized
     fun detach(expected: CarPlayController?) {
         if (expected == null || controller !== expected) return
-        com.shilapi.xcertplay.media.AmbientMusicController.releasePlaybackOwner(expected)
         expected.playbackListener = null
         expected.nowPlayingListener = null
         expected.artworkListener = null
@@ -137,8 +134,6 @@ internal object CarPlayMediaKeys {
                         // cancelling it here loses a valid in-flight cover for a reused reference.
                         initialAlbumRecovery = InitialAlbumRecovery()
                     }
-                    com.shilapi.xcertplay.media.AmbientMusicController.albumColorChanged(expected,
-                        update.artworkTransferId?.let { ambientColorCache[it] })
                     artwork = nextArtwork(update.artworkTransferId, artworkCache, artwork)
                 }
                 if (nowPlaying.elapsedMillis != update.elapsedMillis) elapsedUpdatedAt = SystemClock.elapsedRealtime()
@@ -185,7 +180,6 @@ internal object CarPlayMediaKeys {
         if (nowPlaying.artworkTransferId == id) {
             artwork = decoded
             ClusterMusicState.publish(nowPlaying, artwork)
-            controller?.let { com.shilapi.xcertplay.media.AmbientMusicController.albumColorChanged(it, result?.color) }
             controller?.let(::updateInitialAlbumRecovery)
             session?.setMetadata(androidMetadata(nowPlaying, shownArtworkLocked()))
         }
@@ -196,9 +190,7 @@ internal object CarPlayMediaKeys {
 
     private fun albumRecoveryEnabled(): Boolean {
         val context = appContext ?: return false
-        if (ClusterMusicSettings.enabled(context)) return true
-        val settings = com.shilapi.xcertplay.media.AmbientMusicSettings.load(context)
-        return settings.enabled && settings.colorSource == com.shilapi.xcertplay.media.AmbientColorSource.ALBUM
+        return ClusterMusicSettings.enabled(context)
     }
 
     private fun logAlbumRecoveryEvents(recovery: InitialAlbumRecovery) {
@@ -373,7 +365,6 @@ internal object CarPlayMediaKeys {
 
     private fun releaseLocked() {
         focusOwner = null
-        controller?.let(com.shilapi.xcertplay.media.AmbientMusicController::releasePlaybackOwner)
         artworkOwner = null
         initialAlbumRetry?.let(mainHandler::removeCallbacks)
         initialAlbumRetry = null

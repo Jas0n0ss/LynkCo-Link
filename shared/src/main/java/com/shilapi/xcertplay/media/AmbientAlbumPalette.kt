@@ -3,7 +3,6 @@ package com.shilapi.xcertplay.media
 import kotlin.math.abs
 
 /** Color source is independent from the musical onset/BPM mode. */
-enum class AmbientColorSource { SELECTED, ALBUM }
 
 object AmbientAlbumPalette {
     /** Ignores transparent pixels, near-black/white and grey covers without a usable hue. */
@@ -95,10 +94,4 @@ object AmbientAlbumPalette {
         }
         return ((sector * 60) % 360 + 360) % 360
     }
-}
-
-internal fun ambientColorPalette(source: AmbientColorSource, selected: List<Int>, albumColor: Int?): List<Int> {
-    if (source == AmbientColorSource.SELECTED) return normalizeAmbientPalette(selected)
-    val center = albumColor?.takeIf { it in 1..31 } ?: return (1..31).toList()
-    return AmbientAlbumPalette.neighbors(center)
 }

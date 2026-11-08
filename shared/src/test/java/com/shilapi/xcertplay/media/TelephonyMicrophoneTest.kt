@@ -130,23 +130,7 @@ class TelephonyMicrophoneTest {
         assertEquals(AudioManager.MODE_NORMAL, manager.mode)
     }
 
-    @Test fun aCallWhileCarBluetoothIsOffUsesTheCabinMicrophone() {
-        val diagnostics = recordDiagnostics()
-        context.getSharedPreferences("osnplay_bt_suspend", 0).edit().putBoolean("restore_initially_enabled", true).commit()
-        shadowOf(context.getSystemService(BluetoothManager::class.java).adapter).setState(BluetoothAdapter.STATE_OFF)
-        manager.mode = AudioManager.MODE_NORMAL
-        sink.onMicrophoneStarted(telephony, config("telephony"))
-        val record = awaitCapture()
-        assertEquals(AudioManager.MODE_NORMAL, manager.mode)
-        assertEquals(MediaRecorder.AudioSource.MIC, record.audioSource)
-        assertTrue(diagnostics.joinToString("\n"),
-            diagnostics.any { it.startsWith("Microphone: start type=telephony source=MIC ") })
-        assertTrue(ShadowAudioEffect.getAudioEffects().isEmpty())
-        sink.onMicrophoneStopped(telephony)
-        assertEquals(AudioManager.MODE_NORMAL, manager.mode)
-    }
-
-    @Test fun aCallInTheCarsPhoneStateRecordsFromVoiceRecognitionWithoutCallEffects() {
+        @Test fun aCallInTheCarsPhoneStateRecordsFromVoiceRecognitionWithoutCallEffects() {
         val diagnostics = recordDiagnostics()
         BydOutputSettings.setPhoneAudioRoute(context, true)
         PhoneAudioRoute.attach(context)

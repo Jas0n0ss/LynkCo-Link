@@ -1,5 +1,11 @@
 # 更新日志
 
+## 0.1.8 — 2026-11-09
+
+- 删除氛围灯相关媒体/设置链路。
+- 删除 AmbientMusicController、AmbientMusicSettings、AmbientLampSession 及未使用分析类。
+- 保留 Android 光线传感器日夜模式，不再依赖 BYD 氛围灯。
+
 ## 0.1.7 — 2026-11-09
 
 - 移除 CarPlay Host 和主 Activity 中所有 BYD/DiLink 调用。
