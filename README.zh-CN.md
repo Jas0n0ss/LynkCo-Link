@@ -125,6 +125,9 @@ adb uninstall com.kugou.android.auto
 
 ## 待办
 
+用户与开发的分工和逐步操作见 [docs/NEXT-STEPS.md](docs/NEXT-STEPS.md)。
+
+
 - [ ] 领克 01/03（8155 / OSN 2.0）实车验收：有线与无线。
 - [ ] 验证音频、麦克风、Siri、通话和方向盘按键。
 - [ ] 测试权限拒绝、熄火重启、后台和 OTA 升级。
@@ -136,7 +139,8 @@ adb uninstall com.kugou.android.auto
 ## 文档
 
 - [安装](docs/INSTALL.md) · [构建](docs/BUILD.md) · [兼容性](docs/COMPATIBILITY.md)
-- [测试](docs/TESTING.md) · [隐私](docs/PRIVACY.md) · [安全](SECURITY.md)
+- [测试](docs/TESTING.md) · [隐私](docs/PRIVACY.md)
+- [下一步 TODO（用户/开发分工）](docs/NEXT-STEPS.md) · [安全](SECURITY.md)
 - [许可](LICENSING.md) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)
 
 ## 来源与致谢

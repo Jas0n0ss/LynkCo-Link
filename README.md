@@ -126,6 +126,9 @@ See [build instructions](docs/BUILD.md).
 
 ## TODO
 
+Detailed owner-by-owner steps: [docs/NEXT-STEPS.md](docs/NEXT-STEPS.md).
+
+
 - [ ] Real-car acceptance on Lynk 01/03 (8155 / OSN 2.0): wired and wireless.
 - [ ] Validate audio, microphone, Siri, calls and steering-wheel keys.
 - [ ] Test permission denial, ignition/reboot, background and OTA upgrade.
@@ -137,7 +140,8 @@ See [build instructions](docs/BUILD.md).
 ## Docs
 
 - [Install](docs/INSTALL.md) · [Build](docs/BUILD.md) · [Compatibility](docs/COMPATIBILITY.md)
-- [Testing](docs/TESTING.md) · [Real-car acceptance](docs/LYNK-ACCEPTANCE.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
+- [Testing](docs/TESTING.md) · [Real-car acceptance](docs/LYNK-ACCEPTANCE.md)
+- [Next steps / user TODO](docs/NEXT-STEPS.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
 - [License](LICENSING.md) · [Third-party notices](docs/THIRD_PARTY_NOTICES.md)
 
 ## Sources and credits
