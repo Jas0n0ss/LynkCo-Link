@@ -187,6 +187,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var hotspotJoinControls: HotspotJoinControls? = null
     private var setupError: String? = null
     private var status: TextView? = null
+    private var homeStatusChip: TextView? = null
     private var homeCardTitle: TextView? = null
     private var homeConnectionHint: TextView? = null
     private var homeLastProblem: TextView? = null
@@ -952,6 +953,12 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         val card = card()
         homeCardTitle = label(getString(R.string.wireless_carplay), 12, ACCENT, true).apply { letterSpacing = .12f }
         card.addView(homeCardTitle)
+        homeStatusChip = label("", 12, ON_ACCENT, true).apply {
+            letterSpacing = .08f
+            setPadding(dp(12), dp(6), dp(12), dp(6))
+            background = GradientDrawable().apply { cornerRadius = dp(14).toFloat(); setColor(ACCENT) }
+        }
+        card.addView(homeStatusChip, LinearLayout.LayoutParams(-2, -2).apply { topMargin = dp(14) })
         status = label(getString(R.string.ready_when_you_are), 24, TEXT, true).apply { setPadding(0, dp(10), 0, dp(16)) }
         card.addView(status)
         connectButton = homeButton(getString(R.string.connect_phone), true) {
@@ -5480,6 +5487,17 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             running -> getString(R.string.connecting_to_your_iphone)
             OSNPlayPreferences.phoneAddress(this) != null -> "${getString(R.string.status_ready_for_prefix)}${OSNPlayPreferences.phoneName(this)}"
             else -> getString(R.string.ready_when_you_are)
+        }
+        homeStatusChip?.apply {
+            val (text, color) = when {
+                setupError != null -> getString(R.string.setup_needs_attention) to WARNING
+                CarPlayBackgroundSession.active -> getString(R.string.carplay_connected) to READY
+                running -> getString(R.string.connecting_to_your_iphone) to ACCENT
+                else -> getString(R.string.status_ready_for_prefix).trim() to BUTTON
+            }
+            this.text = text
+            background = GradientDrawable().apply { cornerRadius = dp(14).toFloat(); setColor(color) }
+            setTextColor(if (color == BUTTON) MUTED else ON_ACCENT)
         }
         homeLastProblem?.apply {
             val line = if (CarPlayBackgroundSession.active) null else LastConnectionProblem.homeLine(this@OSNPlayActivity)

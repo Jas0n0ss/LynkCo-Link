@@ -35,8 +35,8 @@ android {
         minSdk = 24
         targetSdk = 37
         // OSNPlay 0.1.2 = DiPlay 0.2.22 baseline + Lynk OSN launcher compatibility.
-        versionCode = 104
-        versionName = "0.1.4"
+        versionCode = 105
+        versionName = "0.1.5"
     }
 
     localAuthenticationAssets?.let { sourceSets.getByName("main").assets.srcDir(it) }
