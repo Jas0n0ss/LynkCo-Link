@@ -208,10 +208,9 @@ open class CarPlayHostActivity : ComponentActivity() {
             hardwareVersion = "1.0",
             carPlayUsbInterfaceNumber = 3,
             locationInformationEnabled = locationReportingEnabled,
-            vehicleStatusEnabled = com.shilapi.xcertplay.hud.BydOutputSettings.batteryToIphoneActive(this),
-            chargingConnectors = com.shilapi.xcertplay.hud.BydOutputSettings.chargingConnectors(this),
-            vehicleSpeedEnabled = locationReportingEnabled &&
-                (com.shilapi.xcertplay.hud.BydOutputSettings.wheelSpeedToIphoneActive(this) || EcarxWheelSpeed.present()),
+            vehicleStatusEnabled = false,
+            chargingConnectors = com.shilapi.xcertplay.transport.EvChargingConnectors.GB_T,
+            vehicleSpeedEnabled = locationReportingEnabled && EcarxWheelSpeed.present(),
         ),
         label = "OSNPlay",
         hostName = "osnplay-" + OSNPlayBootstrap.deviceId(airPlayIdentity).replace(":", "").lowercase(),
@@ -1209,7 +1208,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         super.onResume()
         WheelKeyService.restoreIfNeeded(this)
         hostAppearanceResumed = true
-        updateCallPopupGuard()
         val savedNightMode = AirPlayPersistence.loadCarPlayNightMode(this)
         val savedThreshold = AirPlayPersistence.loadAmbientLightThreshold(this)
         val savedDelay = AirPlayPersistence.loadAmbientDelaySeconds(this)
@@ -1856,7 +1854,6 @@ open class CarPlayHostActivity : ComponentActivity() {
     override fun onPause() {
         cancelTemporarySystemBars()
         hostAppearanceResumed = false
-        updateCallPopupGuard()
         AppAppearanceRuntime.clearHost(this)
         nightModeController.pause()
         super.onPause()
@@ -1975,7 +1972,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         resetSidePanel()
         releaseSidePanelEffects()
         hostAppearanceResumed = false
-        updateCallPopupGuard()
         AppAppearanceRuntime.clearHost(this)
         nightModeController.pause()
         pictureBinding?.close()
@@ -5106,7 +5102,7 @@ open class CarPlayHostActivity : ComponentActivity() {
             model = normalizedModel(),
             oemLabel = oemLabel,
             icons = listOf(loadAirPlayIcon()),
-            videoInCar = com.shilapi.xcertplay.hud.BydOutputSettings.videoWhileParkedActive(this),
+            videoInCar = false,
             mainBufferedAudio = AirPlayPersistence.loadMainBufferedAudio(this),
             speechWithout8And16Khz = AirPlayPersistence.loadSpeechWithout8And16Khz(this),
             callAtCallRate = AirPlayPersistence.loadCallAtCallRate(this),
@@ -5375,7 +5371,6 @@ open class CarPlayHostActivity : ComponentActivity() {
                     LastConnectionProblem.clear(this@CarPlayHostActivity)
                     showConnectionHelp(null)
                     callPopupSessionReady = true
-                    updateCallPopupGuard()
                     reconnectAttempts = 0
                     logThemeState(ThemeModeDiagnostics.Source.SESSION_ACTIVE, resources.configuration)
                     syncAirPlayDarkMode(ThemeModeDiagnostics.Source.SESSION_ACTIVE)
@@ -5423,7 +5418,6 @@ open class CarPlayHostActivity : ComponentActivity() {
                     clearIphoneCornerMask()
                     CarPlayBackgroundSession.active = false
                     callPopupSessionReady = false
-                    updateCallPopupGuard()
                     if (menuOpen) {
                         recoveryPendingAfterMenu = true
                         return@runOnUiThread
@@ -5440,7 +5434,6 @@ open class CarPlayHostActivity : ComponentActivity() {
                 runOnUiThread {
                     if (controllerGeneration != restartGeneration || startupRetryStopped) return@runOnUiThread
                     callPopupSessionReady = false
-                    updateCallPopupGuard()
                     startupRetryBudget.disconnected()
                     if (menuOpen) {
                         recoveryPendingAfterMenu = true
@@ -5490,7 +5483,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         }
         if (status is CarPlayStatus.Failed || status is CarPlayStatus.ControlEnded) {
             callPopupSessionReady = false
-            updateCallPopupGuard()
         }
         if (menuOpen) {
             if (status is CarPlayStatus.Failed) failurePendingAfterMenu = status
@@ -5570,7 +5562,6 @@ open class CarPlayHostActivity : ComponentActivity() {
             }
         }
         callPopupSessionReady = CarPlayBackgroundSession.callPopupReady
-        updateCallPopupGuard()
         if (snapshot.width > 0 && snapshot.height > 0) {
             activeDisplaySize = DisplaySize(snapshot.width, snapshot.height)
         }
@@ -5639,23 +5630,13 @@ open class CarPlayHostActivity : ComponentActivity() {
         }
         val airPlayConfig = createAirPlayConfig(effectiveSize)
         val locationProvider: Iap2LocationProvider? =
-            when {
-                !config.locationReportingEnabled -> null
-                config.identification.vehicleSpeedEnabled &&
-                    !com.shilapi.xcertplay.hud.BydOutputSettings.wheelSpeedToIphoneActive(this) ->
-                    // ECARX: the head unit has no GPS of its own, so only the wheel speed goes to the iPhone.
-                    VehicleSpeedLocationProvider(
-                        EcarxWheelSpeed.NoPosition,
-                        EcarxWheelSpeed.attach(applicationContext),
-                        log = ::appendLog,
-                    )
-                config.identification.vehicleSpeedEnabled -> VehicleSpeedLocationProvider(
-                    AndroidCarPlayLocationProvider(this),
-                    com.shilapi.xcertplay.hud.BydNavigationOutputs.wheelSpeed(applicationContext),
-                    log = ::appendLog,
-                )
-                else -> AndroidCarPlayLocationProvider(this)
-            }
+            if (!config.locationReportingEnabled) null
+            else if (config.identification.vehicleSpeedEnabled) VehicleSpeedLocationProvider(
+                EcarxWheelSpeed.NoPosition,
+                EcarxWheelSpeed.attach(applicationContext),
+                log = ::appendLog,
+            )
+            else AndroidCarPlayLocationProvider(this)
         appendLog(
             "Starting CarPlay controller at ${size.width}x${size.height} -> " +
                 "${airPlayConfig.main.widthPixels}x${airPlayConfig.main.heightPixels} " +
@@ -5706,17 +5687,12 @@ open class CarPlayHostActivity : ComponentActivity() {
             savePairRecord = { record -> AirPlayPersistence.saveLockdownRecord(this, record) },
             clearPairRecord = { AirPlayPersistence.clearLockdownRecord(this) },
             locationProvider = locationProvider,
-            vehicleStatusProvider = if (com.shilapi.xcertplay.hud.BydOutputSettings.batteryToIphoneActive(this)) {
-                com.shilapi.xcertplay.hud.BydNavigationOutputs.batteryStatus(applicationContext)
-            } else {
-                null
-            },
+            vehicleStatusProvider = null,
         )
         controller = next
         resetSidePanel() // a new session starts without the side panel
         updateClusterMapShown()
         CarPlayMediaKeys.attach(this, next)
-        if (airPlayConfig.videoInCar) CarPlayVideo.attach(this, next)
         val display = CarPlaySessionDisplay(
             airPlayConfig.main.widthPixels, airPlayConfig.main.heightPixels,
             displayRotation(), hideTopBar, hideBottomBar, effectiveSize.width, effectiveSize.height,
@@ -6080,7 +6056,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         }
         reconnectScheduled = true
         callPopupSessionReady = false
-        updateCallPopupGuard()
         val generation = restartGeneration
         val delayMillis = if (startupDelay != null) {
             startupDelay
@@ -6134,7 +6109,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         val generation = ++restartGeneration
         handshakeResetInProgress = true
         callPopupSessionReady = false
-        updateCallPopupGuard()
         val oldController = controller
         val oldSink = sink
         CarPlayMediaKeys.detach(oldController)
@@ -6200,7 +6174,6 @@ open class CarPlayHostActivity : ComponentActivity() {
             parent.addView(settingsMenu, index, FrameLayout.LayoutParams(-1, -1))
         }
         menuOpen = true
-        updateCallPopupGuard()
         gestureOverlay?.visibility = View.GONE
         settingsMenu?.visibility = View.VISIBLE
         safeAreaEditor?.visibility = View.GONE
@@ -6292,7 +6265,6 @@ open class CarPlayHostActivity : ComponentActivity() {
     private fun finishSettingsMenu(prefix: String, reconnect: Boolean) {
         if (!menuOpen) return
         menuOpen = false
-        updateCallPopupGuard()
         menuSettingsSignature = null
         menuWirelessNetworkSignature = null
         settingsMenu?.visibility = View.GONE
@@ -6338,7 +6310,6 @@ open class CarPlayHostActivity : ComponentActivity() {
     private fun shutdown(terminateProcess: Boolean, reason: String, completion: () -> Unit = {}) {
         if (!shuttingDown.compareAndSet(false, true)) { completion(); return }
         callPopupSessionReady = false
-        updateCallPopupGuard()
         resetSidePanel()
         releaseSidePanelEffects()
         startupRetryBudget.disconnected()
@@ -6711,18 +6682,6 @@ open class CarPlayHostActivity : ComponentActivity() {
                 }
             }
             updateDebugOverlays()
-        }
-    }
-
-    private fun shouldHideBydCallPopup(): Boolean =
-        hostAppearanceResumed && callPopupSessionReady && !menuOpen && !shuttingDown.get() &&
-            !handshakeResetInProgress && !reconnectScheduled && CarPlayBackgroundSession.active &&
-            CarPlayBackgroundSession.isOwner(this) && AirPlayPersistence.loadHideBydCallPopup(this)
-
-    private fun updateCallPopupGuard() {
-        if (CarPlayBackgroundSession.isOwner(this)) CarPlayBackgroundSession.callPopupReady = callPopupSessionReady
-        com.shilapi.xcertplay.hud.BydCallPopupGuard.update(this, this, shouldHideBydCallPopup()) {
-            CarPlayBackgroundSession.active && CarPlayBackgroundSession.callPopupReady && CarPlayBackgroundSession.isOwner(this)
         }
     }
 
