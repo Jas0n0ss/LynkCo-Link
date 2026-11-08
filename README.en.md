@@ -40,29 +40,27 @@ export ANDROID_KEY_ALIAS='...'
 export ANDROID_KEY_PASSWORD='...'
 
 ./gradlew :mobile:assembleStandaloneLynkRelease
-./gradlew :launcher-entry:assembleRelease
 ```
 
 Output:
 
 ```text
 mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
-launcher-entry/build/outputs/apk/release/launcher-entry-release.apk
-```  
-Application ID `com.osnplay.lynk`, version `0.1.2-lynk`, release-signed, with the explicitly supplied authentication assets.
+```
+
+Application ID `com.kugou.android.auto`, version `0.1.2-lynk`, release-signed, with the explicitly supplied authentication assets. The package name comes from the OSN Launcher3 whitelist; the app itself is OSNPlay and contains no Kugou features.
 
 Source/CI builds contain no accessory identity; they only verify UI/settings. A **real CarPlay connection needs authentication assets**. The public `0.1.2` release package includes them; the source tree itself does not distribute the private key.
 
 ## Install (beginner)
 
-The public release contains two APKs:
+The public release contains one APK:
 
-| APK | Purpose | Required |
-| --- | --- | --- |
-| `OSNPlay-<version>-lynk-release-standalone.apk` | Main app with authentication assets, handles CarPlay | Yes |
-| `OSNPlay-Whitelist-Entry-1.0.apk` | Whitelist launcher entry; makes OSNPlay appear in the stock app list and opens the main app | Only when the stock list hides it |
+| APK | Purpose |
+| --- | --- |
+| `OSNPlay-<version>-lynk-release-standalone.apk` | Main app plus launcher entry, with authentication assets |
 
-> Older preview APKs cannot connect to CarPlay. Install the main app; add the entry only if needed.
+It uses the OSN whitelist package name `com.kugou.android.auto`, so it appears directly in the stock app list. Older preview packages and the old `com.osnplay.lynk` package cannot update over it.
 
 ### Prepare
 
@@ -97,29 +95,24 @@ Allow the USB-debugging prompt on the car.
 ### Step 2: install
 
 ```sh
-# Required: main app
 adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
-
-# Optional: stock launcher entry
-adb install -r OSNPlay-Whitelist-Entry-1.0.apk
 ```
 
-> The entry uses `com.kugou.android.auto` (an OSN Launcher3 whitelisted music package), displays as OSNPlay and opens the main app. Check for a conflict first:
-> `adb shell pm list packages | grep com.kugou.android.auto`. Do not overwrite the real Kugou app.
+> Check for the real Kugou app first: `adb shell pm list packages | grep com.kugou.android.auto`. Uninstall it if present, or the packages conflict. The package name is only for the OSN launcher whitelist; the app contains no Kugou features.
 
 | Error | Fix |
 | --- | --- |
 | `adb: command not found` | Install Platform-Tools or run `adb` from its folder |
 | `device unauthorized` | Allow USB debugging on the car; revoke authorizations and reconnect if needed |
 | `INSTALL_FAILED_USER_RESTRICTED` | Enable “USB install/Unknown sources” in Developer options, or run `adb shell settings put secure install_non_market_apps 1` |
-| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Different signing key: `adb uninstall com.osnplay.lynk`, then install again (settings are lost) |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Uninstall the old `com.osnplay.lynk` or entry package first (settings are lost), then install |
 
 ### Step 3: first launch
 
 A newly installed app is in Android's stopped state; boot auto-start will not run until it is launched once:
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
 Without ADB, tap **Open** in the installer or open OSNPlay once from an alternative launcher.
@@ -133,11 +126,11 @@ The stock OSN Launcher3 uses a **package whitelist**, so sideloaded apps may not
 3. Or launch it from ADB:
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
-4. Install `OSNPlay-Whitelist-Entry-1.0.apk` to add an OSNPlay entry to the stock app list; it borrows a whitelisted package name, so check for conflicts first (see [INSTALL](docs/INSTALL.md)).
-5. A stock home-screen icon requires modifying the system whitelist (root/engineering mode) or using an alternative launcher; a normal APK cannot bypass it.
+4. This APK already uses a whitelisted package name, so OSNPlay should appear in the stock app list; reboot the head unit if it does not.
+5. A stock home-screen icon requires modifying the system whitelist (root/engineering mode) or using an alternative launcher.
 
 ### Step 5: connect the iPhone
 
@@ -150,7 +143,7 @@ adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
 **Settings → Apps → OSNPlay → Uninstall**, or:
 
 ```sh
-adb uninstall com.osnplay.lynk
+adb uninstall com.kugou.android.auto
 ```
 
 Uninstalling removes app settings and pairing records.

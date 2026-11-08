@@ -11,13 +11,11 @@ OSNPlay 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac、A
 
 ## 选择 APK
 
-| 包 | applicationId | 何时使用 |
+| 包 | applicationId | 说明 |
 | --- | --- | --- |
-| `OSNPlay-<version>-standard.apk` | `com.osnplay`（正式）/ `com.osnplay.preview`（预览） | 标准包 |
-| `OSNPlay-<version>-lynk.apk` | `com.osnplay.lynk`（正式）/ `com.osnplay.lynk.preview`（预览） | 领克 A/B 包，可与标准包并存 |
-| standalone 自建包 | `com.osnplay.debug` / `com.osnplay.preview` | 含认证资产，可完成真实连接 |
+| `OSNPlay-<version>-lynk-release-standalone.apk` | `com.kugou.android.auto` | 唯一交付包，主程序 + 桌面入口 + 认证资产 |
 
-> 公开预览包**不含认证身份**，安装后可以看界面、改设置、导出诊断，但无法完成 CarPlay 认证。实车连接请按 [构建说明](BUILD.md) 自行构建 standalone 包。
+> `com.kugou.android.auto` 来自 OSN Launcher3 白名单。应用本身是 OSNPlay，不含酷狗功能；安装前确认车机没有真正的酷狗车机版，否则会冲突。
 
 ## 安装到车机
 
@@ -35,7 +33,7 @@ OSNPlay 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac、A
 
    ```sh
    adb devices
-   adb install -r OSNPlay-0.1.1-preview-standard.apk
+   adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
    ```
 
 3. 若系统拦截未知来源：
@@ -48,22 +46,22 @@ OSNPlay 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac、A
 
 ## 安装成功但桌面不显示 OSNPlay
 
-这是领克 OSN 原厂 **Launcher3 的包名白名单**行为，不是 APK 安装失败。第三方 APK 即使安装成功，也可能只出现在“应用管理”里，不出现在首页或 Dock。社区教程也把“系统启动器显示白名单 Launcher3”单独列出，并提供了小八启动器、应用页等替代入口（[OSN 安装软件说明](https://zcteo.github.io/blog/others/014)、[小八桌面教程](https://www.xiaohongshu.com/discovery/item/69085c6f000000000303a5a3)）。
+这是领克 OSN 原厂 **Launcher3 的包名白名单**行为，不是 APK 安装失败。OSNPlay 已使用白名单包名 `com.kugou.android.auto`，正常情况下应直接出现；如果仍不显示，按下面处理。
 
 按以下顺序处理：
 
 1. **先重启车机**，再到“所有应用 / 应用管理 / 更多应用”里找 **OSNPlay**。有些 OSN 版本只刷新桌面缓存后才会出现。
 2. **用替代入口打开一次**：
    ```sh
-   adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
+   adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
    ```
    或安装社区用的 **小八启动器 / 应用页 / 应用管家**，它们会列出所有已安装应用。
 3. **使用本仓库的 lynk 包**：`lynk` 版本默认开启“开机后自动启动”，并在开机时发一条“打开 OSNPlay”通知；即使桌面没有图标，也能从通知或开机画面进入。**注意：Android 的 stopped state 会让新安装应用在第一次手动启动前收不到 `BOOT_COMPLETED`，所以首次安装后仍需用 ADB 或第三方启动器打开一次；之后开机自启/通知才会生效。**
 4. **开启桌面悬浮球**：进入 **设置 → 高级 → 桌面悬浮球**，允许“显示在其他应用上层”。之后回到桌面会出现 OSNPlay 悬浮图标，点击即可打开。这个功能就是为“桌面只显示自己卡片”的车机准备的（上游 #650）。如果系统设置页没有悬浮窗入口，可用 ADB：
    ```sh
-   adb shell appops set com.osnplay.lynk SYSTEM_ALERT_WINDOW allow
+   adb shell appops set com.kugou.android.auto SYSTEM_ALERT_WINDOW allow
    ```
-5. **修改白名单**：需要 root/工程模式修改 Launcher3 白名单，风险高，不建议普通用户操作；也不要通过改包名伪装成白名单应用，容易和原厂应用冲突。
+5. **修改白名单**：需要 root/工程模式修改 Launcher3 白名单，风险高，不建议普通用户操作。
 
 如果 `am start` 提示 `Activity class does not exist`，说明包没有装进当前用户，按下面的 ADB 安装命令加 `--user 0` 重装。
 
@@ -87,7 +85,11 @@ OSNPlay 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac、A
 ## 更新与卸载
 
 - 同包名、同签名的 APK 可直接覆盖安装，设置保留。
-- 切换 standard / lynk 包等于安装两个独立应用，设置不共享。
+- 从旧 `com.osnplay.lynk` 或旧入口包升级时，包名已变，需要先卸载旧包；“卸载”会清除设置。
+- 可卸载当前包：
+  ```sh
+  adb uninstall com.kugou.android.auto
+  ```
 - 卸载会删除应用私有设置与日志；已导出的诊断报告需手动删除。
 
 ## 故障排查

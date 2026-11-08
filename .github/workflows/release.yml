@@ -60,7 +60,7 @@ jobs:
           :common:testDebugUnitTest
           :mobile:lintStandardDebug
           --stacktrace
-      - name: Build both release APKs
+      - name: Build the release APK
         env:
           ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/release.jks
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -69,13 +69,10 @@ jobs:
         run: |
           set -euo pipefail
           ./gradlew :mobile:assembleStandaloneLynkRelease --stacktrace
-          ./gradlew :launcher-entry:assembleRelease --stacktrace
           VERSION="${RELEASE_TAG#v}"
           mkdir -p release-assets
           cp mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk \
             "release-assets/OSNPlay-${VERSION}-lynk-release-standalone.apk"
-          cp launcher-entry/build/outputs/apk/release/app-release.apk \
-            "release-assets/OSNPlay-Whitelist-Entry-1.0.apk"
           (cd release-assets && sha256sum *.apk > SHA256SUMS.txt)
           ls -lh release-assets
       - name: Publish full release information

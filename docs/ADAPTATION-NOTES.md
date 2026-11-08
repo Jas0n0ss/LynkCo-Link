@@ -11,7 +11,7 @@
 | 上游许可 | GPL-3.0；设置 UI 沿袭 DiAuto，AGPL-3.0 |
 | 本版本 | OSNPlay 0.1.2（versionCode 102） |
 | 标准包名 | `com.osnplay` |
-| 领克包名 | `com.osnplay.lynk` |
+| 领克包名 | `com.kugou.android.auto` |
 | 命名空间 | `com.shilapi.xcertplay`（有意保留，见下文） |
 
 ## 相对上游的改动
@@ -22,7 +22,7 @@
 - 删除上游的 `home`、`maphost`、`automotive` 示例模块，只保留 `common`、`shared`、`mobile` 三个核心模块。
 - 引入产品风味表示发行版本：
   - `standard` → `com.osnplay`
-  - `lynk` → `com.osnplay.lynk`
+  - `lynk` → `com.kugou.android.auto`
 - 构建类型只表示构建性质：
   - `debug` → 包名追加 `.debug`，版本追加 `-debug`
   - `preview` → debug 签名、独立 `.preview` 包名、版本追加 `-preview`，用于预览发布

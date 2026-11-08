@@ -14,9 +14,8 @@
 
 | 文件 | applicationId | 说明 |
 | --- | --- | --- |
-| `OSNPlay-0.1.2-lynk-release-standalone.apk` | `com.osnplay.lynk` | 主程序，含认证资产，release 签名 |
-| `OSNPlay-Whitelist-Entry-1.0.apk` | `com.kugou.android.auto` | 白名单入口，点击打开主程序；无认证资产 |
-| `SHA256SUMS.txt` | — | 两个 APK 的下载校验 |
+| `OSNPlay-0.1.2-lynk-release-standalone.apk` | `com.kugou.android.auto` | 主程序 + 白名单入口，含认证资产，release 签名 |
+| `SHA256SUMS.txt` | — | APK 的下载校验 |
 
 > **默认预览包不含 CarPlay 配件认证身份。** 可以安装、浏览界面、修改设置和导出诊断，但**无法完成真实 CarPlay 连接**。实车连接请使用自己合法持有的认证资产按 [BUILD.md](BUILD.md) 构建 standalone 包。仓库不分发认证私钥。
 
@@ -54,7 +53,7 @@
 | `:mobile:lintStandardDebug` | 通过，0 阻断 |
 | debug / preview 四变体 | 构建成功 |
 | 公开预览 APK 认证资产 | 无 |
-| 0.1.2 lynk standalone | `com.osnplay.lynk` / `0.1.2-lynk` / 102，含认证资产，release 签名 |
+| 0.1.2 lynk standalone | `com.kugou.android.auto` / `0.1.2-lynk` / 102，含认证资产，release 签名 |
 | Launcher 元数据 | `launchable-activity` + `leanback-launchable-activity` 均存在 |
 
 详细记录见 [TESTING.md](TESTING.md)。
@@ -65,14 +64,14 @@ Android 的 stopped state 会让新安装应用在首次手动启动前收不到
 
 ```sh
 adb install -r OSNPlay-0.1.2-preview-lynk.apk
-adb shell am start -n com.osnplay.lynk.preview/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto.preview/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
 首次启动后，重启车机，`lynk` 包的开机自启、通知和悬浮球才会工作。
 
 ## 已知限制
 
-- **原厂 Launcher3 的包名白名单无法由普通 APK 绕过。** 本版提供开机自启、通知、悬浮球、LEANBACK 和文档替代入口，但不能强制原厂首页显示图标。需要首页图标时使用小八启动器/应用页、ADB 启动，或修改系统白名单。
+- **原厂 Launcher3 的包名白名单无法由普通 APK 绕过。** 本版使用白名单包名 `com.kugou.android.auto`，正常情况下应用列表会显示 OSNPlay；若仍不显示，可使用开机自启、通知、悬浮球、LEANBACK、ADB 启动或替代启动器。
 - 公开预览包无认证身份，不能完成真实 CarPlay 连接。
 - 预览包使用 debug 签名和 `.preview` 包名，不是正式发布签名。
 - 领克 01 2023 仍需实车验收；同平台 03 的结论来自 LynkCo-DiPlay R1。

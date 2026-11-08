@@ -38,10 +38,10 @@ OSNPlay 使用本地认证和到 iPhone 的直连 USB / Wi-Fi，不需要账号�
 | --- | --- |
 | `com.osnplay` | 标准正式版 |
 | `com.osnplay.preview` | 标准预览版 |
-| `com.osnplay.lynk` | 领克 A/B 正式版 |
-| `com.osnplay.lynk.preview` | 领克 A/B 预览版 |
+| `com.kugou.android.auto` | 领克 A/B 正式版 |
+| `com.kugou.android.auto.preview` | 领克 A/B 预览版 |
 | `com.osnplay.debug` | 标准调试包 |
-| `com.osnplay.lynk.debug` | 领克调试包 |
+| `com.kugou.android.auto.debug` | 领克调试包 |
 
 ## 权限
 

@@ -6,11 +6,10 @@
 
 ```sh
 ./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
-  :mobile:lintStandardDebug :mobile:assembleLynkRelease \
-  :launcher-entry:assembleRelease
+  :mobile:lintStandardDebug :mobile:assembleLynkRelease
 ```
 
-CI 构建主程序源码包和白名单入口，不构建 debug / preview 变体；发布工作流构建 `:mobile:assembleStandaloneLynkRelease` 和 `:launcher-entry:assembleRelease`，见 [.github/workflows/android.yml](../.github/workflows/android.yml)。
+CI 构建主程序源码包，不构建 debug / preview 变体；发布工作流构建 `:mobile:assembleStandaloneLynkRelease`，见 [.github/workflows/android.yml](../.github/workflows/android.yml)。
 
 ## 自动化与构建验证
 
@@ -21,15 +20,14 @@ CI 构建主程序源码包和白名单入口，不构建 debug / preview 变体
 | `:shared:testDebugUnitTest` | ✅ 1798 通过 / 1 跳过 | 传输、音频、视频、协议与兼容层 |
 | `:common:testDebugUnitTest` | ✅ 1761 通过 | 设置 UI、诊断、更新、备份与资源测试 |
 | `:mobile:lintStandardDebug` | ✅ 0 阻断 | lint 报告见 `mobile/build/reports/` |
-| `:mobile:assembleLynkRelease` | ✅ | `com.osnplay.lynk` / `0.1.2-lynk`，源码包无认证资产 |
+| `:mobile:assembleLynkRelease` | ✅ | `com.kugou.android.auto` / `0.1.2-lynk`，源码包无认证资产 |
 | `:mobile:assembleStandaloneLynkRelease` | ✅ | 同一包名/版本，含显式认证资产，release 签名 |
-| `:launcher-entry:assembleRelease` | ✅ | `com.kugou.android.auto` / 1.0，白名单入口，无认证资产 |
 | release 签名路径 | ✅ | 使用本地 release keystore 构建成功 |
 | standalone 凭据门禁 | ✅ | 单独调用会打包显式资产；与公开构建混合调用会被拒绝 |
 | `scripts/check_public_tree.py` | ✅ | 源码树无凭据容器或私钥块 |
 | `aapt2` launcher 检查 | ✅ | 同时存在 `launchable-activity` 与 `leanback-launchable-activity`，label 为 OSNPlay |
 | `lynk` 资源默认值 | ✅ | auto-start / launcher bubble / simple flow 均为 true |
-| 0.1.2 签名发布包 | ✅ | `com.osnplay.lynk` / `0.1.2-lynk` / versionCode 102，认证资产已打入 |
+| 0.1.2 签名发布包 | ✅ | `com.kugou.android.auto` / `0.1.2-lynk` / versionCode 102，认证资产已打入 |
 
 ### 产物核对
 
@@ -43,9 +41,8 @@ unzip -l mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk | grep -i
 
 | APK | package | versionName | 认证资产 |
 | --- | --- | --- | --- |
-| `assembleLynkRelease` 源码包 | `com.osnplay.lynk` | `0.1.2-lynk` | 无 |
-| `assembleStandaloneLynkRelease` | `com.osnplay.lynk` | `0.1.2-lynk` | 有 |
-| `:launcher-entry:assembleRelease` | `com.kugou.android.auto` | `1.0` | 无 |
+| `assembleLynkRelease` 源码包 | `com.kugou.android.auto` | `0.1.2-lynk` | 无 |
+| `assembleStandaloneLynkRelease` | `com.kugou.android.auto` | `0.1.2-lynk` | 有 |
 
 ## 自动化测试覆盖
 

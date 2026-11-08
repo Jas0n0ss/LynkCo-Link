@@ -25,5 +25,4 @@ dependencyResolutionManagement {
 rootProject.name = "OSNPlay"
 include(":common")
 include(":mobile")
-include(":launcher-entry")
 include(":shared")

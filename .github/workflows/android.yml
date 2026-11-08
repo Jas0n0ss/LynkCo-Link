@@ -47,26 +47,22 @@ jobs:
           :common:testDebugUnitTest
           :mobile:lintStandardDebug
           :mobile:assembleLynkRelease
-          :launcher-entry:assembleRelease
           --stacktrace
       - name: Verify both source builds have no authentication assets
         run: |
           set -euo pipefail
-          for apk in mobile/build/outputs/apk/lynk/release/*.apk launcher-entry/build/outputs/apk/release/*.apk; do
-            test -n "$apk"
-            if unzip -l "$apk" | grep -qE 'offline-mfi|\.pk8|\.p7b'; then
-              echo "Authentication asset found in source-only APK: $apk"
-              exit 1
-            fi
-          done
-      - name: Upload both APKs
+          apk=$(find mobile/build/outputs/apk/lynk/release -name '*.apk' | head -1)
+          test -n "$apk"
+          if unzip -l "$apk" | grep -qE 'offline-mfi|\.pk8|\.p7b'; then
+            echo "Authentication asset found in source-only APK: $apk"
+            exit 1
+          fi
+      - name: Upload APK
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: OSNPlay-apks
-          path: |
-            mobile/build/outputs/apk/lynk/release/*.apk
-            launcher-entry/build/outputs/apk/release/*.apk
+          name: OSNPlay-apk
+          path: mobile/build/outputs/apk/lynk/release/*.apk
           if-no-files-found: warn
           retention-days: 14
       - name: Upload test and lint reports

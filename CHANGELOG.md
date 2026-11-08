@@ -9,7 +9,7 @@
 - 首次设置改为“连接 → iPhone → 完成”，移除 DiLink 版本选择和比亚迪功能页。
 - 删除 BYD 专属设置分区：BYD ADB、BYD 导航/HUD、仪表盘地图、氛围灯、导航滚轮；同步移除 BYD 通话键/HUD/仪表运行接线和对应测试。
 - 领克版保留通用能力：连接、显示、音频、定位、车辆按键、CarPlay 界面、诊断、备份和高级媒体/显示选项。
-- 发布两个 APK：`OSNPlay-0.1.2-lynk-release-standalone.apk`（主程序，含认证资产）和 `OSNPlay-Whitelist-Entry-1.0.apk`（白名单入口，无认证资产）。
+- 合并为单 APK：`OSNPlay-0.1.2-lynk-release-standalone.apk` 使用 OSN 白名单包名 `com.kugou.android.auto`，同时包含主程序、桌面入口和认证资产；不再单独发布入口包。
 - `lynk` 版本默认开启开机自动启动和桌面悬浮球；首次运行提示授予“显示在其他应用上层”。
 - 开机时发布“打开 OSNPlay”通知，即使原厂 Launcher3 的包名白名单不显示图标也能进入应用。
 - 文档补充 OSN 原厂桌面白名单的原因、替代启动器/ADB/悬浮球处理方式。

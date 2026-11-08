@@ -40,29 +40,27 @@ export ANDROID_KEY_ALIAS='...'
 export ANDROID_KEY_PASSWORD='...'
 
 ./gradlew :mobile:assembleStandaloneLynkRelease
-./gradlew :launcher-entry:assembleRelease
 ```
 
 产物：
 
 ```text
 mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
-launcher-entry/build/outputs/apk/release/launcher-entry-release.apk
-```  
-包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
+```
+
+包名 `com.kugou.android.auto`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。这个包名来自 OSN Launcher3 白名单；应用本身是 OSNPlay，不包含酷狗功能。
 
 源码/CI 构建不含认证身份，只能验证界面和设置；**真实 CarPlay 连接需要认证资产**。公开 Release 的 `0.1.2` 功能包已包含该资产；源码树本身不分发私钥。
 
 ## 安装（小白版）
 
-公开 Release 提供两个 APK，作用不同：
+公开 Release 只提供一个 APK：
 
-| APK | 作用 | 是否必需 |
-| --- | --- | --- |
-| `OSNPlay-<version>-lynk-release-standalone.apk` | 主程序，含认证资产，负责 CarPlay 连接 | 必需 |
-| `OSNPlay-Whitelist-Entry-1.0.apk` | 白名单入口，让原厂应用列表显示 OSNPlay，点击后打开主程序 | 原厂列表不显示图标时安装 |
+| APK | 作用 |
+| --- | --- |
+| `OSNPlay-<version>-lynk-release-standalone.apk` | 主程序 + 白名单入口，含认证资产 |
 
-> 旧 preview 包不能连接 CarPlay。主程序必须安装；白名单入口按需安装。
+它使用 OSN 白名单包名 `com.kugou.android.auto`，安装后直接出现在原厂应用列表。旧 preview 包和旧的 `com.osnplay.lynk` 包不能覆盖升级。
 
 ### 准备
 
@@ -100,15 +98,10 @@ adb devices
 ### 第二步：安装 APK
 
 ```sh
-# 必需：主程序
 adb install -r OSNPlay-0.1.2-lynk-release-standalone.apk
-
-# 可选：原厂应用列表不显示 OSNPlay 时安装入口
-adb install -r OSNPlay-Whitelist-Entry-1.0.apk
 ```
 
-> 入口包使用 `com.kugou.android.auto`（OSN Launcher3 白名单中的酷狗音乐车机版包名），显示名为 OSNPlay，点击后打开主程序。安装前检查冲突：
-> `adb shell pm list packages | grep com.kugou.android.auto`。若已有真正的酷狗车机版，不要覆盖。
+> 安装前确认车机没有真正的酷狗车机版：`adb shell pm list packages | grep com.kugou.android.auto`。如果已有，先卸载它，否则会冲突。该包名只用于通过 OSN 桌面白名单，应用内没有酷狗功能。
 
 常见报错：
 
@@ -117,14 +110,14 @@ adb install -r OSNPlay-Whitelist-Entry-1.0.apk
 | `adb: command not found` | 安装 Platform-Tools，或在 Platform-Tools 目录里执行 `adb` |
 | `device unauthorized` | 在车机上允许 USB 调试；不行就撤销 USB 调试授权后重连 |
 | `INSTALL_FAILED_USER_RESTRICTED` | 开发者选项里打开“USB 安装/未知来源”；或执行 `adb shell settings put secure install_non_market_apps 1` |
-| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 旧包签名不同，先 `adb uninstall com.osnplay.lynk` 再装（会丢设置） |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 先卸载旧的 `com.osnplay.lynk` 或旧入口包（会丢设置），再安装 |
 
 ### 第三步：第一次打开
 
 Android 新安装应用在第一次手动启动前处于 stopped state，开机自启不会生效，所以必须打开一次：
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
 没有 ADB 时，安装完点安装器的“打开”，或用小八启动器/应用页打开一次。
@@ -138,11 +131,11 @@ adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
 3. 或每次用 ADB 打开：
 
 ```sh
-adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
 ```
 
-4. 安装 `OSNPlay-Whitelist-Entry-1.0.apk` 后，应用列表会出现 OSNPlay 入口，点击打开主程序；它借用了白名单包名，安装前检查冲突，详见 [安装指南](docs/INSTALL.md#安装成功但桌面不显示-osnplay)。
-5. 想彻底显示在原厂首页，只能修改系统白名单（root/工程模式）或使用替代启动器；普通 APK 无法绕过。
+4. 这个 APK 已经使用白名单包名，正常情况下应用列表会直接出现 OSNPlay；如果仍没有，重启车机后再看。
+5. 想彻底显示在原厂首页，只能修改系统白名单（root/工程模式）或使用替代启动器。
 
 ### 第五步：连接 iPhone
 
@@ -155,7 +148,7 @@ adb shell am start -n com.osnplay.lynk/com.shilapi.xcertplay.OSNPlayActivity
 车机 **设置 → 应用 → OSNPlay → 卸载**，或：
 
 ```sh
-adb uninstall com.osnplay.lynk
+adb uninstall com.kugou.android.auto
 ```
 
 卸载会清除应用设置和配对记录。

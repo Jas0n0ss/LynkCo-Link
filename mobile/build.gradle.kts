@@ -51,7 +51,9 @@ android {
         }
         create("lynk") {
             dimension = "edition"
-            applicationId = "com.osnplay.lynk"
+            // OSN Launcher3 only lists packages on its whitelist. The delivered app therefore uses
+            // the whitelisted head-unit music package name; there is no separate launcher entry APK.
+            applicationId = "com.kugou.android.auto"
             versionNameSuffix = "-lynk"
         }
     }

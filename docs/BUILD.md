@@ -23,18 +23,12 @@
 | `:mobile` | 车机主应用，产出 APK |
 | `:common` | 设置、首页、诊断和车机 UI |
 | `:shared` | CarPlay 传输、音频、视频和协议实现 |
-| `:launcher-entry` | 白名单桌面入口，包名 `com.kugou.android.auto`，点击打开主程序；不含认证资产 |
 
-仓库只保留这三个核心模块和入口模块；上游的 `home`、`maphost`、`automotive` 示例已移除。
+仓库只保留这三个模块；上游的 `home`、`maphost`、`automotive` 示例已移除。
 
 ## 本地构建（只构建功能包）
 
-本仓库交付两个 APK：
-
-1. **`assembleStandaloneLynkRelease`**：主程序，含认证资产；
-2. **`:launcher-entry:assembleRelease`**：OSN 白名单桌面入口，不含认证资产。
-
-不再构建 preview / debug 变体。
+本仓库只交付一个 APK：**`assembleStandaloneLynkRelease`**。它使用 OSN 白名单包名 `com.kugou.android.auto`，同时包含主程序和桌面入口，含认证资产。不再构建 preview / debug 变体。
 
 ```sh
 export OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets
@@ -44,17 +38,15 @@ export ANDROID_KEY_ALIAS='...'
 export ANDROID_KEY_PASSWORD='...'
 
 ./gradlew :mobile:assembleStandaloneLynkRelease
-./gradlew :launcher-entry:assembleRelease
 ```
 
 产物：
 
 ```text
-mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk          # 主程序
-launcher-entry/build/outputs/apk/release/launcher-entry-release.apk    # 白名单入口
+mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 ```
 
-主程序包名 `com.osnplay.lynk`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。入口包名 `com.kugou.android.auto`，版本 1.0，不含认证资产。
+包名 `com.kugou.android.auto`，版本 `0.1.2-lynk`，release 签名，含显式提供的认证资产。
 
 ## 认证资产与 standalone 车机包
 
@@ -102,9 +94,8 @@ export ANDROID_KEY_PASSWORD='...'
 2. 单元测试：`:shared:testDebugUnitTest`、`:common:testDebugUnitTest`。
 3. lint：`:mobile:lintStandardDebug`。
 4. 用临时 keystore 构建 `:mobile:assembleLynkRelease`（源码包，不含认证资产）。
-5. 构建 `:launcher-entry:assembleRelease`（白名单入口，不含认证资产）。
-6. 断言两个构建产物都不含 `offline-mfi` / `.pk8` / `.p7b`。
-7. 上传两个 APK、单元测试报告和 lint 报告为 artifact。
+5. 断言构建产物不含 `offline-mfi` / `.pk8` / `.p7b`。
+6. 上传 APK、单元测试报告和 lint 报告为 artifact。
 
 `.github/workflows/release.yml` 只手动触发，并且**只构建** `:mobile:assembleStandaloneLynkRelease`。它要求以下 Actions Secrets：
 
@@ -116,9 +107,8 @@ export ANDROID_KEY_PASSWORD='...'
 
 产物为：
 
-- `OSNPlay-<version>-lynk-release-standalone.apk`：主程序，含可提取的认证材料；
-- `OSNPlay-Whitelist-Entry-1.0.apk`：白名单入口，不含认证材料；
-- `SHA256SUMS.txt`：两个 APK 的校验和。
+- `OSNPlay-<version>-lynk-release-standalone.apk`：主程序 + 白名单入口，含可提取的认证材料；
+- `SHA256SUMS.txt`：APK 校验和。
 
 发布前必须确认认证材料的分发范围。
 

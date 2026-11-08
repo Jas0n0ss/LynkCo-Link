@@ -8,8 +8,7 @@ Run the CI command from `.github/workflows/android.yml` before you report a chan
 
 ```sh
 ./gradlew :shared:testDebugUnitTest :common:testDebugUnitTest \
-  :mobile:lintStandardDebug :mobile:assembleLynkRelease \
-  :launcher-entry:assembleRelease
+  :mobile:lintStandardDebug :mobile:assembleLynkRelease
 ```
 
 `assembleLynkRelease` needs a release keystore. Use your release key, or a throwaway key as CI does:
@@ -31,14 +30,13 @@ Set `ANDROID_HOME` or `local.properties` if Gradle cannot find the SDK. Platform
 - `:common` — settings, home, diagnostics and head-unit UI.
 - `:shared` — CarPlay transport, audio, video and protocol code.
 - `:mobile` — the head-unit application.
-- `:launcher-entry` — OSN whitelist launcher entry; package `com.kugou.android.auto`, opens the main app.
 
 `standard` / `lynk` are product flavors; `release` is the only delivered build type.
 Debug and preview variants are not built for delivery. The `lynk` flavor uses
-`com.osnplay.lynk`; `com.osnplay` is the standard flavor.
+`com.kugou.android.auto` (OSN Launcher3 whitelist); `com.osnplay` is the standard flavor.
 Ordinary source builds must not include authentication assets. Only `assembleStandalone*`
 tasks may bundle `OSNPLAY_AUTH_ASSETS_DIR`, and only for the explicit car-test package.
-The delivered APKs are `:mobile:assembleStandaloneLynkRelease` (main, with authentication) and `:launcher-entry:assembleRelease` (whitelist entry, no authentication).
+The delivered APK is `:mobile:assembleStandaloneLynkRelease` (main app plus launcher entry, with authentication).
 
 ## Adding or moving a setting
 
@@ -116,6 +114,5 @@ Spacing, size and shape in the Settings screen MUST come from one place.
 - Update `CHANGELOG.md` for user-visible changes and `docs/TESTING.md` for new verification evidence.
 - Never commit credentials, APKs, signing keys or `.pk8` / `.p7b` files.
   `scripts/check_public_tree.py` runs in CI.
-- `.github/workflows/release.yml` is manual-only and builds
-  `:mobile:assembleStandaloneLynkRelease` and `:launcher-entry:assembleRelease`, using the
-  authentication and keystore secrets. Do not hand-upload a locally built APK as a release.
+- `.github/workflows/release.yml` is manual-only and builds `:mobile:assembleStandaloneLynkRelease`,
+  using the authentication and keystore secrets. Do not hand-upload a locally built APK as a release.
