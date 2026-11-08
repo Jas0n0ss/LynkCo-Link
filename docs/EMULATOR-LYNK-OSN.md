@@ -328,8 +328,8 @@ core/vehicle/
 
 ```text
 package: com.kugou.android.auto
-versionCode: 200
-versionName: 0.2.0-lynk
+versionCode: 201
+versionName: 0.2.1-lynk
 launchable-activity: com.shilapi.xcertplay.OSNPlayActivity
 ```
 
