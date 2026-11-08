@@ -1,5 +1,11 @@
 # 更新日志
 
+## 0.3.2 — 2026-11-09
+
+- Default app language is English; all bundled locales remain available.
+- Release notes are written in English.
+- README includes API 28 and 1920×720 screenshots.
+
 ## 0.3.1 — 2026-11-09
 
 - 完成内部命名统一：资源键、SharedPreferences、线程名、日志标记全部改为 lynkco_link。

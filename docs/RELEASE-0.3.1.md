@@ -1,10 +1,11 @@
 # LynkCo-Link 0.3.1 — Lynk&co
 
-- 内部资源键、偏好文件名、线程名统一为 lynkco_link。
-- 旧品牌设置自动迁移到 LynkCo-Link。
-- 应用名、类名、文档、CI 产物保持 LynkCo-Link。
+- Renamed the product, app label, classes, resources and CI artifacts to LynkCo-Link.
+- Standard applicationId is now `com.lynkco.link`; the delivered whitelisted id remains `com.kugou.android.auto`.
+- Added a one-time migration for legacy preference files.
+- Internal resources, preference names, thread names and log tags now use lynkco_link.
 
-安装：
+Install:
 
 ```sh
 adb install -r LynkCo-Link-0.3.1-lynk-release-standalone.apk

@@ -33,6 +33,28 @@ object AppLocale {
     private const val KEY_LANGUAGE = "app_language"
 
     private const val KEY_MIGRATED = "app_language_platform_migrated"
+    private const val KEY_DEFAULT_APPLIED = "app_language_default_applied"
+
+    /**
+     * The product ships in English by default while still allowing the full locale list.
+     * Android 13+ stores this in LocaleManager; older releases use the persisted preference.
+     */
+    fun ensureDefaultEnglish(context: Context) {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (Build.VERSION.SDK_INT >= 33) {
+            val manager = context.getSystemService(LocaleManager::class.java)
+            if (!manager.applicationLocales.isEmpty) {
+                prefs.edit().putBoolean(KEY_DEFAULT_APPLIED, true).apply()
+                return
+            }
+            if (!prefs.getBoolean(KEY_DEFAULT_APPLIED, false)) {
+                runCatching { manager.applicationLocales = LocaleList(Locale.ENGLISH) }
+                prefs.edit().putBoolean(KEY_DEFAULT_APPLIED, true).apply()
+            }
+        } else if (!prefs.contains(KEY_LANGUAGE)) {
+            prefs.edit().putString(KEY_LANGUAGE, ENGLISH).apply()
+        }
+    }
 
     fun preference(context: Context): String {
         if (Build.VERSION.SDK_INT >= 33) {

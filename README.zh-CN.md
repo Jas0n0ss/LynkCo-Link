@@ -22,6 +22,14 @@ LynkCo-Link 安装在**车机**上，不需要越狱 iPhone、外设或认证服
 
 详见 [兼容性说明](docs/COMPATIBILITY.md)。
 
+## 界面截图
+
+| 连接页 | 1920×720 |
+| --- | --- |
+| ![连接页](docs/assets/emulator-api28-lynkco-link-1920x1080.png) | ![1920x720](docs/assets/emulator-api33-lynkco-link-1920x720.png) |
+
+![Mock 车辆面板](docs/assets/emulator-api33-mock-vehicle-1920x720.png)
+
 ## 下载与安装
 
 只下载一个文件：

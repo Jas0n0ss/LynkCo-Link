@@ -21,6 +21,14 @@ Only the Lynk models above are targeted; 8155 / OSN 2.0 comes first.
 
 See [compatibility](docs/COMPATIBILITY.md).
 
+## Screenshots
+
+| Connection | 1920×720 |
+| --- | --- |
+| ![Connection](docs/assets/emulator-api28-lynkco-link-1920x1080.png) | ![1920x720](docs/assets/emulator-api33-lynkco-link-1920x720.png) |
+
+![Mock vehicle panel](docs/assets/emulator-api33-mock-vehicle-1920x720.png)
+
 ## Download and install
 
 Download one file:

@@ -8,6 +8,7 @@ class LynkCoLinkApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         migrateLegacyPreferences()
+        AppLocale.ensureDefaultEnglish(this)
     }
 
     private fun migrateLegacyPreferences() {
