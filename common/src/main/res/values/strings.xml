@@ -1071,4 +1071,6 @@
     <string name="debug_logs_saved_to">Saved to %1$s</string>
     <string name="debug_logs_share">Share debug logs</string>
     <string name="debug_logs_description_short">Attach the zip to a bug report. Nothing is uploaded automatically.</string>
+    <string name="validation_run">Run head-unit checks</string>
+    <string name="validation_title">Head-unit checks</string>
 </resources>

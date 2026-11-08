@@ -1070,4 +1070,6 @@
     <string name="debug_logs_saved_to">%1$s に保存しました</string>
     <string name="debug_logs_share">デバッグログを共有</string>
     <string name="debug_logs_description_short">ZIP を不具合報告に添付してください。自動アップロードはありません。</string>
+    <string name="validation_run">車載機チェックを実行</string>
+    <string name="validation_title">車載機チェック</string>
 </resources>

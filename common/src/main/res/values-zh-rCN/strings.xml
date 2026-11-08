@@ -1028,4 +1028,6 @@
     <string name="debug_logs_saved_to">已保存到 %1$s</string>
     <string name="debug_logs_share">分享调试日志</string>
     <string name="debug_logs_description_short">请将 ZIP 附到问题反馈中。不会自动上传。</string>
+    <string name="validation_run">运行车机检查</string>
+    <string name="validation_title">车机检查</string>
 </resources>

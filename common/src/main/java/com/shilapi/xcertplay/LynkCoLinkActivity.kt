@@ -1749,6 +1749,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                 exportDebugLogs()
             }.apply { isEnabled = !exportInProgress }
             card.addView(debugExportButton, matchButton(10, 60))
+            card.addView(button(getString(R.string.validation_run), false) { showHeadUnitChecks() }, matchButton(10, 60))
             card.addView(label(getString(R.string.debug_logs_description), 14, MUTED).apply { setPadding(0, dp(10), 0, 0) })
             card.addView(button(getString(R.string.choose_save_location), false) { chooseReportDestination() }, matchButton(10, 60))
             card.addView(button(getString(R.string.settings_report_on_phone), false) { openBackup(SettingsCategory.DIAGNOSTICS) }, matchButton(10, 60))
@@ -4475,6 +4476,22 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         }, "lynkco_link-export").start()
     }
 
+    /** Runs the on-device adaptation checks and shows a copyable report. */
+    private fun showHeadUnitChecks() {
+        val appContext = applicationContext
+        Thread({
+            val report = HeadUnitValidation.report(appContext)
+            runOnUiThread {
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                appDialogBuilder()
+                    .setTitle(getString(R.string.validation_title))
+                    .setMessage(report)
+                    .setPositiveButton(getString(R.string.close), null)
+                    .show()
+            }
+        }, "lynkco_link-validation").start()
+    }
+
     /** The text of a diagnostic report. It reads the session logs, so call it off the main thread. */
     private fun diagnosticReportText(appContext: Context): String = buildString {
         appendLine("LynkCo-Link ${version()} · diagnostic report")
@@ -4527,6 +4544,7 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         appendLine()
         appendLine("--- USB and wireless environment at export ---")
         appendLine(ConnectionEnvironmentSnapshot.capture(appContext))
+        appendLine(HeadUnitValidation.report(appContext))
         if (appContext.resources.getBoolean(com.shilapi.xcertplay.host.R.bool.config_simple_connection_flow)) {
             appendLine("--- Read-only environment checklist at export ---")
             try { appendLine(CarPlayEnvironmentCheck.capture(appContext).diagnosticText(appContext)) }
