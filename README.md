@@ -21,6 +21,8 @@ Only the Lynk models above are targeted; 8155 / OSN 2.0 comes first.
 
 See [compatibility](docs/COMPATIBILITY.md).
 
+The UI ships in **English by default** and includes Simplified/Traditional Chinese, Arabic, Russian, Spanish, Ukrainian, Japanese, Korean, Italian and Turkish. Change it in Settings → Language.
+
 ## Screenshots
 
 | Connection | 1920×720 |
