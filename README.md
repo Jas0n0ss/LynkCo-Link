@@ -79,7 +79,7 @@ The first run goes straight to “Connection → Choose iPhone”; it does not a
 LynkCo-Link uses a whitelisted Launcher3 package name, so it should appear. If it does not:
 
 1. Reboot the head unit and check “All apps”.
-2. Settings → Advanced → Launcher bubble; allow “Display over other apps”.
+2. Confirm the package is installed: `adb shell pm list packages | grep com.kugou`.
 3. Or start it with ADB:
 
 ```sh
@@ -100,7 +100,7 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkAct
 | `device unauthorized` | Allow USB debugging on the car; revoke and reconnect if needed |
 | `INSTALL_FAILED_USER_RESTRICTED` | Enable USB install / unknown sources |
 | `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Uninstall the old `com.lynkco.link.lynk` or entry package first (settings are lost) |
-| Installed but no icon | Reboot; enable the launcher bubble; or start with ADB |
+| Installed but no icon | Reboot; check the package list; or start with ADB |
 | CarPlay does not connect | Unlock the iPhone, enable Bluetooth/Wi-Fi, export diagnostics |
 | Real Kugou app installed | Package conflict; uninstall the Kugou head-unit app |
 
@@ -119,6 +119,16 @@ Uninstalling removes settings and pairing records.
 Requires JDK 17+, Android SDK Platform 37.2, Build-Tools 37.0.0 and NDK 28.2.13676358. Authentication assets and the release keystore are never committed.
 
 See [build instructions](docs/BUILD.md).
+
+## TODO
+
+- [ ] Real-car acceptance on Lynk 01/03 (8155 / OSN 2.0): wired and wireless.
+- [ ] Validate audio, microphone, Siri, calls and steering-wheel keys.
+- [ ] Test permission denial, ignition/reboot, background and OTA upgrade.
+- [ ] Verify Lynk 02/05/06 and early 820A compatibility.
+- [ ] Implement the real Lynk vehicle SDK (HVAC/media) and optional cluster projection.
+- [ ] Complete translations for the new debug-log strings.
+- [ ] Validate update checks and the CI release pipeline after the repository rename.
 
 ## Docs
 

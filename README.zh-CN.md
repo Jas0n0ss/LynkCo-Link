@@ -82,7 +82,7 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkAct
 LynkCo-Link 已使用原厂 Launcher3 白名单包名，正常会出现在应用列表。如果仍没有：
 
 1. 重启车机，再找“所有应用 / 应用管理”。
-2. 设置 → 高级 → 桌面悬浮球，允许“显示在其他应用上层”。
+2. 确认包已安装：`adb shell pm list packages | grep com.kugou`。
 3. 或用 ADB 启动：
 
 ```sh
@@ -103,7 +103,7 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkAct
 | `device unauthorized` | 车机上允许 USB 调试；仍失败就撤销授权后重连 |
 | `INSTALL_FAILED_USER_RESTRICTED` | 开发者选项打开“USB 安装/未知来源” |
 | `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 先卸载旧的 `com.lynkco.link.lynk` 或旧入口包，再安装（会丢设置） |
-| 装完桌面找不到 | 重启车机；或开启桌面悬浮球；或 ADB 启动 |
+| 装完桌面找不到 | 重启车机；检查包列表；或 ADB 启动 |
 | 无法连接 CarPlay | 确认 iPhone 已解锁、蓝牙/Wi-Fi 已开，并导出诊断报告 |
 | 有真正的酷狗车机版 | 两者包名冲突，先卸载酷狗车机版 |
 
@@ -122,6 +122,16 @@ adb uninstall com.kugou.android.auto
 需要 JDK 17+、Android SDK Platform 37.2、Build-Tools 37.0.0、NDK 28.2.13676358。认证资产和 release keystore 不进入仓库。
 
 完整步骤见 [构建说明](docs/BUILD.md)。
+
+## 待办
+
+- [ ] 领克 01/03（8155 / OSN 2.0）实车验收：有线与无线。
+- [ ] 验证音频、麦克风、Siri、通话和方向盘按键。
+- [ ] 测试权限拒绝、熄火重启、后台和 OTA 升级。
+- [ ] 验证领克 02/05/06 与早期 820A 兼容性。
+- [ ] 实现真实领克车辆 SDK（空调/媒体）和可选仪表投射。
+- [ ] 补齐调试日志新增字符串的多语言翻译。
+- [ ] 验证仓库改名后的更新检查和 CI 发布流程。
 
 ## 文档
 
