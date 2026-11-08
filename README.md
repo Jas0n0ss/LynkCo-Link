@@ -11,11 +11,13 @@ OSNPlay runs on the **head unit**. It needs no jailbreak, dongle or authenticati
 
 ## Supported cars
 
-| Car | Platform / OS | Status |
+| Car | Generation | Status |
 | --- | --- | --- |
-| Lynk & Co 01 2023 | Snapdragon 8155 / OSN | Development target; awaiting real-car acceptance |
-| Lynk & Co 03 2023 | OSN 2.0 / Android 9 | Same-platform reference: wired works, wireless not tuned |
-| Other Lynk & Co OSN cars | OSN / Android 7.0+ | Unverified |
+| Lynk & Co 01 / 02 / 03 / 05 / 06 | Late, Snapdragon 8155 / OSN 2.0 | Primary target |
+| Lynk & Co 01 / 02 / 03 / 05 / 06 | Early, 820A / early OSN | Compatibility range, per-car validation |
+| Other cars | — | Unsupported |
+
+Only the Lynk models above are targeted; 8155 / OSN 2.0 comes first.
 
 See [compatibility](docs/COMPATIBILITY.md).
 

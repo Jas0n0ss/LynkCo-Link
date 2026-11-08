@@ -1056,4 +1056,12 @@
     <string name="cluster_projection_shape_description">小画面ではメーター本来の車速や状態表示が地図の横に残ります。全画面では地図がメーター全体を覆います。CarPlayの地図が表示されるとOSNPlayがこの形態を設定するため、クルマ側で選んだナビモードは上書きされます。車載機のネットワークADBが必要です。</string>
     <string name="settings_cluster_speedometer_album_color">速度計の背景にアルバムの色を使用</string>
     <string name="settings_cluster_speedometer_album_color_description">アルバムの枠の色に滑らかに切り替わります。選択した不透明度は維持されます。</string>
+
+    <string name="lynk_compat_title">車両対応</string>
+    <string name="lynk_compat_detected">検出: %1$s</string>
+    <string name="lynk_compat_primary">主な対象: Snapdragon 8155 / OSN 2.0</string>
+    <string name="lynk_compat_compatible">対応する Lynk &amp; Co モデルです。Snapdragon 8155 / OSN 2.0 を優先します。</string>
+    <string name="lynk_compat_unsupported">サポート対象外です。対応: Lynk 01、02、03、05、06。</string>
+    <string name="lynk_compat_evidence">検出根拠: %1$s</string>
+    <string name="lynk_compat_hint">誤っている場合は、この行を診断レポートに含めてください。</string>
 </resources>

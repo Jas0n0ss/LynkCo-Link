@@ -1014,4 +1014,12 @@
     <string name="cluster_projection_shape_description">半螢幕會在儀表板地圖旁保留儀表原本的車速與狀態資訊；全螢幕則讓地圖佔滿整個儀表板。CarPlay 地圖出現時 OSNPlay 會設定該形態，否則會覆蓋你在車機上選好的導航模式。需要車機已授權網路 ADB。</string>
     <string name="settings_cluster_speedometer_album_color">速度表背景使用專輯顏色</string>
     <string name="settings_cluster_speedometer_album_color_description">平滑過渡至專輯邊框的顏色，並保留所選的不透明度。</string>
+
+    <string name="lynk_compat_title">車型適配</string>
+    <string name="lynk_compat_detected">已識別：%1$s</string>
+    <string name="lynk_compat_primary">首要目標：驍龍 8155 / OSN 2.0</string>
+    <string name="lynk_compat_compatible">相容的領克車型；驍龍 8155 / OSN 2.0 為首要適配目標。</string>
+    <string name="lynk_compat_unsupported">不在支援列表內。支援：領克 01、02、03、05、06。</string>
+    <string name="lynk_compat_evidence">識別依據：%1$s</string>
+    <string name="lynk_compat_hint">如果識別錯誤，請把這一行附在診斷報告中。</string>
 </resources>

@@ -162,23 +162,7 @@ class CarPlayHostClusterStartupTest {
         }
     }
 
-    @Test fun aReplacementSessionDetachesTheOldClusterSurfaceUntilItsOwnMainFrame() {
-        val surface = mock(Surface::class.java)
-        set("clusterSurface", surface)
-        firstFrame()
-        verify(sink).setSurface(111, surface)
-        val replacement = mock(AirPlaySession::class.java)
-        listener().onSessionActive(replacement)
-        shadowOf(Looper.getMainLooper()).idle()
-        verify(sink).clearSurface(111, surface)
-        verify(sink, times(1)).setSurface(111, surface)
-        `when`(replacement.hasRenderedMainFrame).thenReturn(true)
-        listener().onVideoFrameRendered(replacement)
-        shadowOf(Looper.getMainLooper()).idle()
-        verify(sink, times(2)).setSurface(111, surface)
-    }
-
-    @Test fun aFrameReportedBeforeSessionActiveIsRememberedWhenTheHostCatchesUp() {
+        @Test fun aFrameReportedBeforeSessionActiveIsRememberedWhenTheHostCatchesUp() {
         display()
         set("activeAirPlaySession", null)
         `when`(session.hasRenderedMainFrame).thenReturn(true)

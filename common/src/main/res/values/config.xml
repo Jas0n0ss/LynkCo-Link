@@ -8,6 +8,4 @@
          make OSNPlay reachable when the stock OSN Launcher3 whitelist hides third-party apps. -->
     <bool name="config_auto_start_on_boot_default">false</bool>
     <bool name="config_launcher_bubble_default">false</bool>
-    <!-- Common/unit-test builds keep upstream BYD cards; the lynk edition turns them off. -->
-    <bool name="config_byd_features">true</bool>
 </resources>

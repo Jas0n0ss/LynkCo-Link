@@ -88,7 +88,8 @@ import com.shilapi.xcertplay.orchestration.MfiTarget
 import com.shilapi.xcertplay.orchestration.WirelessHotspotMode
 import com.shilapi.xcertplay.settings.SettingsTheme
 import com.shilapi.xcertplay.settings.SettingsWidgets
-import com.shilapi.xcertplay.setup.DiLinkGeneration
+import com.shilapi.xcertplay.lynk.LynkCompatibility
+import com.shilapi.xcertplay.lynk.LynkSupport
 import com.shilapi.xcertplay.setup.SetupGuide
 import com.shilapi.xcertplay.transport.EvChargingConnectors
 import com.shilapi.xcertplay.update.BackgroundUpdateScheduler
@@ -382,7 +383,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         refreshAppearance()
         rememberLaunchAppearance()
         languagePreferenceAtCreate = AppLocale.preference(this)
-        com.shilapi.xcertplay.hud.BydNavigationOutputs.onAppOpened(applicationContext)
         // A previous run may have been killed while it held the cluster projection; hand it back
         // before showing anything, so the cluster is not left on OSNPlay's last frame.
         GeelyClusterProjection.releaseStale(applicationContext)
@@ -411,7 +411,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             ?: if (setupError == null && SetupGuide.shouldOpenOnLaunch(SetupGuide.seen(this),
                     OSNPlayPreferences.phoneAddress(this) != null)) "setup" else "home"
         render()
-        scheduleAutomaticVehicleValidation()
         handleWirelessRecovery()
         if (consumeBluetoothAutoConnectIntent(intent)) {
             if (initialLaunch) {
@@ -438,7 +437,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         }
         page = requestedPage(intent) ?: "home"; render()
         automaticVehicleValidationStarted = false
-        scheduleAutomaticVehicleValidation()
         handleWirelessRecovery()
         if (consumeBluetoothAutoConnectIntent(intent)) {
             if (initialLaunch) {
@@ -2221,6 +2219,19 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             toggle(card, getString(R.string.settings_background_update_checks),
                 getString(R.string.settings_background_update_checks_description),
                 UpdateAvailability.backgroundChecksEnabled(this)) { UpdateAvailability.saveBackgroundChecksEnabled(this, it) }
+        }
+        section(content, getString(R.string.lynk_compat_title)) { card ->
+            val profile = LynkCompatibility.current()
+            card.addView(label(getString(R.string.lynk_compat_detected, profile.model.displayName), 18, TEXT, true))
+            card.addView(label(getString(when (profile.support) {
+                LynkSupport.PRIMARY -> R.string.lynk_compat_primary
+                LynkSupport.COMPATIBLE -> R.string.lynk_compat_compatible
+                LynkSupport.UNSUPPORTED -> R.string.lynk_compat_unsupported
+            }), 14, MUTED).apply { setPadding(0, dp(8), 0, 0) })
+            if (profile.evidence.isNotBlank()) {
+                card.addView(label(getString(R.string.lynk_compat_evidence, profile.evidence), 14, MUTED).apply { setPadding(0, dp(6), 0, 0) })
+            }
+            card.addView(label(getString(R.string.lynk_compat_hint), 14, MUTED).apply { setPadding(0, dp(6), 0, 0) })
         }
         section(content, getString(R.string.backup_title)) { card ->
             card.addView(button(getString(R.string.backup_open), false) { openBackup() }, matchButton(0, 60))
@@ -4280,7 +4291,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         vehicleProbeOutcome = null
         pendingVehicleReplacement = null
         pendingVehicleLostFields = emptySet()
-        scheduleAutomaticVehicleValidation()
         render()
         // With every vehicle-data switch off, the mode changes nothing CarPlay was told.
         if (vehicleDataSwitchesOn()) reconnectForVehicleSetting()
@@ -4423,8 +4433,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         if (!enabled) {
             reconnectForVehicleSetting()
         } else if (BydOutputSettings.legacyVehicleProbe(this)) {
-            scheduleAutomaticVehicleValidation()
-            reconnectForVehicleSetting()
+                reconnectForVehicleSetting()
         } else {
             // Default mode applies the switch once a check reads what the enabled switches need.
             vehicleDataReconnectPending = true

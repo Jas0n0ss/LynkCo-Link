@@ -429,7 +429,11 @@ class WifiP2pGroupManagerTest {
     }
 
     private fun <T> background(block: () -> T): T {
-        val executor = Executors.newSingleThreadExecutor()
+        // A timed-out P2P wait may keep sleeping after interrupt; keep that helper off the JVM's
+        // non-daemon thread list so one environment-specific stall cannot hang the whole suite.
+        val executor = Executors.newSingleThreadExecutor { runnable ->
+            Thread(runnable, "wifi-p2p-test").apply { isDaemon = true }
+        }
         return try { executor.submit<T> { block() }.get(10, TimeUnit.SECONDS) }
         finally { executor.shutdownNow() }
     }
