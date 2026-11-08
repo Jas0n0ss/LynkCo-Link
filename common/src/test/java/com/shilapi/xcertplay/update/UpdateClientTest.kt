@@ -43,7 +43,7 @@ class UpdateClientTest {
             exchange.sendResponseHeaders(200, bytes.size.toLong())
             exchange.responseBody.use { it.write(bytes) }
         }
-        assertEquals(body, UpdateClient.fetchText("$root/releases", "application/vnd.github+json", "OSNPlay/test"))
+        assertEquals(body, UpdateClient.fetchText("$root/releases", "application/vnd.github+json", "LynkCoLink/test"))
     }
 
     @Test
@@ -55,7 +55,7 @@ class UpdateClientTest {
         }
         val selected = AtomicBoolean()
 
-        UpdateClient.fetchText("$root/selected-network", null, "OSNPlay/test") { url ->
+        UpdateClient.fetchText("$root/selected-network", null, "LynkCoLink/test") { url ->
             selected.set(true)
             url.openConnection()
         }
@@ -70,7 +70,7 @@ class UpdateClientTest {
             exchange.close()
         }
         try {
-            UpdateClient.fetchText("$root/releases", null, "OSNPlay/test")
+            UpdateClient.fetchText("$root/releases", null, "LynkCoLink/test")
             throw AssertionError("expected an IOException")
         } catch (expected: java.io.IOException) {
             assertTrue(expected.message!!.contains("403"))
@@ -84,7 +84,7 @@ class UpdateClientTest {
             exchange.sendResponseHeaders(200, payload.size.toLong())
             exchange.responseBody.use { it.write(payload) }
         }
-        val destination = File(temporaryFolder.root, "update/OSNPlay.apk")
+        val destination = File(temporaryFolder.root, "update/LynkCoLink.apk")
         val reports = mutableListOf<Pair<Long, Long?>>()
         UpdateClient.download("$root/apk", destination) { written, total -> reports.add(written to total) }
         assertEquals(payload.toList(), destination.readBytes().toList())
@@ -99,7 +99,7 @@ class UpdateClientTest {
             exchange.responseBody.use { it.write(ByteArray(16)) }
             exchange.close()
         }
-        val destination = File(temporaryFolder.root, "update/OSNPlay.apk")
+        val destination = File(temporaryFolder.root, "update/LynkCoLink.apk")
         try {
             UpdateClient.download("$root/apk", destination) { _, _ -> }
             throw AssertionError("expected an IOException")
@@ -113,7 +113,7 @@ class UpdateClientTest {
             exchange.sendResponseHeaders(200, length)
             exchange.responseBody.use { out -> repeat(70) { out.write(chunk) } }
         }
-        val destination = File(temporaryFolder.root, "update/OSNPlay.apk")
+        val destination = File(temporaryFolder.root, "update/LynkCoLink.apk")
         try {
             UpdateClient.download("$root$path", destination) { _, _ -> }
             throw AssertionError("expected an IOException, got ${destination.length()} bytes")

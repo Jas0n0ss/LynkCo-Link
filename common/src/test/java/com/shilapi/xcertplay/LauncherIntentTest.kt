@@ -25,7 +25,7 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [28, 33], manifest = Config.NONE)
 @LooperMode(LooperMode.Mode.PAUSED)
 class LauncherIntentTest {
-    private var controller: ActivityController<OSNPlayActivity>? = null
+    private var controller: ActivityController<LynkCoLinkActivity>? = null
     private var stops = 0
 
     @Before fun setup() {
@@ -56,16 +56,16 @@ class LauncherIntentTest {
 
     @Test
     fun onlyAPlainLauncherIntentReturnsToCarPlay() {
-        assertTrue(OSNPlayActivity.isLauncherIntent(launcher()))
-        assertFalse(OSNPlayActivity.isLauncherIntent(launcher().putExtra("page", "settings")))
-        assertFalse(OSNPlayActivity.isLauncherIntent(launcher().putExtra("page", null as String?)))
-        assertFalse(OSNPlayActivity.isLauncherIntent(launcher().putExtra("page", 123)))
-        assertFalse(OSNPlayActivity.isLauncherIntent(Intent(Intent.ACTION_MAIN)))
-        assertFalse(OSNPlayActivity.isLauncherIntent(Intent().putExtra("page", "connection")))
+        assertTrue(LynkCoLinkActivity.isLauncherIntent(launcher()))
+        assertFalse(LynkCoLinkActivity.isLauncherIntent(launcher().putExtra("page", "settings")))
+        assertFalse(LynkCoLinkActivity.isLauncherIntent(launcher().putExtra("page", null as String?)))
+        assertFalse(LynkCoLinkActivity.isLauncherIntent(launcher().putExtra("page", 123)))
+        assertFalse(LynkCoLinkActivity.isLauncherIntent(Intent(Intent.ACTION_MAIN)))
+        assertFalse(LynkCoLinkActivity.isLauncherIntent(Intent().putExtra("page", "connection")))
     }
 
     @Test fun freshLauncherReturnsToTheExistingHostWithoutStoppingTheSession() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java, launcher()).create()
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java, launcher()).create()
         val activity = controller!!.get()
         assertTrue(activity.isFinishing)
         assertEquals(CarPlayHostActivity::class.java.name,
@@ -75,7 +75,7 @@ class LauncherIntentTest {
     }
 
     @Test fun launcherDeliveredToExistingSettingsOpensProjectionAndClearsReturnNavigation() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java,
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java,
             Intent().putExtra("page", "settings")).create()
         val activity = controller!!.get()
         ReflectionHelpers.setField(activity, "connectionSettingsReturnCategory", SettingsCategory.ADVANCED)
@@ -93,7 +93,7 @@ class LauncherIntentTest {
     }
 
     @Test fun recreationRetainsSettingsInsteadOfRedirectingToProjection() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java, launcher())
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java, launcher())
             .create(Bundle().apply { putString("page", "settings") })
         val activity = controller!!.get()
         assertFalse(activity.isFinishing)
@@ -103,7 +103,7 @@ class LauncherIntentTest {
     }
 
     @Test fun bootStartReturnsToTheBackgroundSessionWithoutStoppingIt() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java, bootLaunch()).create()
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java, bootLaunch()).create()
         val activity = controller!!.get()
         assertEquals(CarPlayHostActivity::class.java.name,
             shadowOf(activity).nextStartedActivity?.component?.className)
@@ -113,7 +113,7 @@ class LauncherIntentTest {
     }
 
     @Test fun bootStartDeliveredToAnOpenHomeReturnsToTheBackgroundSession() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java, Intent()).create()
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java, Intent()).create()
         val activity = controller!!.get()
         controller!!.newIntent(bootLaunch())
         assertEquals(CarPlayHostActivity::class.java.name,
@@ -125,12 +125,12 @@ class LauncherIntentTest {
     @Test fun bootStartWithoutASessionStaysOnHomeAndAutoConnectsOnlyWhenOn() {
         CarPlayBackgroundSession.clear()
         val app = RuntimeEnvironment.getApplication()
-        OSNPlayPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
+        LynkCoLinkPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
         AirPlayPersistence.saveWirelessHotspotMode(app, WirelessHotspotMode.WIFI_P2P)
         app.getSharedPreferences("osnplay", 0).edit().putBoolean("notification_asked", true).commit()
         for (autoConnect in listOf(false, true)) {
-            OSNPlayPreferences.saveAutoConnect(app, autoConnect)
-            val home = Robolectric.buildActivity(OSNPlayActivity::class.java, bootLaunch()).create()
+            LynkCoLinkPreferences.saveAutoConnect(app, autoConnect)
+            val home = Robolectric.buildActivity(LynkCoLinkActivity::class.java, bootLaunch()).create()
             val activity = home.get()
             // Source-only test builds have no authentication assets; exercise the startup decision.
             ReflectionHelpers.setField(activity, "setupError", null)

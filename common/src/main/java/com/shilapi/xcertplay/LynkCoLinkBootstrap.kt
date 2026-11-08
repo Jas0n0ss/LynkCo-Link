@@ -8,7 +8,7 @@ import java.io.File
 import java.security.MessageDigest
 
 /** Installs the private beta's experimental identity. It has no remote fallback. */
-internal object OSNPlayBootstrap {
+internal object LynkCoLinkBootstrap {
     @Volatile private var ready = false
 
     @Synchronized fun ensure(context: Context, mfiTarget: MfiTarget) {
@@ -62,7 +62,7 @@ internal enum class DefaultConnectionMode(val key: String) {
     }
 }
 
-internal object OSNPlayPreferences {
+internal object LynkCoLinkPreferences {
     private fun prefs(context: Context) = context.getSharedPreferences("osnplay", Context.MODE_PRIVATE)
     fun phoneAddress(context: Context): String? = prefs(context).getString("phone_address", null)
     fun phoneName(context: Context): String = prefs(context).getString("phone_name", null) ?: "Your iPhone"

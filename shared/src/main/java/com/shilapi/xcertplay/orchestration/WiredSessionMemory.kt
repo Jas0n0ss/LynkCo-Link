@@ -1,9 +1,9 @@
 package com.shilapi.xcertplay.orchestration
 
 /**
- * The USB enumeration (device node) of the iPhone on which OSNPlay last started a wired CarPlay session.
+ * The USB enumeration (device node) of the iPhone on which LynkCoLink last started a wired CarPlay session.
  *
- * After OSNPlay ends that session itself, as Save and reconnect does, the iPhone stays in CarPlay mode on the
+ * After LynkCoLink ends that session itself, as Save and reconnect does, the iPhone stays in CarPlay mode on the
  * same node. A new session there passes iAP2 and StartSession, but the iPhone opens no AirPlay connection
  * until it resets USB 30–150 s later; a fresh CarPlay mode request instead connected within seconds (#335).
  * The node changes whenever the iPhone re-enumerates, so a match means it is still in that session's mode.

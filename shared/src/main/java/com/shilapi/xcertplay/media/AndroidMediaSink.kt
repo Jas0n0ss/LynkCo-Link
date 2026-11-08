@@ -166,7 +166,7 @@ internal class AudioFocusCoordinator(
     }
 
     private companion object {
-        const val TAG = "OSNPlay-AudioFocus"
+        const val TAG = "LynkCoLink-AudioFocus"
         const val FULL_VOLUME = 1f
         const val DUCKED_VOLUME = 0.2f
     }
@@ -637,9 +637,9 @@ class AndroidMediaSink(
             // would let a failing callback be caught as a failed restore.
             val line = try {
                 // AudioService keeps one mode request per process and uses the newest. Setting back the mode found
-                // at the start would keep OSNPlay asking for it after the process that set it, such as the Telecom
+                // at the start would keep LynkCoLink asking for it after the process that set it, such as the Telecom
                 // call for the car's phone audio, lets go, and the head unit stays in the voice path (#987).
-                // MODE_NORMAL withdraws OSNPlay's request: the mode returns to another process's, or to normal.
+                // MODE_NORMAL withdraws LynkCoLink's request: the mode returns to another process's, or to normal.
                 manager.mode = AudioManager.MODE_NORMAL
                 Log.i("xcertplay-usb", "audio mode restored to ${manager.mode}")
                 "Audio: mode restored requested=${AudioManager.MODE_NORMAL} now=${manager.mode} stream=$active"
@@ -2684,7 +2684,7 @@ private class AudioRenderer(
         // Holds a burst after a Wi-Fi gap (~4 s of AAC) instead of dropping it.
         const val MAX_QUEUED_PACKETS = 192
         const val PREBUFFER_WRITE_CHUNK_BYTES = 2 * 1024
-        const val STATS_TAG = "OSNPlay-AudioStats"
+        const val STATS_TAG = "LynkCoLink-AudioStats"
         const val STATS_WINDOW_NS = 5_000_000_000L
         const val DECODED_BUFFER_LOG_INTERVAL = 50
         const val MAX_REBUFFER_REPORTS = 5

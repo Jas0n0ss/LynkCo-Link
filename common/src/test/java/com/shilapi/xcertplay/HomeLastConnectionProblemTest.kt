@@ -26,7 +26,7 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [29], qualifiers = "en-w1000dp-h700dp-land", shadows = [CarHotspotOffConnectTest.HotspotState::class])
 class HomeLastConnectionProblemTest {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private val opened = mutableListOf<OSNPlayActivity>()
+    private val opened = mutableListOf<LynkCoLinkActivity>()
 
     @Before fun setUp() {
         clearSettings()
@@ -54,10 +54,10 @@ class HomeLastConnectionProblemTest {
     private fun fail(cause: ConnectionFailureCause) = LastConnectionProblem.follow(context,
         CarPlayStatus.Failed("failed", startupFailure = WirelessStartupFailure.HOTSPOT_CONFIGURATION, knownCause = cause))
 
-    private fun openHome(): OSNPlayActivity = Robolectric.buildActivity(OSNPlayActivity::class.java,
-        Intent(context, OSNPlayActivity::class.java).putExtra("page", "home")).setup().get().also { opened += it }
+    private fun openHome(): LynkCoLinkActivity = Robolectric.buildActivity(LynkCoLinkActivity::class.java,
+        Intent(context, LynkCoLinkActivity::class.java).putExtra("page", "home")).setup().get().also { opened += it }
 
-    private fun shown(screen: OSNPlayActivity): List<String> =
+    private fun shown(screen: LynkCoLinkActivity): List<String> =
         descendants(screen.window.decorView).filterIsInstance<TextView>().filter { it.isShown }.map { it.text.toString() }.toList()
 
     private fun descendants(view: View): Sequence<View> = sequence {
@@ -65,10 +65,10 @@ class HomeLastConnectionProblemTest {
         if (view is ViewGroup) for (index in 0 until view.childCount) yieldAll(descendants(view.getChildAt(index)))
     }
 
-    private fun refresh(home: OSNPlayActivity) = ReflectionHelpers.callInstanceMethod<Unit>(home, "refreshStatus")
+    private fun refresh(home: LynkCoLinkActivity) = ReflectionHelpers.callInstanceMethod<Unit>(home, "refreshStatus")
 
     private fun reportLines(): List<String> {
-        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
         return (ReflectionHelpers.callInstanceMethod<String>(activity, "diagnosticReportText",
             ReflectionHelpers.ClassParameter.from(Context::class.java, context))).lines()
     }
@@ -78,14 +78,14 @@ class HomeLastConnectionProblemTest {
     @Test fun homeSaysWhatTheLastAttemptRanInto() {
         fail(ConnectionFailureCause.CHOSEN_IPHONE_NOT_PAIRED)
         val shown = shown(openHome())
-        val line = Regex("Last connection attempt \\($time\\): The iPhone chosen in OSNPlay is no longer paired with the car")
+        val line = Regex("Last connection attempt \\($time\\): The iPhone chosen in LynkCo-Link is no longer paired with the car")
         assertEquals(shown.toString(), 1, shown.count(line::matches))
     }
 
     @Test @Config(qualifiers = "zh-rTW-w1000dp-h700dp-land") fun homeSaysItInTraditionalChinese() {
         fail(ConnectionFailureCause.CHOSEN_IPHONE_NOT_PAIRED)
         val shown = shown(openHome())
-        val line = Regex("上次連線嘗試（$time）：在 OSNPlay 選擇的 iPhone 已不再與車機配對")
+        val line = Regex("上次連線嘗試（$time）：在 LynkCo-Link 選擇的 iPhone 已不再與車機配對")
         assertEquals(shown.toString(), 1, shown.count(line::matches))
     }
 
@@ -120,7 +120,7 @@ class HomeLastConnectionProblemTest {
     @Test @Config(qualifiers = "zh-rTW") fun theReportSaysTheLastProblemInEnglishOnItsSecondLine() {
         fail(ConnectionFailureCause.CAR_HOTSPOT_OFF)
         val lines = reportLines()
-        assertTrue(lines[0], lines[0].startsWith("OSNPlay ") && lines[0].endsWith(" · diagnostic report"))
+        assertTrue(lines[0], lines[0].startsWith("LynkCo-Link ") && lines[0].endsWith(" · diagnostic report"))
         assertTrue(lines[1], lines[1].matches(Regex(
             "Last problem: Car hotspot is off \\(cause:CAR_HOTSPOT_OFF\\) at \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} [+-]\\d{4}")))
         assertTrue(lines[2], lines[2].startsWith("Android "))

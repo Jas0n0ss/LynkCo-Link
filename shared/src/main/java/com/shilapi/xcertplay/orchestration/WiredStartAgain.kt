@@ -3,10 +3,10 @@ package com.shilapi.xcertplay.orchestration
 import com.shilapi.xcertplay.transport.Iap2WiredControlClient.StartAgain
 
 /**
- * Whether OSNPlay sends `carplay-start-session` again on USB.
+ * Whether LynkCoLink sends `carplay-start-session` again on USB.
  *
- * The iPhone tries OSNPlay's AirPlay listener right after the request, for about 7 s, and does not try again on its
- * own. While it still holds the CarPlay session of a OSNPlay that ended without closing it (OSNPlay stopped or
+ * The iPhone tries LynkCoLink's AirPlay listener right after the request, for about 7 s, and does not try again on its
+ * own. While it still holds the CarPlay session of a LynkCoLink that ended without closing it (LynkCoLink stopped or
  * replaced while connected), it keeps the NCM link NAKed 15–26 s after the request: every SYN-ACK is dropped and
  * the attempt fails at [WiredStartWatchdog.TIMEOUT_MILLIS] (#889, #610). Once the link opens, a second request
  * makes it connect at once. A link that was open before the request let the iPhone's own attempt through, as on head

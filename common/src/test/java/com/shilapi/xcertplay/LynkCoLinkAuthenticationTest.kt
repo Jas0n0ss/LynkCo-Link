@@ -22,25 +22,25 @@ import org.robolectric.annotation.LooperMode
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [29])
 @LooperMode(LooperMode.Mode.PAUSED)
-class OSNPlayAuthenticationTest {
+class LynkCoLinkAuthenticationTest {
     private val context get() = RuntimeEnvironment.getApplication()
     private val directory get() = File(context.noBackupFilesDir, "offline-mfi")
 
     @Before fun setUp() {
         // The JVM test host has no vehicle SOME/IP gateway.
         shadowOf(context).declareActionUnbindable("com.ts.car.someip.SomeIpServerService")
-        OSNPlayBootstrap::class.java.getDeclaredField("ready").apply { isAccessible = true }
+        LynkCoLinkBootstrap::class.java.getDeclaredField("ready").apply { isAccessible = true }
             .setBoolean(null, false)
     }
 
     @Test fun freshInstallStillDefaultsToLocalAuthentication() {
         assertEquals(MfiTarget.LOCAL, AirPlayPersistence.loadMfiTarget(context))
-        assertThrows(Exception::class.java) { OSNPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
+        assertThrows(Exception::class.java) { LynkCoLinkBootstrap.ensure(context, MfiTarget.LOCAL) }
     }
 
     @Test fun savedUsbChoiceSurvivesBootstrapWithoutLocalAssets() {
         AirPlayPersistence.saveMfiTarget(context, MfiTarget.USB_CH341)
-        OSNPlayBootstrap.ensure(context, AirPlayPersistence.loadMfiTarget(context))
+        LynkCoLinkBootstrap.ensure(context, AirPlayPersistence.loadMfiTarget(context))
         assertEquals(MfiTarget.USB_CH341, AirPlayPersistence.loadMfiTarget(context))
         assertFalse(directory.exists())
         assertFalse(File(context.noBackupFilesDir, "offline-mfi-staging").exists())
@@ -49,15 +49,15 @@ class OSNPlayAuthenticationTest {
     @Test fun usbBootstrapDoesNotReadAnExistingBrokenLocalIdentity() {
         assertTrue(directory.mkdirs())
         File(directory, "identity.pk8").writeText("invalid local identity")
-        OSNPlayBootstrap.ensure(context, MfiTarget.USB_CH341)
+        LynkCoLinkBootstrap.ensure(context, MfiTarget.USB_CH341)
         assertEquals("invalid local identity", File(directory, "identity.pk8").readText())
         assertFalse(File(directory, "certificate.p7b").exists())
-        assertThrows(Exception::class.java) { OSNPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
+        assertThrows(Exception::class.java) { LynkCoLinkBootstrap.ensure(context, MfiTarget.LOCAL) }
     }
 
     @Test fun switchingFromUsbToLocalStillRequiresLocalIdentity() {
-        OSNPlayBootstrap.ensure(context, MfiTarget.USB_CH341)
-        assertThrows(Exception::class.java) { OSNPlayBootstrap.ensure(context, MfiTarget.LOCAL) }
+        LynkCoLinkBootstrap.ensure(context, MfiTarget.USB_CH341)
+        assertThrows(Exception::class.java) { LynkCoLinkBootstrap.ensure(context, MfiTarget.LOCAL) }
     }
 
     @Test fun usbControllerWaitsForHardwareWithoutLocalAssets() {

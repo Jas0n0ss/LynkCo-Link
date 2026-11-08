@@ -14,9 +14,9 @@ import android.util.Log
 class PhoneBluetoothReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != BluetoothDevice.ACTION_ACL_CONNECTED ||
-            !OSNPlayPreferences.connectOnPhoneBluetooth(context) ||
+            !LynkCoLinkPreferences.connectOnPhoneBluetooth(context) ||
             CarPlayBackgroundSession.hasSession()) return
-        val selected = OSNPlayPreferences.phoneAddress(context) ?: return
+        val selected = LynkCoLinkPreferences.phoneAddress(context) ?: return
         if (Build.VERSION.SDK_INT >= 31 &&
             context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) return
         val device = if (Build.VERSION.SDK_INT >= 33) {
@@ -36,7 +36,7 @@ class PhoneBluetoothReceiver : BroadcastReceiver() {
         if (prefs.contains("last_launch_elapsed") && now >= previous && now - previous < 15_000) return
         prefs.edit().putLong("last_launch_elapsed", now).commit()
         PhoneWakeDiagnostics.record(context, "matched")
-        val launch = Intent(context, OSNPlayActivity::class.java).apply {
+        val launch = Intent(context, LynkCoLinkActivity::class.java).apply {
             putExtra(EXTRA_AUTO_CONNECT, launchToken)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
@@ -44,14 +44,14 @@ class PhoneBluetoothReceiver : BroadcastReceiver() {
             .onSuccess { PhoneWakeDiagnostics.record(context, "startActivity-returned") }
             .onFailure { error ->
                 PhoneWakeDiagnostics.record(context, "failed", error)
-                Log.w("OSNPlayPhoneWake", "Bluetooth wake launch failed: ${error.javaClass.simpleName}")
+                Log.w("LynkCoLinkPhoneWake", "Bluetooth wake launch failed: ${error.javaClass.simpleName}")
             }
     }
 
     companion object {
-        const val EXTRA_AUTO_CONNECT = "com.osnplay.AUTO_CONNECT_SELECTED_PHONE"
+        const val EXTRA_AUTO_CONNECT = "com.lynkco.link.AUTO_CONNECT_SELECTED_PHONE"
 
-        /** OSNPlayActivity is exported. Only this process knows the token, so only its own launch can connect. */
+        /** LynkCoLinkActivity is exported. Only this process knows the token, so only its own launch can connect. */
         internal val launchToken: String = java.util.UUID.randomUUID().toString()
     }
 }
@@ -74,6 +74,6 @@ internal object PhoneWakeDiagnostics {
         return if (at == 0L) "Phone Bluetooth wake: no matching event recorded"
         else "Phone Bluetooth wake: matchedAtEpochMs=$at result=${prefs.getString("result", "unknown")} " +
             "failureClass=${prefs.getString("failureClass", "none")}; " +
-            "startActivity-returned does not prove the car displayed OSNPlay."
+            "startActivity-returned does not prove the car displayed LynkCoLink."
     }
 }

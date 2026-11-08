@@ -10,15 +10,15 @@ import android.graphics.drawable.StateListDrawable
 import android.widget.Button
 import androidx.core.graphics.ColorUtils
 
-internal enum class OSNPlayButtonKind { PRIMARY, SECONDARY, DANGER, TONAL_DANGER }
+internal enum class LynkCoLinkButtonKind { PRIMARY, SECONDARY, DANGER, TONAL_DANGER }
 
 /**
- * Button for views built in code outside `OSNPlayActivity`, whose own `button()` stays private.
- * The corner radius follows the control height, as in `OSNPlayActivity.buttonShape`.
+ * Button for views built in code outside `LynkCoLinkActivity`, whose own `button()` stays private.
+ * The corner radius follows the control height, as in `LynkCoLinkActivity.buttonShape`.
  */
-internal class OSNPlayButton(context: Context) : Button(context) {
-    private var kind = OSNPlayButtonKind.SECONDARY
-    private var palette: OSNPlayPalette? = null
+internal class LynkCoLinkButton(context: Context) : Button(context) {
+    private var kind = LynkCoLinkButtonKind.SECONDARY
+    private var palette: LynkCoLinkPalette? = null
     private var overlay = false
 
     init {
@@ -28,7 +28,7 @@ internal class OSNPlayButton(context: Context) : Button(context) {
     }
 
     /** [overlay] picks the in-car menu colours instead of the app chrome colours. */
-    fun style(kind: OSNPlayButtonKind, palette: OSNPlayPalette, overlay: Boolean) {
+    fun style(kind: LynkCoLinkButtonKind, palette: LynkCoLinkPalette, overlay: Boolean) {
         this.kind = kind
         this.palette = palette
         this.overlay = overlay
@@ -47,22 +47,22 @@ internal class OSNPlayButton(context: Context) : Button(context) {
         val text: Int
         val stroke: Int
         when (kind) {
-            OSNPlayButtonKind.PRIMARY -> {
+            LynkCoLinkButtonKind.PRIMARY -> {
                 fill = if (overlay) palette.overlayAccent else palette.accent
                 text = if (overlay) palette.overlayOnAccent else palette.onAccent
                 stroke = fill
             }
-            OSNPlayButtonKind.SECONDARY -> {
+            LynkCoLinkButtonKind.SECONDARY -> {
                 fill = if (overlay) palette.overlayTrackOff else palette.button
                 text = if (overlay) palette.overlayPrimaryText else palette.primaryText
                 stroke = if (overlay) fill else palette.outline
             }
-            OSNPlayButtonKind.DANGER -> {
+            LynkCoLinkButtonKind.DANGER -> {
                 fill = palette.overlayDanger
                 text = Color.WHITE
                 stroke = fill
             }
-            OSNPlayButtonKind.TONAL_DANGER -> {
+            LynkCoLinkButtonKind.TONAL_DANGER -> {
                 val surface = if (overlay) palette.overlayBackground else palette.surface
                 fill = ColorUtils.blendARGB(surface, palette.overlayDanger, 0.16f)
                 text = if (ColorUtils.calculateLuminance(surface) < 0.5)

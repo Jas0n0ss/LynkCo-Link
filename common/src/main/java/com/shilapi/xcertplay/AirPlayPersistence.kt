@@ -90,7 +90,7 @@ object AirPlayPersistence {
     private const val KEY_CLUSTER_MAP = "cluster_map_enabled"
 
     /**
-     * The Geely cluster projection switch is OSNPlay's right now. The switch belongs to the head unit
+     * The Geely cluster projection switch is LynkCoLink's right now. The switch belongs to the head unit
      * and carries no owner, and the process can be killed without running `onStop`, so the claim is
      * kept on disk and handed back by the next run ([GeelyClusterProjection.releaseStale]).
      */
@@ -139,8 +139,8 @@ object AirPlayPersistence {
     private const val SAFE_AREA_KEY_PREFIX = "safe_area_"
     private const val CUSTOM_ICON_FILE = "airplay-icon.png"
 
-    const val DEFAULT_MANUFACTURER = "OSNPlay"
-    const val DEFAULT_MODEL = "OSNPlay"
+    const val DEFAULT_MANUFACTURER = "LynkCo-Link"
+    const val DEFAULT_MODEL = "LynkCo-Link"
     const val DEFAULT_OEM_LABEL = "Lynk & Co"
     const val DEFAULT_MFI_I2C_PATH = "/dev/i2c-1"
 
@@ -275,7 +275,7 @@ object AirPlayPersistence {
             .apply()
     }
 
-    /** Opt-out for head units that route physical volume buttons to OSNPlay's focus owner. */
+    /** Opt-out for head units that route physical volume buttons to LynkCoLink's focus owner. */
     fun loadDisableMediaKeyAudioFocus(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .getBoolean(KEY_DISABLE_MEDIA_KEY_AUDIO_FOCUS, false)
@@ -777,7 +777,7 @@ object AirPlayPersistence {
         }
     }
 
-    /** OSNPlay's own experimental echo canceller on CarPlay call audio; opt-in, applies at reconnect. */
+    /** LynkCoLink's own experimental echo canceller on CarPlay call audio; opt-in, applies at reconnect. */
     fun loadCallEchoCancellation(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_CALL_ECHO_CANCELLATION, false)
 
@@ -881,7 +881,7 @@ object AirPlayPersistence {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_CLUSTER_PROJECTION_HELD, held).apply()
     }
 
-    /** The dashboard map as a card on the centre screen while OSNPlay is in the background. */
+    /** The dashboard map as a card on the centre screen while LynkCoLink is in the background. */
     fun loadCenterMapOverlay(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_CENTER_MAP_OVERLAY, false)
 
@@ -1388,7 +1388,7 @@ object AirPlayPersistence {
             .apply()
     }
 
-    /** Opens CarPlay in OSNPlay's own task, for launchers that show that task in a card (#463). */
+    /** Opens CarPlay in LynkCoLink's own task, for launchers that show that task in a card (#463). */
     fun loadCarPlaySameTask(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .getBoolean(KEY_CARPLAY_SAME_TASK, false)

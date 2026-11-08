@@ -69,8 +69,8 @@ class UpdateAvailabilityTest {
 
     private fun release(tag: String) = UpdateRelease(
         tagName = tag,
-        apkName = "OSNPlay-$tag.apk",
-        apkUrl = "https://example.com/OSNPlay-$tag.apk",
+        apkName = "LynkCoLink-$tag.apk",
+        apkUrl = "https://example.com/LynkCoLink-$tag.apk",
         checksumsUrl = "https://example.com/SHA256SUMS.txt",
     )
 }

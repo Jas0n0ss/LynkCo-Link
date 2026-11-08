@@ -329,15 +329,15 @@ core/vehicle/
 ```text
 package: com.kugou.android.auto
 versionCode: 201
-versionName: 0.2.1-lynk
-launchable-activity: com.shilapi.xcertplay.OSNPlayActivity
+versionName: 0.3.0-lynk
+launchable-activity: com.shilapi.xcertplay.LynkCoLinkActivity
 ```
 
-![API 28 启动](assets/emulator-api28-osnplay-1920x1080.png)
+![API 28 启动](assets/emulator-api28-lynkco-link-1920x1080.png)
 
 1920×720：
 
-![1920x720](assets/emulator-api33-osnplay-1920x720.png)
+![1920x720](assets/emulator-api33-lynkco-link-1920x720.png)
 
 Mock Compose 面板：
 

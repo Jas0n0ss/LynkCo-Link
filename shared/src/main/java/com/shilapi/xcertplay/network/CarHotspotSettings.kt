@@ -26,7 +26,7 @@ object CarHotspotSettings {
 
     /**
      * Set when the driver connects although Android reports the car hotspot off. Some firmware reports it off
-     * while the car's own hotspot is on (Geely Galaxy E8, #604), and OSNPlay then refused every connection.
+     * while the car's own hotspot is on (Geely Galaxy E8, #604), and LynkCoLink then refused every connection.
      */
     fun offReportIgnored(context: Context): Boolean = prefs(context).getBoolean("ignore_off_report", false)
 

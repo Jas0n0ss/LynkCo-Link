@@ -5,12 +5,12 @@ import org.junit.Test
 
 class P2pOwnershipTest {
     @Test fun reinstallWithoutPreferencesCanReclaimOnlyItsOwnNamespace() {
-        val prefix = P2pOwnership.prefix("com.osnplay", "device-user-signing-key-id")
+        val prefix = P2pOwnership.prefix("com.lynkco.link", "device-user-signing-key-id")
         val ssid = prefix + "aB23"
         assertTrue(P2pOwnership.canReclaim(true, ssid, null, prefix))
         assertFalse(P2pOwnership.canReclaim(false, ssid, null, prefix))
         assertFalse(P2pOwnership.canReclaim(true, ssid, null, P2pOwnership.prefix("other.app", "device-user-signing-key-id")))
-        assertFalse(P2pOwnership.canReclaim(true, ssid, null, P2pOwnership.prefix("com.osnplay", "other-device")))
+        assertFalse(P2pOwnership.canReclaim(true, ssid, null, P2pOwnership.prefix("com.lynkco.link", "other-device")))
         assertTrue(ssid.length <= 32)
     }
 

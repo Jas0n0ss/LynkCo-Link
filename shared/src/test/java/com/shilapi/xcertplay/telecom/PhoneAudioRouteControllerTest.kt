@@ -132,10 +132,10 @@ class PhoneAudioRouteControllerTest {
         val route = controller()
         route.setWanted(PhoneAudioReason.VOIP_APP, true)
         assertEquals(1, backend.starts)
-        assertFalse("OSNPlay's own canceller stays in charge of CarPlay calls", route.carPlayCallsUseCarAudio())
+        assertFalse("LynkCoLink's own canceller stays in charge of CarPlay calls", route.carPlayCallsUseCarAudio())
     }
 
-    @Test fun aRefusedCallLeavesCarPlayCallsToOSNPlaysOwnCancellerForAWhile() {
+    @Test fun aRefusedCallLeavesCarPlayCallsToLynkCoLinksOwnCancellerForAWhile() {
         backend.accept = false
         val route = controller()
         assertTrue(route.carPlayCallsUseCarAudio())

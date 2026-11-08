@@ -467,7 +467,7 @@ class CarPlayHostSettingsTest {
         assertSame(controller, field("controller"))
         assertEquals(0, field("restartGeneration"))
         val intent = shadowOf(activity).nextStartedActivity
-        assertEquals(OSNPlayActivity::class.java.name, intent.component!!.className)
+        assertEquals(LynkCoLinkActivity::class.java.name, intent.component!!.className)
         assertEquals("settings", intent.getStringExtra("page"))
     }
 
@@ -477,7 +477,7 @@ class CarPlayHostSettingsTest {
         fullSettingsButton().performClick()
         assertNull(ShadowAlertDialog.getLatestAlertDialog())
         assertFalse(field("menuOpen") as Boolean)
-        assertEquals(OSNPlayActivity::class.java.name,
+        assertEquals(LynkCoLinkActivity::class.java.name,
             shadowOf(activity).nextStartedActivity.component!!.className)
     }
 
@@ -623,7 +623,7 @@ class CarPlayHostSettingsTest {
         )
         val heading = views(menu()).filterIsInstance<TextView>()
             .first { it.text == activity.getString(R.string.carplay_settings) }
-        assertEquals(OSNPlayPalette.LIGHT.overlayPrimaryText, heading.currentTextColor)
+        assertEquals(LynkCoLinkPalette.LIGHT.overlayPrimaryText, heading.currentTextColor)
     }
 
     @Test fun savingPersistsSettingsAndRestartsOnce() {
@@ -696,7 +696,7 @@ class CarPlayHostSettingsTest {
         assertEquals(0, field("restartGeneration"))
     }
 
-    // Galaxy Note20 in portrait: the menu said "1080 x 2249 -> 1080 x 2250" while OSNPlay asked for 1080x2248.
+    // Galaxy Note20 in portrait: the menu said "1080 x 2249 -> 1080 x 2250" while LynkCoLink asked for 1080x2248.
     @Test fun theDisplaySummaryNamesTheSizeThatIsRequested() {
         setField("activeDisplaySize", displaySize(1080, 2249))
         invoke("openSettingsMenu")
@@ -1078,7 +1078,7 @@ class CarPlayHostSettingsTest {
         val close = views(panel).filterIsInstance<Button>()
             .first { it.text == activity.getString(R.string.close) }
         assertTrue(close.width >= close.height)
-        val destination = System.getenv("OSNPLAY_SCREENSHOT_DIR") ?: return
+        val destination = System.getenv("LYNKCO_LINK_SCREENSHOT_DIR") ?: return
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         root.draw(Canvas(bitmap))
         val file = File(destination, name)

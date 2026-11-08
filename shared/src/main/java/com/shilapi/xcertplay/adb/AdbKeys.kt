@@ -16,7 +16,7 @@ import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 
-/** OSNPlay's own ADB key: adbd remembers it after the driver approves it once. */
+/** LynkCoLink's own ADB key: adbd remembers it after the driver approves it once. */
 object AdbKeys {
     private const val DIR = "adb"
     private const val PRIVATE = "adbkey.private"

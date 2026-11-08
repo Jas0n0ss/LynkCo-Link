@@ -2,8 +2,8 @@ package com.shilapi.xcertplay
 
 import android.graphics.Color
 
-/** Semantic colors for OSNPlay-owned chrome. Media canvases and cluster-specific palettes stay separate. */
-internal data class OSNPlayPalette(
+/** Semantic colors for LynkCoLink-owned chrome. Media canvases and cluster-specific palettes stay separate. */
+internal data class LynkCoLinkPalette(
     val background: Int,
     val surface: Int,
     val button: Int,
@@ -33,9 +33,9 @@ internal data class OSNPlayPalette(
     val overlayDanger: Int,
 ) {
     companion object {
-        fun of(night: Boolean): OSNPlayPalette = if (night) DARK else LIGHT
+        fun of(night: Boolean): LynkCoLinkPalette = if (night) DARK else LIGHT
 
-        val DARK = OSNPlayPalette(
+        val DARK = LynkCoLinkPalette(
             background = Color.rgb(12, 17, 27),
             surface = Color.rgb(21, 30, 44),
             button = Color.rgb(31, 43, 61),
@@ -65,7 +65,7 @@ internal data class OSNPlayPalette(
             overlayDanger = Color.rgb(190, 45, 45),
         )
 
-        val LIGHT = OSNPlayPalette(
+        val LIGHT = LynkCoLinkPalette(
             background = Color.rgb(233, 238, 246),
             surface = Color.rgb(248, 250, 253),
             button = Color.rgb(220, 229, 241),

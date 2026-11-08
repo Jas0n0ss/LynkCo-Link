@@ -14,7 +14,7 @@ import android.os.IBinder
 import com.shilapi.xcertplay.host.R
 
 /** Keeps an explicitly started connection alive when another car app is in the foreground. */
-class OSNPlaySessionService : Service() {
+class LynkCoLinkSessionService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP) {
@@ -32,10 +32,10 @@ class OSNPlaySessionService : Service() {
             Notification.Builder(this).setPriority(Notification.PRIORITY_LOW)
         }
         val open = PendingIntent.getActivity(this, 0, CarPlayScreen.intent(this), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val stop = PendingIntent.getService(this, 1, Intent(this, OSNPlaySessionService::class.java).setAction(ACTION_STOP), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val stop = PendingIntent.getService(this, 1, Intent(this, LynkCoLinkSessionService::class.java).setAction(ACTION_STOP), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val notification = builder
             .setSmallIcon(R.drawable.ic_osnplay_notification)
-            .setContentTitle("OSNPlay")
+            .setContentTitle("LynkCoLink")
             .setContentText("CarPlay connection running")
             .setContentIntent(open).setOngoing(true)
             .addAction(Notification.Action.Builder(null, "Disconnect", stop).build()).build()
@@ -45,7 +45,7 @@ class OSNPlaySessionService : Service() {
                 types = types or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
             }
             // Without it Android stops location updates while another car app (the reversing camera,
-            // the car's own map) covers CarPlay, and the iPhone gets no position until OSNPlay is back.
+            // the car's own map) covers CarPlay, and the iPhone gets no position until LynkCoLink is back.
             if (AirPlayPersistence.loadLocationReportingEnabled(this) &&
                 checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 types = types or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
@@ -60,7 +60,7 @@ class OSNPlaySessionService : Service() {
         stopSelf()
     }
     companion object {
-        const val ACTION_STOP = "com.osnplay.DISCONNECT"
+        const val ACTION_STOP = "com.lynkco.link.DISCONNECT"
         // Widened from private so the head-unit diagnostic can report the same channel the session uses.
         const val CHANNEL = "osnplay_connection"
     }

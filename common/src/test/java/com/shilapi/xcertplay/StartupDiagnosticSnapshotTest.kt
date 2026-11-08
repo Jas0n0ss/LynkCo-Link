@@ -38,7 +38,7 @@ class StartupDiagnosticSnapshotTest {
             override fun startActivity(intent: Intent) { launch = intent }
         }
         BootReceiver().onReceive(context, Intent(Intent.ACTION_BOOT_COMPLETED))
-        assertEquals(OSNPlayActivity::class.java.name, launch!!.component!!.className)
+        assertEquals(LynkCoLinkActivity::class.java.name, launch!!.component!!.className)
         assertTrue(launch!!.flags and Intent.FLAG_ACTIVITY_NEW_TASK != 0)
         assertTrue(StartupDiagnosticSnapshot.report(app).contains("launchResult=startActivity-returned"))
     }

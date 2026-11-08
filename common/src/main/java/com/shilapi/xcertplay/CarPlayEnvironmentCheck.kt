@@ -110,7 +110,7 @@ internal object CarPlayEnvironmentCheck {
             bluetoothPermission = btPermission,
             bluetoothEnabled = if (btPermission) read("bluetooth_enabled") { adapter?.isEnabled } else null,
             phonePaired = if (btPermission) read("phone_pairing") {
-                val selected = OSNPlayPreferences.phoneAddress(app)
+                val selected = LynkCoLinkPreferences.phoneAddress(app)
                 selected != null && adapter?.bondedDevices?.any { it.address == selected } == true
             } else null,
             locationPermission = granted(Manifest.permission.ACCESS_FINE_LOCATION) && granted(Manifest.permission.ACCESS_COARSE_LOCATION),

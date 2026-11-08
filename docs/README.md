@@ -1,4 +1,4 @@
-# OSNPlay 文档
+# LynkCo-Link 文档
 
 面向使用者和贡献者的文档索引。所有路径相对于仓库根目录。
 
@@ -30,7 +30,7 @@
 
 ## 参考
 
-以下材料来自同平台兄弟项目 LynkCo-DiPlay，保留原文用于追溯实车证据；其中的包名、构建任务和路径描述的是该 fork，不是 OSNPlay 的当前实现。
+以下材料来自同平台兄弟项目 LynkCo-DiPlay，保留原文用于追溯实车证据；其中的包名、构建任务和路径描述的是该 fork，不是 LynkCo-Link 的当前实现。
 
 - [LYNK_OS_N.md](reference/LYNK_OS_N.md)：2023 款领克 03 / OS N 2.0 的适配与实车记录（test1–test25）。
 - [RELEASE-NOTES-LYNK-R1.md](reference/RELEASE-NOTES-LYNK-R1.md)：LynkCo-DiPlay R1 的发布说明和已知边界。

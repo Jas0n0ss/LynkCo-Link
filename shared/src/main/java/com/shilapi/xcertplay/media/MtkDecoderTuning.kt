@@ -59,7 +59,7 @@ object MtkDecoderTuning {
     fun legacyAcodecDecoderName(mime: String): String? = candidates(mime)
         .firstOrNull()?.name?.takeIf(::supportsLegacyAcodecKeys)
 
-    // The codec list does not change while OSNPlay runs, and Settings asks on every render.
+    // The codec list does not change while LynkCoLink runs, and Settings asks on every render.
     private val candidatesByMime = java.util.concurrent.ConcurrentHashMap<String, List<MtkDecoderCandidate>>()
 
     private fun candidates(mime: String): List<MtkDecoderCandidate> =

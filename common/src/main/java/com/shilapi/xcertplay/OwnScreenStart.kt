@@ -5,15 +5,15 @@ import android.content.Intent
 import android.util.Log
 
 /**
- * Opens one of OSNPlay's own screens from [Activity.startActivity] without letting a refusal close OSNPlay.
+ * Opens one of LynkCoLink's own screens from [Activity.startActivity] without letting a refusal close LynkCoLink.
  *
  * Inside head unit's DiYou launcher card (OSN 5, #463) Android refused such a start with IllegalArgumentException
  * "There is no running activity in rootTask" for the CarPlay screen's own task (taskAffinity `.carplay`, since
- * 0.2.12), and the uncaught exception closed OSNPlay every time it opened in the card. The start is retried once
- * from the application context in a task of its own; a second refusal is logged and OSNPlay stays open.
+ * 0.2.12), and the uncaught exception closed LynkCoLink every time it opened in the card. The start is retried once
+ * from the application context in a task of its own; a second refusal is logged and LynkCoLink stays open.
  */
 internal object OwnScreenStart {
-    private const val TAG = "OSNPlay"
+    private const val TAG = "LynkCoLink"
 
     fun start(activity: Activity, intent: Intent, log: (String) -> Unit = { Log.w(TAG, it) }): Boolean {
         val screen = intent.component?.className?.substringAfterLast('.') ?: "screen"

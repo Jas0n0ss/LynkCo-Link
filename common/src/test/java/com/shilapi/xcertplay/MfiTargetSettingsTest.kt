@@ -28,12 +28,12 @@ import org.robolectric.util.ReflectionHelpers
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28, 33], qualifiers = "en", manifest = Config.NONE)
 class MfiTargetSettingsTest {
-    private lateinit var controller: ActivityController<OSNPlayActivity>
-    private lateinit var activity: OSNPlayActivity
+    private lateinit var controller: ActivityController<LynkCoLinkActivity>
+    private lateinit var activity: LynkCoLinkActivity
     private lateinit var page: LinearLayout
 
     @Before fun setUp() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java)
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java)
         activity = controller.get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         activity.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()

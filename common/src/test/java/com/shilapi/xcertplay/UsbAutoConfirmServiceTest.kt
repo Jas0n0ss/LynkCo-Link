@@ -63,24 +63,24 @@ class UsbAutoConfirmServiceTest {
         assertFalse(UsbAutoConfirmService.isSystemUsbWindow("evil.app", "android.app.Dialog"))
     }
 
-    @Test fun otherSystemDialogsNamingOSNPlayAreLeftAlone() {
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("Start recording or casting with OSNPlay?", "OSNPlay"))
+    @Test fun otherSystemDialogsNamingLynkCoLinkAreLeftAlone() {
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("Start recording or casting with LynkCoLink?", "LynkCoLink"))
         assertFalse(UsbAutoConfirmService.isTargetPrompt(
-            "OSNPlay will have access to all of the information that is visible on your screen", "OSNPlay",
+            "LynkCoLink will have access to all of the information that is visible on your screen", "LynkCoLink",
         ))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("要开始使用OSNPlay录制或投放内容吗？", "OSNPlay"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("要开始使用LynkCoLink录制或投放内容吗？", "LynkCoLink"))
     }
 
-    @Test fun promptMustNameOSNPlayInEveryAndroidWording() {
+    @Test fun promptMustNameLynkCoLinkInEveryAndroidWording() {
         // Android 7.1 and 10+ wording, in English and Chinese (#409, #521).
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow the app OSNPlay to access the USB device?", "OSNPlay"))
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("允许应用“OSNPlay”访问该USB设备吗？", "OSNPlay"))
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow OSNPlay to access iPhone?", "OSNPlay"))
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("要允许OSNPlay访问iPhone吗？", "OSNPlay"))
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("Always open OSNPlay when iPhone is connected", "OSNPlay"))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow CarPlay access to iPhone?", "OSNPlay"))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow FakeOSNPlay to access iPhone?", "OSNPlay"))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("要允许OSNPlayer访问iPhone吗？", "OSNPlay"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow the app LynkCoLink to access the USB device?", "LynkCoLink"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("允许应用“LynkCoLink”访问该USB设备吗？", "LynkCoLink"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow LynkCoLink to access iPhone?", "LynkCoLink"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("要允许LynkCoLink访问iPhone吗？", "LynkCoLink"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("Always open LynkCoLink when iPhone is connected", "LynkCoLink"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow CarPlay access to iPhone?", "LynkCoLink"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow FakeLynkCoLink to access iPhone?", "LynkCoLink"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("要允许LynkCoLinker访问iPhone吗？", "LynkCoLink"))
         assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow USB access?", ""))
     }
 

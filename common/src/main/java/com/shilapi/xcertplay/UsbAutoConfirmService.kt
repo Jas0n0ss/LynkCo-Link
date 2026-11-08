@@ -13,7 +13,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 
 /**
  * An accessibility service to automatically check "Always allow / Use by default"
- * and click "OK / Confirm" when the Android system USB permission dialog appears for OSNPlay.
+ * and click "OK / Confirm" when the Android system USB permission dialog appears for LynkCoLink.
  */
 class UsbAutoConfirmService : AccessibilityService() {
 
@@ -46,7 +46,7 @@ class UsbAutoConfirmService : AccessibilityService() {
             if (!isTargetPrompt(texts.joinToString(" "), appLabel)) {
                 if (ignoredWindowId != usbWindowId) {
                     ignoredWindowId = usbWindowId
-                    Log.i(TAG, "System dialog does not ask for OSNPlay USB access; left alone")
+                    Log.i(TAG, "System dialog does not ask for LynkCoLink USB access; left alone")
                 }
                 return
             }
@@ -64,7 +64,7 @@ class UsbAutoConfirmService : AccessibilityService() {
             }
             if (confirmed) {
                 lastClickTime = now
-                Log.i(TAG, "Successfully auto-confirmed OSNPlay USB permission dialog")
+                Log.i(TAG, "Successfully auto-confirmed LynkCoLink USB permission dialog")
             }
         } finally {
             @Suppress("DEPRECATION")
@@ -112,10 +112,10 @@ class UsbAutoConfirmService : AccessibilityService() {
             pkg in SYSTEM_PACKAGES && (className in USB_ACTIVITIES || className == ALERT_ACTIVITY_CLASS)
 
         /**
-         * The prompt must name this app and a USB device. Android 10+ words it "Allow OSNPlay to
+         * The prompt must name this app and a USB device. Android 10+ words it "Allow LynkCoLink to
          * access iPhone?" with no "USB", Android 7.1 names "the USB device" instead of the phone,
-         * and Chinese puts the name between letters ("要允许OSNPlay访问iPhone吗？"), so only ASCII
-         * word characters count as part of a longer name such as "FakeOSNPlay".
+         * and Chinese puts the name between letters ("要允许LynkCoLink访问iPhone吗？"), so only ASCII
+         * word characters count as part of a longer name such as "FakeLynkCoLink".
          */
         internal fun isTargetPrompt(text: String, appLabel: String): Boolean =
             appLabel.isNotBlank() &&

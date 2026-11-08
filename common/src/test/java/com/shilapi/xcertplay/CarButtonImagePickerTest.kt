@@ -207,9 +207,9 @@ class CarButtonImagePickerTest {
         assertTrue(!intent.getBooleanExtra(Intent.EXTRA_ALLOW_MULTIPLE, false))
     }
 
-    private fun homeButtons(activity: OSNPlayActivity): List<Button> {
+    private fun homeButtons(activity: LynkCoLinkActivity): List<Button> {
         val controls = LinearLayout(activity)
-        OSNPlayActivity::class.java.getDeclaredMethod("carButtonControls", LinearLayout::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("carButtonControls", LinearLayout::class.java)
             .apply { isAccessible = true }.invoke(activity, controls)
         return views(controls).filterIsInstance<Button>().toList()
     }
@@ -235,9 +235,9 @@ class CarButtonImagePickerTest {
             override fun getContract() = contract
         }
 
-    private fun withHome(check: (OSNPlayActivity) -> Unit) {
+    private fun withHome(check: (LynkCoLinkActivity) -> Unit) {
         CarPlayBackgroundSession.clear()
-        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java)
+        val controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java)
         val activity = controller.get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         controller.setup().visible()

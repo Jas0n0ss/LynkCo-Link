@@ -3,7 +3,7 @@ package com.shilapi.xcertplay
 import android.content.Context
 
 /**
- * Optional: CarPlay can move to two thirds of the main screen while OSNPlay shows its own panel in the rest:
+ * Optional: CarPlay can move to two thirds of the main screen while LynkCoLink shows its own panel in the rest:
  * the right third of a landscape screen, a band at the bottom of a portrait one. The areas are declared
  * with the session's view areas ([CarPlayViewAreas]); the in-session menu shows and hides the panel. The
  * iPhone keeps streaming the whole frame and leaves the panel's part black; the panel is an Android view

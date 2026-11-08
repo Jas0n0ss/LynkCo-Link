@@ -1,4 +1,4 @@
-# OSNPlay 0.1.5 — Lynk&co
+# LynkCo-Link 0.1.5 — Lynk&co
 
 - 首页新增 CarPlay 风格状态胶囊。
 - 清理剩余 BYD/DiLink/FCE 测试。
@@ -7,5 +7,5 @@
 安装：
 
 ```sh
-adb install -r OSNPlay-0.1.5-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.1.5-lynk-release-standalone.apk
 ```

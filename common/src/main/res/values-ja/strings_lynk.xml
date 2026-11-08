@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auto_bluetooth_restore_failed">Bluetooth が復元されませんでした。車両設定でオンにしてから OSNPlay に戻ってください。</string>
+    <string name="auto_bluetooth_restore_failed">Bluetooth が復元されませんでした。車両設定でオンにしてから LynkCo-Link に戻ってください。</string>
     <string name="auto_hotspot_conflict">車両の既存の共有ホットスポットをオフにしてから再試行してください。または車載ホットスポットを選択してください。</string>
     <string name="auto_hotspot_creating">一時ホットスポットを作成し、実際のネットワーク設定を確認しています。</string>
     <string name="auto_hotspot_failed">車両が利用可能な一時ホットスポットを提供できませんでした。接続設定を開いて車載ホットスポットを使うか、レポートを書き出してください。</string>
-    <string name="auto_hotspot_location">システムの位置情報をオンにし、OSNPlay の位置情報アクセスを許可してから再試行してください。Android 9 でホットスポット作成に必要です。</string>
+    <string name="auto_hotspot_location">システムの位置情報をオンにし、LynkCo-Link の位置情報アクセスを許可してから再試行してください。Android 9 でホットスポット作成に必要です。</string>
     <string name="auto_hotspot_sent">ホットスポット情報が自動送信されました。iPhone の Wi-Fi と Bluetooth をオンにし、CarPlay のプロンプトを受け入れてください。</string>
     <string name="link_accept_carplay">iPhone で「CarPlay を許可」のプロンプトを確認してください。セットアップ完了を待っています。</string>
     <string name="link_auth_failed">CarPlay 認証を完了できません</string>
@@ -25,7 +25,7 @@
     <string name="link_identifying">iPhone が車両を識別するのを待っています</string>
     <string name="link_identifying_hint">Bluetooth または USB チャンネルが開いています。iPhone の識別応答を待っています。認証はまだ開始されていません。</string>
     <string name="link_no_response">iPhone で CarPlay が開始されていません</string>
-    <string name="link_permission_fix">Android 9 では OSNPlay の位置情報（新しい Android では周辺機器）を許可してから再試行してください。</string>
+    <string name="link_permission_fix">Android 9 では LynkCo-Link の位置情報（新しい Android では周辺機器）を許可してから再試行してください。</string>
     <string name="link_permission_needed">接続の権限が必要です</string>
     <string name="link_phone">2 / 3 · ペアリング済み iPhone を検索中</string>
     <string name="link_phone_check">iPhone のロックを解除し Bluetooth をオンにしてください。音楽 Bluetooth 接続だけでは CarPlay は確立されません。</string>
@@ -39,9 +39,9 @@
     <string name="link_usb_mode_failed">iPhone が CarPlay USB モードに入りません</string>
     <string name="link_usb_network">USB ネットワークを準備中</string>
     <string name="link_usb_opening">USB データチャンネルを確立中</string>
-    <string name="link_usb_permission_fix">再試行をタップし、車両が尋ねたら OSNPlay の USB デバイスアクセスを許可してください。プロンプトが出ない場合はケーブルを接続し直してください。</string>
+    <string name="link_usb_permission_fix">再試行をタップし、車両が尋ねたら LynkCo-Link の USB デバイスアクセスを許可してください。プロンプトが出ない場合はケーブルを接続し直してください。</string>
     <string name="link_usb_permission_needed">USB デバイスアクセスが許可されていません</string>
-    <string name="link_usb_permission_prompt">車載画面のダイアログで OSNPlay の USB デバイスアクセスを許可してください。</string>
+    <string name="link_usb_permission_prompt">車載画面のダイアログで LynkCo-Link の USB デバイスアクセスを許可してください。</string>
     <string name="link_usb_service">iPhone CarPlay サービスを起動中</string>
     <string name="link_usb_switching">iPhone を CarPlay USB モードに切り替え中</string>
     <string name="link_usb_trust">iPhone の信頼認証を待っています</string>

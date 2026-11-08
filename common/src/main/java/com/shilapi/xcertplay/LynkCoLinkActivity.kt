@@ -143,11 +143,11 @@ internal object SettingsInformationArchitecture {
 }
 
 /** DiAuto's visual language, with a connection flow for an independent CarPlay receiver. */
-class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
+class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
     private val handler = Handler(Looper.getMainLooper())
     private var appNight = true
     override val currentAppNight: Boolean get() = appNight
-    private var palette = OSNPlayPalette.DARK
+    private var palette = LynkCoLinkPalette.DARK
     private var appearanceObserverRemoval: (() -> Unit)? = null
     private var appearanceUpdatesResumed = false
     private var appearanceRenderPending = false
@@ -189,7 +189,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var testToneTrack: AudioTrack? = null
     private var toneStop: Runnable? = null
     private var exportButton: Button? = null
-    // Ported from LynkCo-OSNPlay: read-only environment check state rendered on the DIAGNOSTICS page.
+    // Ported from LynkCo-LynkCoLink: read-only environment check state rendered on the DIAGNOSTICS page.
     private var environmentReport: EnvironmentReport? = null
     private var environmentRunning = false
     private var environmentFailed = false
@@ -267,9 +267,9 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     }
     private val bluetoothAutoConnectPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) {
-            if (OSNPlayPreferences.phoneAddress(this) == null) choosePhone()
+            if (LynkCoLinkPreferences.phoneAddress(this) == null) choosePhone()
         } else {
-            OSNPlayPreferences.saveConnectOnPhoneBluetooth(this, false)
+            LynkCoLinkPreferences.saveConnectOnPhoneBluetooth(this, false)
             render()
             permissionHelp(getString(R.string.nearby_devices), getString(R.string.allow_nearby_devices_so_osnplay_can_connect_to_your_paired))
         }
@@ -295,8 +295,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private val export = registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
         if (uri != null) exportDiagnostics(uri)
     }
-    // Android 9: storage access puts the report in the visible Downloads/OSNPlay folder.
-    // A denial still saves the report, only in OSNPlay's own storage.
+    // Android 9: storage access puts the report in the visible Downloads/LynkCoLink folder.
+    // A denial still saves the report, only in LynkCoLink's own storage.
     private val reportStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         exportDiagnostics()
     }
@@ -309,11 +309,11 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     private fun enforceInterfaceSize(): Boolean {
         val language = AppLocale.enforce(this)
-        if (language) android.util.Log.i("OSNPlayUi", "app language re-applied")
+        if (language) android.util.Log.i("LynkCoLinkUi", "app language re-applied")
         val override = interfaceOverride ?: return language
         val found = resources.displayMetrics.densityDpi
         if (!InterfaceSize.enforce(resources, override)) return language
-        android.util.Log.i("OSNPlayUi", "interface size re-applied: $found -> ${override.densityDpi} dpi")
+        android.util.Log.i("LynkCoLinkUi", "interface size re-applied: $found -> ${override.densityDpi} dpi")
         return true
     }
 
@@ -337,7 +337,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         rememberLaunchAppearance()
         languagePreferenceAtCreate = AppLocale.preference(this)
         // A previous run may have been killed while it held the cluster projection; hand it back
-        // before showing anything, so the cluster is not left on OSNPlay's last frame.
+        // before showing anything, so the cluster is not left on LynkCoLink's last frame.
         GeelyClusterProjection.releaseStale(applicationContext)
         PhoneAudioRoute.attach(applicationContext)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -347,8 +347,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             }
         }
         applyWindowAppearance()
-        setupError = runCatching { OSNPlayBootstrap.ensure(this, AirPlayPersistence.loadMfiTarget(this)) }.exceptionOrNull()?.let {
-            android.util.Log.e("OSNPlaySetup", "CarPlay authentication could not be loaded", it)
+        setupError = runCatching { LynkCoLinkBootstrap.ensure(this, AirPlayPersistence.loadMfiTarget(this)) }.exceptionOrNull()?.let {
+            android.util.Log.e("LynkCoLinkSetup", "CarPlay authentication could not be loaded", it)
             getString(R.string.setup_error_auth)
         }
         pendingCarHotspotSetup = savedInstanceState?.getBoolean("pending_car_hotspot") ?: false
@@ -361,7 +361,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         setupFromSettings = savedInstanceState?.getBoolean("setup_from_settings") ?: false
         page = savedInstanceState?.getString("page") ?: requestedPage(intent)
             ?: if (setupError == null && SetupGuide.shouldOpenOnLaunch(SetupGuide.seen(this),
-                    OSNPlayPreferences.phoneAddress(this) != null)) "setup" else "home"
+                    LynkCoLinkPreferences.phoneAddress(this) != null)) "setup" else "home"
         render()
         handleWirelessRecovery()
         if (consumeBluetoothAutoConnectIntent(intent)) {
@@ -401,8 +401,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private fun consumeBluetoothAutoConnectIntent(intent: Intent): Boolean {
         val requested = intent.getStringExtra(PhoneBluetoothReceiver.EXTRA_AUTO_CONNECT) == PhoneBluetoothReceiver.launchToken
         intent.removeExtra(PhoneBluetoothReceiver.EXTRA_AUTO_CONNECT)
-        return requested && OSNPlayPreferences.connectOnPhoneBluetooth(this) &&
-            OSNPlayPreferences.phoneAddress(this) != null && setupError == null &&
+        return requested && LynkCoLinkPreferences.connectOnPhoneBluetooth(this) &&
+            LynkCoLinkPreferences.phoneAddress(this) != null && setupError == null &&
             !CarPlayBackgroundSession.hasSession()
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -450,7 +450,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         super.onStart()
         // Results from the image picker and crop screens arrive before onResume.
         enforceInterfaceSize()
-        CenterMapOverlay.onOSNPlayScreenShown()
+        CenterMapOverlay.onLynkCoLinkScreenShown()
     }
 
     override fun onStop() {
@@ -481,7 +481,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             startCarHotspotOnLaunch()
         }
         // The background check runs two minutes after opening, usually while CarPlay is in front: what it
-        // found shows when OSNPlay comes back, not only after the activity is created again.
+        // found shows when LynkCoLink comes back, not only after the activity is created again.
         availableUpdate = UpdateAvailability.available(this, version())
         // Back from the car settings: refresh the car hotspot reminder on the home page.
         if (!initialLaunch && !adbSwitchChangePending && !pausedForAdbSwitchChange &&
@@ -492,8 +492,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             initialLaunch = false
             startCarHotspotOnLaunch()
             if (setupError == null && !CarPlayBackgroundSession.hasSession() &&
-                OSNPlayPreferences.autoConnect(this) && requestedPage(intent) == null && page != "setup") {
-                handler.post { connect(OSNPlayPreferences.autoConnectWireless(this)) }
+                LynkCoLinkPreferences.autoConnect(this) && requestedPage(intent) == null && page != "setup") {
+                handler.post { connect(LynkCoLinkPreferences.autoConnectWireless(this)) }
             }
         }
     }
@@ -556,12 +556,12 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             isAppearanceLightStatusBars = palette.systemBarIconsAreDark
             isAppearanceLightNavigationBars = palette.systemBarIconsAreDark
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            if (AirPlayPersistence.loadHideTopBar(this@OSNPlayActivity) && !multiWindow) {
+            if (AirPlayPersistence.loadHideTopBar(this@LynkCoLinkActivity) && !multiWindow) {
                 hide(WindowInsetsCompat.Type.statusBars())
             } else {
                 show(WindowInsetsCompat.Type.statusBars())
             }
-            if (AirPlayPersistence.loadHideBottomBar(this@OSNPlayActivity) && !multiWindow) {
+            if (AirPlayPersistence.loadHideBottomBar(this@LynkCoLinkActivity) && !multiWindow) {
                 hide(WindowInsetsCompat.Type.navigationBars())
             } else {
                 show(WindowInsetsCompat.Type.navigationBars())
@@ -733,7 +733,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private fun standardHeader(compact: Boolean): LinearLayout = row().apply {
         gravity = Gravity.CENTER_VERTICAL
         val logoSize = dp(if (compact) 30 else 36)
-        addView(ImageView(this@OSNPlayActivity).apply {
+        addView(ImageView(this@LynkCoLinkActivity).apply {
             setImageResource(R.drawable.ic_carplay)
             contentDescription = getString(R.string.carplay)
         }, LinearLayout.LayoutParams(logoSize, logoSize))
@@ -1021,7 +1021,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         addView(reconnectBar(), LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(SETTINGS_BLOCK_GAP_DP) })
         val split = row().apply { gravity = Gravity.TOP }
         // The rail scrolls on its own only when the window is too short for every destination.
-        split.addView(ScrollView(this@OSNPlayActivity).apply {
+        split.addView(ScrollView(this@LynkCoLinkActivity).apply {
             addView(column().apply {
                 setPadding(0, 0, 0, dp(12))
                 addView(settingsRail())
@@ -1064,14 +1064,14 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 null,
             )
             setPadding(dp(8), 0, dp(12), 0)
-            addView(View(this@OSNPlayActivity).apply {
+            addView(View(this@LynkCoLinkActivity).apply {
                 background = GradientDrawable().apply {
                     setColor(if (selected) ACCENT else Color.TRANSPARENT)
                     cornerRadius = dp(2).toFloat()
                 }
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
             }, LinearLayout.LayoutParams(dp(4), dp(34)).apply { marginEnd = dp(10) })
-            addView(ImageView(this@OSNPlayActivity).apply {
+            addView(ImageView(this@LynkCoLinkActivity).apply {
                 setImageResource(settingsCategoryIcon(category))
                 imageTintList = ColorStateList.valueOf(if (selected) ACCENT else TEXT)
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
@@ -1192,7 +1192,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         active = CarPlayBackgroundSession.active,
         running = CarPlayBackgroundSession.hasSession(),
         wireless = AirPlayPersistence.loadWirelessEnabled(this),
-        phoneChosen = OSNPlayPreferences.phoneAddress(this) != null,
+        phoneChosen = LynkCoLinkPreferences.phoneAddress(this) != null,
         hotspotSetupNeeded = AirPlayPersistence.loadWirelessHotspotMode(this) == WirelessHotspotMode.MANUAL &&
             carHotspotDetailsMissing(),
     )
@@ -1216,7 +1216,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             SettingsReadiness.CONNECTED -> getString(R.string.settings_ready_connected)
             SettingsReadiness.CONNECTING -> getString(R.string.settings_connecting_description)
             SettingsReadiness.CHOOSE_IPHONE -> getString(R.string.settings_choose_iphone_description)
-            SettingsReadiness.READY_WIRELESS -> getString(R.string.settings_ready_wireless, OSNPlayPreferences.phoneName(this))
+            SettingsReadiness.READY_WIRELESS -> getString(R.string.settings_ready_wireless, LynkCoLinkPreferences.phoneName(this))
             SettingsReadiness.READY_USB -> getString(R.string.settings_ready_usb)
         }
         val tint = when {
@@ -1242,17 +1242,17 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private fun buildQuickSettings(card: LinearLayout): Unit = card.run {
         toggle(this, getString(R.string.connect_when_osnplay_opens),
             getString(R.string.default_connection_description),
-            OSNPlayPreferences.autoConnect(this@OSNPlayActivity)) { OSNPlayPreferences.saveAutoConnect(this@OSNPlayActivity, it) }
+            LynkCoLinkPreferences.autoConnect(this@LynkCoLinkActivity)) { LynkCoLinkPreferences.saveAutoConnect(this@LynkCoLinkActivity, it) }
         appearanceControl(this)
         toggle(this, getString(R.string.full_screen), getString(R.string.settings_full_screen_description),
-            AirPlayPersistence.loadHideTopBar(this@OSNPlayActivity) && AirPlayPersistence.loadHideBottomBar(this@OSNPlayActivity)) { enabled ->
-            AirPlayPersistence.saveHideTopBar(this@OSNPlayActivity, enabled)
-            AirPlayPersistence.saveHideBottomBar(this@OSNPlayActivity, enabled)
+            AirPlayPersistence.loadHideTopBar(this@LynkCoLinkActivity) && AirPlayPersistence.loadHideBottomBar(this@LynkCoLinkActivity)) { enabled ->
+            AirPlayPersistence.saveHideTopBar(this@LynkCoLinkActivity, enabled)
+            AirPlayPersistence.saveHideBottomBar(this@LynkCoLinkActivity, enabled)
             applyFullscreenMode()
         }
         toggle(this, getString(R.string.report_location_to_iphone),
             "${getString(R.string.location_reporting_reconnects)} ${getString(R.string.sends_precise_android_location_as_carplay_gps_data_when_th)}",
-            AirPlayPersistence.loadLocationReportingEnabled(this@OSNPlayActivity), save = ::onLocationReportingChanged)
+            AirPlayPersistence.loadLocationReportingEnabled(this@LynkCoLinkActivity), save = ::onLocationReportingChanged)
         Unit
     }
 
@@ -1278,7 +1278,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         contentDescription = getString(R.string.settings_open_category, settingsCategoryTitle(category))
         addView(row().apply {
             gravity = Gravity.CENTER_VERTICAL
-            addView(ImageView(this@OSNPlayActivity).apply {
+            addView(ImageView(this@LynkCoLinkActivity).apply {
                 setImageResource(settingsCategoryIcon(category))
                 imageTintList = ColorStateList.valueOf(if (warning) WARNING else ACCENT)
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
@@ -1349,12 +1349,12 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private fun diagnosticsSettings(content: LinearLayout) {
         settingsPageTitle(content, getString(R.string.diagnostics), getString(R.string.settings_diagnostics_summary))
         renderSections(content, SettingsInformationArchitecture.sectionsByCategory.getValue(SettingsCategory.DIAGNOSTICS))
-        // Environment check panel ported from LynkCo-OSNPlay: read-only, rendered after the
+        // Environment check panel ported from LynkCo-LynkCoLink: read-only, rendered after the
         // standard diagnostic sections so a scan never changes connection settings. The dark
         // surface keeps LynkPanelStyle's light text readable in day mode.
         searchIndexSink?.add(getString(R.string.env_title))
         val panel = column().apply {
-            background = LynkPanelStyle.shape(this@OSNPlayActivity, LynkPanelStyle.background)
+            background = LynkPanelStyle.shape(this@LynkCoLinkActivity, LynkPanelStyle.background)
             setPadding(dp(20), dp(20), dp(20), dp(20))
         }
         EnvironmentCheckPanel.render(panel, environmentReport, environmentRunning, environmentFailed,
@@ -1379,7 +1379,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 result.onSuccess { environmentReport = it }.onFailure {
                     environmentFailed = true
                     environmentReport = null
-                    android.util.Log.w("OSNPlayEnvironment", "Environment check unavailable: ${it.javaClass.simpleName}")
+                    android.util.Log.w("LynkCoLinkEnvironment", "Environment check unavailable: ${it.javaClass.simpleName}")
                 }
                 if (settingsCategory == SettingsCategory.DIAGNOSTICS) render()
             }
@@ -1729,8 +1729,8 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 ), mfiTargets.indexOf(storedMfiTarget)) { index ->
                     val target = mfiTargets[index]
                     AirPlayPersistence.saveMfiTarget(this, target)
-                    setupError = runCatching { OSNPlayBootstrap.ensure(this, target) }.exceptionOrNull()?.let {
-                        android.util.Log.e("OSNPlaySetup", "CarPlay authentication could not be loaded", it)
+                    setupError = runCatching { LynkCoLinkBootstrap.ensure(this, target) }.exceptionOrNull()?.let {
+                        android.util.Log.e("LynkCoLinkSetup", "CarPlay authentication could not be loaded", it)
                         getString(R.string.setup_error_auth)
                     }
                 }
@@ -1752,23 +1752,23 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         }
         filteredSection(content, SettingsSection.AUTOMATIC_CONNECTION,
             getString(R.string.automatic_connection), R.drawable.ic_dp_automation) { card ->
-            toggle(card, getString(R.string.connect_when_osnplay_opens), getString(R.string.default_connection_description), OSNPlayPreferences.autoConnect(this)) { OSNPlayPreferences.saveAutoConnect(this, it) }
+            toggle(card, getString(R.string.connect_when_osnplay_opens), getString(R.string.default_connection_description), LynkCoLinkPreferences.autoConnect(this)) { LynkCoLinkPreferences.saveAutoConnect(this, it) }
             toggle(card, getString(R.string.connect_when_iphone_bluetooth_connects),
                 getString(R.string.connect_when_iphone_bluetooth_connects_description),
-                OSNPlayPreferences.connectOnPhoneBluetooth(this)) { enabled ->
-                OSNPlayPreferences.saveConnectOnPhoneBluetooth(this, enabled)
+                LynkCoLinkPreferences.connectOnPhoneBluetooth(this)) { enabled ->
+                LynkCoLinkPreferences.saveConnectOnPhoneBluetooth(this, enabled)
                 if (enabled && Build.VERSION.SDK_INT >= 31 &&
                     checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                     bluetoothAutoConnectPermission.launch(Manifest.permission.BLUETOOTH_CONNECT)
-                } else if (enabled && OSNPlayPreferences.phoneAddress(this) == null) choosePhone()
+                } else if (enabled && LynkCoLinkPreferences.phoneAddress(this) == null) choosePhone()
             }
             val connectionModes = DefaultConnectionMode.entries
             choice(card, getString(R.string.default_connection_mode), listOf(
                 getString(R.string.default_connection_last_used),
                 getString(R.string.default_connection_wireless),
                 getString(R.string.default_connection_usb)
-            ), connectionModes.indexOf(OSNPlayPreferences.defaultConnectionMode(this)), reconnects = false) {
-                OSNPlayPreferences.saveDefaultConnectionMode(this, connectionModes[it])
+            ), connectionModes.indexOf(LynkCoLinkPreferences.defaultConnectionMode(this)), reconnects = false) {
+                LynkCoLinkPreferences.saveDefaultConnectionMode(this, connectionModes[it])
             }
             adbToggle(card, R.string.open_after_the_car_starts,
                 R.string.availability_depends_on_your_head_unit_s_startup_settings,
@@ -2267,7 +2267,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                         render()
                     },
                     { failure ->
-                        Log.w("OSNPlay-Update", "update check failed", failure)
+                        Log.w("LynkCoLink-Update", "update check failed", failure)
                         updateMessage = failure.message ?: getString(R.string.update_failed)
                         updateStage = UpdateStage.FAILED
                         render()
@@ -2292,7 +2292,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     private fun scheduleBackgroundUpdateChecks() {
         runCatching { BackgroundUpdateScheduler.schedule(applicationContext) }
-            .onFailure { Log.i("OSNPlay-Update", "background update scheduling unavailable", it) }
+            .onFailure { Log.i("LynkCoLink-Update", "background update scheduling unavailable", it) }
     }
 
     private fun downloadUpdate() {
@@ -2346,7 +2346,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                         render()
                     },
                     { failure ->
-                        Log.w("OSNPlay-Update", "update download failed", failure)
+                        Log.w("LynkCoLink-Update", "update download failed", failure)
                         updateMessage = failure.message ?: getString(R.string.update_failed)
                         updateStage = UpdateStage.FAILED
                         render()
@@ -2389,10 +2389,10 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         val outcome = "${if (installers > 1) "chooser" else "direct"} uri=${if (publicUri != null) "public" else "provider"} installers=$installers"
         try {
             startActivity(launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            Log.i("OSNPlay-Update", "install started: $outcome")
+            Log.i("LynkCoLink-Update", "install started: $outcome")
             UpdateAvailability.recordInstall(applicationContext, System.currentTimeMillis(), outcome)
         } catch (failure: RuntimeException) {
-            Log.w("OSNPlay-Update", "install failed to start: $outcome", failure)
+            Log.w("LynkCoLink-Update", "install failed to start: $outcome", failure)
             UpdateAvailability.recordInstall(applicationContext, System.currentTimeMillis(), "$outcome failed=${failure.javaClass.simpleName}")
             updateMessage = getString(R.string.update_failed)
             render()
@@ -2411,7 +2411,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         }
     }
 
-    private fun userAgent() = "OSNPlay/${version()}"
+    private fun userAgent() = "LynkCoLink/${version()}"
 
     // An opted-in connection prepares the hotspot in the controller instead of stopping at this reminder.
     private fun carHotspotOff(): Boolean =
@@ -2520,7 +2520,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         Thread({
             val result = CarHotspotTethering.enable(app,
                 isCancelled = { startupHotspotCancelled || !startupHotspotEligible() },
-                log = { Log.i("OSNPlay-Hotspot", it) },
+                log = { Log.i("LynkCoLink-Hotspot", it) },
             )
             runOnUiThread {
                 if (isFinishing || isDestroyed || result == CarHotspotTethering.Result.CANCELLED) return@runOnUiThread
@@ -2539,15 +2539,15 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     // car's configuration cannot be read the write path runs instead, after a warning: it keeps the
     // car's name and password, or creates new details when nothing is saved on either side.
     private fun importCarHotspotConfig() {
-        // The driver just turned the switch on, so the read may ask the car to approve OSNPlay's ADB key,
+        // The driver just turned the switch on, so the read may ask the car to approve LynkCoLink's ADB key,
         // as the other ADB switches do. Without asking it could only fail on a car that never saw the key.
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             carHotspotConfigStatus = R.string.adb_checking_may_ask
             render()
         }
         Thread({
-            val read = CarHotspotConfigRead.read(applicationContext, mayAsk = true, log = { Log.i("OSNPlay-Hotspot", it) })
-            Log.i("OSNPlay-Hotspot", "car hotspot config read: credentials=${read.credentials != null} reason=${read.reason}")
+            val read = CarHotspotConfigRead.read(applicationContext, mayAsk = true, log = { Log.i("LynkCoLink-Hotspot", it) })
+            Log.i("LynkCoLink-Hotspot", "car hotspot config read: credentials=${read.credentials != null} reason=${read.reason}")
             val saved = read.credentials
             if (saved != null) {
                 AirPlayPersistence.saveManualHotspotSsid(applicationContext, saved.ssid)
@@ -2620,12 +2620,12 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                     .getOrDefault(LocalAdb.Access.UNREACHABLE)
             }
             val outcome = if (access != LocalAdb.Access.READY) CarHotspotConfigWrite.WriteOutcome(CarHotspotConfigWrite.Result.ADB_UNAVAILABLE)
-            else CarHotspotConfigWrite.write(applicationContext, credentials, log = { Log.i("OSNPlay-Hotspot", it) })
-            Log.i("OSNPlay-Hotspot", "car hotspot config write: ${outcome.result}")
+            else CarHotspotConfigWrite.write(applicationContext, credentials, log = { Log.i("LynkCoLink-Hotspot", it) })
+            Log.i("LynkCoLink-Hotspot", "car hotspot config write: ${outcome.result}")
             runOnUiThread {
                 carHotspotConfigStatus = when (outcome.result) {
                     CarHotspotConfigWrite.Result.WRITTEN -> {
-                        // The car may have kept its own SSID; OSNPlay must offer the iPhone the name
+                        // The car may have kept its own SSID; LynkCoLink must offer the iPhone the name
                         // that is actually broadcast.
                         outcome.ssid?.let { AirPlayPersistence.saveManualHotspotSsid(applicationContext, it) }
                         toast(getString(R.string.settings_car_hotspot_config_effect))
@@ -2654,7 +2654,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             AirPlayPersistence.saveManualHotspotSsid(this, generated.ssid)
             AirPlayPersistence.saveManualHotspotPassphrase(this, generated.passphrase)
             AirPlayPersistence.saveManualHotspotSecurity(this, ManualHotspotSecurity.WPA2)
-            Log.i("OSNPlay-Hotspot", "provisioned a generated hotspot")
+            Log.i("LynkCoLink-Hotspot", "provisioned a generated hotspot")
             return HotspotCredentials(generated.ssid, generated.passphrase,
                 ManualHotspotSecurity.WPA2, AirPlayPersistence.loadManualHotspotBand(this))
         }
@@ -2770,14 +2770,14 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     /** "Choose iPhone · <name>" once an iPhone is chosen. Before that there is no name to show, only "Choose iPhone". */
     private fun chooseIphoneTitle(): String =
-        if (OSNPlayPreferences.phoneAddress(this) == null) getString(R.string.choose_iphone)
-        else "${getString(R.string.choose_iphone_prefix)}${OSNPlayPreferences.phoneName(this)}"
+        if (LynkCoLinkPreferences.phoneAddress(this) == null) getString(R.string.choose_iphone)
+        else "${getString(R.string.choose_iphone_prefix)}${LynkCoLinkPreferences.phoneName(this)}"
 
     private fun setupIphoneStep(content: LinearLayout) {
         setupTitle(content, R.string.setup_iphone_title, getString(R.string.keep_bluetooth_and_wi_fi_on_your_iphone_pair_with_the_car))
         val card = card()
-        val chosen = OSNPlayPreferences.phoneAddress(this) != null
-        card.addView(label(if (chosen) OSNPlayPreferences.phoneName(this) else getString(R.string.setup_iphone_none), 22,
+        val chosen = LynkCoLinkPreferences.phoneAddress(this) != null
+        card.addView(label(if (chosen) LynkCoLinkPreferences.phoneName(this) else getString(R.string.setup_iphone_none), 22,
             if (chosen) READY else TEXT, true))
         card.addView(button(chooseIphoneTitle(), !chosen) {
             choosePhone()
@@ -2889,7 +2889,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                             render()
                             return@createSwitchRow
                         }
-                        CarHotspotSettings.setConfigWrite(this@OSNPlayActivity, true)
+                        CarHotspotSettings.setConfigWrite(this@LynkCoLinkActivity, true)
                         importCarHotspotConfig()
                     }).rowView)
                 carHotspotConfigStatus?.let { status ->
@@ -3086,12 +3086,12 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         fields.addView(label(getString(if (existingWifi) R.string.existing_wifi_instructions else R.string.copy_these_from_the_car_s_hotspot_settings_use_5_ghz_if_av), 16, MUTED))
         val ssid = EditText(dialogContext).apply {
             hint = getString(if (existingWifi) R.string.existing_wifi_ssid else R.string.hotspot_name)
-            setText(if (existingWifi) AirPlayPersistence.loadExistingWifiSsid(this@OSNPlayActivity) else storedSsid())
+            setText(if (existingWifi) AirPlayPersistence.loadExistingWifiSsid(this@LynkCoLinkActivity) else storedSsid())
             setSingleLine()
         }
         val password = EditText(dialogContext).apply {
             hint = getString(if (existingWifi) R.string.existing_wifi_password else R.string.hotspot_password)
-            setText(if (existingWifi) AirPlayPersistence.loadExistingWifiPassphrase(this@OSNPlayActivity) else storedPassword())
+            setText(if (existingWifi) AirPlayPersistence.loadExistingWifiPassphrase(this@LynkCoLinkActivity) else storedPassword())
             setSingleLine()
             inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
@@ -3134,7 +3134,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         val hotspotInterface = EditText(dialogContext).apply {
             hint = getString(interfaceHint)
             setText(if (existingWifi) {
-                AirPlayPersistence.loadExistingWifiInterface(this@OSNPlayActivity)
+                AirPlayPersistence.loadExistingWifiInterface(this@LynkCoLinkActivity)
             } else {
                 storedInterface()
             })
@@ -3418,7 +3418,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         })
         body.addView(button(getString(R.string.copy_command), false) {
             getSystemService(android.content.ClipboardManager::class.java).setPrimaryClip(
-                android.content.ClipData.newPlainText("OSNPlay ADB Command", adbCmd)
+                android.content.ClipData.newPlainText("LynkCoLink ADB Command", adbCmd)
             )
             toast(getString(R.string.copied_to_the_car_clipboard_run_the_command_on_your_comput))
         }, matchButton(8, 50))
@@ -3954,7 +3954,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             val input = EditText(appDialogContext()).apply {
                 setSingleLine()
                 inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                setText(AirPlayPersistence.loadAmbientLightThreshold(this@OSNPlayActivity).lux.toString())
+                setText(AirPlayPersistence.loadAmbientLightThreshold(this@LynkCoLinkActivity).lux.toString())
             }
             fields.addView(input)
             fields.addView(label(getString(R.string.ambient_light_threshold_hint), 14, MUTED))
@@ -4189,7 +4189,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             return
         }
         if (wireless && carHotspotOff()) { carHotspotOffDialog(); return }
-        if (wireless && OSNPlayPreferences.phoneAddress(this) == null) {
+        if (wireless && LynkCoLinkPreferences.phoneAddress(this) == null) {
             pendingWireless = true; choosePhone(); return
         }
         val preferences = getSharedPreferences("osnplay", MODE_PRIVATE)
@@ -4246,7 +4246,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 if (devices.count { it.name == device.name } > 1) "$name · ${device.address.takeLast(5)}" else name
             }.toTypedArray()) { _, index ->
                 val device = devices[index]
-                OSNPlayPreferences.savePhone(this, device.address, device.name ?: "iPhone")
+                LynkCoLinkPreferences.savePhone(this, device.address, device.name ?: "iPhone")
                 val start = pendingWireless; pendingWireless = false
                 render()
                 if (start) connect(true)
@@ -4318,7 +4318,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             setupError != null -> getString(R.string.setup_needs_attention)
             CarPlayBackgroundSession.active -> getString(R.string.carplay_connected)
             running -> getString(R.string.connecting_to_your_iphone)
-            OSNPlayPreferences.phoneAddress(this) != null -> "${getString(R.string.status_ready_for_prefix)}${OSNPlayPreferences.phoneName(this)}"
+            LynkCoLinkPreferences.phoneAddress(this) != null -> "${getString(R.string.status_ready_for_prefix)}${LynkCoLinkPreferences.phoneName(this)}"
             else -> getString(R.string.ready_when_you_are)
         }
         homeStatusChip?.apply {
@@ -4333,7 +4333,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             setTextColor(if (color == BUTTON) MUTED else ON_ACCENT)
         }
         homeLastProblem?.apply {
-            val line = if (CarPlayBackgroundSession.active) null else LastConnectionProblem.homeLine(this@OSNPlayActivity)
+            val line = if (CarPlayBackgroundSession.active) null else LastConnectionProblem.homeLine(this@LynkCoLinkActivity)
             visibility = if (line == null) View.GONE else View.VISIBLE
             if (line != null) text = line
         }
@@ -4347,7 +4347,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         refreshReconnectBar()
         refreshReadiness()
     }
-    private fun reportFileName() = "OSNPlay-${SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(Date())}.txt"
+    private fun reportFileName() = "LynkCo-Link-${SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(Date())}.txt"
 
     private fun saveReportToDownloads() {
         if (exportInProgress) return
@@ -4389,7 +4389,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                         .setMessage(when {
                             savedReport.savedInApp -> getString(R.string.diagnostic_report_saved_in_app)
                             savedReport.savedPath != null -> getString(R.string.diagnostic_report_saved_to_path, savedReport.savedPath)
-                            uri == null -> "Downloads/OSNPlay/$fileName"
+                            uri == null -> "Downloads/LynkCoLink/$fileName"
                             else -> getString(R.string.your_report_was_saved_to_the_selected_location)
                         })
                         .setPositiveButton(getString(R.string.view_diagnostic_report)) { _, _ -> showDiagnosticReport(report) }
@@ -4415,7 +4415,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     /** The text of a diagnostic report. It reads the session logs, so call it off the main thread. */
     private fun diagnosticReportText(appContext: Context): String = buildString {
-        appendLine("OSNPlay ${version()} · diagnostic report")
+        appendLine("LynkCo-Link ${version()} · diagnostic report")
         appendLine(LastConnectionProblem.report(appContext))
         appendLine("Android ${Build.VERSION.RELEASE} / API ${Build.VERSION.SDK_INT}")
         appendLine("Head unit: ${Build.MANUFACTURER} ${Build.MODEL}")
@@ -4443,7 +4443,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         appendLine("--- Last received boot and app-launch result ---")
         appendLine(StartupDiagnosticSnapshot.report(appContext))
         appendLine("Startup settings: openAfterBoot=${AirPlayPersistence.loadAutoStartOnBoot(appContext)} " +
-            "connectWhenOpened=${OSNPlayPreferences.autoConnect(appContext)}")
+            "connectWhenOpened=${LynkCoLinkPreferences.autoConnect(appContext)}")
         appendLine("Car hotspot control: autoEnable=${CarHotspotSettings.enabled(appContext)} " +
             "writeSettings=${CarHotspotTethering.permitted(appContext)} " +
             "hotspotOn=${runCatching { com.shilapi.xcertplay.network.CarHotspotStatus.isEnabled(appContext) }.getOrNull()}")
@@ -4455,12 +4455,12 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         appendLine("--- Recent own-app process exits (Android 11+) ---")
         appendLine(ProcessExitDiagnostics.report(appContext))
         appendLine()
-        appendLine("--- Last crash recorded by OSNPlay ---")
+        appendLine("--- Last crash recorded by LynkCoLink ---")
         appendLine(CrashRecord.report(appContext))
         appendLine()
-        // Ported from LynkCo-OSNPlay: redacted fatal stack (no exception messages) plus a
+        // Ported from LynkCo-LynkCoLink: redacted fatal stack (no exception messages) plus a
         // read-only USB/wireless environment snapshot at export time.
-        appendLine("--- Last retained fatal stack (redacted, OSNPlay crash log) ---")
+        appendLine("--- Last retained fatal stack (redacted, LynkCoLink crash log) ---")
         appendLine(ConnectionCrashLog.report(appContext))
         appendLine()
         appendLine("--- USB and wireless environment at export ---")
@@ -4551,11 +4551,11 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         } catch (error: Exception) {
             val state = candidate?.state ?: AudioTrack.STATE_UNINITIALIZED
             candidate?.let { runCatching { it.release() } }
-            Log.w("OSNPlay", "playTestTone streamType=$streamType unavailable", error)
+            Log.w("LynkCoLink", "playTestTone streamType=$streamType unavailable", error)
             toast(getString(R.string.audio_stream_unavailable, streamType, state))
             return
         }
-        Log.i("OSNPlay", "playTestTone streamType=$streamType state=${track.state} playState=${track.playState}")
+        Log.i("LynkCoLink", "playTestTone streamType=$streamType state=${track.state} playState=${track.playState}")
         testToneTrack = track
         val stop = Runnable {
             track.stop()
@@ -4719,7 +4719,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         parent.addView(result.rowView)
         return result.switch
     }
-    // The car's own music rhythm: saved on only once the head unit's audio call is reachable, from OSNPlay itself or
+    // The car's own music rhythm: saved on only once the head unit's audio call is reachable, from LynkCoLink itself or
     // over its ADB access.
     /** Music buffer for one transport. A change reconnects only a running session of that transport. */
     private fun musicBufferChoice(card: LinearLayout, wireless: Boolean) {
@@ -5118,9 +5118,9 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     private fun refreshAppearance(): Boolean {
         val resolved = resolveAppNightNow()
-        if (resolved == appNight && palette === OSNPlayPalette.of(resolved)) return false
+        if (resolved == appNight && palette === LynkCoLinkPalette.of(resolved)) return false
         appNight = resolved
-        palette = OSNPlayPalette.of(resolved)
+        palette = LynkCoLinkPalette.of(resolved)
         return true
     }
 
@@ -5191,7 +5191,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER) &&
                 !intent.hasExtra("page")
 
-        private const val HEAD_UNIT_VEHICLE_TAG = "OSNPlay-head unit13"
+        private const val HEAD_UNIT_VEHICLE_TAG = "LynkCoLink-head unit13"
         private const val VEHICLE_VALIDATION_RETRY_MILLIS = 500L
 
         // head unit's settings app answers sixty standard android.settings actions with an activity in its

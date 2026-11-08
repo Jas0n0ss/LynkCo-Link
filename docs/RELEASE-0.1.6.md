@@ -1,4 +1,4 @@
-# OSNPlay 0.1.6 — Lynk&co
+# LynkCo-Link 0.1.6 — Lynk&co
 
 - 移除 Host 内 BYD 车辆状态、充电口、轮速、驻车视频和通话弹窗分支。
 - 保留领克/ECARX 轮速与 CarPlay 主链路。
@@ -7,5 +7,5 @@
 安装：
 
 ```sh
-adb install -r OSNPlay-0.1.6-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.1.6-lynk-release-standalone.apk
 ```

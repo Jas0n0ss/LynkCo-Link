@@ -25,12 +25,12 @@ class HotspotProvisioningLogTest {
     }
 
     @Test fun provisioningAHotspotDoesNotLogItsName() {
-        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
-        OSNPlayActivity::class.java.getDeclaredMethod("launchHotspotCredentials")
+        val activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
+        LynkCoLinkActivity::class.java.getDeclaredMethod("launchHotspotCredentials")
             .apply { isAccessible = true }.invoke(activity)
         val ssid = AirPlayPersistence.loadManualHotspotSsid(app)
         assertTrue(ssid.isNotBlank())
-        val lines = ShadowLog.getLogsForTag("OSNPlay-Hotspot")
+        val lines = ShadowLog.getLogsForTag("LynkCoLink-Hotspot")
         assertTrue("provisioning must still leave a log line", lines.any { it.msg.startsWith("provisioned") })
         lines.forEach { assertFalse("hotspot name reached logcat: ${it.msg}", it.msg.contains(ssid)) }
     }
@@ -38,10 +38,10 @@ class HotspotProvisioningLogTest {
     @Test fun anExistingHotspotIsNotProvisionedOrLogged() {
         AirPlayPersistence.saveManualHotspotSsid(app, "Car hotspot")
         AirPlayPersistence.saveManualHotspotPassphrase(app, "12345678")
-        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
-        OSNPlayActivity::class.java.getDeclaredMethod("launchHotspotCredentials")
+        val activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
+        LynkCoLinkActivity::class.java.getDeclaredMethod("launchHotspotCredentials")
             .apply { isAccessible = true }.invoke(activity)
         assertEquals("Car hotspot", AirPlayPersistence.loadManualHotspotSsid(app))
-        assertTrue(ShadowLog.getLogsForTag("OSNPlay-Hotspot").none { it.msg.startsWith("provisioned") })
+        assertTrue(ShadowLog.getLogsForTag("LynkCoLink-Hotspot").none { it.msg.startsWith("provisioned") })
     }
 }

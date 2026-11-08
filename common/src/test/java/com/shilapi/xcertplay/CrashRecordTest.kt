@@ -18,24 +18,24 @@ class CrashRecordTest {
     @Test fun theRecordNamesTheExceptionChainAndWhereItWasThrown() {
         val cause = IllegalStateException("surface released at 192.168.1.20")
         val crash = RuntimeException("Unable to start activity\nsecond line", cause)
-        crash.stackTrace = Array(20) { StackTraceElement("com.shilapi.xcertplay.OSNPlayActivity", "onCreate$it", "OSNPlayActivity.kt", it) }
+        crash.stackTrace = Array(20) { StackTraceElement("com.shilapi.xcertplay.LynkCoLinkActivity", "onCreate$it", "LynkCoLinkActivity.kt", it) }
 
         val record = CrashRecord.format("main", crash, 1_000L)
 
         val lines = record.lines()
         assertEquals("crash atEpochMs=1000 thread=main", lines[0])
         assertEquals("java.lang.RuntimeException: Unable to start activity", lines[1])
-        assertEquals("  at com.shilapi.xcertplay.OSNPlayActivity.onCreate0(OSNPlayActivity.kt:0)", lines[2])
-        assertTrue(record.contains("  at com.shilapi.xcertplay.OSNPlayActivity.onCreate17(OSNPlayActivity.kt:17)"))
+        assertEquals("  at com.shilapi.xcertplay.LynkCoLinkActivity.onCreate0(LynkCoLinkActivity.kt:0)", lines[2])
+        assertTrue(record.contains("  at com.shilapi.xcertplay.LynkCoLinkActivity.onCreate17(LynkCoLinkActivity.kt:17)"))
         assertTrue(record.contains("  ... 2 more"))
         assertTrue(record.contains("caused by java.lang.IllegalStateException: surface released at 192.168.1.20"))
         assertFalse(record.contains("second line"))
     }
 
-    // #463: Android's startActivity frames filled the record and hid the OSNPlay call that crashed.
+    // #463: Android's startActivity frames filled the record and hid the LynkCoLink call that crashed.
     @Test fun ourFramesBelowTheFirstOnesAreKept() {
         val framework = Array(14) { StackTraceElement("android.app.Activity", "startActivity$it", "Activity.java", it) }
-        val ours = Array(9) { StackTraceElement("com.shilapi.xcertplay.OSNPlayActivity", "open$it", "OSNPlayActivity.kt", it) }
+        val ours = Array(9) { StackTraceElement("com.shilapi.xcertplay.LynkCoLinkActivity", "open$it", "LynkCoLinkActivity.kt", it) }
         val crash = IllegalArgumentException("There is no running activity in rootTask")
         crash.stackTrace = framework + ours + StackTraceElement("android.os.Looper", "loop", "Looper.java", 1)
 
@@ -43,9 +43,9 @@ class CrashRecordTest {
 
         assertTrue(record.contains("  at android.app.Activity.startActivity11(Activity.java:11)"))
         assertFalse(record.contains("startActivity12"))
-        assertTrue(record.contains("  ... OSNPlay frames further down:"))
-        assertTrue(record.contains("  at com.shilapi.xcertplay.OSNPlayActivity.open0(OSNPlayActivity.kt:0)"))
-        assertTrue(record.contains("  at com.shilapi.xcertplay.OSNPlayActivity.open5(OSNPlayActivity.kt:5)"))
+        assertTrue(record.contains("  ... LynkCoLink frames further down:"))
+        assertTrue(record.contains("  at com.shilapi.xcertplay.LynkCoLinkActivity.open0(LynkCoLinkActivity.kt:0)"))
+        assertTrue(record.contains("  at com.shilapi.xcertplay.LynkCoLinkActivity.open5(LynkCoLinkActivity.kt:5)"))
         assertFalse(record.contains("open6"))
         assertTrue(record.contains("  ... 6 more"))
     }

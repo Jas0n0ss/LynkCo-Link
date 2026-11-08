@@ -15,13 +15,13 @@ if (standaloneTasks.isNotEmpty() && standaloneTasks.size != requestedAssembleTas
     )
 }
 val standaloneBuild = standaloneTasks.isNotEmpty()
-val configuredAuthenticationAssets = providers.environmentVariable("OSNPLAY_AUTH_ASSETS_DIR").orNull
+val configuredAuthenticationAssets = providers.environmentVariable("LYNKCO_LINK_AUTH_ASSETS_DIR").orNull
 val localAuthenticationAssets = configuredAuthenticationAssets
     ?.takeIf { standaloneBuild }
     ?.let { file(it).canonicalFile }
 if (configuredAuthenticationAssets != null && !standaloneBuild) {
     logger.warn(
-        "OSNPLAY_AUTH_ASSETS_DIR is set but ignored: use an assembleStandalone* task to bundle credentials.",
+        "LYNKCO_LINK_AUTH_ASSETS_DIR is set but ignored: use an assembleStandalone* task to bundle credentials.",
     )
 }
 
@@ -34,20 +34,20 @@ android {
     defaultConfig {
         minSdk = 24
         targetSdk = 37
-        // OSNPlay 0.1.2 = DiPlay 0.2.22 baseline + Lynk OSN launcher compatibility.
-        versionCode = 201
-        versionName = "0.2.1"
+        // LynkCo-Link 0.1.2 = DiPlay 0.2.22 baseline + Lynk OSN launcher compatibility.
+        versionCode = 300
+        versionName = "0.3.0"
     }
 
     localAuthenticationAssets?.let { sourceSets.getByName("main").assets.srcDir(it) }
 
-    // Distribution edition: the standard build keeps the OSNPlay identity, the lynk build is the
+    // Distribution edition: the standard build keeps the LynkCo-Link identity, the lynk build is the
     // in-car A/B package. Build types stay reserved for debug/preview/release.
     flavorDimensions += "edition"
     productFlavors {
         create("standard") {
             dimension = "edition"
-            applicationId = "com.osnplay"
+            applicationId = "com.lynkco.link"
         }
         create("lynk") {
             dimension = "edition"
@@ -149,7 +149,7 @@ val verifyStandaloneAuthentication by tasks.registering {
     val directory = localAuthenticationAssets
     doLast {
         check(directory != null) {
-            "Standalone car builds require OSNPLAY_AUTH_ASSETS_DIR; assembleStandardDebug alone is source-only."
+            "Standalone car builds require LYNKCO_LINK_AUTH_ASSETS_DIR; assembleStandardDebug alone is source-only."
         }
         check(listOf("identity.pk8", "certificate.p7b").all {
             directory.resolve("offline-mfi/$it").let { file -> file.isFile && file.length() > 0 }

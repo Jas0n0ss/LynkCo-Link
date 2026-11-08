@@ -10,7 +10,7 @@ body:
         Test while parked. Reports are public: review diagnostic files and remove personal information before attaching them. Never post credentials, hotspot passwords or authentication files.
   - type: input
     id: version
-    attributes: {label: OSNPlay version, placeholder: 'Exact version from Settings → About, for example 0.1.1-preview'}
+    attributes: {label: LynkCo-Link version, placeholder: 'Exact version from Settings → About, for example 0.1.1-preview'}
     validations: {required: true}
   - type: input
     id: car

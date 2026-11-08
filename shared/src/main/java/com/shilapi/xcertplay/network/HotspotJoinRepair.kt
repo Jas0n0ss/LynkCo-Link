@@ -62,7 +62,7 @@ class HotspotJoinRepair {
 
     companion object {
         private val operations = ReentrantLock()
-        internal const val HEADER = "OSNPLAY_HOTSPOT_JOIN_V1"
+        internal const val HEADER = "LYNKCO_LINK_HOTSPOT_JOIN_V1"
         internal fun validToken(value: String) = value.matches(Regex("[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"))
         internal fun command(apk: String, packageName: String, action: String, request: String, token: String?): String {
             require(packageName.matches(Regex("[a-zA-Z][a-zA-Z0-9_]*(?:\\.[a-zA-Z0-9_]+)+")))

@@ -1,4 +1,4 @@
-# OSNPlay
+# LynkCo-Link
 
 **[English](README.md) | [简体中文](README.zh-CN.md)**
 
@@ -8,7 +8,7 @@
 [![Release](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?label=release)](https://github.com/Jas0n0ss/OSN-Play/releases)
 [![License](https://img.shields.io/badge/license-GPL--3.0%20%2F%20AGPL--3.0-blue.svg)](LICENSING.md)
 
-OSNPlay 安装在**车机**上，不需要越狱 iPhone、外设或认证服务器。公开 Release 的 APK 已内置认证资产，安装后可直接连接。
+LynkCo-Link 安装在**车机**上，不需要越狱 iPhone、外设或认证服务器。公开 Release 的 APK 已内置认证资产，安装后可直接连接。
 
 ## 适配车型
 
@@ -27,7 +27,7 @@ OSNPlay 安装在**车机**上，不需要越狱 iPhone、外设或认证服务�
 只下载一个文件：
 
 ```text
-OSNPlay-<version>-lynk-release-standalone.apk
+LynkCo-Link-<version>-lynk-release-standalone.apk
 ```
 
 从 [Releases](https://github.com/Jas0n0ss/OSN-Play/releases/latest) 下载，或：
@@ -36,7 +36,7 @@ OSNPlay-<version>-lynk-release-standalone.apk
 gh release download --repo Jas0n0ss/OSN-Play
 ```
 
-> 包名是 `com.kugou.android.auto`，只用于通过 OSN 桌面白名单。应用本身是 OSNPlay，不含酷狗功能。安装前确认车机没有真正的酷狗车机版。
+> 包名是 `com.kugou.android.auto`，只用于通过 OSN 桌面白名单。应用本身是 LynkCo-Link，不含酷狗功能。安装前确认车机没有真正的酷狗车机版。
 
 ### 准备
 
@@ -56,33 +56,33 @@ gh release download --repo Jas0n0ss/OSN-Play
 
 ```sh
 adb devices
-adb install -r OSNPlay-<version>-lynk-release-standalone.apk
+adb install -r LynkCo-Link-<version>-lynk-release-standalone.apk
 ```
 
 安装后首次必须手动打开一次，否则 Android stopped state 会让开机自启失效：
 
 ```sh
-adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkActivity
 ```
 
 首次打开会直接进入“连接 → 选择 iPhone”，不会询问 DiLink 版本。
 
 ### 桌面没有图标
 
-OSNPlay 已使用原厂 Launcher3 白名单包名，正常会出现在应用列表。如果仍没有：
+LynkCo-Link 已使用原厂 Launcher3 白名单包名，正常会出现在应用列表。如果仍没有：
 
 1. 重启车机，再找“所有应用 / 应用管理”。
 2. 设置 → 高级 → 桌面悬浮球，允许“显示在其他应用上层”。
 3. 或用 ADB 启动：
 
 ```sh
-adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkActivity
 ```
 
 ### 连接 iPhone
 
-- **有线**：数据线接车机 USB-A 数据口，打开 OSNPlay，iPhone 点“允许”。
-- **无线**：OSNPlay → 连接设置，选择车机热点 / Wi-Fi Direct / Existing Wi-Fi，按提示配对。
+- **有线**：数据线接车机 USB-A 数据口，打开 LynkCo-Link，iPhone 点“允许”。
+- **无线**：LynkCo-Link → 连接设置，选择车机热点 / Wi-Fi Direct / Existing Wi-Fi，按提示配对。
 - 失败时：设置 → 诊断 → 保存诊断报告。
 
 ## 常见问题
@@ -92,14 +92,14 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivi
 | `adb: command not found` | 安装 Platform-Tools，或在 Platform-Tools 目录执行 |
 | `device unauthorized` | 车机上允许 USB 调试；仍失败就撤销授权后重连 |
 | `INSTALL_FAILED_USER_RESTRICTED` | 开发者选项打开“USB 安装/未知来源” |
-| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 先卸载旧的 `com.osnplay.lynk` 或旧入口包，再安装（会丢设置） |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 先卸载旧的 `com.lynkco.link.lynk` 或旧入口包，再安装（会丢设置） |
 | 装完桌面找不到 | 重启车机；或开启桌面悬浮球；或 ADB 启动 |
 | 无法连接 CarPlay | 确认 iPhone 已解锁、蓝牙/Wi-Fi 已开，并导出诊断报告 |
 | 有真正的酷狗车机版 | 两者包名冲突，先卸载酷狗车机版 |
 
 ## 更新与卸载
 
-新版本会作为独立 Release 发布，所有历史版本都会保留。覆盖安装前确认包名和签名一致；从旧的 `com.osnplay.lynk` 升级需要先卸载。
+新版本会作为独立 Release 发布，所有历史版本都会保留。覆盖安装前确认包名和签名一致；从旧的 `com.lynkco.link.lynk` 升级需要先卸载。
 
 ```sh
 adb uninstall com.kugou.android.auto
@@ -121,7 +121,7 @@ adb uninstall com.kugou.android.auto
 
 ## 来源与致谢
 
-OSNPlay 的代码和领克适配来自以下公开项目：
+LynkCo-Link 的代码和领克适配来自以下公开项目：
 
 | 项目 | 作用 |
 | --- | --- |

@@ -1,6 +1,6 @@
 # 改造说明与路线图
 
-本文记录 OSNPlay 相对上游 DiPlay 的改动、有意保留的部分、LynkCo-DiPlay 整合范围、版本策略和后续计划。
+本文记录 LynkCo-Link 相对上游 DiPlay 的改动、有意保留的部分、LynkCo-DiPlay 整合范围、版本策略和后续计划。
 
 ## 基线
 
@@ -9,8 +9,8 @@
 | 上游项目 | [DiPlay](https://github.com/shihabal3amri/DiPlay)（基于 [xcertplay](https://github.com/shilapi/xcertplay)） |
 | 上游版本 | 0.2.22（commit `615b32c`） |
 | 上游许可 | GPL-3.0；设置 UI 沿袭 DiAuto，AGPL-3.0 |
-| 本版本 | OSNPlay 0.1.2（versionCode 102） |
-| 标准包名 | `com.osnplay` |
+| 本版本 | LynkCo-Link 0.1.2（versionCode 102） |
+| 标准包名 | `com.lynkco.link` |
 | 领克包名 | `com.kugou.android.auto` |
 | 命名空间 | `com.shilapi.xcertplay`（有意保留，见下文） |
 
@@ -18,10 +18,10 @@
 
 ### 1. 工程与构建
 
-- 根项目名 `xcertplay` → `OSNPlay`。
+- 根项目名 `xcertplay` → `LynkCo-Link`。
 - 删除上游的 `home`、`maphost`、`automotive` 示例模块，只保留 `common`、`shared`、`mobile` 三个核心模块。
 - 引入产品风味表示发行版本：
-  - `standard` → `com.osnplay`
+  - `standard` → `com.lynkco.link`
   - `lynk` → `com.kugou.android.auto`
 - 构建类型只表示构建性质：
   - `debug` → 包名追加 `.debug`，版本追加 `-debug`
@@ -31,10 +31,10 @@
 
 ### 2. 应用身份与品牌
 
-- `applicationId` 从 `com.shihab.diplay` 改为 `com.osnplay`，可与原版 DiPlay 并存安装。
-- 应用名、Launcher 图标、iAP2 配件名、AirPlay label、热点 SSID 前缀（`OSNPlay-XXXX`）、Telecom 账户标签、设置备份页等用户可见品牌位已改为 OSNPlay。
+- `applicationId` 从 `com.shihab.diplay` 改为 `com.lynkco.link`，可与原版 DiPlay 并存安装。
+- 应用名、Launcher 图标、iAP2 配件名、AirPlay label、热点 SSID 前缀（`LynkCo-Link-XXXX`）、Telecom 账户标签、设置备份页等用户可见品牌位已改为 LynkCo-Link。
 - 新增原创矢量图标 `ic_osnplay` / `ic_osnplay_round`。
-- 英文与简体中文的 About / 致谢文案已改为 OSNPlay；其他语言的长文案仍部分沿用上游 DiPlay 表述，见路线图。
+- 英文与简体中文的 About / 致谢文案已改为 LynkCo-Link；其他语言的长文案仍部分沿用上游 DiPlay 表述，见路线图。
 
 ### 3. 领克 OSN 适配
 
@@ -54,7 +54,7 @@ OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功�
 
 - 默认使用 CarPlay 图标（Apple 素材，按用户要求），并显式声明 activity 的 label/icon；
 - 增加 `LEANBACK_LAUNCHER` 入口，兼容部分只索引 leanback 类别的车机/TV 桌面；
-- `lynk` 版本默认开启“开机后自动启动”，并在 `BOOT_COMPLETED` 时发布“打开 OSNPlay”通知；
+- `lynk` 版本默认开启“开机后自动启动”，并在 `BOOT_COMPLETED` 时发布“打开 LynkCo-Link”通知；
 - `lynk` 版本默认开启桌面悬浮球，首次运行提示授予“显示在其他应用上层”；授权后即使桌面没有图标也能从悬浮球打开；
 - 保留 `am start` 和第三方启动器（小八启动器/应用页）作为替代入口。
 
@@ -66,7 +66,7 @@ OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功�
 - 文档从 `docs/lynk/` 提升到 `docs/` 顶层，新增文档索引、设计评审、预览发布说明。
 - 删除上游 BYD 专属文档、逐版本发布说明、静态站点、截图和站点脚本。
 - 仅保留 LynkCo-DiPlay 的两份原始参考材料在 `docs/reference/`。
-- GitHub Issue 模板改为 OSNPlay 专用；CI 改为三模块，并新增 release 工作流。
+- GitHub Issue 模板改为 LynkCo-Link 专用；CI 改为三模块，并新增 release 工作流。
 
 ## 有意保留
 
@@ -74,11 +74,11 @@ OSN 原厂 Launcher3 使用包名白名单显示第三方应用，安装成功�
 - **比亚迪专属功能代码不删除。** HUD、仪表卡片、氛围灯、摇杆键、BYD 设置入口等在 OSN 上不生效，但删除会牵动大量引用和测试；文档标注为“不适用”。
 - **`BYD_SUPPORT_SPLIT_ACTIVITY` 等 meta-data 保留。** 对 OSN 无副作用，分屏行为不同。
 - **`Theme.Xcertplay` 样式名保留。** 非用户可见。
-- **Intent action 已从 `com.shihab.diplay.*` 改为 `com.osnplay.*`。** OSNPlay 使用自己的 action 命名空间。
+- **Intent action 已从 `com.shihab.diplay.*` 改为 `com.lynkco.link.*`。** LynkCo-Link 使用自己的 action 命名空间。
 
 ## LynkCo-DiPlay 整合边界
 
-LynkCo-DiPlay 基于 DiPlay **0.2.12**，OSNPlay 基于 **0.2.22**。其深度改动绑定旧基座，不能整文件合并；当前只并入自包含的检测/诊断模块、构建约定和实车结论。
+LynkCo-DiPlay 基于 DiPlay **0.2.12**，LynkCo-Link 基于 **0.2.22**。其深度改动绑定旧基座，不能整文件合并；当前只并入自包含的检测/诊断模块、构建约定和实车结论。
 
 已并入：
 
@@ -98,12 +98,12 @@ LynkCo-DiPlay 基于 DiPlay **0.2.12**，OSNPlay 基于 **0.2.22**。其深度�
 | 领克热点 / 无线 | API 28 临时热点与 2.4 GHz 交接；其 R1 无线仍未通 |
 | 平台画像 `HeadUnitProfile` | 领克资源与音频/蓝牙行为开关 |
 
-冲突取舍：品牌（OSNPlay 名称、图标、包名）和文档体系以本地为准；LynkCo-DiPlay 的 Lynk 品牌不并入。
+冲突取舍：品牌（LynkCo-Link 名称、图标、包名）和文档体系以本地为准；LynkCo-DiPlay 的 Lynk 品牌不并入。
 
 ## 版本策略
 
-- OSNPlay 使用独立版本线，versionCode 从 100 起。
-- 每个 OSNPlay 版本记录对应的上游 DiPlay 基线，便于追溯。
+- LynkCo-Link 使用独立版本线，versionCode 从 100 起。
+- 每个 LynkCo-Link 版本记录对应的上游 DiPlay 基线，便于追溯。
 - 上游重要修复按模块 cherry-pick，不直接合并且不覆盖本地品牌与领克适配。
 - 预览版使用 `preview` 构建（debug 签名、独立 `.preview` 包名），正式版使用 `release` 构建和独立签名密钥。
 
@@ -130,7 +130,7 @@ LynkCo-DiPlay 基于 DiPlay **0.2.12**，OSNPlay 基于 **0.2.22**。其深度�
 
 ### P3 — 工程卫生
 
-- 分模块将命名空间改为 OSNPlay 命名空间，每步保持构建和测试通过。
+- 分模块将命名空间改为 LynkCo-Link 命名空间，每步保持构建和测试通过。
 - 清理其他语言中残留的 DiPlay 长文案。
 - 评估 CarPlay 图标在不同桌面上的遮罩/裁剪效果。
 

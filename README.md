@@ -1,4 +1,4 @@
-# OSNPlay
+# LynkCo-Link
 
 **[English](README.md) | [简体中文](README.zh-CN.md)**
 
@@ -7,7 +7,7 @@
 [![Android checks](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml/badge.svg)](https://github.com/Jas0n0ss/OSN-Play/actions/workflows/android.yml)
 [![Release](https://img.shields.io/github/v/release/Jas0n0ss/OSN-Play?label=release)](https://github.com/Jas0n0ss/OSN-Play/releases)
 
-OSNPlay runs on the **head unit**. It needs no jailbreak, dongle or authentication server. The public APK includes authentication assets and can connect directly.
+LynkCo-Link runs on the **head unit**. It needs no jailbreak, dongle or authentication server. The public APK includes authentication assets and can connect directly.
 
 ## Supported cars
 
@@ -26,7 +26,7 @@ See [compatibility](docs/COMPATIBILITY.md).
 Download one file:
 
 ```text
-OSNPlay-<version>-lynk-release-standalone.apk
+LynkCo-Link-<version>-lynk-release-standalone.apk
 ```
 
 From [Releases](https://github.com/Jas0n0ss/OSN-Play/releases/latest), or:
@@ -35,7 +35,7 @@ From [Releases](https://github.com/Jas0n0ss/OSN-Play/releases/latest), or:
 gh release download --repo Jas0n0ss/OSN-Play
 ```
 
-> The package name is `com.kugou.android.auto`, used only to pass the OSN Launcher3 whitelist. The app is OSNPlay and contains no Kugou features. Remove any real Kugou head-unit app before installing.
+> The package name is `com.kugou.android.auto`, used only to pass the OSN Launcher3 whitelist. The app is LynkCo-Link and contains no Kugou features. Remove any real Kugou head-unit app before installing.
 
 ### Install
 
@@ -49,33 +49,33 @@ gh release download --repo Jas0n0ss/OSN-Play
 
 ```sh
 adb devices
-adb install -r OSNPlay-<version>-lynk-release-standalone.apk
+adb install -r LynkCo-Link-<version>-lynk-release-standalone.apk
 ```
 
 Launch once after installing; Android stopped state keeps boot start disabled until then:
 
 ```sh
-adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkActivity
 ```
 
 The first run goes straight to “Connection → Choose iPhone”; it does not ask for a DiLink version.
 
 ### No icon in the app list
 
-OSNPlay uses a whitelisted Launcher3 package name, so it should appear. If it does not:
+LynkCo-Link uses a whitelisted Launcher3 package name, so it should appear. If it does not:
 
 1. Reboot the head unit and check “All apps”.
 2. Settings → Advanced → Launcher bubble; allow “Display over other apps”.
 3. Or start it with ADB:
 
 ```sh
-adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivity
+adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkActivity
 ```
 
 ### Connect iPhone
 
-- **Wired**: connect to the USB-A data port, open OSNPlay, tap Allow on the iPhone.
-- **Wireless**: OSNPlay → Connection, choose car hotspot / Wi-Fi Direct / Existing Wi-Fi and pair.
+- **Wired**: connect to the USB-A data port, open LynkCo-Link, tap Allow on the iPhone.
+- **Wireless**: LynkCo-Link → Connection, choose car hotspot / Wi-Fi Direct / Existing Wi-Fi and pair.
 - On failure: Settings → Diagnostics → Save diagnostic report.
 
 ## FAQ
@@ -85,14 +85,14 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.OSNPlayActivi
 | `adb: command not found` | Install Platform-Tools or run from its directory |
 | `device unauthorized` | Allow USB debugging on the car; revoke and reconnect if needed |
 | `INSTALL_FAILED_USER_RESTRICTED` | Enable USB install / unknown sources |
-| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Uninstall the old `com.osnplay.lynk` or entry package first (settings are lost) |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Uninstall the old `com.lynkco.link.lynk` or entry package first (settings are lost) |
 | Installed but no icon | Reboot; enable the launcher bubble; or start with ADB |
 | CarPlay does not connect | Unlock the iPhone, enable Bluetooth/Wi-Fi, export diagnostics |
 | Real Kugou app installed | Package conflict; uninstall the Kugou head-unit app |
 
 ## Update and uninstall
 
-Each update is a separate Release; all historical releases are kept. From the old `com.osnplay.lynk` package, uninstall before installing.
+Each update is a separate Release; all historical releases are kept. From the old `com.lynkco.link.lynk` package, uninstall before installing.
 
 ```sh
 adb uninstall com.kugou.android.auto
@@ -114,7 +114,7 @@ See [build instructions](docs/BUILD.md).
 
 ## Sources and credits
 
-OSNPlay is based on these public projects:
+LynkCo-Link is based on these public projects:
 
 | Project | Role |
 | --- | --- |

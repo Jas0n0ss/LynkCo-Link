@@ -7,7 +7,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
-/** Why OSNPlay wants the car in its phone audio state. */
+/** Why LynkCoLink wants the car in its phone audio state. */
 enum class PhoneAudioReason {
     /** A call on the iPhone is ringing, dialing or connected over CarPlay. */
     CARPLAY_CALL,
@@ -39,7 +39,7 @@ internal interface RouteScheduler {
  * shortly after the last reason goes away. All backend work runs in order on the scheduler.
  *
  * A refused call is not retried at once: [carPlayCallsUseCarAudio] turns false for [failureBackoffMillis], so
- * calls in that window fall back to OSNPlay's own echo canceller instead of having neither.
+ * calls in that window fall back to LynkCoLink's own echo canceller instead of having neither.
  */
 internal class PhoneAudioRouteController(
     private val backend: PhoneAudioBackend,
@@ -63,7 +63,7 @@ internal class PhoneAudioRouteController(
     /** A setting changed: start or end the call to match. */
     fun settingsChanged() = evaluate()
 
-    /** True while the CarPlay call's echo is left to the car, so OSNPlay's own canceller must stay out of it. */
+    /** True while the CarPlay call's echo is left to the car, so LynkCoLink's own canceller must stay out of it. */
     fun carPlayCallsUseCarAudio(): Boolean = enabled(PhoneAudioReason.CARPLAY_CALL) && !failedRecently()
 
     private fun failedRecently(): Boolean = failedAt != NEVER && now() - failedAt < failureBackoffMillis
@@ -100,7 +100,7 @@ internal class PhoneAudioRouteController(
     }
 
     companion object {
-        private const val TAG = "OSNPlay-PhoneAudio"
+        private const val TAG = "LynkCoLink-PhoneAudio"
         private const val NEVER = Long.MIN_VALUE
 
         /** Bridges the gap between two calls, or a call and call waiting, without leaving and re-entering the state. */
@@ -115,12 +115,12 @@ internal class PhoneAudioRouteController(
  * On a head unit OSN 3 head unit, Telecom tells the car's audio layer about any call, and the voice processing
  * the car applies to a phone call, echo cancellation included, only runs in that state. A third-party call
  * played as media never reaches it, so the far end hears its own voice back. Any app may register a
- * self-managed call (the normal permission MANAGE_OWN_CALLS), so OSNPlay holds one for as long as a call
+ * self-managed call (the normal permission MANAGE_OWN_CALLS), so LynkCoLink holds one for as long as a call
  * needs the car's audio. Both uses are off by default, see [phone audio route] and
  * [phone audio route].
  */
 object PhoneAudioRoute {
-    private const val TAG = "OSNPlay-PhoneAudio"
+    private const val TAG = "LynkCoLink-PhoneAudio"
 
     private val executor: ScheduledExecutorService by lazy {
         Executors.newSingleThreadScheduledExecutor { Thread(it, "osnplay-phone-audio").apply { isDaemon = true } }
@@ -174,12 +174,12 @@ object PhoneAudioRoute {
     }
 
     /**
-     * True when the car's phone audio state handles the CarPlay call's echo, so OSNPlay must not also
+     * True when the car's phone audio state handles the CarPlay call's echo, so LynkCoLink must not also
      * run its own canceller or the platform effects on the call microphone.
      */
     fun carPlayCallsUseCarAudio(): Boolean = controller?.carPlayCallsUseCarAudio() == true
 
-    /** OSNPlay's own call microphone shows up in the recording list; it is not another app's call. */
+    /** LynkCoLink's own call microphone shows up in the recording list; it is not another app's call. */
     internal fun ownCarPlayCallActive(): Boolean = carPlayCallActive
 
     private fun enabledFor(context: Context, reason: PhoneAudioReason): Boolean = when (reason) {

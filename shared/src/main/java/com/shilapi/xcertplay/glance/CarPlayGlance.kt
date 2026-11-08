@@ -25,7 +25,7 @@ object CarPlayGlance {
     )
 
     private const val LANE_GUIDANCE_UPDATE = 0x5204
-    private const val TAG = "OSNPlay-Lane"
+    private const val TAG = "LynkCoLink-Lane"
 
     private var connected = false
     private var last = Snapshot()

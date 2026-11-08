@@ -153,11 +153,11 @@ class BplistCodecHostileInputTest {
     @Test fun anEncodedNestedPlistRoundTrips() {
         val value = mapOf(
             "streams" to listOf(mapOf("type" to 110L, "audioType" to "default", "data" to byteArrayOf(1, 2, 3))),
-            "name" to "OSNPlay",
+            "name" to "LynkCoLink",
             "flag" to true,
         )
         val decoded = BplistCodec.decode(BplistCodec.encode(value)) as Map<*, *>
-        assertEquals("OSNPlay", decoded["name"])
+        assertEquals("LynkCoLink", decoded["name"])
         assertEquals(true, decoded["flag"])
         val stream = (decoded["streams"] as List<*>).single() as Map<*, *>
         assertEquals(110L, stream["type"])

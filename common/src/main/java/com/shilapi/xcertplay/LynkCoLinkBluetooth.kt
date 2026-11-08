@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.provider.Settings
 
-internal object OSNPlayBluetooth {
+internal object LynkCoLinkBluetooth {
     fun localAddress(context: Context): String? {
         val adapter = runCatching { (context.getSystemService(BluetoothManager::class.java)?.adapter ?: BluetoothAdapter.getDefaultAdapter())?.address }.getOrNull()
         val setting = runCatching { Settings.Secure.getString(context.contentResolver, "bluetooth_address") }.getOrNull()

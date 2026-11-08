@@ -153,7 +153,7 @@ internal class HomeScreenMonitor(context: Context, private val onChange: (Boolea
             return set
         }
 
-        /** The launcher Android uses as home now, unless that is the chooser or OSNPlay itself. */
+        /** The launcher Android uses as home now, unless that is the chooser or LynkCoLink itself. */
         fun defaultHome(context: Context): String? = runCatching {
             context.packageManager.resolveActivity(
                 Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME),

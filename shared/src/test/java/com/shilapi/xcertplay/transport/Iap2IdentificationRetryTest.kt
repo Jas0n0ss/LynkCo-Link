@@ -12,10 +12,10 @@ import org.junit.Test
 
 /** iOS 13.6.1 rejected the CarPlay pair as unknown (#556); a corrected identification is retried once. */
 class Iap2IdentificationRetryTest {
-    private val wireless = Iap2WirelessIdentification("AA:BB:CC:DD:EE:FF", "OSNPlay")
+    private val wireless = Iap2WirelessIdentification("AA:BB:CC:DD:EE:FF", "LynkCoLink")
     private val config = Iap2IdentificationConfig(
-        name = "OSNPlay",
-        modelIdentifier = "OSNPlay",
+        name = "LynkCoLink",
+        modelIdentifier = "LynkCoLink",
         manufacturer = "BYD",
         serialNumber = "test",
         firmwareVersion = "1",

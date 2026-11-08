@@ -16,7 +16,7 @@ private const val FIRST_APPLICATION_UID = 10_000
 
 /** Grants iPhone USB access when Android 7.1 through 9 has no permission activity to show. */
 internal object IphoneUsbAdbGrant {
-    internal const val HEADER = "OSNPLAY_USB_GRANT_V1"
+    internal const val HEADER = "LYNKCO_LINK_USB_GRANT_V1"
     enum class Code { GRANTED, NO_DEVICE, ADB_UNAVAILABLE, UNSUPPORTED, DENIED, ERROR }
 
     data class Result(
@@ -87,7 +87,7 @@ internal object IphoneUsbAdbGrant {
 
 /**
  * Runs under an already-approved adb shell UID. It grants only attached devices with the exact
- * requested Apple VID/PID to the installed OSNPlay package and prints no device identifiers.
+ * requested Apple VID/PID to the installed LynkCoLink package and prints no device identifiers.
  */
 object IphoneUsbGrantTool {
     private const val ROOT_UID = 0

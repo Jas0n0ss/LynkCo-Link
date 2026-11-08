@@ -18,7 +18,7 @@ import com.shilapi.xcertplay.telecom.PhoneAudioRoute
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
-        // Starts the watcher for other apps' calls when that setting is on, even without opening OSNPlay.
+        // Starts the watcher for other apps' calls when that setting is on, even without opening LynkCoLink.
         PhoneAudioRoute.attach(context)
         val launchEnabled = AirPlayPersistence.loadAutoStartOnBoot(context)
         StartupDiagnosticSnapshot.received(context, launchEnabled)
@@ -29,7 +29,7 @@ class BootReceiver : BroadcastReceiver() {
                 StartupDiagnosticSnapshot.launchResult(context)
             } catch (error: RuntimeException) {
                 StartupDiagnosticSnapshot.launchResult(context, error)
-                Log.w(TAG, "Boot auto-start could not launch OSNPlayActivity", error)
+                Log.w(TAG, "Boot auto-start could not launch LynkCoLinkActivity", error)
             }
         }
         // The OSN stock launcher uses a package whitelist and may never list a sideloaded app.
@@ -38,7 +38,7 @@ class BootReceiver : BroadcastReceiver() {
     }
 
     /** Shaped like the launcher icon's intent: an active CarPlay session is returned to, not covered. */
-    private fun openIntent(context: Context) = Intent(context, OSNPlayActivity::class.java).apply {
+    private fun openIntent(context: Context) = Intent(context, LynkCoLinkActivity::class.java).apply {
         action = Intent.ACTION_MAIN
         addCategory(Intent.CATEGORY_LAUNCHER)
         addFlags(

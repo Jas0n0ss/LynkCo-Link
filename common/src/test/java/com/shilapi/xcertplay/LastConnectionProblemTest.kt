@@ -73,7 +73,7 @@ class LastConnectionProblemTest {
 
     private val hotspotOff = CarPlayStatus.Failed("The car hotspot is off. Turn it on in the car settings and connect again.",
         startupFailure = WirelessStartupFailure.HOTSPOT_CONFIGURATION, knownCause = ConnectionFailureCause.CAR_HOTSPOT_OFF)
-    private val notPaired = CarPlayStatus.Failed("The selected iPhone is no longer paired. Choose it again in OSNPlay.",
+    private val notPaired = CarPlayStatus.Failed("The selected iPhone is no longer paired. Choose it again in LynkCo-Link.",
         knownCause = ConnectionFailureCause.CHOSEN_IPHONE_NOT_PAIRED)
 
     @Test fun eachProblemTheScreenNamesIsRememberedInItsWords() {

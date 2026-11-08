@@ -97,7 +97,7 @@ internal object UsbPermissionSetup {
         }
     }
 
-    private const val EXIT_MARKER = "OSNPLAY_PERMISSION_EXIT"
+    private const val EXIT_MARKER = "LYNKCO_LINK_PERMISSION_EXIT"
 
     private fun withExitStatus(command: String): String =
         "( $command ); result=\$?; printf '\\n$EXIT_MARKER:%s\\n' \"\$result\""

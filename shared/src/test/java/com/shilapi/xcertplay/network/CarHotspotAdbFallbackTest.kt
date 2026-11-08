@@ -24,8 +24,8 @@ class CarHotspotAdbFallbackTest {
     }
 
     @Test fun aZeroExitCodeCannotHidePermissionOrUnknownCommandOutput() {
-        assertTrue(CarHotspotAdbFallback.accepted("Started\nOSNPLAY_HOTSPOT_EXIT:0"))
-        for (output in listOf(null, "", "OSNPLAY_HOTSPOT_EXIT:1", "Unknown command\nOSNPLAY_HOTSPOT_EXIT:0", "SecurityException\nOSNPLAY_HOTSPOT_EXIT:0")) {
+        assertTrue(CarHotspotAdbFallback.accepted("Started\nLYNKCO_LINK_HOTSPOT_EXIT:0"))
+        for (output in listOf(null, "", "LYNKCO_LINK_HOTSPOT_EXIT:1", "Unknown command\nLYNKCO_LINK_HOTSPOT_EXIT:0", "SecurityException\nLYNKCO_LINK_HOTSPOT_EXIT:0")) {
             assertFalse(CarHotspotAdbFallback.accepted(output))
         }
     }
@@ -37,14 +37,14 @@ class CarHotspotAdbFallbackTest {
             commands += command
             if (command.endsWith("help")) "  start-tethering wifi" else {
                 on = true
-                "OSNPLAY_HOTSPOT_EXIT:0"
+                "LYNKCO_LINK_HOTSPOT_EXIT:0"
             }
         }, {}))
         assertEquals(2, commands.size)
         assertFalse(commands.last().contains("||"))
         assertTrue(commands.last().contains("\$?"))
         assertFalse(CarHotspotAdbFallback.start(deadline(20), { false }, { false }, { command, _ ->
-            if (command.endsWith("help")) "  start-tethering wifi" else "OSNPLAY_HOTSPOT_EXIT:0"
+            if (command.endsWith("help")) "  start-tethering wifi" else "LYNKCO_LINK_HOTSPOT_EXIT:0"
         }, {}))
     }
 
@@ -69,7 +69,7 @@ class CarHotspotAdbFallbackTest {
 
         logs.clear()
         CarHotspotAdbFallback.start(deadline(), { false }, { false }, { command, _ ->
-            if (command.endsWith("help")) "  start-tethering wifi" else "\nSecurityException: no tether permission\nOSNPLAY_HOTSPOT_EXIT:0"
+            if (command.endsWith("help")) "  start-tethering wifi" else "\nSecurityException: no tether permission\nLYNKCO_LINK_HOTSPOT_EXIT:0"
         }, { logs += it })
         assertEquals(listOf("car hotspot: firmware rejected 'cmd connectivity start-tethering wifi': " +
             "SecurityException: no tether permission"), logs)
@@ -81,7 +81,7 @@ class CarHotspotAdbFallbackTest {
             when {
                 command == "dumpsys wifi" -> "mWifiApState: ${if (on) 13 else 11}"
                 command.endsWith("help") -> "  start-tethering wifi"
-                else -> { on = true; "OSNPLAY_HOTSPOT_EXIT:0" }
+                else -> { on = true; "LYNKCO_LINK_HOTSPOT_EXIT:0" }
             }
         }, {}))
     }

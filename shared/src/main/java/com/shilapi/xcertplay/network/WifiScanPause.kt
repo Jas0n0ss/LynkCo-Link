@@ -51,8 +51,8 @@ internal class WifiScanPause(
     }
 
     internal companion object {
-        internal const val TAG = "OSNPlayWifiScan"
-        internal const val HEADER = "OSNPLAY_WIFI_SCAN_V1"
+        internal const val TAG = "LynkCoLinkWifiScan"
+        internal const val HEADER = "LYNKCO_LINK_WIFI_SCAN_V1"
 
         /** app_process start-up on a slow head unit plus the helper's own deadline. */
         internal const val HELPER_TIMEOUT_MS = 15_000

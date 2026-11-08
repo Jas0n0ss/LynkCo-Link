@@ -18,13 +18,13 @@ import org.robolectric.shadows.ShadowAlertDialog
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [29], qualifiers = "en-w600dp-h700dp")
 class DiagnosticReportViewTest {
-    private var activity: OSNPlayActivity? = null
+    private var activity: LynkCoLinkActivity? = null
 
     @After fun tearDown() { activity?.finish() }
 
     // Same shape as the exported report: a header, then 8 logs capped at SessionLogFile.MAX_BYTES each.
     private fun maxSizeReport(): String = buildString {
-        appendLine("OSNPlay 1.0 · private beta diagnostic report")
+        appendLine("LynkCoLink 1.0 · private beta diagnostic report")
         for (name in SessionLogFile.REPORT_NAMES) {
             appendLine("--- $name ---")
             var bytes = 0L
@@ -39,11 +39,11 @@ class DiagnosticReportViewTest {
 
     private fun showReport(report: String): Pair<String, Long> {
         val screen = Robolectric.buildActivity(
-            OSNPlayActivity::class.java,
-            Intent(RuntimeEnvironment.getApplication(), OSNPlayActivity::class.java).putExtra("page", "settings"),
+            LynkCoLinkActivity::class.java,
+            Intent(RuntimeEnvironment.getApplication(), LynkCoLinkActivity::class.java).putExtra("page", "settings"),
         ).setup().get().also { activity = it }
         val started = System.nanoTime()
-        OSNPlayActivity::class.java.getDeclaredMethod("showDiagnosticReport", String::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("showDiagnosticReport", String::class.java)
             .apply { isAccessible = true }.invoke(screen, report)
         val millis = (System.nanoTime() - started) / 1_000_000
         val dialog = ShadowAlertDialog.getLatestAlertDialog()
@@ -64,7 +64,7 @@ class DiagnosticReportViewTest {
     }
 
     @Test fun smallReportIsShownInFull() {
-        val report = "OSNPlay 1.0\n--- osnplay.log ---\n12:00:00.000  CarPlay connected\n"
+        val report = "LynkCoLink 1.0\n--- osnplay.log ---\n12:00:00.000  CarPlay connected\n"
         assertEquals(report, showReport(report).first)
     }
 
@@ -72,10 +72,10 @@ class DiagnosticReportViewTest {
 
     private fun tail(report: String): String {
         val screen = activity ?: Robolectric.buildActivity(
-            OSNPlayActivity::class.java,
-            Intent(RuntimeEnvironment.getApplication(), OSNPlayActivity::class.java).putExtra("page", "settings"),
+            LynkCoLinkActivity::class.java,
+            Intent(RuntimeEnvironment.getApplication(), LynkCoLinkActivity::class.java).putExtra("page", "settings"),
         ).setup().get().also { activity = it }
-        return OSNPlayActivity::class.java.getDeclaredMethod("reportTail", String::class.java)
+        return LynkCoLinkActivity::class.java.getDeclaredMethod("reportTail", String::class.java)
             .apply { isAccessible = true }.invoke(screen, report) as String
     }
 

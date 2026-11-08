@@ -28,12 +28,12 @@ import org.robolectric.util.ReflectionHelpers
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28, 33], qualifiers = "en", manifest = Config.NONE)
 class NightModeSettingsTest {
-    private lateinit var controller: ActivityController<OSNPlayActivity>
-    private lateinit var activity: OSNPlayActivity
+    private lateinit var controller: ActivityController<LynkCoLinkActivity>
+    private lateinit var activity: LynkCoLinkActivity
     private lateinit var page: LinearLayout
 
     @Before fun setUp() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java)
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java)
         activity = controller.get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         activity.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
@@ -173,7 +173,7 @@ class NightModeSettingsTest {
         AirPlayPersistence.saveCarPlayNightMode(activity, CarPlayNightMode.SCHEDULE)
         renderOverview()
 
-        val index = ReflectionHelpers.callInstanceMethod<List<OSNPlayActivity.SettingsSearchResult>>(
+        val index = ReflectionHelpers.callInstanceMethod<List<LynkCoLinkActivity.SettingsSearchResult>>(
             activity, "buildSettingsSearchIndex")
 
         assertTrue(index.any {
@@ -207,7 +207,7 @@ class NightModeSettingsTest {
 
     private fun renderSettings() {
         page = LinearLayout(activity)
-        OSNPlayActivity::class.java.getDeclaredMethod("displaySettings", LinearLayout::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("displaySettings", LinearLayout::class.java)
             .apply { isAccessible = true }.invoke(activity, page)
         activity.setContentView(page)
     }

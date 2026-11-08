@@ -25,7 +25,7 @@
     <string name="link_identifying">等待 iPhone 识别车机</string>
     <string name="link_identifying_hint">蓝牙或 USB 通道已打开，正在等待 iPhone 的设备识别回应，尚未开始认证。</string>
     <string name="link_no_response">iPhone 尚未启动 CarPlay</string>
-    <string name="link_permission_fix">Android 9 请允许 OSNPlay 使用位置信息；较新系统请允许“附近的设备”，然后点“重试”。</string>
+    <string name="link_permission_fix">Android 9 请允许 LynkCo-Link 使用位置信息；较新系统请允许“附近的设备”，然后点“重试”。</string>
     <string name="link_permission_needed">还需要连接权限</string>
     <string name="link_phone">2 / 3 · 查找已配对的 iPhone</string>
     <string name="link_phone_check">请解锁 iPhone 并保持蓝牙开启。蓝牙音乐连接成功，还不代表 CarPlay 通道已连接。</string>
@@ -39,9 +39,9 @@
     <string name="link_usb_mode_failed">iPhone 未进入 CarPlay USB 模式</string>
     <string name="link_usb_network">正在准备 USB 网络</string>
     <string name="link_usb_opening">正在建立 USB 数据通道</string>
-    <string name="link_usb_permission_fix">点“重试”，在车机弹窗中允许 OSNPlay 访问 USB 设备；没有弹窗时重新插拔数据线。</string>
+    <string name="link_usb_permission_fix">点“重试”，在车机弹窗中允许 LynkCo-Link 访问 USB 设备；没有弹窗时重新插拔数据线。</string>
     <string name="link_usb_permission_needed">尚未允许访问 USB 设备</string>
-    <string name="link_usb_permission_prompt">请在车机弹窗中允许 OSNPlay 访问 USB 设备。</string>
+    <string name="link_usb_permission_prompt">请在车机弹窗中允许 LynkCo-Link 访问 USB 设备。</string>
     <string name="link_usb_service">正在启动 iPhone 的 CarPlay 服务</string>
     <string name="link_usb_switching">正在切换 iPhone 的 USB 模式</string>
     <string name="link_usb_trust">等待 iPhone 信任授权</string>

@@ -28,7 +28,7 @@ class SettingsBackupServerTest {
                 imported.set(outcome)
                 outcome
             },
-            report = { "OSNPlay diagnostic report\n診斷".toByteArray(Charsets.UTF_8) },
+            report = { "LynkCoLink diagnostic report\n診斷".toByteArray(Charsets.UTF_8) },
         )
         val started = server.start()
         assertNotNull(started)
@@ -108,7 +108,7 @@ class SettingsBackupServerTest {
     fun reportReturnsTheTextOnlyUnderTheTokenPath() {
         val (status, body) = get("/b/${endpoint.token}/report")
         assertEquals(200, status)
-        assertEquals("OSNPlay diagnostic report\n診斷", body)
+        assertEquals("LynkCoLink diagnostic report\n診斷", body)
         assertEquals(404, get("/report").first)
         assertEquals(404, get("/b/wrong-token/report").first)
         assertEquals(404, get("/b/${endpoint.token}/report", method = "POST", body = ByteArray(0)).first)

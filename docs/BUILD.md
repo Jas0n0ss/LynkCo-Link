@@ -1,6 +1,6 @@
 # 构建与 CI
 
-本文覆盖 OSNPlay 的本地构建、认证资产、签名、构建产物和 GitHub Actions。所有命令都在仓库根目录（包含 `gradlew`）执行。
+本文覆盖 LynkCo-Link 的本地构建、认证资产、签名、构建产物和 GitHub Actions。所有命令都在仓库根目录（包含 `gradlew`）执行。
 
 ## 环境要求
 
@@ -31,7 +31,7 @@
 本仓库只交付一个 APK：**`assembleStandaloneLynkRelease`**。它使用 OSN 白名单包名 `com.kugou.android.auto`，同时包含主程序和桌面入口，含认证资产。不再构建 preview / debug 变体。
 
 ```sh
-export OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets
+export LYNKCO_LINK_AUTH_ASSETS_DIR=/absolute/path/to/assets
 export ANDROID_KEYSTORE_PATH=/absolute/path/to/release.jks
 export ANDROID_KEYSTORE_PASSWORD='...'
 export ANDROID_KEY_ALIAS='...'
@@ -46,7 +46,7 @@ export ANDROID_KEY_PASSWORD='...'
 mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 ```
 
-包名 `com.kugou.android.auto`，版本 `0.2.1-lynk`，release 签名，含显式提供的认证资产。
+包名 `com.kugou.android.auto`，版本 `0.3.0-lynk`，release 签名，含显式提供的认证资产。
 
 ## 认证资产与 standalone 车机包
 
@@ -60,7 +60,7 @@ mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk
 显式提供资产和 release keystore 后构建唯一主程序包：
 
 ```sh
-OSNPLAY_AUTH_ASSETS_DIR=/absolute/path/to/assets \
+LYNKCO_LINK_AUTH_ASSETS_DIR=/absolute/path/to/assets \
 ANDROID_KEYSTORE_PATH=/absolute/path/to/release.jks \
 ANDROID_KEYSTORE_PASSWORD='...' \
 ANDROID_KEY_ALIAS='...' \
@@ -99,7 +99,7 @@ export ANDROID_KEY_PASSWORD='...'
 
 `.github/workflows/release.yml` 只手动触发，并且**只构建** `:mobile:assembleStandaloneLynkRelease`。它要求以下 Actions Secrets：
 
-- `OSNPLAY_AUTH_ASSETS_BASE64`：包含 `offline-mfi/identity.pk8` + `certificate.p7b` 的 zip（base64）
+- `LYNKCO_LINK_AUTH_ASSETS_BASE64`：包含 `offline-mfi/identity.pk8` + `certificate.p7b` 的 zip（base64）
 - `ANDROID_KEYSTORE_BASE64`：release keystore（base64）
 - `ANDROID_KEYSTORE_PASSWORD`
 - `ANDROID_KEY_ALIAS`
@@ -107,7 +107,7 @@ export ANDROID_KEY_PASSWORD='...'
 
 产物为：
 
-- `OSNPlay-<version>-lynk-release-standalone.apk`：主程序 + 白名单入口，含可提取的认证材料；
+- `LynkCo-Link-<version>-lynk-release-standalone.apk`：主程序 + 白名单入口，含可提取的认证材料；
 - `SHA256SUMS.txt`：APK 校验和。
 
 发布前必须确认认证材料的分发范围。

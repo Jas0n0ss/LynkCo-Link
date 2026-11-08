@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auto_bluetooth_restore_failed">Bluetooth was not restored. Turn it on in car settings, then return to OSNPlay.</string>
+    <string name="auto_bluetooth_restore_failed">Bluetooth was not restored. Turn it on in car settings, then return to LynkCo-Link.</string>
     <string name="auto_hotspot_conflict">Turn off the car’s existing shared hotspot, then retry. Or choose the car hotspot option.</string>
     <string name="auto_hotspot_creating">Creating a temporary hotspot and checking its real network settings.</string>
     <string name="auto_hotspot_failed">The car could not provide a usable temporary hotspot. Open connection settings to use the car hotspot, or export the report.</string>
-    <string name="auto_hotspot_location">Turn on system Location and allow location access for OSNPlay, then retry. Android 9 requires this to create a hotspot.</string>
+    <string name="auto_hotspot_location">Turn on system Location and allow location access for LynkCo-Link, then retry. Android 9 requires this to create a hotspot.</string>
     <string name="auto_hotspot_sent">Hotspot details were sent automatically. Keep iPhone Wi-Fi and Bluetooth on and accept its CarPlay prompt.</string>
     <string name="link_accept_carplay">Check your iPhone for an “Allow CarPlay” prompt. Waiting for the phone to finish setup.</string>
     <string name="link_auth_failed">CarPlay authentication could not complete</string>
@@ -25,7 +25,7 @@
     <string name="link_identifying">Waiting for iPhone to identify the car</string>
     <string name="link_identifying_hint">The Bluetooth or USB channel is open. Waiting for the iPhone identification response; authentication has not started.</string>
     <string name="link_no_response">Your iPhone has not started CarPlay</string>
-    <string name="link_permission_fix">Allow Location for OSNPlay on Android 9 (Nearby devices on newer Android), then tap Retry.</string>
+    <string name="link_permission_fix">Allow Location for LynkCo-Link on Android 9 (Nearby devices on newer Android), then tap Retry.</string>
     <string name="link_permission_needed">Connection permission is needed</string>
     <string name="link_phone">2 / 3 · Finding your paired iPhone</string>
     <string name="link_phone_check">Unlock your iPhone and keep Bluetooth on. A music Bluetooth connection alone does not establish CarPlay.</string>
@@ -39,9 +39,9 @@
     <string name="link_usb_mode_failed">iPhone did not enter CarPlay USB mode</string>
     <string name="link_usb_network">Preparing the USB network</string>
     <string name="link_usb_opening">Establishing the USB data channel</string>
-    <string name="link_usb_permission_fix">Tap Retry and allow OSNPlay to access the USB device when the car asks. Reconnect the cable if the prompt does not appear.</string>
+    <string name="link_usb_permission_fix">Tap Retry and allow LynkCo-Link to access the USB device when the car asks. Reconnect the cable if the prompt does not appear.</string>
     <string name="link_usb_permission_needed">USB device access was not allowed</string>
-    <string name="link_usb_permission_prompt">Allow OSNPlay to access the USB device in the dialog on the car screen.</string>
+    <string name="link_usb_permission_prompt">Allow LynkCo-Link to access the USB device in the dialog on the car screen.</string>
     <string name="link_usb_service">Starting the iPhone CarPlay service</string>
     <string name="link_usb_switching">Switching iPhone to CarPlay USB mode</string>
     <string name="link_usb_trust">Waiting for iPhone trust authorization</string>

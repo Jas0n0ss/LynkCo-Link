@@ -109,7 +109,7 @@ internal class WifiAutojoinSwitch(
                 "asBinder" -> callback
                 "hashCode" -> System.identityHashCode(proxy)
                 "equals" -> proxy === args?.firstOrNull()
-                "toString" -> "OSNPlayAutojoinListener"
+                "toString" -> "LynkCoLinkAutojoinListener"
                 else -> null
             }
         }

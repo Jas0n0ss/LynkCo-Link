@@ -122,7 +122,7 @@ internal class AudioChannelPreview(private val onUnavailable: (Int) -> Unit) : C
     }
 
     private companion object {
-        private const val TAG = "OSNPlayAudioPreview"
+        private const val TAG = "LynkCoLinkAudioPreview"
         private const val SAMPLE_RATE = 48_000
         private const val TONE_MILLIS = 600
     }

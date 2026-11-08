@@ -103,22 +103,22 @@ class LivePictureTest {
     }
 
     @Test fun picturePanelUsesAndCanRepaintToTheLightOverlayPalette() {
-        val panel = CarPlayPicturePanel(context, initialPalette = OSNPlayPalette.LIGHT) {}
+        val panel = CarPlayPicturePanel(context, initialPalette = LynkCoLinkPalette.LIGHT) {}
         fun descendants(view: View): List<View> = listOf(view) +
             if (view is ViewGroup) (0 until view.childCount).flatMap { descendants(view.getChildAt(it)) }
             else emptyList()
 
         assertEquals(
-            OSNPlayPalette.LIGHT.overlayBackground,
+            LynkCoLinkPalette.LIGHT.overlayBackground,
             (panel.background as android.graphics.drawable.ColorDrawable).color,
         )
         assertTrue(descendants(panel).filterIsInstance<android.widget.TextView>()
             .filterNot { it is Button }
-            .all { it.currentTextColor == OSNPlayPalette.LIGHT.overlayPrimaryText })
+            .all { it.currentTextColor == LynkCoLinkPalette.LIGHT.overlayPrimaryText })
 
-        panel.applyPalette(OSNPlayPalette.DARK)
+        panel.applyPalette(LynkCoLinkPalette.DARK)
         assertEquals(
-            OSNPlayPalette.DARK.overlayBackground,
+            LynkCoLinkPalette.DARK.overlayBackground,
             (panel.background as android.graphics.drawable.ColorDrawable).color,
         )
     }

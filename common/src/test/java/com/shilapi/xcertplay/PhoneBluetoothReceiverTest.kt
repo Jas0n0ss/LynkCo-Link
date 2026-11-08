@@ -20,13 +20,13 @@ class PhoneBluetoothReceiverTest {
     private val selected = "12:34:56:78:9A:BC"
 
     @Before fun reset() {
-        OSNPlayPreferences.saveConnectOnPhoneBluetooth(app, false)
+        LynkCoLinkPreferences.saveConnectOnPhoneBluetooth(app, false)
         app.getSharedPreferences("osnplay_phone_wake", Context.MODE_PRIVATE).edit().clear().commit()
         app.getSharedPreferences("osnplay_phone_wake_diagnostics", Context.MODE_PRIVATE).edit().clear().commit()
         CarPlayBackgroundSession.clear()
         // Saved in lowercase on purpose: the receiver must match the (always uppercase) device
         // address case-insensitively; Robolectric refuses to build a lowercase remote device.
-        OSNPlayPreferences.savePhone(app, selected.lowercase(), "iPhone")
+        LynkCoLinkPreferences.savePhone(app, selected.lowercase(), "iPhone")
     }
 
     private fun event(address: String): Intent {
@@ -43,13 +43,13 @@ class PhoneBluetoothReceiverTest {
         val receiver = PhoneBluetoothReceiver()
         receiver.onReceive(context, event(selected))
         assertTrue(launches.isEmpty())
-        OSNPlayPreferences.saveConnectOnPhoneBluetooth(app, true)
+        LynkCoLinkPreferences.saveConnectOnPhoneBluetooth(app, true)
         receiver.onReceive(context, event("AA:BB:CC:DD:EE:FF"))
         assertTrue(launches.isEmpty())
         receiver.onReceive(context, event(selected))
         receiver.onReceive(context, event(selected))
         assertEquals(1, launches.size)
-        assertEquals(OSNPlayActivity::class.java.name, launches.single().component?.className)
+        assertEquals(LynkCoLinkActivity::class.java.name, launches.single().component?.className)
         assertEquals(PhoneBluetoothReceiver.launchToken, launches.single().getStringExtra(PhoneBluetoothReceiver.EXTRA_AUTO_CONNECT))
         assertTrue(PhoneWakeDiagnostics.report(app).contains("result=startActivity-returned"))
     }

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Instructions for coding agents that work on OSNPlay (a Lynk & Co OSN fork of DiPlay).
+Instructions for coding agents that work on LynkCo-Link (a Lynk & Co OSN fork of DiPlay).
 
 ## Checks
 
@@ -15,7 +15,7 @@ Run the CI command from `.github/workflows/android.yml` before you report a chan
 ```sh
 keytool -genkeypair -noprompt -keystore /tmp/ci-release.jks \
   -storepass ci-release-pass -keypass ci-release-pass \
-  -alias ci -dname "CN=OSNPlay CI" -keyalg RSA -keysize 2048 -validity 1
+  -alias ci -dname "CN=LynkCo-Link CI" -keyalg RSA -keysize 2048 -validity 1
 ANDROID_KEYSTORE_PATH=/tmp/ci-release.jks \
 ANDROID_KEYSTORE_PASSWORD=ci-release-pass \
 ANDROID_KEY_ALIAS=ci ANDROID_KEY_PASSWORD=ci-release-pass \
@@ -33,16 +33,16 @@ Set `ANDROID_HOME` or `local.properties` if Gradle cannot find the SDK. Platform
 
 `standard` / `lynk` are product flavors; `release` is the only delivered build type.
 Debug and preview variants are not built for delivery. The `lynk` flavor uses
-`com.kugou.android.auto` (OSN Launcher3 whitelist); `com.osnplay` is the standard flavor.
+`com.kugou.android.auto` (OSN Launcher3 whitelist); `com.lynkco.link` is the standard flavor.
 Ordinary source builds must not include authentication assets. Only `assembleStandalone*`
-tasks may bundle `OSNPLAY_AUTH_ASSETS_DIR`, and only for the explicit car-test package.
+tasks may bundle `LYNKCO_LINK_AUTH_ASSETS_DIR`, and only for the explicit car-test package.
 The delivered APK is `:mobile:assembleStandaloneLynkRelease` (main app plus launcher entry, with authentication).
 
 ## Adding or moving a setting
 
 The Settings screen is grouped by driver goal, not by implementation.
 `SettingsCategory`, `SettingsSection` and `SettingsInformationArchitecture` at the top of
-`common/src/main/java/com/shilapi/xcertplay/OSNPlayActivity.kt` define the groups.
+`common/src/main/java/com/shilapi/xcertplay/LynkCoLinkActivity.kt` define the groups.
 `SettingsLayoutPolicyTest` fails when a section has no category or has more than one.
 
 ### Choose the category
@@ -51,7 +51,7 @@ Ask which goal the driver has when they look for the setting. Use the first row 
 
 | Category | Put a setting here when it controls… | Examples |
 | --- | --- | --- |
-| Connection | how the iPhone connects and how OSNPlay starts | connection setup, connect on open, start with the car, USB permissions, car hotspot automation, iPhone choice, Android permissions |
+| Connection | how the iPhone connects and how LynkCo-Link starts | connection setup, connect on open, start with the car, USB permissions, car hotspot automation, iPhone choice, Android permissions |
 | Display | how CarPlay looks on the head-unit screen | day/night mode, picture, size, resolution, frame rate, dock, system bars, multi-window resolution |
 | Audio | what the driver hears | media and navigation streams, music buffer |
 | Navigation | location and turn-by-turn guidance | location to iPhone, cluster/HUD guidance |

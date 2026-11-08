@@ -11,7 +11,7 @@ import com.shilapi.xcertplay.host.R
 import kotlin.math.roundToInt
 
 /**
- * Scales OSNPlay's own screens. Some head units report a low density for a large screen, so Android
+ * Scales LynkCoLink's own screens. Some head units report a low density for a large screen, so Android
  * lays them out like a very wide tablet with tiny text and controls. CarPlay's picture is not affected.
  */
 object InterfaceSize {

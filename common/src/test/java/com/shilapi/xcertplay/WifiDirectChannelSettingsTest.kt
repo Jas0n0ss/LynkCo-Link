@@ -25,13 +25,13 @@ import org.robolectric.shadows.ShadowAlertDialog
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [32], qualifiers = "en", manifest = Config.NONE)
 class WifiDirectChannelSettingsTest {
-    private lateinit var activity: OSNPlayActivity
+    private lateinit var activity: LynkCoLinkActivity
     private val prefs get() = RuntimeEnvironment.getApplication()
         .getSharedPreferences("xcertplay_airplay", Context.MODE_PRIVATE)
 
     @Before fun setup() {
         prefs.edit().clear().commit()
-        activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         AirPlayPersistence.saveWirelessHotspotMode(activity, WirelessHotspotMode.WIFI_P2P)
     }
@@ -137,7 +137,7 @@ class WifiDirectChannelSettingsTest {
     }
 
     private fun controls() = LinearLayout(activity).also {
-        OSNPlayActivity::class.java.getDeclaredMethod("wirelessLinkControls", LinearLayout::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("wirelessLinkControls", LinearLayout::class.java)
             .apply { isAccessible = true }.invoke(activity, it)
     }
 

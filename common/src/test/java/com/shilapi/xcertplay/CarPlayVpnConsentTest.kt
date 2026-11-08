@@ -156,7 +156,7 @@ class CarPlayVpnConsentTest {
         assertAdbStep(R.string.vpn_authorization_adb_unusable)
     }
 
-    @Test fun adbThatHasNotApprovedOSNPlayIsNamed() {
+    @Test fun adbThatHasNotApprovedLynkCoLinkIsNamed() {
         consentScreenMissingThenAdb(LocalAdb.Access.NOT_APPROVED)
         assertAdbStep(R.string.vpn_authorization_adb_not_approved)
     }
@@ -230,7 +230,7 @@ class CarPlayVpnConsentTest {
         assertNull(ReflectionHelpers.getField<Any?>(activity, "controller"))
         val message = ReflectionHelpers.getField<TextView>(activity, "stageStatusView").text.toString()
         assertTrue(message.contains("VPN authorization"))
-        assertTrue(message.contains("Return to OSNPlay"))
+        assertTrue(message.contains("Return to LynkCo-Link"))
         assertFalse(message.contains("Exception"))
         assertFalse(message.contains("adb shell"))
     }

@@ -25,13 +25,13 @@ import org.robolectric.shadows.ShadowAlertDialog
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [32], qualifiers = "en", manifest = Config.NONE)
 class CarPlaySizeSettingsTest {
-    private lateinit var activity: OSNPlayActivity
+    private lateinit var activity: LynkCoLinkActivity
     private val prefs get() = RuntimeEnvironment.getApplication()
         .getSharedPreferences("xcertplay_airplay", Context.MODE_PRIVATE)
 
     @Before fun setup() {
         prefs.edit().clear().commit()
-        activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
     }
 
@@ -152,7 +152,7 @@ class CarPlaySizeSettingsTest {
 
     private fun sizeControl(): Button {
         val parent = LinearLayout(activity)
-        OSNPlayActivity::class.java.getDeclaredMethod("carPlaySizeControl", LinearLayout::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("carPlaySizeControl", LinearLayout::class.java)
             .apply { isAccessible = true }.invoke(activity, parent)
         return find(parent)!!
     }

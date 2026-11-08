@@ -51,14 +51,14 @@ class MockVehicleSdk(scenario: MockScenario = MockScenario.PARKED) : VehicleSdk 
             speedKmh = 0,
             gear = Gear.P,
             hvac = HvacState(power = true, temperatureC = 22f, fanLevel = 2),
-            media = MediaState(playing = false, title = "Mock radio", artist = "OSNPlay"),
+            media = MediaState(playing = false, title = "Mock radio", artist = "LynkCo-Link"),
         )
         MockScenario.DRIVING -> VehicleState(
             available = true,
             speedKmh = 48,
             gear = Gear.D,
             hvac = HvacState(power = true, temperatureC = 21f, fanLevel = 3),
-            media = MediaState(playing = true, title = "Mock driving mix", artist = "OSNPlay"),
+            media = MediaState(playing = true, title = "Mock driving mix", artist = "LynkCo-Link"),
         )
         MockScenario.CHARGING -> VehicleState(
             available = true,

@@ -40,15 +40,15 @@ class DefaultConnectionModeTest {
     }
 
     @Test fun initialLaunchUsesTheFixedDefaultInsteadOfTheLastManualTransport() {
-        OSNPlayPreferences.saveAutoConnect(app, true)
-        OSNPlayPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
+        LynkCoLinkPreferences.saveAutoConnect(app, true)
+        LynkCoLinkPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
         AirPlayPersistence.saveWirelessHotspotMode(app, WirelessHotspotMode.WIFI_P2P)
         app.getSharedPreferences("osnplay", 0).edit().putBoolean("notification_asked", true).commit()
         for (mode in listOf(DefaultConnectionMode.USB, DefaultConnectionMode.WIRELESS)) {
             val expectedWireless = mode == DefaultConnectionMode.WIRELESS
-            OSNPlayPreferences.saveDefaultConnectionMode(app, mode)
+            LynkCoLinkPreferences.saveDefaultConnectionMode(app, mode)
             AirPlayPersistence.saveWirelessEnabled(app, !expectedWireless)
-            val controller = Robolectric.buildActivity(OSNPlayActivity::class.java, Intent(Intent.ACTION_MAIN)).create()
+            val controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java, Intent(Intent.ACTION_MAIN)).create()
             val activity = controller.get()
             // Source-only test builds have no authentication assets; exercise the startup decision.
             ReflectionHelpers.setField(activity, "setupError", null)
@@ -57,16 +57,16 @@ class DefaultConnectionModeTest {
             assertEquals(expectedWireless, AirPlayPersistence.loadWirelessEnabled(app))
             assertEquals(CarPlayHostActivity::class.java.name,
                 shadowOf(activity).nextStartedActivity?.component?.className)
-            assertEquals(mode, OSNPlayPreferences.defaultConnectionMode(app))
+            assertEquals(mode, LynkCoLinkPreferences.defaultConnectionMode(app))
             controller.pause().stop().destroy()
         }
     }
 
     @Test fun openingSettingsDoesNotAutoConnectOrChangeTheLastTransport() {
-        OSNPlayPreferences.saveAutoConnect(app, true)
-        OSNPlayPreferences.saveDefaultConnectionMode(app, DefaultConnectionMode.USB)
+        LynkCoLinkPreferences.saveAutoConnect(app, true)
+        LynkCoLinkPreferences.saveDefaultConnectionMode(app, DefaultConnectionMode.USB)
         AirPlayPersistence.saveWirelessEnabled(app, true)
-        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java,
+        val controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java,
             Intent().putExtra("page", "settings")).create()
         val activity = controller.get()
         ReflectionHelpers.setField(activity, "setupError", null)
@@ -80,39 +80,39 @@ class DefaultConnectionModeTest {
     @Test fun existingInstallationsKeepLastUsedBehaviorAndUnknownValuesFallBack() {
         for (lastWireless in listOf(false, true)) {
             AirPlayPersistence.saveWirelessEnabled(app, lastWireless)
-            assertEquals(lastWireless, OSNPlayPreferences.autoConnectWireless(app))
+            assertEquals(lastWireless, LynkCoLinkPreferences.autoConnectWireless(app))
             app.getSharedPreferences("osnplay", 0).edit()
                 .putString("default_connection_mode", "future_mode").commit()
-            assertEquals(DefaultConnectionMode.LAST_USED, OSNPlayPreferences.defaultConnectionMode(app))
-            assertEquals(lastWireless, OSNPlayPreferences.autoConnectWireless(app))
+            assertEquals(DefaultConnectionMode.LAST_USED, LynkCoLinkPreferences.defaultConnectionMode(app))
+            assertEquals(lastWireless, LynkCoLinkPreferences.autoConnectWireless(app))
         }
     }
 
     @Test fun fixedDefaultSurvivesManualTransportChangesWithoutChangingAutoConnectOrPhone() {
-        OSNPlayPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
+        LynkCoLinkPreferences.savePhone(app, "00:11:22:33:44:55", "Test iPhone")
         val expectedModes = mapOf(
             DefaultConnectionMode.LAST_USED to listOf(false, true),
             DefaultConnectionMode.WIRELESS to listOf(true, true),
             DefaultConnectionMode.USB to listOf(false, false),
         )
         for ((mode, expectedWireless) in expectedModes) {
-            OSNPlayPreferences.saveDefaultConnectionMode(app, mode)
-            assertEquals(mode, OSNPlayPreferences.defaultConnectionMode(app))
+            LynkCoLinkPreferences.saveDefaultConnectionMode(app, mode)
+            assertEquals(mode, LynkCoLinkPreferences.defaultConnectionMode(app))
             for ((index, lastWireless) in listOf(false, true).withIndex()) {
                 AirPlayPersistence.saveWirelessEnabled(app, lastWireless)
-                assertEquals(expectedWireless[index], OSNPlayPreferences.autoConnectWireless(app))
+                assertEquals(expectedWireless[index], LynkCoLinkPreferences.autoConnectWireless(app))
                 assertEquals(lastWireless, AirPlayPersistence.loadWirelessEnabled(app))
             }
-            assertFalse(OSNPlayPreferences.autoConnect(app))
-            assertEquals("00:11:22:33:44:55", OSNPlayPreferences.phoneAddress(app))
+            assertFalse(LynkCoLinkPreferences.autoConnect(app))
+            assertEquals("00:11:22:33:44:55", LynkCoLinkPreferences.phoneAddress(app))
         }
     }
 
     @Test fun settingsSavePersistsChoiceAndCancelKeepsSavedDefault() {
-        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         val controls = LinearLayout(activity)
-        OSNPlayActivity::class.java.getDeclaredMethod("connectionSettings", LinearLayout::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("connectionSettings", LinearLayout::class.java)
             .apply { isAccessible = true }.invoke(activity, controls)
         fun descendants(view: View): List<View> = listOf(view) +
             if (view is ViewGroup) (0 until view.childCount).flatMap { descendants(view.getChildAt(it)) } else emptyList()
@@ -124,14 +124,14 @@ class DefaultConnectionModeTest {
         dialog.listView.performItemClick(null, 2, 0)
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
         shadowOf(Looper.getMainLooper()).idle()
-        assertEquals(DefaultConnectionMode.USB, OSNPlayPreferences.defaultConnectionMode(app))
+        assertEquals(DefaultConnectionMode.USB, LynkCoLinkPreferences.defaultConnectionMode(app))
         assertTrue(button.text.toString().endsWith(activity.getString(R.string.default_connection_usb)))
         button.performClick()
         dialog = ShadowAlertDialog.getLatestAlertDialog()
         dialog.listView.performItemClick(null, 1, 0)
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick()
         shadowOf(Looper.getMainLooper()).idle()
-        assertEquals(DefaultConnectionMode.USB, OSNPlayPreferences.defaultConnectionMode(app))
-        assertFalse(OSNPlayPreferences.autoConnect(app))
+        assertEquals(DefaultConnectionMode.USB, LynkCoLinkPreferences.defaultConnectionMode(app))
+        assertFalse(LynkCoLinkPreferences.autoConnect(app))
     }
 }

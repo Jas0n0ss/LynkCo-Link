@@ -13,7 +13,7 @@ import android.util.Log
  * A square is heavier to encode and decode; the smoother picture caps it at 1920.
  */
 object CarPlayRotation {
-    private const val TAG = "OSNPlay-Rotation"
+    private const val TAG = "LynkCoLink-Rotation"
     private const val PREFS = "osnplay_carplay_rotation"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_PICTURE = "picture"

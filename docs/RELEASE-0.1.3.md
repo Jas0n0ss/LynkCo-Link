@@ -1,4 +1,4 @@
-# OSNPlay 0.1.3 — Lynk&co
+# LynkCo-Link 0.1.3 — Lynk&co
 
 - 合并为单 APK，使用 OSN 白名单包名 `com.kugou.android.auto`，不再需要入口包。
 - 首次设置直接进入“连接 → iPhone”，移除 DiLink 版本选择。
@@ -9,5 +9,5 @@
 安装：
 
 ```sh
-adb install -r OSNPlay-0.1.3-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.1.3-lynk-release-standalone.apk
 ```

@@ -10,7 +10,7 @@ import org.junit.Test
 
 class BluetoothRadioCheckTest {
     @Test fun aRadioThatIsOnLetsTheAttemptGoOn() {
-        assertNull(BluetoothRadioCheck.blocker(adapterPresent = true, enabled = true, pausedByOSNPlay = false))
+        assertNull(BluetoothRadioCheck.blocker(adapterPresent = true, enabled = true, pausedByLynkCoLink = false))
     }
 
     // An Allwinner T8 head unit came up with Bluetooth off. A fork build that still offered the
@@ -19,20 +19,20 @@ class BluetoothRadioCheckTest {
     @Test fun aRadioThatIsOffStopsTheAttemptBeforeTheHotspot() {
         assertEquals(
             BluetoothRadioCheck.RADIO_OFF,
-            BluetoothRadioCheck.blocker(adapterPresent = true, enabled = false, pausedByOSNPlay = false),
+            BluetoothRadioCheck.blocker(adapterPresent = true, enabled = false, pausedByLynkCoLink = false),
         )
     }
 
     // The pause is undone before the handshake; stopping here would never let that happen.
-    @Test fun aRadioThatOSNPlayPausedDoesNotStopTheAttempt() {
-        assertNull(BluetoothRadioCheck.blocker(adapterPresent = true, enabled = false, pausedByOSNPlay = true))
+    @Test fun aRadioThatLynkCoLinkPausedDoesNotStopTheAttempt() {
+        assertNull(BluetoothRadioCheck.blocker(adapterPresent = true, enabled = false, pausedByLynkCoLink = true))
     }
 
     @Test fun aHeadUnitWithoutAnAdapterStopsTheAttemptWhateverElseIsKnown() {
         for (paused in listOf(false, true)) {
             assertEquals(
                 BluetoothRadioCheck.NO_ADAPTER,
-                BluetoothRadioCheck.blocker(adapterPresent = false, enabled = false, pausedByOSNPlay = paused),
+                BluetoothRadioCheck.blocker(adapterPresent = false, enabled = false, pausedByLynkCoLink = paused),
             )
         }
     }
@@ -67,7 +67,7 @@ class BluetoothRadioCheckTest {
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = true,
                 state = android.bluetooth.BluetoothAdapter.STATE_OFF,
-                pausedByOSNPlay = false,
+                pausedByLynkCoLink = false,
             ),
         )
 
@@ -77,23 +77,23 @@ class BluetoothRadioCheckTest {
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = true,
                 state = android.bluetooth.BluetoothAdapter.STATE_TURNING_OFF,
-                pausedByOSNPlay = false,
+                pausedByLynkCoLink = false,
             ),
         )
 
-        // Bluetooth off or turning off when OSNPlay itself paused it -> no blocker
+        // Bluetooth off or turning off when LynkCoLink itself paused it -> no blocker
         assertNull(
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = true,
                 state = android.bluetooth.BluetoothAdapter.STATE_OFF,
-                pausedByOSNPlay = true,
+                pausedByLynkCoLink = true,
             ),
         )
         assertNull(
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = true,
                 state = android.bluetooth.BluetoothAdapter.STATE_TURNING_OFF,
-                pausedByOSNPlay = true,
+                pausedByLynkCoLink = true,
             ),
         )
 
@@ -102,7 +102,7 @@ class BluetoothRadioCheckTest {
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = true,
                 state = android.bluetooth.BluetoothAdapter.STATE_TURNING_ON,
-                pausedByOSNPlay = false,
+                pausedByLynkCoLink = false,
             ),
         )
 
@@ -111,7 +111,7 @@ class BluetoothRadioCheckTest {
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = true,
                 state = android.bluetooth.BluetoothAdapter.STATE_ON,
-                pausedByOSNPlay = false,
+                pausedByLynkCoLink = false,
             ),
         )
 
@@ -121,7 +121,7 @@ class BluetoothRadioCheckTest {
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = false,
                 state = null,
-                pausedByOSNPlay = false,
+                pausedByLynkCoLink = false,
             ),
         )
         assertEquals(
@@ -129,7 +129,7 @@ class BluetoothRadioCheckTest {
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = false,
                 state = null,
-                pausedByOSNPlay = true,
+                pausedByLynkCoLink = true,
             ),
         )
     }

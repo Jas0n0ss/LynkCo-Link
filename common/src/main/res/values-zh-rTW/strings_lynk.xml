@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auto_bluetooth_restore_failed">藍牙未還原。請在車輛設定中開啟後返回 OSNPlay。</string>
+    <string name="auto_bluetooth_restore_failed">藍牙未還原。請在車輛設定中開啟後返回 LynkCo-Link。</string>
     <string name="auto_hotspot_conflict">關閉車輛既有的共用熱點後重試。或選擇車載熱點選項。</string>
     <string name="auto_hotspot_creating">正在建立暫時熱點並檢查其實際網路設定。</string>
     <string name="auto_hotspot_failed">車輛無法提供可用的暫時熱點。請開啟連線設定使用車載熱點，或匯出報告。</string>
-    <string name="auto_hotspot_location">開啟系統位置並允許 OSNPlay 的位置存取，然後重試。Android 9 建立熱點需要此權限。</string>
+    <string name="auto_hotspot_location">開啟系統位置並允許 LynkCo-Link 的位置存取，然後重試。Android 9 建立熱點需要此權限。</string>
     <string name="auto_hotspot_sent">熱點資訊已自動傳送。請保持 iPhone 的 Wi-Fi 與藍牙開啟，並接受其 CarPlay 提示。</string>
     <string name="link_accept_carplay">請在 iPhone 上檢查「允許 CarPlay」提示。等待手機完成設定。</string>
     <string name="link_auth_failed">CarPlay 認證無法完成</string>
@@ -25,7 +25,7 @@
     <string name="link_identifying">等待 iPhone 識別車輛</string>
     <string name="link_identifying_hint">藍牙或 USB 通道已開啟。等待 iPhone 識別回應；認證尚未開始。</string>
     <string name="link_no_response">你的 iPhone 尚未啟動 CarPlay</string>
-    <string name="link_permission_fix">請在 Android 9 上允許 OSNPlay 的位置權限（新版 Android 為附近裝置），然後點選重試。</string>
+    <string name="link_permission_fix">請在 Android 9 上允許 LynkCo-Link 的位置權限（新版 Android 為附近裝置），然後點選重試。</string>
     <string name="link_permission_needed">需要連線權限</string>
     <string name="link_phone">2 / 3 · 尋找已配對的 iPhone</string>
     <string name="link_phone_check">解鎖 iPhone 並保持藍牙開啟。僅音樂藍牙連線不足以建立 CarPlay。</string>
@@ -39,9 +39,9 @@
     <string name="link_usb_mode_failed">iPhone 未進入 CarPlay USB 模式</string>
     <string name="link_usb_network">正在準備 USB 網路</string>
     <string name="link_usb_opening">正在建立 USB 資料通道</string>
-    <string name="link_usb_permission_fix">請點選重試，並在車輛詢問時允許 OSNPlay 存取 USB 裝置。若提示未出現，請重新連接線材。</string>
+    <string name="link_usb_permission_fix">請點選重試，並在車輛詢問時允許 LynkCo-Link 存取 USB 裝置。若提示未出現，請重新連接線材。</string>
     <string name="link_usb_permission_needed">未允許 USB 裝置存取</string>
-    <string name="link_usb_permission_prompt">請在車載畫面的對話框中允許 OSNPlay 存取 USB 裝置。</string>
+    <string name="link_usb_permission_prompt">請在車載畫面的對話框中允許 LynkCo-Link 存取 USB 裝置。</string>
     <string name="link_usb_service">正在啟動 iPhone CarPlay 服務</string>
     <string name="link_usb_switching">正在切換 iPhone 至 CarPlay USB 模式</string>
     <string name="link_usb_trust">等待 iPhone 信任授權</string>

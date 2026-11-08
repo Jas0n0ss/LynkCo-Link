@@ -5,7 +5,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.ResolveInfo
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.shilapi.xcertplay.OSNPlayActivity
+import com.shilapi.xcertplay.LynkCoLinkActivity
 import com.shilapi.xcertplay.FileProviderPathTestShadow
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -33,16 +33,16 @@ class UpdateInstallCompatibilityTest {
     }
 
     private fun install(publicUriReadable: Boolean, installers: Int, publicBytes: ByteArray = byteArrayOf(1)): Intent {
-        val activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        val activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
         activity.updateInstallWorker = { it.run() }
-        val apk = File(activity.cacheDir, "update/test/OSNPlay.apk").apply {
+        val apk = File(activity.cacheDir, "update/test/LynkCoLink.apk").apply {
             parentFile!!.mkdirs()
             writeBytes(byteArrayOf(1))
         }
         if (publicUriReadable) shadowOf(activity.contentResolver).registerInputStream(publicCopy, ByteArrayInputStream(publicBytes))
         val fields = mapOf("updateFile" to apk, "updateSavedUri" to publicCopy)
         fields.forEach { (name, value) ->
-            OSNPlayActivity::class.java.getDeclaredField(name).apply { isAccessible = true }.set(activity, value)
+            LynkCoLinkActivity::class.java.getDeclaredField(name).apply { isAccessible = true }.set(activity, value)
         }
         val query = Intent(Intent.ACTION_VIEW).setDataAndType(if (publicUriReadable) publicCopy else Uri.parse("content://x"), apkType)
         repeat(installers) {
@@ -50,7 +50,7 @@ class UpdateInstallCompatibilityTest {
                 activityInfo = ActivityInfo().apply { packageName = "installer$it"; name = "Install" }
             })
         }
-        OSNPlayActivity::class.java.getDeclaredMethod("installUpdate").apply { isAccessible = true }.invoke(activity)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("installUpdate").apply { isAccessible = true }.invoke(activity)
         return shadowOf(activity).nextStartedActivity
     }
 
@@ -72,7 +72,7 @@ class UpdateInstallCompatibilityTest {
 
     @Test fun providerRejectsSiblingDirectoriesWithTheSameUpdatePrefix() {
         val context = RuntimeEnvironment.getApplication()
-        val outside = File(context.cacheDir, "update-other/OSNPlay.apk")
+        val outside = File(context.cacheDir, "update-other/LynkCoLink.apk")
         assertThrows(IllegalArgumentException::class.java) {
             FileProvider.getUriForFile(context, "${context.packageName}.update-apks", outside)
         }

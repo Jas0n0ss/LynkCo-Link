@@ -10,7 +10,7 @@ body:
         Reports are public. Remove personal information, hotspot passwords and authentication files before uploading. Screenshots or videos help but do not replace logs.
   - type: input
     id: version
-    attributes: {label: OSNPlay version, placeholder: 'Exact version from Settings → About'}
+    attributes: {label: LynkCo-Link version, placeholder: 'Exact version from Settings → About'}
     validations: {required: true}
   - type: input
     id: car
@@ -43,7 +43,7 @@ body:
     id: diagnostics
     attributes:
       label: Diagnostic logs
-      description: 'Attach the full OSNPlay diagnostic report (.txt or .log), or a .zip containing the logs.'
+      description: 'Attach the full LynkCo-Link diagnostic report (.txt or .log), or a .zip containing the logs.'
     validations:
       required: true
       accept: '.txt,.log,.zip'

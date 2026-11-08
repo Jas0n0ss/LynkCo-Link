@@ -13,22 +13,22 @@ import java.io.IOException
  */
 object BluetoothRadioCheck {
     /**
-     * Why this attempt cannot reach an iPhone, or null when it can go on. A radio that OSNPlay
+     * Why this attempt cannot reach an iPhone, or null when it can go on. A radio that LynkCoLink
      * paused itself is turned back on before the handshake, so it does not stop the attempt here.
      */
-    fun blocker(adapterPresent: Boolean, enabled: Boolean, pausedByOSNPlay: Boolean): String? = when {
+    fun blocker(adapterPresent: Boolean, enabled: Boolean, pausedByLynkCoLink: Boolean): String? = when {
         !adapterPresent -> NO_ADAPTER
-        !enabled && !pausedByOSNPlay -> RADIO_OFF
+        !enabled && !pausedByLynkCoLink -> RADIO_OFF
         else -> null
     }
 
     /**
      * Why this attempt cannot reach an iPhone, taking state into account.
      */
-    fun blockerForState(adapterPresent: Boolean, state: Int?, pausedByOSNPlay: Boolean): String? = when {
+    fun blockerForState(adapterPresent: Boolean, state: Int?, pausedByLynkCoLink: Boolean): String? = when {
         !adapterPresent || state == null -> NO_ADAPTER
         (state == android.bluetooth.BluetoothAdapter.STATE_OFF ||
-            state == android.bluetooth.BluetoothAdapter.STATE_TURNING_OFF) && !pausedByOSNPlay -> RADIO_OFF
+            state == android.bluetooth.BluetoothAdapter.STATE_TURNING_OFF) && !pausedByLynkCoLink -> RADIO_OFF
         else -> null
     }
 

@@ -12,7 +12,7 @@ import com.shilapi.xcertplay.airplay.SafeAreaRect
 /** Full-screen editor for the two horizontal and two vertical safe-area boundaries. */
 internal class SafeAreaEditorView(
     context: Context,
-    palette: OSNPlayPalette = OSNPlayPalette.DARK,
+    palette: LynkCoLinkPalette = LynkCoLinkPalette.DARK,
 ) : View(context) {
     private enum class Edge {
         LEFT,
@@ -54,7 +54,7 @@ internal class SafeAreaEditorView(
         isClickable = true
     }
 
-    fun applyPalette(palette: OSNPlayPalette) {
+    fun applyPalette(palette: LynkCoLinkPalette) {
         linePaint.color = palette.overlayAccent
         borderPaint.color = palette.overlayPrimaryText
         borderPaint.alpha = 210

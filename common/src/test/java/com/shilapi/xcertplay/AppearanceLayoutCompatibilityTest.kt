@@ -23,8 +23,8 @@ class AppearanceLayoutCompatibilityTest {
         AirPlayPersistence.saveHideTopBar(context, false)
         AirPlayPersistence.saveHideBottomBar(context, false)
         SettingsLayoutPreferences.saveForceFull(context, true)
-        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java,
-            Intent(context, OSNPlayActivity::class.java).putExtra("page", "settings")).setup()
+        val controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java,
+            Intent(context, LynkCoLinkActivity::class.java).putExtra("page", "settings")).setup()
         val activity = controller.get()
         try {
             for (appearance in AppAppearance.entries) {

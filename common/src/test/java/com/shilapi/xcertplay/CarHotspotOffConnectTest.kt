@@ -33,7 +33,7 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [29], qualifiers = "en-w1000dp-h700dp-land", shadows = [CarHotspotOffConnectTest.HotspotState::class])
 class CarHotspotOffConnectTest {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private val opened = mutableListOf<OSNPlayActivity>()
+    private val opened = mutableListOf<LynkCoLinkActivity>()
 
     @Before fun setUp() {
         clearSettings()
@@ -56,12 +56,12 @@ class CarHotspotOffConnectTest {
         }
     }
 
-    private fun openHome(): OSNPlayActivity = Robolectric.buildActivity(OSNPlayActivity::class.java,
-        Intent(context, OSNPlayActivity::class.java).putExtra("page", "home")).setup().get().also { opened += it }
+    private fun openHome(): LynkCoLinkActivity = Robolectric.buildActivity(LynkCoLinkActivity::class.java,
+        Intent(context, LynkCoLinkActivity::class.java).putExtra("page", "home")).setup().get().also { opened += it }
 
-    private fun carHotspotOff(home: OSNPlayActivity): Boolean = ReflectionHelpers.callInstanceMethod(home, "carHotspotOff")
+    private fun carHotspotOff(home: LynkCoLinkActivity): Boolean = ReflectionHelpers.callInstanceMethod(home, "carHotspotOff")
 
-    private fun offDialogs(home: OSNPlayActivity) = ShadowDialog.getShownDialogs().filterIsInstance<AlertDialog>()
+    private fun offDialogs(home: LynkCoLinkActivity) = ShadowDialog.getShownDialogs().filterIsInstance<AlertDialog>()
         .filter { shadowOf(it).title == home.getString(R.string.car_hotspot_is_off) }
 
     @Test fun connectInTheOffDialogConnectsInsteadOfAskingAgain() {

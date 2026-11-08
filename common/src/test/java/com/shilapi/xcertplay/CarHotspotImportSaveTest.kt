@@ -27,12 +27,12 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [32], qualifiers = "en", manifest = Config.NONE)
 class CarHotspotImportSaveTest {
     private val app get() = RuntimeEnvironment.getApplication()
-    private lateinit var activity: OSNPlayActivity
+    private lateinit var activity: LynkCoLinkActivity
     private val overwrite = "Overwrite the car hotspot settings?"
 
     @Before fun setup() {
         app.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
-        activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
         AirPlayPersistence.saveWirelessHotspotMode(app, WirelessHotspotMode.MANUAL)
         AirPlayPersistence.saveManualHotspotSsid(app, "Car hotspot")
@@ -60,7 +60,7 @@ class CarHotspotImportSaveTest {
 
     private fun editCredentials(): AlertDialog {
         val parent = LinearLayout(activity)
-        OSNPlayActivity::class.java.getDeclaredMethod("wirelessLinkControls", LinearLayout::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("wirelessLinkControls", LinearLayout::class.java)
             .apply { isAccessible = true }.invoke(activity, parent)
         activity.setContentView(parent)
         descendants(parent).filterIsInstance<Button>().first { it.text.startsWith("Edit saved hotspot") }.performClick()

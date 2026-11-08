@@ -1,4 +1,4 @@
-# OSNPlay 0.2.0 — Lynk&co
+# LynkCo-Link 0.2.0 — Lynk&co
 
 首个完成 BYD/DiLink 代码清理的版本。
 
@@ -10,5 +10,5 @@
 安装：
 
 ```sh
-adb install -r OSNPlay-0.2.0-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.2.0-lynk-release-standalone.apk
 ```

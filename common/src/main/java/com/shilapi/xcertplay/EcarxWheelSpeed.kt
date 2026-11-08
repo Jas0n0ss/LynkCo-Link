@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
  * over the true speed.
  */
 internal object EcarxWheelSpeed : VehicleSpeedSource {
-    private const val TAG = "OSNPlay-EcarxSpeed"
+    private const val TAG = "LynkCoLink-EcarxSpeed"
     private const val CAR = "com.ecarx.xui.adaptapi.car.Car"
     private const val ICAR = "com.ecarx.xui.adaptapi.car.ICar"
     private const val SENSOR = "com.ecarx.xui.adaptapi.car.sensor.ISensor"
@@ -138,7 +138,7 @@ internal object EcarxWheelSpeed : VehicleSpeedSource {
         Log.i(TAG, "ECARX speed sensor $status")
         manager
     }.onSuccess { sensor = it }.onFailure {
-        // The ECARX framework can come up after OSNPlay at boot, so this retries; say it once.
+        // The ECARX framework can come up after LynkCoLink at boot, so this retries; say it once.
         if (!failureLogged) Log.w(TAG, "ECARX sensors unavailable, retrying", it)
         failureLogged = true
     }.getOrNull()

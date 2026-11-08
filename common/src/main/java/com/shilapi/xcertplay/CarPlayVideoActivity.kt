@@ -345,7 +345,7 @@ class CarPlayVideoActivity : Activity() {
     private fun dp(value: Int) = (value * resources.displayMetrics.density).roundToInt()
 
     private companion object {
-        const val TAG = "OSNPlay-Video"
+        const val TAG = "LynkCoLink-Video"
         const val CONTROLS_MILLIS = 5_000L
         const val TICK_MILLIS = 500L
     }

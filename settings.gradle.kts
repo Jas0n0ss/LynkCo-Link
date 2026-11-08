@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "OSNPlay"
+rootProject.name = "LynkCo-Link"
 include(":common")
 include(":mobile")
 include(":shared")

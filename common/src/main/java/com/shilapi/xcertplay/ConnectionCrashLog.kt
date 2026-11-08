@@ -29,7 +29,7 @@ internal object ConnectionCrashLog {
             // before delegating to Android's original crash/termination handler.
             record(target, thread, error)
         } catch (_: Throwable) {
-            Log.e("OSNPlay-CrashLog", "Unable to persist fatal stack metadata")
+            Log.e("LynkCoLink-CrashLog", "Unable to persist fatal stack metadata")
         } finally {
             previous.uncaughtException(thread, error)
         }

@@ -1,6 +1,6 @@
 # 兼容性矩阵（领克 OSN）
 
-OSNPlay 的目标平台是**领克 OSN 智能座舱**（基于 Android 的车机），当前开发目标为 **领克 01 2023 款（骁龙 8155）**。OSNPlay 自身的实车验收尚未完成；下表中的“参考验证”来自同平台兄弟项目 [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay)，用于确定测试优先级，不等同于 OSNPlay 的验收结论。
+LynkCo-Link 的目标平台是**领克 OSN 智能座舱**（基于 Android 的车机），当前开发目标为 **领克 01 2023 款（骁龙 8155）**。LynkCo-Link 自身的实车验收尚未完成；下表中的“参考验证”来自同平台兄弟项目 [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay)，用于确定测试优先级，不等同于 LynkCo-Link 的验收结论。
 
 状态图例：🎯 首要目标 · 🧪 兼容范围 · ⚪ 待验证 · ❌ 不支持
 
@@ -24,7 +24,7 @@ OSNPlay 的目标平台是**领克 OSN 智能座舱**（基于 Android 的车机
 | 领克 05 | 晚期 | 骁龙 8155 / OSN 2.0 | 🧪 兼容 | 待实车确认 |
 | 领克 06 | 早期 | 820A / 早期 OSN | 🧪 兼容 | 待实车确认 |
 | 领克 06 | 晚期 | 骁龙 8155 / OSN 2.0 | 🧪 兼容 | 待实车确认 |
-| 列表外车型 | — | 任意 | ❌ 不支持 | 不再作为 OSNPlay 适配目标 |
+| 列表外车型 | — | 任意 | ❌ 不支持 | 不再作为 LynkCo-Link 适配目标 |
 
 > 2023 款领克 03 的证据来自 LynkCo-DiPlay 的 R1 实车记录：Android 9 / Qualcomm CS11 / 固件 `23.01.10.30531.54761` / iPhone 14 Pro / iOS 27。详见 [R1 发布说明](reference/RELEASE-NOTES-LYNK-R1.md) 与 [OS N 适配记录](reference/LYNK_OS_N.md)。
 
@@ -48,7 +48,7 @@ OSNPlay 的目标平台是**领克 OSN 智能座舱**（基于 Android 的车机
 1. **U 盘 / 文件管理器**：将 APK 放入 FAT32/exFAT U 盘，用系统文件管理器打开并按提示允许“未知来源”。
 2. **ADB**：车机开启 USB/Wi-Fi 调试后执行 `adb install -r <apk>`；若系统拦截，先执行 `adb shell settings put secure install_non_market_apps 1`。
 
-不同 OSN 固件对安装通道、ADB 和未知来源的限制不同。若固件关闭了安装通道，OSNPlay 无法绕过。
+不同 OSN 固件对安装通道、ADB 和未知来源的限制不同。若固件关闭了安装通道，LynkCo-Link 无法绕过。
 
 ## 功能适用性
 
@@ -68,7 +68,7 @@ OSNPlay 的目标平台是**领克 OSN 智能座舱**（基于 Android 的车机
 
 1. **认证身份**：实验性配件身份来自公开固件，未来 iOS 更新可能失效；公开分发的适宜性未获保证。
 2. **固件差异**：不同 OSN 版本在权限、ADB、热点、分屏和音频路由上差异明显，不能保证全系一致。
-3. **安装通道**：若车机禁止第三方安装或 ADB，OSNPlay 无法安装。
+3. **安装通道**：若车机禁止第三方安装或 ADB，LynkCo-Link 无法安装。
 4. **质保与协议**：安装第三方 APK 可能影响质保或违反领克用户协议，风险自担。
 5. **车型识别**：设置 → 关于会显示识别到的车型/平台；识别错误时请把该行附在诊断报告中。
 

@@ -15,7 +15,7 @@ enum class AppAppearance(val key: String) {
     }
 }
 
-/** Resolves OSNPlay chrome without changing the day/night mode sent to CarPlay. */
+/** Resolves LynkCoLink chrome without changing the day/night mode sent to CarPlay. */
 internal fun resolveAppNight(
     appearance: AppAppearance,
     carPlayMode: CarPlayNightMode,

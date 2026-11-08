@@ -320,7 +320,7 @@ class WifiP2pGroupManagerTest {
         assertEquals(0, radio.removals)
     }
 
-    // OSNPlay's process ended during a session and left its group. A Galaxy Note20 (Android 13)
+    // LynkCoLink's process ended during a session and left its group. A Galaxy Note20 (Android 13)
     // answered group info only about 0.6 s after removing it, past the 0.5 s poll.
     @Test fun aRetainedOwnGroupIsReclaimedWhenTheAnswerComesAfterItsRemoval() {
         retainOwnGroup()
@@ -368,7 +368,7 @@ class WifiP2pGroupManagerTest {
         assertEquals("p2pGroup=unavailable association=unknown", manager.connectionDiagnosticSnapshot())
     }
 
-    @Test fun staleCloseCannotRemoveANewerOSNPlaySession() {
+    @Test fun staleCloseCannotRemoveANewerLynkCoLinkSession() {
         val old = WifiP2pGroupManager(context)
         val previous = background { old.start(5000) }
         // The framework has lost the old group; a new controller acquires a fresh one.

@@ -18,19 +18,19 @@
 
 ### 3. 认证资产可能误入公开预览包
 
-**问题**：`OSNPLAY_AUTH_ASSETS_DIR` 原先对所有变体生效。如果发布者环境里残留该变量，`assembleStandardPreview` 会把认证私钥打进公开包，而文档又声称预览包不含身份。
+**问题**：`LYNKCO_LINK_AUTH_ASSETS_DIR` 原先对所有变体生效。如果发布者环境里残留该变量，`assembleStandardPreview` 会把认证私钥打进公开包，而文档又声称预览包不含身份。
 
 **处理**：`mobile/build.gradle.kts` 只在任务名包含 `Standalone` 时读取该变量；其他构建忽略并打印警告。若同一次调用同时请求 `assembleStandalone*` 和其他 assemble 任务，配置阶段直接失败，避免共享 `main` assets 把凭据带进公开变体。新增 `assembleStandalonePreview` 供发布者显式构建带身份的预览包。CI 与 release 工作流在发布前用 `unzip -l` 断言公开 APK 不含 `offline-mfi` / `.pk8` / `.p7b`。
 
 ### 4. 预览包与正式版共用 applicationId
 
-**问题**：preview 使用 debug 签名和 `com.osnplay`，而正式版使用 release 签名和同一包名。将来安装正式版必须卸载预览版；不同 CI 运行生成的 debug 证书也不稳定，预览包之间无法可靠覆盖升级。
+**问题**：preview 使用 debug 签名和 `com.lynkco.link`，而正式版使用 release 签名和同一包名。将来安装正式版必须卸载预览版；不同 CI 运行生成的 debug 证书也不稳定，预览包之间无法可靠覆盖升级。
 
-**处理**：preview 构建类型增加 `.preview` 后缀，标准预览为 `com.osnplay.preview`，领克预览为 `com.osnplay.lynk.preview`。预览版与正式版可并存，不再承诺跨证书覆盖升级；发布说明已写明不同构建可能需要卸载重装。
+**处理**：preview 构建类型增加 `.preview` 后缀，标准预览为 `com.lynkco.link.preview`，领克预览为 `com.lynkco.link.lynk.preview`。预览版与正式版可并存，不再承诺跨证书覆盖升级；发布说明已写明不同构建可能需要卸载重装。
 
 ### 5. 更新检查指向上游 DiPlay
 
-**问题**：`UpdateClient.RELEASES_URL` 仍指向 `shihabal3amri/DiPlay`，OSNPlay 用户会被提示安装上游 DiPlay APK；多 APK 资产时也可能选中 `lynk` 包。
+**问题**：`UpdateClient.RELEASES_URL` 仍指向 `shihabal3amri/DiPlay`，LynkCo-Link 用户会被提示安装上游 DiPlay APK；多 APK 资产时也可能选中 `lynk` 包。
 
 **处理**：改为 `Jas0n0ss/OSN-Play`；`UpdateCatalog` 优先选择文件名含 `-standard` 的 APK，找不到时回退到第一个 APK。新增单测覆盖标准/领克双资产。
 
@@ -42,7 +42,7 @@
 
 ### 7. 许可边界未说明
 
-**问题**：根 `LICENSE` 是 GPL-3.0，但 `OSNPlayActivity.kt`、`AppLocale.kt`、`InterfaceSize.kt`、`SettingsLayoutPreferences.kt` 标注 AGPL-3.0-only。仅写“整体 GPL-3.0”会误导再分发者。
+**问题**：根 `LICENSE` 是 GPL-3.0，但 `LynkCoLinkActivity.kt`、`AppLocale.kt`、`InterfaceSize.kt`、`SettingsLayoutPreferences.kt` 标注 AGPL-3.0-only。仅写“整体 GPL-3.0”会误导再分发者。
 
 **处理**：新增 [LICENSING.md](../LICENSING.md)，列明组件许可、GPLv3 §13 的组合关系、再分发义务和“纯 GPL 需替换四个文件”的边界；README 与文档索引已链接。
 
@@ -50,19 +50,19 @@
 
 ### 8. 用户可见文案仍大量出现 DiPlay
 
-**问题**：55 个资源/HTML 文件共 1000+ 处 `DiPlay`，包括首页、权限提示、诊断和设置。应用名已改 OSNPlay，但界面仍显示旧品牌。
+**问题**：55 个资源/HTML 文件共 1000+ 处 `DiPlay`，包括首页、权限提示、诊断和设置。应用名已改 LynkCo-Link，但界面仍显示旧品牌。
 
-**处理**：批量替换 `common` / `mobile` 资源中的 `DiPlay` 为 `OSNPlay`；保留代码类名、日志 tag、opaque action 字符串和上游署名。同步修改 iAP2 配件名、AirPlay 设备名、通知标题、导航小组件和更新 User-Agent。
+**处理**：批量替换 `common` / `mobile` 资源中的 `DiPlay` 为 `LynkCo-Link`；保留代码类名、日志 tag、opaque action 字符串和上游署名。同步修改 iAP2 配件名、AirPlay 设备名、通知标题、导航小组件和更新 User-Agent。
 
 ### 9. 诊断报告路径与实际目录不一致
 
-**问题**：字符串已改为 `Downloads/OSNPlay`，但 `DiagnosticExportStore` 仍写入 `Download/DiPlay`，FileProvider 路径也指向旧目录。
+**问题**：字符串已改为 `Downloads/LynkCo-Link`，但 `DiagnosticExportStore` 仍写入 `Download/DiPlay`，FileProvider 路径也指向旧目录。
 
-**处理**：代码、FileProvider XML、测试断言统一为 `Download/OSNPlay`。旧版本已导出的 `Download/DiPlay` 报告不会被删除，用户可手动迁移。
+**处理**：代码、FileProvider XML、测试断言统一为 `Download/LynkCo-Link`。旧版本已导出的 `Download/DiPlay` 报告不会被删除，用户可手动迁移。
 
 ### 10. Debug 包名变更暴露了 BYD 调试残留
 
-**问题**：debug 包名从 `com.osnplay.hudtest` 改为 `com.osnplay.debug`，`StandaloneHudDemoActivity` 仍硬编码旧包名；该 debug 变体还请求 BYD 专属权限并注册 BYD HUD 测试入口，对 OSN 目标没有价值。
+**问题**：debug 包名从 `com.lynkco.link.hudtest` 改为 `com.lynkco.link.debug`，`StandaloneHudDemoActivity` 仍硬编码旧包名；该 debug 变体还请求 BYD 专属权限并注册 BYD HUD 测试入口，对 OSN 目标没有价值。
 
 **处理**：删除整个 debug-only BYD HUD 测试 harness（manifest、Activity、Receiver、Packet 辅助类），debug 变体不再请求 BYD 权限。
 
@@ -102,6 +102,6 @@
 
 1. 在领克 01 2023 上按 [COMPATIBILITY.md](COMPATIBILITY.md) 清单采集分辨率、USB、热点和方向盘键值。
 2. 为 stable / preview 增加更新通道，避免稳定版用户被提示升级到预览包。
-3. 评估将命名空间迁移到 `com.osnplay`，分模块提交并保持 CI 通过。
+3. 评估将命名空间迁移到 `com.lynkco.link`，分模块提交并保持 CI 通过。
 4. 正式发布前配置独立 release keystore，并把签名步骤写入发布 runbook。
 5. 为环境检测面板补充 compact / 大字体 / RTL 截图测试。

@@ -1,7 +1,7 @@
 package com.shilapi.xcertplay.settings
 
 import android.content.Context
-import com.shilapi.xcertplay.OSNPlayPalette
+import com.shilapi.xcertplay.LynkCoLinkPalette
 
 class SettingsTheme private constructor(
     val isOverlay: Boolean,
@@ -20,11 +20,11 @@ class SettingsTheme private constructor(
 
     companion object {
         /** Dark aliases keep existing overlay callers source-compatible until Phase 4. */
-        @JvmField val CARD = card(OSNPlayPalette.DARK)
-        @JvmField val OVERLAY = overlay(OSNPlayPalette.DARK)
+        @JvmField val CARD = card(LynkCoLinkPalette.DARK)
+        @JvmField val OVERLAY = overlay(LynkCoLinkPalette.DARK)
         @JvmField val entries = listOf(CARD, OVERLAY)
 
-        internal fun card(palette: OSNPlayPalette) = SettingsTheme(
+        internal fun card(palette: LynkCoLinkPalette) = SettingsTheme(
             isOverlay = false,
             textPrimary = palette.primaryText,
             textSecondary = palette.secondaryText,
@@ -36,7 +36,7 @@ class SettingsTheme private constructor(
             focusRing = palette.focusRing,
         )
 
-        internal fun overlay(palette: OSNPlayPalette) = SettingsTheme(
+        internal fun overlay(palette: LynkCoLinkPalette) = SettingsTheme(
             isOverlay = true,
             textPrimary = palette.overlayPrimaryText,
             textSecondary = palette.overlaySecondaryText,

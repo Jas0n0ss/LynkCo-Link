@@ -41,7 +41,7 @@ internal class LocalOnlyHotspotRadioInfo(private val wifi: WifiManager) : Closea
                 when (method.name) {
                     "hashCode" -> System.identityHashCode(self)
                     "equals" -> self === args?.firstOrNull()
-                    "toString" -> "OSNPlay local hotspot radio observer"
+                    "toString" -> "LynkCoLink local hotspot radio observer"
                     "onInfoChanged" -> {
                         val infos = (args?.firstOrNull() as? List<*>) ?: listOfNotNull(args?.firstOrNull())
                         val radios = infos.mapNotNull { info ->

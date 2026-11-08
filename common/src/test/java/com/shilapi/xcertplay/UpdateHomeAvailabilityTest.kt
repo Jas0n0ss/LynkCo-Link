@@ -29,7 +29,7 @@ class UpdateHomeAvailabilityTest {
     @Test fun cachedUpdateAppearsBelowTheVersionAndOpensTheExistingDownloadFlow() {
         val release = release()
         UpdateAvailability.save(application, release)
-        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java).setup()
+        val controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java).setup()
         val activity = controller.get()
         val text = activity.getString(R.string.update_available_home)
         val update = descendants(activity.window.decorView).filterIsInstance<TextView>()
@@ -37,7 +37,7 @@ class UpdateHomeAvailabilityTest {
 
         assertTrue(update.isClickable)
         assertTrue(update.isFocusable)
-        assertEquals(OSNPlayPalette.DARK.warning, update.currentTextColor)
+        assertEquals(LynkCoLinkPalette.DARK.warning, update.currentTextColor)
         update.performClick()
 
         assertEquals(SettingsCategory.ABOUT, ReflectionHelpers.getField<SettingsCategory>(activity, "settingsCategory"))
@@ -51,7 +51,7 @@ class UpdateHomeAvailabilityTest {
     @Test fun cachedUpdateKeepsAnArmLengthTargetInCompactHome() {
         val release = release()
         UpdateAvailability.save(application, release)
-        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java).setup()
+        val controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java).setup()
         val activity = controller.get()
         val update = descendants(activity.window.decorView).filterIsInstance<TextView>().single {
             it.text == activity.getString(R.string.update_available_home)
@@ -62,8 +62,8 @@ class UpdateHomeAvailabilityTest {
         controller.pause().stop().destroy()
     }
 
-    @Test fun anUpdateFoundWhileOSNPlayWasInTheBackgroundShowsWhenHomeReturns() {
-        val controller = Robolectric.buildActivity(OSNPlayActivity::class.java).setup()
+    @Test fun anUpdateFoundWhileLynkCoLinkWasInTheBackgroundShowsWhenHomeReturns() {
+        val controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java).setup()
         val activity = controller.get()
         val text = activity.getString(R.string.update_available_home)
         fun shown() = descendants(activity.window.decorView).filterIsInstance<TextView>().any { it.text == text }
@@ -80,8 +80,8 @@ class UpdateHomeAvailabilityTest {
 
     private fun release() = UpdateRelease(
         tagName = "v99.0.0",
-        apkName = "OSNPlay.apk",
-        apkUrl = "https://example.com/OSNPlay.apk",
+        apkName = "LynkCoLink.apk",
+        apkUrl = "https://example.com/LynkCoLink.apk",
         checksumsUrl = "https://example.com/SHA256SUMS.txt",
     )
 

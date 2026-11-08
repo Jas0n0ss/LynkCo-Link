@@ -16,7 +16,7 @@ import com.shilapi.xcertplay.network.CarHotspotConfigWrite.Result
 class CarHotspotConfigWriteTest {
     private val logs = mutableListOf<String>()
     private fun log(message: String) { logs += message }
-    private val credentials = HotspotCredentials("OSNPlay", "password1", ManualHotspotSecurity.WPA2)
+    private val credentials = HotspotCredentials("LynkCoLink", "password1", ManualHotspotSecurity.WPA2)
 
     @Test fun onlyAndroidSevenPointOneAndElevenPlusAreSupported() {
         listOf(23, 24, 26, 27, 28, 29).forEach { assertFalse(CarHotspotConfigWrite.supported(it)) }
@@ -44,7 +44,7 @@ class CarHotspotConfigWriteTest {
     @Test fun writeAppliesRawSsidAndWpa2Credentials() {
         val config = WifiConfiguration()
         CarHotspotConfigWrite.applyTo(config, credentials)
-        assertEquals("OSNPlay", config.SSID)
+        assertEquals("LynkCoLink", config.SSID)
         assertEquals("password1", config.preSharedKey)
         assertTrue(config.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.WPA2_PSK))
     }
@@ -70,7 +70,7 @@ class CarHotspotConfigWriteTest {
 
     @Test fun appWriteVerifiesTheReadback() {
         var written: WifiConfiguration? = null
-        assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.WRITTEN, "OSNPlay"),
+        assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.WRITTEN, "LynkCoLink"),
             CarHotspotConfigWrite.writeApp(credentials,
             newConfig = { WifiConfiguration() },
             write = { written = it; true },
@@ -99,8 +99,8 @@ class CarHotspotConfigWriteTest {
             write = { written = it; true },
             readBack = { written },
             log = ::log)
-        assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.WRITTEN, "OSNPlay"), outcome)
-        assertEquals("OSNPlay", written?.SSID)
+        assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.WRITTEN, "LynkCoLink"), outcome)
+        assertEquals("LynkCoLink", written?.SSID)
     }
 
     @Test fun aRejectedWriteFails() {
@@ -143,12 +143,12 @@ class CarHotspotConfigWriteTest {
         var stdin: ByteArray? = null
         assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.WRITTEN, "Car-Original"), CarHotspotConfigWrite.writeAdb(
             { sent, _, pushed -> command = sent; stdin = pushed;
-                "noise\nOSNPLAY_HOTSPOT_APCONFIG_V1|ok|Q2FyLU9yaWdpbmFs\n" },
+                "noise\nLYNKCO_LINK_HOTSPOT_APCONFIG_V1|ok|Q2FyLU9yaWdpbmFs\n" },
             "/data/app/osnplay.apk", credentials, 4_000, ::log))
         command!!.let {
             assertTrue(it.contains("app_process /system/bin com.shilapi.xcertplay.network.CarHotspotStartMain"))
             assertTrue(it.contains(" apconfig "))
-            assertTrue(it.contains(" 'OSNPlay' AUTO"))
+            assertTrue(it.contains(" 'LynkCoLink' AUTO"))
             assertFalse(it.contains("password1"))
         }
         assertEquals("9\npassword1", String(stdin!!, Charsets.UTF_8))
@@ -193,12 +193,12 @@ class CarHotspotConfigWriteTest {
 
     @Test fun shellWriteRefusesToStripTheCarPassword() {
         assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.OPEN_REJECTED), CarHotspotConfigWrite.writeAdb(
-            { _, _, _ -> "OSNPLAY_HOTSPOT_APCONFIG_V1|error open" }, "", credentials, 4_000, ::log))
+            { _, _, _ -> "LYNKCO_LINK_HOTSPOT_APCONFIG_V1|error open" }, "", credentials, 4_000, ::log))
     }
 
     @Test fun shellWriteRejectsFailuresAndSilence() {
         assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.FAILED), CarHotspotConfigWrite.writeAdb(
-            { _, _, _ -> "OSNPLAY_HOTSPOT_APCONFIG_V1|error rejected" }, "", credentials, 4_000, ::log))
+            { _, _, _ -> "LYNKCO_LINK_HOTSPOT_APCONFIG_V1|error rejected" }, "", credentials, 4_000, ::log))
         assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.FAILED), CarHotspotConfigWrite.writeAdb(
             { _, _, _ -> null }, "", credentials, 4_000, ::log))
         assertTrue(logs.last().contains("no reply"))
@@ -206,13 +206,13 @@ class CarHotspotConfigWriteTest {
 
     @Test fun shellWriteAcceptsAnOkLineWithoutASsid() {
         assertEquals(CarHotspotConfigWrite.WriteOutcome(Result.WRITTEN, null), CarHotspotConfigWrite.writeAdb(
-            { _, _, _ -> "OSNPLAY_HOTSPOT_APCONFIG_V1|ok" }, "", credentials, 4_000, ::log))
+            { _, _, _ -> "LYNKCO_LINK_HOTSPOT_APCONFIG_V1|ok" }, "", credentials, 4_000, ::log))
     }
 
     @Test fun parsesTheApconfigProtocolLine() {
         assertEquals("ok|Car-Original",
-            CarHotspotStartMain.parseApConfig("x\nOSNPLAY_HOTSPOT_APCONFIG_V1|ok|Car-Original\nmore"))
-        assertEquals("error rejected", CarHotspotStartMain.parseApConfig("OSNPLAY_HOTSPOT_APCONFIG_V1|error rejected"))
+            CarHotspotStartMain.parseApConfig("x\nLYNKCO_LINK_HOTSPOT_APCONFIG_V1|ok|Car-Original\nmore"))
+        assertEquals("error rejected", CarHotspotStartMain.parseApConfig("LYNKCO_LINK_HOTSPOT_APCONFIG_V1|error rejected"))
         assertNull(CarHotspotStartMain.parseApConfig("nothing"))
         assertNull(CarHotspotStartMain.parseApConfig(null))
     }

@@ -6,11 +6,11 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.shilapi.xcertplay.OSNPlayPalette
+import com.shilapi.xcertplay.LynkCoLinkPalette
 
 private fun color(value: Int) = Color(value)
 
-private fun darkScheme(palette: OSNPlayPalette) = darkColorScheme(
+private fun darkScheme(palette: LynkCoLinkPalette) = darkColorScheme(
     primary = color(palette.accent),
     onPrimary = color(palette.onAccent),
     background = color(palette.background),
@@ -20,7 +20,7 @@ private fun darkScheme(palette: OSNPlayPalette) = darkColorScheme(
     error = color(palette.danger),
 )
 
-private fun lightScheme(palette: OSNPlayPalette) = lightColorScheme(
+private fun lightScheme(palette: LynkCoLinkPalette) = lightColorScheme(
     primary = color(palette.accent),
     onPrimary = color(palette.onAccent),
     background = color(palette.background),
@@ -35,7 +35,7 @@ fun XcertplayTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val palette = OSNPlayPalette.of(darkTheme)
+    val palette = LynkCoLinkPalette.of(darkTheme)
     val colorScheme = if (darkTheme) darkScheme(palette) else lightScheme(palette)
 
     MaterialTheme(

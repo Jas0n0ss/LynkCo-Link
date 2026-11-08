@@ -26,11 +26,11 @@ import org.robolectric.shadows.ShadowAlertDialog
 @Config(sdk = [29], qualifiers = "en", manifest = Config.NONE)
 class ExistingWifiSettingsTest {
     private val app get() = RuntimeEnvironment.getApplication()
-    private lateinit var activity: OSNPlayActivity
+    private lateinit var activity: LynkCoLinkActivity
 
     @Before fun setup() {
         app.getSharedPreferences("xcertplay_airplay", 0).edit().clear().commit()
-        activity = Robolectric.buildActivity(OSNPlayActivity::class.java).get()
+        activity = Robolectric.buildActivity(LynkCoLinkActivity::class.java).get()
         activity.setTheme(android.R.style.Theme_Material_NoActionBar)
     }
 
@@ -95,7 +95,7 @@ class ExistingWifiSettingsTest {
 
     private fun controls(): List<View> {
         val parent = LinearLayout(activity)
-        OSNPlayActivity::class.java.getDeclaredMethod("wirelessLinkControls", LinearLayout::class.java)
+        LynkCoLinkActivity::class.java.getDeclaredMethod("wirelessLinkControls", LinearLayout::class.java)
             .apply { isAccessible = true }.invoke(activity, parent)
         activity.setContentView(parent)
         return descendants(parent).toList()

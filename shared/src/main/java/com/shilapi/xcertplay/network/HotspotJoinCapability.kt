@@ -76,7 +76,7 @@ internal object HotspotJoinCapability {
                     "asBinder" -> binder
                     "hashCode" -> System.identityHashCode(proxy)
                     "equals" -> proxy === args?.firstOrNull()
-                    "toString" -> "OSNPlaySoftApCallback"
+                    "toString" -> "LynkCoLinkSoftApCallback"
                     else -> null
                 }
             } as IInterface

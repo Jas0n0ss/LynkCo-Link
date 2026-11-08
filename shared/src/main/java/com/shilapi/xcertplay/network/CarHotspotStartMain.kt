@@ -21,15 +21,15 @@ import kotlin.system.exitProcess
  * longer start tethering itself ("No field mService" on Android 10, "NoSuchMethodException … startTethering" on 12,
  * #616), while the shell may, and holds the tethering permission it checks. Starts Wi-Fi tethering with the car's
  * saved hotspot configuration, never a new one; the opted-in "apconfig" subcommand is the one
- * exception, keeping the car's saved configuration and rewriting only OSNPlay's passphrase (and a
+ * exception, keeping the car's saved configuration and rewriting only LynkCoLink's passphrase (and a
  * 5 GHz request) on Android 11+ (see CarHotspotConfigWrite), and
  * prints only the protocol line. Android 7.0–10 call
  * IConnectivityManager; Android 11 moved tethering to TetheringManager.
  */
 object CarHotspotStartMain {
-    internal const val HEADER = "OSNPLAY_HOTSPOT_START_V1"
-    internal const val APCONFIG_HEADER = "OSNPLAY_HOTSPOT_APCONFIG_V1"
-    internal const val APCONFIG_READ_HEADER = "OSNPLAY_HOTSPOT_APCONFIG_READ_V1"
+    internal const val HEADER = "LYNKCO_LINK_HOTSPOT_START_V1"
+    internal const val APCONFIG_HEADER = "LYNKCO_LINK_HOTSPOT_APCONFIG_V1"
+    internal const val APCONFIG_READ_HEADER = "LYNKCO_LINK_HOTSPOT_APCONFIG_READ_V1"
     private const val APCONFIG_COMMAND = "apconfig"
     private const val APCONFIG_READ_COMMAND = "apconfig-read"
     private const val DEADLINE_MS = 10_000L
@@ -67,7 +67,7 @@ object CarHotspotStartMain {
         .getMethod("getService", String::class.java).invoke(null, name) as? IBinder
 
     /**
-     * The shell rewrites only what the car's saved configuration lacks: OSNPlay's passphrase (and a 5 GHz request), on top
+     * The shell rewrites only what the car's saved configuration lacks: LynkCoLink's passphrase (and a 5 GHz request), on top
      * of [Builder(current)]; the passphrase arrives on stdin so it never appears in the process list.
      */
     private fun apConfig(args: Array<String>): String {
@@ -90,7 +90,7 @@ object CarHotspotStartMain {
         val effective = saved?.takeIf { it.isNotEmpty() } ?: ssid
         builderType.getMethod("setSsid", String::class.java).invoke(builder, effective)
         val security = current?.javaClass?.methods?.firstOrNull { it.name == "getSecurityType" }?.invoke(current) as? Int
-        // An open hotspot from OSNPlay must not strip the car's saved password; if the car's security
+        // An open hotspot from LynkCoLink must not strip the car's saved password; if the car's security
         // type cannot be read, refusing the empty passphrase is the safe choice.
         if (passphrase.isEmpty() && current != null &&
             security != staticInt(configuration, "SECURITY_TYPE_OPEN")) return "error open"
@@ -208,7 +208,7 @@ object CarHotspotStartMain {
                 "onTetheringFailed" -> { result.set(args?.firstOrNull() as? Int ?: -1); null }
                 "hashCode" -> System.identityHashCode(proxy)
                 "equals" -> proxy === args?.firstOrNull()
-                "toString" -> "OSNPlayStartTetheringCallback"
+                "toString" -> "LynkCoLinkStartTetheringCallback"
                 else -> null
             }
         }

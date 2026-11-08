@@ -66,7 +66,7 @@ internal object NavigationWidgetUpdater {
 
     fun views(context: Context, glance: CarPlayGlance.Snapshot): RemoteViews {
         val views = RemoteViews(context.packageName, R.layout.widget_navigation)
-        val target = if (glance.connected) CarPlayScreen.target(context) else OSNPlayActivity::class.java
+        val target = if (glance.connected) CarPlayScreen.target(context) else LynkCoLinkActivity::class.java
         views.setOnClickPendingIntent(
             R.id.widget_root,
             PendingIntent.getActivity(
@@ -78,7 +78,7 @@ internal object NavigationWidgetUpdater {
         when {
             !glance.connected -> {
                 views.setImageViewResource(R.id.widget_arrow, R.drawable.ic_dp_navigation)
-                views.setTextViewText(R.id.widget_distance, "OSNPlay")
+                views.setTextViewText(R.id.widget_distance, "LynkCoLink")
                 views.setTextViewText(R.id.widget_road, context.getString(R.string.widget_not_connected))
                 views.setViewVisibility(R.id.widget_eta, View.GONE)
             }
@@ -107,7 +107,7 @@ internal object NavigationWidgetUpdater {
         return views
     }
 
-    /** Apple's RouteGuidanceManeuverType, grouped as OSNPlay's head unit outputs group it. */
+    /** Apple's RouteGuidanceManeuverType, grouped as LynkCoLink's head unit outputs group it. */
     fun arrow(type: Int, drivingSide: Int): Int = when (type) {
         1, 20 -> R.drawable.ic_maneuver_left
         2, 21 -> R.drawable.ic_maneuver_right

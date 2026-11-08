@@ -343,7 +343,7 @@ class CarPlayController(
     }
 
     private val sessionListener = object : AirPlaySessionListener {
-        // Trace lines reach logcat and the UI; build them only for `setprop log.tag.OSNPlayTrace VERBOSE` or a UI that wants them.
+        // Trace lines reach logcat and the UI; build them only for `setprop log.tag.LynkCoLinkTrace VERBOSE` or a UI that wants them.
         override val wantsTrace: Boolean
             get() = uiListener?.wantsTrace == true || Log.isLoggable(TRACE_LOG_TAG, Log.VERBOSE)
 
@@ -414,7 +414,7 @@ class CarPlayController(
         }
 
         // The user tapped the car icon in CarPlay: show the head unit's own menu, like its Home button.
-        // The session keeps running in the background, so returning to OSNPlay resumes CarPlay.
+        // The session keeps running in the background, so returning to LynkCoLink resumes CarPlay.
         override fun onHostUiRequested(session: AirPlaySession) {
             debugLog("CarPlay requested the car UI; opening the head-unit home screen")
             runCatching {
@@ -779,7 +779,7 @@ class CarPlayController(
                     if (closed || activeSession !== session || session.clusterStream != stream) {
                         return@synchronized false
                     }
-                    // A cluster stream OSNPlay has not paused yet starts with the map drawn.
+                    // A cluster stream LynkCoLink has not paused yet starts with the map drawn.
                     val shown = clusterUiShown || clusterUiStream != session to stream
                     val delivered = session.setClusterUrl(url, send = shown)
                     val sent = delivered && !closed && activeSession === session && session.clusterStream == stream
@@ -1323,7 +1323,7 @@ class CarPlayController(
             BluetoothRadioCheck.blockerForState(
                 adapterPresent = activeAdapter != null,
                 state = activeAdapter?.state,
-                pausedByOSNPlay = false,
+                pausedByLynkCoLink = false,
             )?.let { throw BluetoothRadioCheck.failure(it) }
             val hotspotInfo = startWirelessHotspot(generation)
             if (isStaleWirelessRun(generation)) {
@@ -2595,7 +2595,7 @@ class CarPlayController(
         config.wirelessBluetoothDeviceAddress?.let { selected ->
             return bonded.firstOrNull { it.address.equals(selected, ignoreCase = true) }
                 ?: throw ConnectionFailureException(ConnectionFailureCause.CHOSEN_IPHONE_NOT_PAIRED,
-                    "The selected iPhone is no longer paired. Choose it again in OSNPlay.")
+                    "The selected iPhone is no longer paired. Choose it again in LynkCoLink.")
         }
         val iPhones = bonded.filter { device ->
             device.name?.contains("iPhone", ignoreCase = true) == true
@@ -3210,7 +3210,7 @@ class CarPlayController(
 
     companion object {
         const val CONNECTION_DIAGNOSTIC_PREFIX = "CONNECTION_DIAGNOSTIC"
-        private const val TRACE_LOG_TAG = "OSNPlayTrace"
+        private const val TRACE_LOG_TAG = "LynkCoLinkTrace"
         // Indices in the telephony HID report (AirPlayHid.telephonyDescriptor).
         private const val TELEPHONY_HOOK_SWITCH = 1
         private const val TELEPHONY_DROP = 3

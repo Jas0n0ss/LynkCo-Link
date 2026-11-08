@@ -57,7 +57,7 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [29], qualifiers = "en-w600dp-h700dp")
 class AdaptiveSettingsUiTest {
     private val context get() = RuntimeEnvironment.getApplication()
-    private var activity: OSNPlayActivity? = null
+    private var activity: LynkCoLinkActivity? = null
 
     @Test
     @Config(sdk = [29], qualifiers = "ja-w320dp-h600dp")
@@ -124,16 +124,16 @@ class AdaptiveSettingsUiTest {
     @Test fun savedLightAppearanceThemesTheSettingsCanvasAndSystemBars() {
         AirPlayPersistence.saveAppAppearance(context, AppAppearance.LIGHT)
         val screen = openSettings()
-        val palette = ReflectionHelpers.getField<OSNPlayPalette>(screen, "palette")
+        val palette = ReflectionHelpers.getField<LynkCoLinkPalette>(screen, "palette")
         val scroll = ReflectionHelpers.getField<ScrollView>(screen, "rootScroll")
 
-        assertSame(OSNPlayPalette.LIGHT, palette)
-        assertEquals(OSNPlayPalette.LIGHT.background, (scroll.background as ColorDrawable).color)
+        assertSame(LynkCoLinkPalette.LIGHT, palette)
+        assertEquals(LynkCoLinkPalette.LIGHT.background, (scroll.background as ColorDrawable).color)
         assertEquals(
-            OSNPlayPalette.LIGHT.background,
+            LynkCoLinkPalette.LIGHT.background,
             (screen.window.decorView.background as ColorDrawable).color,
         )
-        assertEquals(OSNPlayPalette.LIGHT.systemBar, screen.window.navigationBarColor)
+        assertEquals(LynkCoLinkPalette.LIGHT.systemBar, screen.window.navigationBarColor)
     }
 
     @Test fun headerShortcutTogglesAppearanceAndReturnsFocusToItself() {
@@ -150,7 +150,7 @@ class AdaptiveSettingsUiTest {
         layoutRoot(screen)
 
         assertEquals(AppAppearance.LIGHT, AirPlayPersistence.loadAppAppearance(screen))
-        assertSame(OSNPlayPalette.LIGHT, ReflectionHelpers.getField<OSNPlayPalette>(screen, "palette"))
+        assertSame(LynkCoLinkPalette.LIGHT, ReflectionHelpers.getField<LynkCoLinkPalette>(screen, "palette"))
         val replacement = descendants(screen.window.decorView).single {
             it.contentDescription == screen.getString(R.string.settings_switch_to_dark_appearance)
         }
@@ -161,21 +161,21 @@ class AdaptiveSettingsUiTest {
         AirPlayPersistence.saveAppAppearance(context, AppAppearance.AUTO)
         AirPlayPersistence.saveCarPlayNightMode(context, CarPlayNightMode.DAY)
         val screen = openSettings()
-        assertSame(OSNPlayPalette.LIGHT, ReflectionHelpers.getField<OSNPlayPalette>(screen, "palette"))
+        assertSame(LynkCoLinkPalette.LIGHT, ReflectionHelpers.getField<LynkCoLinkPalette>(screen, "palette"))
 
         AirPlayPersistence.saveCarPlayNightMode(screen, CarPlayNightMode.NIGHT)
         shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(2))
 
-        assertSame(OSNPlayPalette.DARK, ReflectionHelpers.getField<OSNPlayPalette>(screen, "palette"))
+        assertSame(LynkCoLinkPalette.DARK, ReflectionHelpers.getField<LynkCoLinkPalette>(screen, "palette"))
         val scroll = ReflectionHelpers.getField<ScrollView>(screen, "rootScroll")
-        assertEquals(OSNPlayPalette.DARK.background, (scroll.background as ColorDrawable).color)
+        assertEquals(LynkCoLinkPalette.DARK.background, (scroll.background as ColorDrawable).color)
     }
 
     @Test fun hostAppearancePublishedOffMainRepaintsOnMain() {
         AirPlayPersistence.saveAppAppearance(context, AppAppearance.AUTO)
         AirPlayPersistence.saveCarPlayNightMode(context, CarPlayNightMode.DAY)
         val screen = openSettings()
-        assertSame(OSNPlayPalette.LIGHT, ReflectionHelpers.getField<OSNPlayPalette>(screen, "palette"))
+        assertSame(LynkCoLinkPalette.LIGHT, ReflectionHelpers.getField<LynkCoLinkPalette>(screen, "palette"))
         val owner = Any()
         val failure = AtomicReference<Throwable?>()
 
@@ -191,7 +191,7 @@ class AdaptiveSettingsUiTest {
 
         assertNull(failure.get())
         shadowOf(Looper.getMainLooper()).idle()
-        assertSame(OSNPlayPalette.DARK, ReflectionHelpers.getField<OSNPlayPalette>(screen, "palette"))
+        assertSame(LynkCoLinkPalette.DARK, ReflectionHelpers.getField<LynkCoLinkPalette>(screen, "palette"))
         AppAppearanceRuntime.clearHost(owner)
     }
 
@@ -225,7 +225,7 @@ class AdaptiveSettingsUiTest {
         AirPlayPersistence.saveAppAppearance(context, AppAppearance.LIGHT)
         val screen = openSettings()
         // Search is an inline box now; any themed text dialog shows the same behaviour.
-        OSNPlayActivity::class.java.getDeclaredMethod("textInput", String::class.java, String::class.java,
+        LynkCoLinkActivity::class.java.getDeclaredMethod("textInput", String::class.java, String::class.java,
             Boolean::class.javaPrimitiveType, Function1::class.java).apply { isAccessible = true }
             .invoke(screen, screen.getString(R.string.settings_search), "", false, { _: String -> })
         val dialog = ShadowAlertDialog.getLatestAlertDialog()
@@ -246,8 +246,8 @@ class AdaptiveSettingsUiTest {
 
         assertTrue(dialog.isShowing)
         assertEquals("display", input.text.toString())
-        assertEquals(OSNPlayPalette.LIGHT.accent, dialogAccent)
-        assertSame(OSNPlayPalette.DARK, ReflectionHelpers.getField<OSNPlayPalette>(screen, "palette"))
+        assertEquals(LynkCoLinkPalette.LIGHT.accent, dialogAccent)
+        assertSame(LynkCoLinkPalette.DARK, ReflectionHelpers.getField<LynkCoLinkPalette>(screen, "palette"))
     }
 
     @Config(qualifiers = "en-w700dp-h400dp-land")
@@ -304,7 +304,7 @@ class AdaptiveSettingsUiTest {
     @Test fun chosenPhoneWithMissingManualHotspotOffersConnectionSetup() {
         AirPlayPersistence.saveWirelessEnabled(context, true)
         AirPlayPersistence.saveWirelessHotspotMode(context, WirelessHotspotMode.MANUAL)
-        OSNPlayPreferences.savePhone(context, "AA:BB:CC:DD:EE:FF", "My iPhone")
+        LynkCoLinkPreferences.savePhone(context, "AA:BB:CC:DD:EE:FF", "My iPhone")
         val screen = openSettings()
         ReflectionHelpers.setField(screen, "setupError", null)
         ReflectionHelpers.callInstanceMethod<Unit>(screen, "render")
@@ -515,7 +515,7 @@ class AdaptiveSettingsUiTest {
         HotspotSearchProbe.workers.clear()
         HotspotSearchProbe.entered = CountDownLatch(1)
         val screen = openSettings()
-        val index = ReflectionHelpers.callInstanceMethod<List<OSNPlayActivity.SettingsSearchResult>>(
+        val index = ReflectionHelpers.callInstanceMethod<List<LynkCoLinkActivity.SettingsSearchResult>>(
             screen, "buildSettingsSearchIndex")
         assertFalse(index.any { it.title == screen.getString(R.string.auto_car_hotspot_title) })
     }
@@ -648,8 +648,8 @@ class AdaptiveSettingsUiTest {
 
     @Test fun connectionSetupOpenedDirectlyStillReturnsHome() {
         val screen = Robolectric.buildActivity(
-            OSNPlayActivity::class.java,
-            Intent(context, OSNPlayActivity::class.java).putExtra("page", "connection"),
+            LynkCoLinkActivity::class.java,
+            Intent(context, LynkCoLinkActivity::class.java).putExtra("page", "connection"),
         ).setup().get().also { activity = it }
 
         screen.onBackPressedDispatcher.onBackPressed()
@@ -1228,12 +1228,12 @@ class AdaptiveSettingsUiTest {
         assertTrue(texts(screen).any { it.text == screen.getString(R.string.save_diagnostic_report) })
     }
 
-    private fun openSettings(): OSNPlayActivity = Robolectric.buildActivity(
-        OSNPlayActivity::class.java,
-        Intent(context, OSNPlayActivity::class.java).putExtra("page", "settings"),
+    private fun openSettings(): LynkCoLinkActivity = Robolectric.buildActivity(
+        LynkCoLinkActivity::class.java,
+        Intent(context, LynkCoLinkActivity::class.java).putExtra("page", "settings"),
     ).setup().get().also { activity = it }
 
-    private fun openConnectionSetupFromSettings(): OSNPlayActivity = openSettings().also { screen ->
+    private fun openConnectionSetupFromSettings(): LynkCoLinkActivity = openSettings().also { screen ->
         descendants(screen.window.decorView)
             .single { it.contentDescription == screen.getString(R.string.settings_open_category,
                 screen.getString(R.string.connection)) }
@@ -1242,7 +1242,7 @@ class AdaptiveSettingsUiTest {
         assertEquals("connection", ReflectionHelpers.getField<String>(screen, "page"))
     }
 
-    private fun layoutRoot(screen: OSNPlayActivity) {
+    private fun layoutRoot(screen: LynkCoLinkActivity) {
         val root = screen.findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         val metrics = screen.resources.displayMetrics
         root.measure(
@@ -1256,7 +1256,7 @@ class AdaptiveSettingsUiTest {
     private fun isInside(view: View, ancestor: View): Boolean =
         generateSequence(view.parent) { it.parent }.any { it === ancestor }
 
-    private fun texts(screen: OSNPlayActivity) = descendants(screen.window.decorView).filterIsInstance<TextView>()
+    private fun texts(screen: LynkCoLinkActivity) = descendants(screen.window.decorView).filterIsInstance<TextView>()
 
     private fun descendants(view: View): Sequence<View> = sequence {
         yield(view)

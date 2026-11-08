@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
-import com.shilapi.xcertplay.OSNPlayPalette
+import com.shilapi.xcertplay.LynkCoLinkPalette
 import com.shilapi.xcertplay.airplay.CarPlayDisplayScale
 import com.shilapi.xcertplay.orchestration.MfiTarget
 import com.shilapi.xcertplay.orchestration.WirelessHotspotMode
@@ -97,23 +97,23 @@ class SettingsWidgetsTest {
     }
 
     @Test fun lightCardUsesTheResolvedSemanticPalette() {
-        val theme = SettingsTheme.card(OSNPlayPalette.LIGHT)
+        val theme = SettingsTheme.card(LynkCoLinkPalette.LIGHT)
         val row = SettingsWidgets.createSwitchRow(context, "Title", "Details", false,
             theme, onChanged = {})
         val texts = views(row.rowView).filterIsInstance<TextView>().filter { it !== row.switch }.toList()
-        assertEquals(OSNPlayPalette.LIGHT.primaryText, texts[0].currentTextColor)
-        assertEquals(OSNPlayPalette.LIGHT.secondaryText, texts[1].currentTextColor)
-        assertEquals(OSNPlayPalette.LIGHT.trackOff, row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled), 0))
+        assertEquals(LynkCoLinkPalette.LIGHT.primaryText, texts[0].currentTextColor)
+        assertEquals(LynkCoLinkPalette.LIGHT.secondaryText, texts[1].currentTextColor)
+        assertEquals(LynkCoLinkPalette.LIGHT.trackOff, row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled), 0))
         assertEquals(
-            OSNPlayPalette.LIGHT.accent,
+            LynkCoLinkPalette.LIGHT.accent,
             row.switch.thumbTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled, android.R.attr.state_checked), 0),
         )
-        assertEquals(OSNPlayPalette.LIGHT.ripple, theme.ripple)
-        assertEquals(OSNPlayPalette.LIGHT.focusRing, theme.focusRing)
+        assertEquals(LynkCoLinkPalette.LIGHT.ripple, theme.ripple)
+        assertEquals(LynkCoLinkPalette.LIGHT.focusRing, theme.focusRing)
     }
 
     @Test fun lightOverlayUsesSemanticTextAndControlColors() {
-        val theme = SettingsTheme.overlay(OSNPlayPalette.LIGHT)
+        val theme = SettingsTheme.overlay(LynkCoLinkPalette.LIGHT)
         val row = SettingsWidgets.createSwitchRow(
             context,
             "Title",
@@ -124,17 +124,17 @@ class SettingsWidgetsTest {
         )
         val label = (row.rowView as ViewGroup).getChildAt(0) as TextView
 
-        assertEquals(OSNPlayPalette.LIGHT.overlaySecondaryText, label.currentTextColor)
+        assertEquals(LynkCoLinkPalette.LIGHT.overlaySecondaryText, label.currentTextColor)
         assertEquals(
-            OSNPlayPalette.LIGHT.overlayAccent,
+            LynkCoLinkPalette.LIGHT.overlayAccent,
             row.switch.thumbTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled, android.R.attr.state_checked), 0),
         )
         assertEquals(
-            OSNPlayPalette.LIGHT.overlayAccentTrack,
+            LynkCoLinkPalette.LIGHT.overlayAccentTrack,
             row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled, android.R.attr.state_checked), 0),
         )
         assertEquals(
-            OSNPlayPalette.LIGHT.overlayTrackOff,
+            LynkCoLinkPalette.LIGHT.overlayTrackOff,
             row.switch.trackTintList!!.getColorForState(intArrayOf(android.R.attr.state_enabled), 0),
         )
     }

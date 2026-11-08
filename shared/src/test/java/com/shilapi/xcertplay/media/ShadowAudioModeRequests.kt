@@ -9,19 +9,19 @@ import org.robolectric.shadows.ShadowAudioManager
 /**
  * The audio mode as AudioService keeps it: one request per process, the most recent one in force, and
  * MODE_NORMAL withdrawing the caller's own request (`AudioService.setModeInt`). Robolectric keeps only the
- * last mode set, so it cannot show OSNPlay holding a mode after the process that set it first lets go.
- * Everything this test process sets is OSNPlay's request; [otherProcess] stands for Telecom or the car's phone.
+ * last mode set, so it cannot show LynkCoLink holding a mode after the process that set it first lets go.
+ * Everything this test process sets is LynkCoLink's request; [otherProcess] stands for Telecom or the car's phone.
  */
 @Implements(AudioManager::class)
 open class ShadowAudioModeRequests : ShadowAudioManager() {
-    @Implementation override fun setMode(mode: Int) = request(OSNPLAY, mode)
+    @Implementation override fun setMode(mode: Int) = request(LYNKCO_LINK, mode)
 
     @Implementation override fun getMode(): Int = synchronized(requests) {
         requests.firstOrNull()?.second ?: AudioManager.MODE_NORMAL
     }
 
     companion object {
-        private const val OSNPLAY = "osnplay"
+        private const val LYNKCO_LINK = "osnplay"
         private const val OTHER = "other"
         private val requests = mutableListOf<Pair<String, Int>>() // newest first
 

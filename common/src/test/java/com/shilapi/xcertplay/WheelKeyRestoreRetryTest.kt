@@ -4,7 +4,7 @@ import com.shilapi.xcertplay.adb.LocalAdb
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/** At boot the car's adb can come up after OSNPlay; one early restore left the keys unbound (#606, #619). */
+/** At boot the car's adb can come up after LynkCoLink; one early restore left the keys unbound (#606, #619). */
 class WheelKeyRestoreRetryTest {
     @Test fun unreachableAdbAtBootIsTriedAgainUntilTheServiceBinds() {
         val sleeps = mutableListOf<Long>()

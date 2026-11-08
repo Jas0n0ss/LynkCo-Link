@@ -14,9 +14,9 @@ import kotlin.math.pow
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33], manifest = Config.NONE)
-class OSNPlayPaletteTest {
+class LynkCoLinkPaletteTest {
     @Test fun darkPalettePreservesTheExistingProductionColors() {
-        val palette = OSNPlayPalette.DARK
+        val palette = LynkCoLinkPalette.DARK
         assertEquals(Color.rgb(12, 17, 27), palette.background)
         assertEquals(Color.rgb(21, 30, 44), palette.surface)
         assertEquals(Color.rgb(31, 43, 61), palette.button)
@@ -45,7 +45,7 @@ class OSNPlayPaletteTest {
     }
 
     @Test fun semanticRolesMeetTheirWcagContrastTargets() {
-        for (palette in listOf(OSNPlayPalette.DARK, OSNPlayPalette.LIGHT)) {
+        for (palette in listOf(LynkCoLinkPalette.DARK, LynkCoLinkPalette.LIGHT)) {
             assertContrastAtLeast(palette.primaryText, palette.background, 4.5)
             assertContrastAtLeast(palette.secondaryText, palette.background, 4.5)
             assertContrastAtLeast(palette.accent, palette.background, 4.5)
@@ -60,13 +60,13 @@ class OSNPlayPaletteTest {
             assertContrastAtLeast(palette.overlayOnAccent, palette.overlayAccent, 4.5)
             assertContrastAtLeast(palette.overlayDanger, palette.overlayBackground, 3.0)
         }
-        assertContrastAtLeast(OSNPlayPalette.LIGHT.accentTrack, OSNPlayPalette.LIGHT.trackOff, 3.0)
+        assertContrastAtLeast(LynkCoLinkPalette.LIGHT.accentTrack, LynkCoLinkPalette.LIGHT.trackOff, 3.0)
         assertContrastAtLeast(
-            OSNPlayPalette.LIGHT.overlayAccentTrack,
-            OSNPlayPalette.LIGHT.overlayTrackOff,
+            LynkCoLinkPalette.LIGHT.overlayAccentTrack,
+            LynkCoLinkPalette.LIGHT.overlayTrackOff,
             3.0,
         )
-        assertTrue(OSNPlayPalette.LIGHT.systemBarIconsAreDark)
+        assertTrue(LynkCoLinkPalette.LIGHT.systemBarIconsAreDark)
     }
 
     private fun assertContrastAtLeast(foreground: Int, background: Int, minimum: Double) {

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeoutException
  * tethering call run by the shell ([CarHotspotStartMain]); never configures a replacement AP.
  */
 internal object CarHotspotAdbFallback {
-    private const val EXIT = "OSNPLAY_HOTSPOT_EXIT:"
+    private const val EXIT = "LYNKCO_LINK_HOTSPOT_EXIT:"
 
     fun start(deadline: Long, cancelled: () -> Boolean, state: () -> Boolean?,
         shell: (String, Int) -> String?, log: (String) -> Unit, helper: String? = null): Boolean {

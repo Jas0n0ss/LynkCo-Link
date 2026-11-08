@@ -19,12 +19,12 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-/** What OSNPlay says about the car hotspot before and after its name is saved. */
+/** What LynkCoLink says about the car hotspot before and after its name is saved. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [29], qualifiers = "en-w1000dp-h700dp-land")
 class CarHotspotNameTextTest {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private var activity: OSNPlayActivity? = null
+    private var activity: LynkCoLinkActivity? = null
 
     @Before fun setUp() {
         clearSettings()
@@ -49,12 +49,12 @@ class CarHotspotNameTextTest {
         AirPlayPersistence.saveManualHotspotPassphrase(context, "12345678")
     }
 
-    private fun open(page: String? = null): OSNPlayActivity = Robolectric.buildActivity(
-        OSNPlayActivity::class.java,
-        Intent(context, OSNPlayActivity::class.java).apply { page?.let { putExtra("page", it) } },
+    private fun open(page: String? = null): LynkCoLinkActivity = Robolectric.buildActivity(
+        LynkCoLinkActivity::class.java,
+        Intent(context, LynkCoLinkActivity::class.java).apply { page?.let { putExtra("page", it) } },
     ).setup().get().also { activity = it }
 
-    private fun texts(screen: OSNPlayActivity): List<String> =
+    private fun texts(screen: LynkCoLinkActivity): List<String> =
         descendants(screen.window.decorView).filterIsInstance<TextView>().map { it.text.toString() }.toList()
 
     private fun descendants(view: View): Sequence<View> = sequence {

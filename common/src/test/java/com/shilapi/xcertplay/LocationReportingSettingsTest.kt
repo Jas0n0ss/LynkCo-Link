@@ -24,7 +24,7 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [32])
 class LocationReportingSettingsTest {
     private val context get() = RuntimeEnvironment.getApplication()
-    private var controller: ActivityController<OSNPlayActivity>? = null
+    private var controller: ActivityController<LynkCoLinkActivity>? = null
     private val activity get() = requireNotNull(controller).get()
 
     @Before fun setUp() {
@@ -113,8 +113,8 @@ class LocationReportingSettingsTest {
     }
 
     private fun openSettings() {
-        controller = Robolectric.buildActivity(OSNPlayActivity::class.java,
-            Intent(context, OSNPlayActivity::class.java).putExtra("page", "settings")).setup()
+        controller = Robolectric.buildActivity(LynkCoLinkActivity::class.java,
+            Intent(context, LynkCoLinkActivity::class.java).putExtra("page", "settings")).setup()
     }
 
     private fun locationSwitch(): Switch = descendants(activity.window.decorView)

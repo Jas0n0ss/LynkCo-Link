@@ -59,7 +59,7 @@ class TelephonyMicrophoneTest {
         sink = AndroidMediaSink(context = context)
         for (type in listOf(AudioEffect.EFFECT_TYPE_AEC, AudioEffect.EFFECT_TYPE_NS)) {
             ShadowAudioEffect.addEffect(AudioEffect.Descriptor(type.toString(), type.toString(),
-                "Pre Processing", "Test effect", "OSNPlay"))
+                "Pre Processing", "Test effect", "LynkCoLink"))
         }
         ShadowAudioRecord.setSourceProvider { record ->
             recorder.compareAndSet(null, record)
@@ -102,7 +102,7 @@ class TelephonyMicrophoneTest {
 
     @Test fun aCallLeavesCommunicationModeOnceItsOtherOwnerLetsGo() {
         // #987: the Telecom call for the car's phone audio, or the car's own phone app, enters communication mode
-        // before OSNPlay's call does. OSNPlay asked for that mode again after the call and kept the head unit in it,
+        // before LynkCoLink's call does. LynkCoLink asked for that mode again after the call and kept the head unit in it,
         // with no music or navigation, after the other owner had let go.
         val diagnostics = CopyOnWriteArrayList<String>()
         sink.close()
