@@ -1065,11 +1065,11 @@
     <string name="lynk_compat_unsupported">Not in the supported list. Supported: Lynk 01, 02, 03, 05, 06.</string>
     <string name="lynk_compat_evidence">Detection: %1$s</string>
     <string name="lynk_compat_hint">If this is wrong, include this line in the diagnostic report.</string>
-    <string name="debug_logs_export">Export debug logs (ZIP)</string>
-    <string name="debug_logs_description">Includes the diagnostic report, the app logcat, the Android crash buffer and retained session logs. Secrets and identifiers are redacted.</string>
-    <string name="debug_logs_saved">Debug logs saved</string>
+    <string name="debug_logs_export">Collect vehicle report (ZIP)</string>
+    <string name="debug_logs_description">Includes Build, display, audio, USB/input, Bluetooth/Wi-Fi, permissions, UI tree, getprop/dumpsys, diagnostic report, logcat, crash buffer, session logs and a screenshot. Secrets and identifiers are redacted.</string>
+    <string name="debug_logs_saved">Vehicle report saved</string>
     <string name="debug_logs_saved_to">Saved to %1$s</string>
-    <string name="debug_logs_share">Share debug logs</string>
+    <string name="debug_logs_share">Share vehicle report</string>
     <string name="debug_logs_description_short">Attach the zip to a bug report. Nothing is uploaded automatically.</string>
     <string name="validation_run">Run head-unit checks</string>
     <string name="validation_title">Head-unit checks</string>

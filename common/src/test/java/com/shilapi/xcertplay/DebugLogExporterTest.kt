@@ -15,6 +15,7 @@ class DebugLogExporterTest {
             crashLogcat = "FATAL EXCEPTION: main",
             sessionLogs = mapOf("lynkco_link.log" to "session line"),
             deviceInfo = "Android 9 / API 28",
+            vehicleFiles = mapOf("build.txt" to "model=test", "display.txt" to "1920x1080"),
         )
         val entries = unzip(zip)
         assertTrue(entries.containsKey("diagnostic-report.txt"))
@@ -22,6 +23,8 @@ class DebugLogExporterTest {
         assertTrue(entries.containsKey("logcat-crash.txt"))
         assertTrue(entries.containsKey("device.txt"))
         assertTrue(entries.containsKey("session-logs/lynkco_link.log"))
+        assertTrue(entries.containsKey("vehicle/build.txt"))
+        assertTrue(entries.getValue("vehicle/display.txt").contains("1920x1080"))
         assertTrue(entries.getValue("logcat.txt").contains("connected"))
         assertTrue(entries.getValue("logcat-crash.txt").contains("FATAL"))
         assertTrue(entries.getValue("session-logs/lynkco_link.log").contains("session line"))
@@ -47,7 +50,7 @@ class DebugLogExporterTest {
 
     @Test fun fileNameIsAZipWithBrand() {
         val name = DebugLogExporter.fileName()
-        assertTrue(name.startsWith("LynkCo-Link-debug-"))
+        assertTrue(name.startsWith("LynkCo-Link-vehicle-report-"))
         assertTrue(name.endsWith(".zip"))
     }
 

@@ -4367,11 +4367,12 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         exportButton?.isEnabled = false
         debugExportButton?.apply { isEnabled = false; text = getString(R.string.saving_report) }
         val appContext = applicationContext
+        val rootView = window.decorView
         val fileName = DebugLogExporter.fileName()
         Thread({
             val result = runCatching {
                 val report = diagnosticReportText(appContext)
-                val bytes = DebugLogExporter.export(appContext, report)
+                val bytes = DebugLogExporter.export(appContext, report, rootView)
                 DiagnosticExportStore.saveBytesWithoutPicker(appContext, fileName, bytes)
             }
             runOnUiThread {

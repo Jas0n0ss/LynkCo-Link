@@ -1022,11 +1022,11 @@
     <string name="lynk_compat_unsupported">不在支援列表內。支援：領克 01、02、03、05、06。</string>
     <string name="lynk_compat_evidence">識別依據：%1$s</string>
     <string name="lynk_compat_hint">如果識別錯誤，請把這一行附在診斷報告中。</string>
-    <string name="debug_logs_export">匯出除錯日誌（ZIP）</string>
-    <string name="debug_logs_description">包含診斷報告、本應用程式的 logcat、Android 當機緩衝區與保留的工作階段日誌。密鑰與識別碼會自動遮蔽。</string>
-    <string name="debug_logs_saved">除錯日誌已儲存</string>
+    <string name="debug_logs_export">一鍵收集車輛報告（ZIP）</string>
+    <string name="debug_logs_description">包含 Build、顯示、音訊、USB/輸入、藍牙/Wi-Fi、權限、UI 樹、getprop/dumpsys、診斷報告、logcat、當機緩衝區、工作階段日誌和截圖。密鑰與識別碼會自動遮蔽。</string>
+    <string name="debug_logs_saved">車輛報告已儲存</string>
     <string name="debug_logs_saved_to">已儲存至 %1$s</string>
-    <string name="debug_logs_share">分享除錯日誌</string>
+    <string name="debug_logs_share">分享車輛報告</string>
     <string name="debug_logs_description_short">請將 ZIP 附加到問題回報。不會自動上傳。</string>
     <string name="validation_run">執行車機檢查</string>
     <string name="validation_title">車機檢查</string>

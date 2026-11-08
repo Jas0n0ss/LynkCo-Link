@@ -31,9 +31,9 @@ The UI ships in **English by default** and includes Simplified/Traditional Chine
 
 ![Mock vehicle panel](docs/assets/emulator-api33-mock-vehicle-1920x720.png)
 
-Debug logs are exported from Settings → Diagnostics as a redacted ZIP:
+Collect a redacted vehicle report from Settings → Diagnostics:
 
-![Debug logs](docs/assets/debug-logs-export.png)
+![Vehicle report](docs/assets/vehicle-report-export.png)
 
 Run head-unit checks before a real-car session:
 

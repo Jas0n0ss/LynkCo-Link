@@ -1,7 +1,10 @@
 package com.shilapi.xcertplay
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Build
+import android.view.View
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
@@ -20,9 +23,9 @@ internal object DebugLogExporter {
     private const val MAX_LOG_CHARS = 400_000
 
     fun fileName(): String =
-        "LynkCo-Link-debug-${SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(Date())}.zip"
+        "LynkCo-Link-vehicle-report-${SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(Date())}.zip"
 
-    fun export(context: Context, report: String): ByteArray {
+    fun export(context: Context, report: String, rootView: View? = null): ByteArray {
         val sessionLogs = LinkCoSessionLogs.read(context)
         return buildZip(
             report = report,
@@ -30,6 +33,8 @@ internal object DebugLogExporter {
             crashLogcat = capture("logcat", "-b", "crash", "-d", "-v", "threadtime"),
             sessionLogs = sessionLogs,
             deviceInfo = deviceInfo(context),
+            vehicleFiles = VehicleInfoCollector.collect(context, rootView),
+            screenshot = screenshot(rootView),
         )
     }
 
@@ -40,6 +45,8 @@ internal object DebugLogExporter {
         crashLogcat: String,
         sessionLogs: Map<String, String>,
         deviceInfo: String,
+        vehicleFiles: Map<String, String> = emptyMap(),
+        screenshot: ByteArray? = null,
     ): ByteArray {
         val output = ByteArrayOutputStream()
         ZipOutputStream(output).use { zip ->
@@ -48,6 +55,14 @@ internal object DebugLogExporter {
             zip.entry("diagnostic-report.txt", redact(report))
             zip.entry("logcat.txt", redact(logcat))
             zip.entry("logcat-crash.txt", redact(crashLogcat))
+            vehicleFiles.forEach { (name, content) ->
+                zip.entry("vehicle/${name.replace(Regex("[^A-Za-z0-9._-]"), "_")}", redact(content))
+            }
+            if (screenshot != null) {
+                zip.putNextEntry(ZipEntry("screen.png"))
+                zip.write(screenshot)
+                zip.closeEntry()
+            }
             sessionLogs.forEach { (name, content) ->
                 zip.entry("session-logs/${name.replace(Regex("[^A-Za-z0-9._-]"), "_")}", redact(content))
             }
@@ -67,6 +82,9 @@ internal object DebugLogExporter {
 
         diagnostic-report.txt  What the app was doing at export time.
         device.txt             Android/head-unit/build identity.
+        vehicle/               Build, display, audio, USB/input, Bluetooth/Wi-Fi,
+                               permissions, view tree, getprop and dumpsys output.
+        screen.png             Current app screen.
         logcat.txt             Last 5,000 lines from this app's process.
         logcat-crash.txt       Android crash buffer.
         session-logs/          Retained LynkCo-Link session logs.
@@ -85,6 +103,16 @@ internal object DebugLogExporter {
         appendLine("Board: ${Build.BOARD}; hardware: ${Build.HARDWARE}")
         appendLine("Locale: ${Locale.getDefault().toLanguageTag()}")
     }
+
+    private fun screenshot(view: View?): ByteArray? = runCatching {
+        if (view == null || view.width <= 0 || view.height <= 0) return null
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        view.draw(Canvas(bitmap))
+        val output = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
+        bitmap.recycle()
+        output.toByteArray()
+    }.getOrNull()
 
     private fun capture(vararg command: String): String = runCatching {
         val process = ProcessBuilder(*command).redirectErrorStream(true).start()
