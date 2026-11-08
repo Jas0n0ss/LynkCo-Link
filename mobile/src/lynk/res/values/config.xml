@@ -3,5 +3,4 @@
          not gate on location, and the environment check reports the Lynk system AP state. -->
     <bool name="config_simple_connection_flow">true</bool>
     <bool name="config_auto_start_on_boot_default">true</bool>
-    <bool name="config_launcher_bubble_default">true</bool>
 </resources>

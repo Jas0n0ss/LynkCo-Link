@@ -335,6 +335,14 @@ launchable-activity: com.shilapi.xcertplay.OSNPlayActivity
 
 ![API 28 启动](assets/emulator-api28-osnplay-1920x1080.png)
 
+1920×720：
+
+![1920x720](assets/emulator-api33-osnplay-1920x720.png)
+
+Mock Compose 面板：
+
+![Mock panel](assets/emulator-api33-mock-vehicle-1920x720.png)
+
 验证项：
 
 - `:shared:testDebugUnitTest` 通过
@@ -344,5 +352,10 @@ launchable-activity: com.shilapi.xcertplay.OSNPlayActivity
 - API 28 安装成功，首次启动进入连接设置
 - 1920×1080 横屏布局正常
 - 1920×720 宽度下内容可滚动，无崩溃
+- D-pad 焦点从连接模式走到底部按钮，`Next` 需要右方向键，符合横屏底部双按钮布局
+- Mock SDK：`common/src/main/java/com/shilapi/xcertplay/vehicle`
+- Mock 场景：Parked / Driving / Charging
+- 已接空调（温度/风量）和媒体（播放/暂停/上下曲）
+- Debug Compose 面板：`MockVehicleActivity`，Release 不包含
 
 CarPlay 实连仍需 iPhone、USB 数据和认证资产，仿真环境无法替代。

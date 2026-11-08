@@ -1158,8 +1158,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         mainHandler.removeCallbacks(pollConfiguration)
         mainHandler.post(pollConfiguration)
         CenterMapOverlay.onOSNPlayScreenShown()
-        LauncherBubble.attach(this)
-        LauncherBubble.onAppScreenShown()
         homeMonitor?.stop()
         homeScreenVisible = null
         // Read here so a change made in Settings applies when the projection comes back.
@@ -1277,7 +1275,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         super.onStop()
         if (!isFinishing && !isChangingConfigurations) {
             CenterMapOverlay.scheduleShow()
-            LauncherBubble.scheduleShow()
         }
     }
 
