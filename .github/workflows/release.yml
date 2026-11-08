@@ -113,3 +113,10 @@ jobs:
             echo "Deleting old release: $old"
             gh release delete "$old" --yes --cleanup-tag
           done
+          # Remove orphan tags left by older releases so at most two versions remain.
+          git fetch --tags --force
+          for old in $(git tag --sort=-creatordate | tail -n +3); do
+            [ -n "$old" ] || continue
+            echo "Deleting old tag: $old"
+            git push origin ":refs/tags/$old" || true
+          done

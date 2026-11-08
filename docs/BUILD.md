@@ -112,6 +112,12 @@ export ANDROID_KEY_PASSWORD='...'
 
 发布前必须确认认证材料的分发范围。
 
+## 发布节奏
+
+- 每次更新递增 `versionCode` / `versionName`，创建新的 `vX.Y.Z` 标签和 Release，不覆盖旧 Release。
+- Release 说明只写本版变更和安装命令，不重复完整文档。
+- 发布工作流结束后只保留**最近两个 Release 和标签**，更旧的 Release、标签和资产自动删除。
+
 ## 常见问题
 
 | 现象 | 处理 |
@@ -124,4 +130,4 @@ export ANDROID_KEY_PASSWORD='...'
 
 ## 验证记录
 
-发布前验证结果记录在 [TESTING.md](TESTING.md) 与 [RELEASE-0.1.1-PREVIEW.md](RELEASE-0.1.1-PREVIEW.md)。
+发布前验证结果记录在 [TESTING.md](TESTING.md) 与 [RELEASE-0.1.3.md](RELEASE-0.1.3.md)。
