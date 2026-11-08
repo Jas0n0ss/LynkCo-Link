@@ -1,4 +1,4 @@
-# OSNPlay 0.1.3 — 领克 01 / OSN 2.0
+# OSNPlay 0.1.3 — Lynk&co
 
 - 合并为单 APK，使用 OSN 白名单包名 `com.kugou.android.auto`，不再需要入口包。
 - 首次设置直接进入“连接 → iPhone”，移除 DiLink 版本选择。

@@ -81,7 +81,7 @@ jobs:
         run: |
           set -euo pipefail
           VERSION="${RELEASE_TAG#v}"
-          TITLE="OSNPlay ${VERSION} — 领克 01 / OSN 2.0 Lynk Release"
+          TITLE="OSNPlay ${VERSION} — Lynk&co"
           NOTES_FILE="docs/RELEASE-${VERSION^^}.md"
           FALLBACK="OSNPlay ${VERSION} for Lynk & Co OSN 2.0. Single whitelisted APK with authentication assets; see the README for install steps."
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
