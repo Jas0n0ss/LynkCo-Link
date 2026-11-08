@@ -108,6 +108,19 @@ See [build instructions](docs/BUILD.md).
 - [Testing](docs/TESTING.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
 - [License](LICENSING.md) · [Third-party notices](docs/THIRD_PARTY_NOTICES.md)
 
+## Sources and credits
+
+OSNPlay is based on these public projects:
+
+| Project | Role |
+| --- | --- |
+| [DiPlay](https://github.com/shihabal3amri/DiPlay) | Main baseline (0.2.22): CarPlay transport, audio, video and settings |
+| [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) | Lynk & Co OSN environment checks, diagnostics and head-unit work |
+| [xcertplay](https://github.com/shilapi/xcertplay) | Receiver base and project structure behind DiPlay |
+| [diplay-ecarx](https://github.com/jianyun8023/diplay-ecarx) | Lynk & Co 01 / ECARX platform permissions and real-car notes |
+
+See [LICENSING.md](LICENSING.md) and [third-party notices](docs/THIRD_PARTY_NOTICES.md) for licenses and copyright.
+
 ## Disclaimer
 
 - Not an Apple-certified product; not affiliated with or endorsed by Apple Inc. or Lynk & Co. CarPlay and its icon belong to Apple Inc.

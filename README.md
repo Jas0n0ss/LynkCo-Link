@@ -115,6 +115,19 @@ adb uninstall com.kugou.android.auto
 - [测试](docs/TESTING.md) · [隐私](docs/PRIVACY.md) · [安全](SECURITY.md)
 - [许可](LICENSING.md) · [第三方声明](docs/THIRD_PARTY_NOTICES.md)
 
+## 来源与致谢
+
+OSNPlay 的代码和领克适配来自以下公开项目：
+
+| 项目 | 作用 |
+| --- | --- |
+| [DiPlay](https://github.com/shihabal3amri/DiPlay) | 主基线（0.2.22），CarPlay 传输、音频、视频和设置体系 |
+| [LynkCo-DiPlay](https://github.com/soBigRice/LynkCo-DiPlay) | 领克 OSN 的环境检测、连接诊断和车机适配经验 |
+| [xcertplay](https://github.com/shilapi/xcertplay) | DiPlay 的接收端底座和工程结构 |
+| [diplay-ecarx](https://github.com/jianyun8023/diplay-ecarx) | 领克 01 / ECARX 平台权限和实车经验参考 |
+
+各项目的许可证和版权声明见 [LICENSING.md](LICENSING.md) 与 [第三方声明](docs/THIRD_PARTY_NOTICES.md)。
+
 ## 声明
 
 - 非 Apple 认证产品，与 Apple Inc.、领克汽车无隶属或背书关系；CarPlay 图标归 Apple Inc.。
