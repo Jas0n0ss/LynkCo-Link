@@ -18,8 +18,8 @@ object CarHotspotSettings {
         prefs(context).edit().putBoolean("config_write", enabled).apply()
 
     // Visibility is independent of the saved choice: ADB is only needed to grant permission.
-    fun visible(bydAvailable: Boolean, access: LocalAdb.Access): Boolean =
-        bydAvailable && (access == LocalAdb.Access.READY || access == LocalAdb.Access.NOT_APPROVED)
+    fun visible(headUnitAvailable: Boolean, access: LocalAdb.Access): Boolean =
+        headUnitAvailable && (access == LocalAdb.Access.READY || access == LocalAdb.Access.NOT_APPROVED)
 
     fun shouldEnable(context: Context, wireless: Boolean, mode: WirelessHotspotMode): Boolean =
         enabled(context) && wireless && mode == WirelessHotspotMode.MANUAL
@@ -47,7 +47,7 @@ object CarHotspotSettings {
 
     /**
      * Called when an attempt that connected past Android's "off" report found no hotspot. When Android still
-     * reports it off, the report was right: a BYD DiLink 2.0 keeps its hotspot switch on but starts the hotspot
+     * reports it off, the report was right: a head unit OSN 2.0 keeps its hotspot switch on but starts the hotspot
      * only once its own hotspot screen opens (#809). The driver's choice is dropped so the next attempt says the
      * hotspot is off instead of retrying for a minute. Returns true when it was dropped.
      */

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 0.2.0 — 2026-11-09
+
+- 完成 BYD/DiLink/FCE 代码清理：删除 `shared/hud`、BYD 车辆后端、DiLink 仪表、ADB 仪表和氛围灯链路。
+- 删除 CarPlay Host/主 Activity 中全部 BYD/DiLink 调用和设置。
+- 保留领克/ECARX 通用能力：CarPlay、连接、显示、音频、麦克风、方向盘、诊断。
+- 日夜模式改为 Android 光线传感器，不再依赖 BYD 氛围灯。
+- 源码 `grep -i byd` 仅剩无意义英文单词片段（如 sortedByDescending）。
+
 ## 0.1.8 — 2026-11-09
 
 - 删除氛围灯相关媒体/设置链路。

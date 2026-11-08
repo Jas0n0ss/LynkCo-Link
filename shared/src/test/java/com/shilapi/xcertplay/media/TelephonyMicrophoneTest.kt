@@ -12,7 +12,6 @@ import com.shilapi.xcertplay.airplay.AudioStreamId
 import com.shilapi.xcertplay.airplay.AudioFormat
 import com.shilapi.xcertplay.airplay.AudioCodecKind
 import com.shilapi.xcertplay.airplay.MicrophoneConfig
-import com.shilapi.xcertplay.hud.BydOutputSettings
 import com.shilapi.xcertplay.telecom.PhoneAudioRoute
 import java.net.InetAddress
 import java.util.concurrent.CountDownLatch
@@ -130,24 +129,7 @@ class TelephonyMicrophoneTest {
         assertEquals(AudioManager.MODE_NORMAL, manager.mode)
     }
 
-        @Test fun aCallInTheCarsPhoneStateRecordsFromVoiceRecognitionWithoutCallEffects() {
-        val diagnostics = recordDiagnostics()
-        BydOutputSettings.setPhoneAudioRoute(context, true)
-        PhoneAudioRoute.attach(context)
-        try {
-            sink.onMicrophoneStarted(telephony, config("telephony"))
-            val record = awaitCapture()
-            assertEquals(MediaRecorder.AudioSource.VOICE_RECOGNITION, record.audioSource)
-            // #987: the report said VOICE_COMMUNICATION for these calls, so it could not show the car's phone state.
-            assertTrue(diagnostics.joinToString("\n"),
-                diagnostics.any { it.startsWith("Microphone: start type=telephony source=VOICE_RECOGNITION ") })
-            assertTrue(ShadowAudioEffect.getAudioEffects().isEmpty())
-        } finally {
-            BydOutputSettings.setPhoneAudioRoute(context, false)
-        }
-    }
-
-    @Test @Config(sdk = [28])
+            @Test @Config(sdk = [28])
     fun aSilentWindowNamesTheModeAndWhatElseIsRecording() {
         // #987: calls and Siri recorded only zeros on a head unit that stayed in communication mode, and the
         // report could not show whether another app held the microphone.

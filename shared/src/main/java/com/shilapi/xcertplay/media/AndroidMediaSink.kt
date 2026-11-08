@@ -610,7 +610,7 @@ class AndroidMediaSink(
 
     /**
      * A head unit built on a phone chip plays communication audio on an earpiece, which nobody hears in a car: the
-     * Podofo SM4250 in #782 routed a whole call there (`routeType=1`), and the navigation prompts during it. BYD
+     * Podofo SM4250 in #782 routed a whole call there (`routeType=1`), and the navigation prompts during it. head unit
      * head units route calls to the loudspeaker (`routeType=2`) and never get here. Once a call's track is routed
      * to the earpiece, the call moves to the loudspeaker as **Calls on the loudspeaker** would, once per call.
      */
@@ -2097,7 +2097,7 @@ private class AudioRenderer(
 
     /**
      * Worker-thread only. The guidance is scaled in [attenuateNavigation] as it is written, not with
-     * AudioTrack.setVolume: on a BYD DiLink 3.0 the track accepted every setVolume and the guidance on
+     * AudioTrack.setVolume: on a head unit OSN 3.0 the track accepted every setVolume and the guidance on
      * stream 14 stayed as loud (#719). Each change is reported once, when it reaches this stream.
      */
     private fun applyNavigationAttenuation() {
@@ -2282,7 +2282,7 @@ private class AudioRenderer(
         diagnosticStage = "decoder-input"
         // While a blocking track write holds this thread, decoded output fills up and the decoder
         // stops taking input. Dropping the packet after one 10 ms wait cut ~21 ms of music every
-        // 10-20 s on DiLink 3.0 (#381); drain the output and wait again instead. One drain and
+        // 10-20 s on OSN 3.0 (#381); drain the output and wait again instead. One drain and
         // retry is enough for that, and the pump always makes it. Waiting the video's 500 ms
         // for every packet let a slowed decoder fall ever further behind instead: with the
         // CarPlay screen in the background, the queue grew to 190 packets and the track

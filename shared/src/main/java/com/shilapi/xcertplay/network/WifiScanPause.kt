@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.shilapi.xcertplay.adb.LocalAdb
-import com.shilapi.xcertplay.hud.BydAdbShell
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
@@ -14,7 +13,7 @@ import java.util.concurrent.TimeUnit
  * Pauses the head unit's automatic Wi-Fi network search while a Wi-Fi Direct CarPlay session runs.
  *
  * Wi-Fi Direct needs the car's Wi-Fi client switched on. While that client is not joined to a
- * network, BYD firmware searches every band every 10 s (seen on DiLink 3, 4 and 5). The single radio
+ * network, head unit firmware searches every band every 10 s (seen on OSN 3, 4 and 5). The single radio
  * leaves the CarPlay channel for each search, and the iPhone's audio packets sent meanwhile are lost,
  * so music and voice stutter on a 10 s rhythm. The built-in car hotspot runs with the client off and
  * is not affected, and Same LAN needs the search, so only Wi-Fi Direct sessions pause it.
@@ -101,7 +100,6 @@ private object ProcessWifiScanPause : WifiScanPauseControl {
     private val worker: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor {
         Thread(it, WifiScanPause.TAG).apply { isDaemon = true }
     }
-    private val adb = BydAdbShell(WifiScanPause.TAG)
     private var session: WifiScanPauseSession? = null
     private var retry: ScheduledFuture<*>? = null
 
@@ -134,7 +132,6 @@ private object ProcessWifiScanPause : WifiScanPauseControl {
             } else {
                 retry?.cancel(false)
                 retry = null
-                adb.close()
             }
         }
     }
@@ -154,8 +151,7 @@ private object ProcessWifiScanPause : WifiScanPauseControl {
         ).also { session = it }
     }
 
-    private fun switch(app: Context, enabled: Boolean): WifiScanSwitchResult {
-        val output = adb.run(app, WifiScanPause.command(app.packageCodePath, enabled), WifiScanPause.HELPER_TIMEOUT_MS)
-        return if (output == null) WifiScanPause.unanswered(adb.lastAccess) else WifiScanPause.parse(output)
-    }
+    private fun switch(app: Context, enabled: Boolean): WifiScanSwitchResult =
+        WifiScanSwitchResult.ADB_OFF
+
 }

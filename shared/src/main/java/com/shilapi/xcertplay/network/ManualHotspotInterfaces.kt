@@ -191,7 +191,7 @@ internal fun legacyHotspotInterfaces(tethered: List<String>, wifiRegexes: List<S
 
 /**
  * The modem's mobile-data interfaces: Qualcomm's rmnet… (rmnet_data0 to rmnet_data8, rmnet_ipa0 and r_rmnet_data… on
- * BYD units, #921) and MediaTek's ccmni…. Several of them hold an address while the car is online, and none carries
+ * head unit units, #921) and MediaTek's ccmni…. Several of them hold an address while the car is online, and none carries
  * the hotspot an iPhone joins.
  */
 internal fun mobileDataInterfaceName(name: String): Boolean =

@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference
  * Chooses which declaration of the CarPlay screen opens.
  *
  * Since 0.2.12 [CarPlayHostActivity] runs in a task of its own (taskAffinity `.carplay`), so CarPlay stays open
- * behind OSNPlay's settings. Launchers that show OSNPlay's task in a card or a picture-in-picture window (BYD's DiYou
+ * behind OSNPlay's settings. Launchers that show OSNPlay's task in a card or a picture-in-picture window (head unit's DiYou
  * desktop card, 嘟嘟桌面) then show only OSNPlay's start page, and CarPlay opens outside the card (#463, #406, #1003).
  * With "Keep CarPlay in the launcher card" on, [SameTaskCarPlayHostActivity] opens instead, in OSNPlay's own task.
  *

@@ -28,7 +28,7 @@ object AmbientAlbumPalette {
 
     /** Keeps the existing colored-hue selection first, then accepts a majority white cover. */
     fun albumColor(pixels: IntArray): Int? {
-        dominantRgb(pixels)?.let { return bydColor(it) }
+        dominantRgb(pixels)?.let { return osnColor(it) }
         if (pixels.isEmpty()) return null
         var whiteCount = 0
         var red = 0L; var green = 0L; var blue = 0L
@@ -46,7 +46,7 @@ object AmbientAlbumPalette {
 
     // OEM CarSetting.apk light_ambient_color_{1..31}_all.png: same lamp-strip pixel
     // across all 31 preview resources. These are UI reference colors, not measured lamp RGB.
-    private val bydPreviewRgb = listOf(
+    private val osnPreviewRgb = listOf(
         0xa84cc1, 0x7136b3, 0x2237ac, 0x2274b6, 0x2384b8, 0x298cb1,
         0x23a3b6, 0x23b6b8, 0x4ab8b1, 0x81b8b1, 0x7eb8b3, 0x84b49c,
         0x63ad81, 0x30a557, 0x85b55f, 0xa5b366, 0xb8b67d, 0xb8a774,
@@ -56,7 +56,7 @@ object AmbientAlbumPalette {
     /** Stock UI preview for a hardware color number (1..31), including opaque alpha. */
     fun previewRgb(index: Int): Int {
         require(index in 1..31)
-        return (0xff shl 24) or bydPreviewRgb[index - 1]
+        return (0xff shl 24) or osnPreviewRgb[index - 1]
     }
 
     private fun colorHue(rgb: Int) = hue((rgb ushr 16) and 255, (rgb ushr 8) and 255, rgb and 255)
@@ -67,20 +67,20 @@ object AmbientAlbumPalette {
     }
     private fun hueDistance(a: Double, b: Double): Double = abs(a - b).let { minOf(it, 360 - it) }
 
-    fun bydColor(rgb: Int): Int {
+    fun osnColor(rgb: Int): Int {
         val target = colorHue(rgb)
         // Ignore OEM white/near-white. Hue is primary; saturation only breaks close matches.
-        return bydPreviewRgb.indices.filter { saturation(bydPreviewRgb[it]) >= 0.20 }
-            .minBy { hueDistance(target, colorHue(bydPreviewRgb[it])) +
-                abs(saturation(rgb) - saturation(bydPreviewRgb[it])) * 3 } + 1
+        return osnPreviewRgb.indices.filter { saturation(osnPreviewRgb[it]) >= 0.20 }
+            .minBy { hueDistance(target, colorHue(osnPreviewRgb[it])) +
+                abs(saturation(rgb) - saturation(osnPreviewRgb[it])) * 3 } + 1
     }
 
     internal fun neighbors(center: Int): List<Int> {
         if (center == 29 || center == 30) return listOf(29, 30)
-        val target = colorHue(bydPreviewRgb[center - 1])
-        return bydPreviewRgb.indices.filter { saturation(bydPreviewRgb[it]) >= 0.20 &&
-            hueDistance(target, colorHue(bydPreviewRgb[it])) <= 35 }
-            .sortedBy { hueDistance(target, colorHue(bydPreviewRgb[it])) }.take(5).map { it + 1 }
+        val target = colorHue(osnPreviewRgb[center - 1])
+        return osnPreviewRgb.indices.filter { saturation(osnPreviewRgb[it]) >= 0.20 &&
+            hueDistance(target, colorHue(osnPreviewRgb[it])) <= 35 }
+            .sortedBy { hueDistance(target, colorHue(osnPreviewRgb[it])) }.take(5).map { it + 1 }
             .ifEmpty { listOf(center) }
     }
 

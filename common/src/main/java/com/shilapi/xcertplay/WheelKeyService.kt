@@ -24,16 +24,16 @@ import com.shilapi.xcertplay.host.R
 import com.shilapi.xcertplay.media.NavigationPlayback
 
 /**
- * Optional: steering-wheel keys zoom CarPlay's dashboard map and work as a CarPlay joystick. BYD's window
+ * Optional: steering-wheel keys zoom CarPlay's dashboard map and work as a CarPlay joystick. head unit's window
  * manager takes the wheel's keys (volume 291/292, the custom key 305, the media key 289) before any app
  * sees them and acts on them itself. An accessibility service that filters key events gets them earlier,
  * in the input filter, and may keep them. With the zoom setting on and the dashboard map streaming, the
- * mode key (BYD's custom key by default) switches the zoom keys (the volume keys by default) from volume
+ * mode key (head unit's custom key by default) switches the zoom keys (the volume keys by default) from volume
  * to map zoom until it is pressed again, or, in the timed behaviour, until a few seconds after the last
- * zoom. With the joystick setting on, the joystick key (BYD's media key by default) turns the joystick on
+ * zoom. With the joystick setting on, the joystick key (head unit's media key by default) turns the joystick on
  * and off; while it is on the keys drive CarPlay's main screen as a car's rotary knob would (see
  * [WheelJoystick]). A call always keeps the keys for the call. During a CarPlay call the call key answers on
- * the iPhone (see [CarPlayCallKeys]), and with a CarPlay session DiLink 3's CarPlay voice keys open Siri.
+ * the iPhone (see [CarPlayCallKeys]), and with a CarPlay session OSN 3's CarPlay voice keys open Siri.
  * With the Siri key setting on, a key the user assigns opens Siri while CarPlay is connected.
  * Every other key passes on unchanged. On
  * the Tang the console's volume sends the same codes as the wheel's, so it zooms and moves too.
@@ -453,7 +453,7 @@ class WheelKeyService : AccessibilityService() {
         }
     }
 
-    // On the centre screen, and where the song shows on the dashboard: zoom with BYD's Bluetooth-music
+    // On the centre screen, and where the song shows on the dashboard: zoom with head unit's Bluetooth-music
     // icon (source 6), volume with the song's usual icon.
     private fun announce(zoomOn: Boolean) {
         note("zoom mode ${if (zoomOn) "on" else "off"}")
@@ -508,7 +508,7 @@ class WheelKeyService : AccessibilityService() {
         }
 
         /**
-         * BYD's settings have no accessibility page, so the user can turn the service on through the car's
+         * head unit's settings have no accessibility page, so the user can turn the service on through the car's
          * own adb (allowed once on the car screen). Services already in the list stay there.
          */
         fun enableOverAdb(context: Context, mayAsk: Boolean = true): LocalAdb.Access = LocalAdb(AdbKeys.load(context)).use { adb ->
@@ -572,13 +572,13 @@ class WheelKeyService : AccessibilityService() {
 
         /**
          * The call controls need the service too: outside the CarPlay screen the call key reaches OSNPlay
-         * only through it, and without it BYD's window manager opens its own phone app instead. So does the
+         * only through it, and without it head unit's window manager opens its own phone app instead. So does the
          * watcher for other apps' calls, which runs only while something keeps OSNPlay alive.
          */
         internal fun wanted(context: Context): Boolean = WheelZoomSettings.anyEnabled(context)
 
         /**
-         * Android takes the service off the allowed list when the app is force-stopped (BYD's system does
+         * Android takes the service off the allowed list when the app is force-stopped (head unit's system does
          * that), and an update or a crash can leave it unbound. With a wheel key setting or the call controls on, OSNPlay
          * puts it back over the car's adb, already allowed, when it is still not running a few seconds after
          * a OSNPlay screen opens or comes back to the front, so the keys work without a visit to the settings.
@@ -901,7 +901,7 @@ class WheelSiriKey {
 }
 
 /**
- * One press of BYD's voice key arrives as two keys: the CarPlay pair (327 short, 328 long) for the wheel key
+ * One press of head unit's voice key arrives as two keys: the CarPlay pair (327 short, 328 long) for the wheel key
  * service and the generic pair (304 short, 312 long) for the CarPlay window, about half a second apart.
  * Each opens Siri, and a second request ends the Siri session the first one began, so only the first of the
  * two within [WINDOW_MILLIS] is sent. No Android types, so it is unit-tested.
@@ -940,7 +940,7 @@ object WheelZoomSettings {
     private const val KEY_SIRI_DOUBLE_PRESS_INTERVAL = "siri_double_press_interval"
     private const val KEY_SIRI_TRIGGER_DELAY = "siri_trigger_delay"
     private const val KEY_SIRI_LONG_ONLY = "siri_long_press_only"
-    private const val BYD_KEYS = "simulate-keys"
+    private const val HEAD_UNIT_KEYS = "simulate-keys"
     const val TIMED_MODE_MILLIS = 5_000L
     const val JOYSTICK_IDLE_MILLIS = 15_000L
     val SIRI_DOUBLE_PRESS_INTERVALS = listOf(300, 400, 500, 600, 800, 1_000)
@@ -949,17 +949,17 @@ object WheelZoomSettings {
     const val DEFAULT_SIRI_TRIGGER_DELAY_MILLIS = 300
 
     /**
-     * Defaults are a BYD Tang's wheel: the custom key, volume up and down (the roller), the media key,
-     * previous, next and play/pause. The Siri key has no default: OSNPlay's screen already takes BYD's voice key.
+     * Defaults are a head unit Tang's wheel: the custom key, volume up and down (the roller), the media key,
+     * previous, next and play/pause. The Siri key has no default: OSNPlay's screen already takes head unit's voice key.
      */
     enum class Role(val defaultKey: WheelKey?) {
-        MODE(WheelKey(305, 300, BYD_KEYS)),
-        ZOOM_IN(WheelKey(291, 115, BYD_KEYS)),
-        ZOOM_OUT(WheelKey(292, 114, BYD_KEYS)),
-        JOYSTICK(WheelKey(289, 89, BYD_KEYS)),
-        PREVIOUS(WheelKey(88, 268, BYD_KEYS)),
-        NEXT(WheelKey(87, 270, BYD_KEYS)),
-        SELECT(WheelKey(353, 505, BYD_KEYS)),
+        MODE(WheelKey(305, 300, HEAD_UNIT_KEYS)),
+        ZOOM_IN(WheelKey(291, 115, HEAD_UNIT_KEYS)),
+        ZOOM_OUT(WheelKey(292, 114, HEAD_UNIT_KEYS)),
+        JOYSTICK(WheelKey(289, 89, HEAD_UNIT_KEYS)),
+        PREVIOUS(WheelKey(88, 268, HEAD_UNIT_KEYS)),
+        NEXT(WheelKey(87, 270, HEAD_UNIT_KEYS)),
+        SELECT(WheelKey(353, 505, HEAD_UNIT_KEYS)),
         SIRI(null),
         MEDIA_PLAY_PAUSE(null),
     }

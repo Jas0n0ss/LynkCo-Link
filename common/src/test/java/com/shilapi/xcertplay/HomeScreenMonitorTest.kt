@@ -30,38 +30,7 @@ class HomeScreenMonitorTest {
         assertTrue(HomeScreenMonitor.KNOWN_CAR_LAUNCHERS.contains("com.dudu.android.launcher"))
     }
 
-    @Test
-    fun isHomePackageRecognizesBYDAndThirdPartyLaunchers() {
-        val monitor = HomeScreenMonitor(context) {}
-        val isHomeMethod = HomeScreenMonitor::class.java.getDeclaredMethod("isHomePackage", String::class.java).apply {
-            isAccessible = true
-        }
-
-        // Standard BYD launchers
-        assertTrue(isHomeMethod.invoke(monitor, "com.android.launcher3") as Boolean)
-        assertTrue(isHomeMethod.invoke(monitor, "com.byd.launchermap") as Boolean)
-        assertTrue(isHomeMethod.invoke(monitor, "com.byd.naviauto") as Boolean)
-        assertTrue(isHomeMethod.invoke(monitor, "com.byd.mycar") as Boolean)
-
-        // Third-party launchers
-        assertTrue(isHomeMethod.invoke(monitor, "com.smg.dydesktop") as Boolean)
-        assertTrue(isHomeMethod.invoke(monitor, "com.smg.dydesktop.pro") as Boolean)
-        assertTrue(isHomeMethod.invoke(monitor, "com.dy.launcher") as Boolean)
-        assertTrue(isHomeMethod.invoke(monitor, "com.king.dyzm") as Boolean)
-        assertTrue(isHomeMethod.invoke(monitor, "com.dudu.android.launcher") as Boolean)
-        assertFalse(isHomeMethod.invoke(monitor, "com.custom.carlauncher") as Boolean)
-
-        // Non-home full-screen apps
-        assertFalse(isHomeMethod.invoke(monitor, "com.byd.panoramic") as Boolean)
-        assertFalse(isHomeMethod.invoke(monitor, "com.netease.cloudmusic") as Boolean)
-        assertFalse(isHomeMethod.invoke(monitor, "com.byd.carsetting") as Boolean)
-        assertFalse(isHomeMethod.invoke(monitor, "com.kugou.android") as Boolean)
-        assertFalse(isHomeMethod.invoke(monitor, "com.autonavi.amapauto") as Boolean)
-        assertFalse(isHomeMethod.invoke(monitor, "com.yecon.carsetting") as Boolean)
-        assertFalse(isHomeMethod.invoke(monitor, "com.unrelated.desktop.settings") as Boolean)
-    }
-
-    @Test
+        @Test
     fun externalForegroundNotificationDispatchesVisibilityChanges() {
         var observedVisibility: Boolean? = null
         val monitor = HomeScreenMonitor(context) { visible ->

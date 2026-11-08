@@ -215,7 +215,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var pendingScrollY: Int? = null
     private var pendingRailScrollY: Int? = null
     private var pendingRailFocus = false
-    private var bydVehicleAdvancedExpanded = false
     private var adbCheckInProgress = false
     private var adbCheckMayAsk = false
     private var adbCheckFailed = false
@@ -240,7 +239,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private var updateFile: File? = null
     private var updateMessage: String? = null
     private var carButtonCard: LinearLayout? = null
-    private var bydAdbControls: LinearLayout? = null
     private var adbSwitchChangePending = false
     private var pausedForAdbSwitchChange = false
     private var updatingAdbSwitches = false
@@ -357,7 +355,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             getString(R.string.setup_error_auth)
         }
         pendingCarHotspotSetup = savedInstanceState?.getBoolean("pending_car_hotspot") ?: false
-        bydVehicleAdvancedExpanded = savedInstanceState?.getBoolean("byd_vehicle_advanced") ?: false
         settingsCategory = savedInstanceState?.getString("settings_category")
             ?.let { runCatching { SettingsCategory.valueOf(it) }.getOrNull() }
             ?: SettingsCategory.OVERVIEW
@@ -416,7 +413,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         outState.putString("settings_category", settingsCategory.name)
         connectionSettingsReturnCategory?.let { outState.putString("connection_settings_return_category", it.name) }
         outState.putBoolean("pending_car_hotspot", pendingCarHotspotSetup)
-        outState.putBoolean("byd_vehicle_advanced", bydVehicleAdvancedExpanded)
         outState.putInt("setup_step", setupStep)
         outState.putBoolean("setup_from_settings", setupFromSettings)
         super.onSaveInstanceState(outState)
@@ -661,7 +657,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         reconnectBar = null
         readinessCard = null
         exportButton = null
-        bydAdbControls = null
         adbSwitches.clear()
         adbStatus = null
         val compact = isCompactLayout && when (page) {
@@ -937,9 +932,9 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 com.shilapi.xcertplay.network.CarHotspotStatus.isEnabled(this) != true
         }
         if (startupProblem != null) {
-            // Off BYD units the access is allowed on Android's "Modify system settings" screen; ADB plays no part.
+            // Off head unit units the access is allowed on Android's "Modify system settings" screen; ADB plays no part.
             val allowOnSystemScreen = startupProblem == CarHotspotTethering.Result.PERMISSION_REQUIRED &&
-                !CarHotspotSetup.isBydHeadUnit(this) && CarHotspotTethering.appStartSupported()
+                !CarHotspotSetup.isHeadUnit(this) && CarHotspotTethering.appStartSupported()
             card.addView(label(if (allowOnSystemScreen) getString(R.string.settings_write_settings_missing)
                 else hotspotResultText(startupProblem), 15, WARNING))
             if (!compact) card.addView(
@@ -1986,13 +1981,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         // Opt-in controls that can cost sound or video on some head units.
         filteredSection(content, SettingsSection.ADVANCED_MEDIA,
             getString(R.string.settings_advanced_media), R.drawable.ic_dp_advanced) { card ->
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && CarHotspotSetup.isBydHeadUnit(this)) {
-                toggle(card, getString(R.string.settings_hide_byd_call_popup),
-                    getString(R.string.settings_hide_byd_call_popup_description),
-                    AirPlayPersistence.loadHideBydCallPopup(this)) {
-                    AirPlayPersistence.saveHideBydCallPopup(this, it)
-                }
-            }
             toggle(card, getString(R.string.efficient_video), getString(R.string.use_hevc_leave_off_for_the_widest_head_unit_compatibility), AirPlayPersistence.loadHevcEnabled(this)) {
                 AirPlayPersistence.saveHevcEnabled(this, it)
                 markReconnectNeeded()
@@ -2506,83 +2494,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     private fun openWriteSettingsAccess() =
         openSystem(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:$packageName")))
 
-    private fun bydAdbSettings(parent: LinearLayout) {
-        if (AirPlayPersistence.loadWirelessHotspotMode(this) != WirelessHotspotMode.MANUAL) return
-        if (!CarHotspotSetup.isBydHeadUnit(this)) {
-            if (CarHotspotTethering.appStartSupported()) {
-                Log.i("OSNPlay-Hotspot", "BYD head unit not detected: hotspot control through system settings access")
-                systemHotspotSettings(parent)
-            } else {
-                Log.i("OSNPlay-Hotspot", "settings hidden: BYD head unit not detected; Android ${Build.VERSION.SDK_INT} does not let an app start tethering")
-            }
-            return
-        }
-        if (searchIndexSink != null) {
-            // Index discoverable names without starting the asynchronous permission probe.
-            searchIndexSink?.addAll(listOf(
-                getString(R.string.byd_adb_features),
-                getString(R.string.auto_car_hotspot_title),
-                getString(R.string.btn_auto_apply_permissions),
-            ))
-            return
-        }
-        val controls = column().apply { visibility = View.GONE }
-        bydAdbControls = controls
-        parent.addView(controls)
-        Thread({
-            val access = runCatching { CarHotspotSetup.check(applicationContext) }
-                .onFailure { Log.w("OSNPlay-Hotspot", "settings ADB check failed", it) }
-                .getOrDefault(LocalAdb.Access.UNREACHABLE)
-            Log.i("OSNPlay-Hotspot", "settings eligibility: byd=true adb=$access visible=${CarHotspotSettings.visible(true, access)}")
-            runOnUiThread {
-                if (bydAdbControls !== controls || isFinishing || isDestroyed) return@runOnUiThread
-                if (CarHotspotSettings.visible(true, access)) {
-                    controls.visibility = View.VISIBLE
-                    renderBydAdbControls(controls, access)
-                }
-            }
-        }, "osnplay-hotspot-adb-check").start()
-    }
-
-    private fun renderBydAdbControls(controls: LinearLayout, access: LocalAdb.Access) {
-        controls.removeAllViews()
-        adbSwitches.keys.retainAll(setOf(R.string.open_after_the_car_starts))
-        adbStatus = null
-        controls.visibility = if (CarHotspotSettings.visible(true, access)) View.VISIBLE else View.GONE
-        if (controls.visibility == View.GONE) return
-        if (AirPlayPersistence.loadWirelessHotspotMode(this) != WirelessHotspotMode.MANUAL) {
-            controls.visibility = View.GONE
-            return
-        }
-        section(controls, getString(R.string.byd_adb_features), R.drawable.ic_dp_permissions) { card ->
-            if (AirPlayPersistence.loadWirelessHotspotMode(this) == WirelessHotspotMode.MANUAL) {
-                adbToggle(card, R.string.auto_car_hotspot_title, R.string.auto_car_hotspot_description,
-                    read = { CarHotspotSettings.enabled(this) },
-                    permissions = {
-                        buildList {
-                            add(CarHotspotSetup.Permission.HOTSPOT)
-                            if (AirPlayPersistence.loadAutoStartOnBoot(this@OSNPlayActivity)) {
-                                add(CarHotspotSetup.Permission.BOOT_LAUNCH)
-                            }
-                        }
-                    }) {
-                    CarHotspotSettings.setEnabled(this, it)
-                    if (!it) startupHotspotCancelled = true
-                }
-            }
-            adbStatus = label(getString(if (access == LocalAdb.Access.READY)
-                R.string.adb_access_ready else R.string.adb_not_approved), 14, MUTED).also(card::addView)
-            val allReady = UsbPermissionSetup.snapshot(this).values.all { it }
-            if (!allReady) {
-                card.addView(button(getString(R.string.btn_auto_apply_permissions), false) { autoApplyPermissions() }, matchButton(8, 54))
-            } else {
-                card.addView(label(getString(R.string.btn_permissions_ready), 14, READY).apply {
-                    setPadding(0, dp(6), 0, dp(4))
-                })
-            }
-        }
-    }
-
     private fun adbToggle(parent: LinearLayout, title: Int, description: Int, read: () -> Boolean,
         needsAdb: () -> Boolean = { true },
         permissions: () -> List<CarHotspotSetup.Permission> = { emptyList() }, save: (Boolean) -> Unit) {
@@ -2612,7 +2523,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         adbSwitchChangePending = true
         updateAdbSwitches()
         adbStatus?.setText(R.string.adb_checking_may_ask)
-        if (page == "settings" && bydVehicleAdvancedExpanded) render()
         Thread({
             var access = LocalAdb.Access.UNREACHABLE
             val ready = runCatching {
@@ -2636,7 +2546,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 toast(getString(message))
                 runPendingAutomaticVehicleValidation()
                 // Re-enable the vehicle controls disabled while this authorization was outstanding.
-                if (page == "settings" && bydVehicleAdvancedExpanded) render()
             }
         }, "osnplay-adb-switch").start()
     }
@@ -2826,85 +2735,28 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             .setNegativeButton(getString(R.string.cancel), null).show()
     }
 
-    // BYD maps the AOSP tether action to its own hotspot screen; other firmware falls back to Wi-Fi settings.
-    // BYD shows that screen as a dialog and closes it unless its own settings or the car home screen is on top,
+    // head unit maps the AOSP tether action to its own hotspot screen; other firmware falls back to Wi-Fi settings.
+    // head unit shows that screen as a dialog and closes it unless its own settings or the car home screen is on top,
     // so the home screen goes first.
     /**
-     * True on the head units this BYD settings work is for, and only those.
+     * True on the head units this head unit settings work is for, and only those.
      *
      * this so that no other head unit changes behaviour — a stock Android build of any version has no
-     * such package to find, and an older or newer BYD build stays exactly as it is today until it can
+     * such package to find, and an older or newer head unit build stays exactly as it is today until it can
      * be measured on a car.
      */
-    private val targetedByBydSettingsWork get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1
-
-    /**
-     * True when [action] is answered by BYD's decoy rather than a real settings screen.
-     *
-     * The decoy accepts sixty standard android.settings actions and answers each with "the multimedia
-     * system does not support this operation". Because startActivity succeeds when it reaches the
-     * decoy, the intent has to be resolved first: a throw is not the only way for a screen to fail to
-     * appear.
-     */
-    private fun answeredByBydDecoy(action: String): Boolean {
-        if (!targetedByBydSettingsWork) return false
-        val resolved = runCatching { packageManager.resolveActivity(Intent(action), 0) }.getOrNull()
-        val info = resolved?.activityInfo ?: return false
-        // The decoy is the only occupant of the package's "unsupport" package; BYD's real screens live
-        // beside it, so the package name alone would not identify one.
-        return info.packageName == BYD_SETTINGS_PACKAGE && info.name.contains("unsupport", ignoreCase = true)
-    }
-
-    /** Opens a BYD screen by explicit component, which intent-filter matching cannot redirect. */
-    private fun openBydScreen(component: ComponentName): Boolean =
-        runCatching { startActivity(Intent().setComponent(component)) }.isSuccess
-
-    /**
-     * Opens the head unit's Bluetooth screen.
-     *
-     * Where BYD's decoy answers android.settings.BLUETOOTH_SETTINGS, BYD's own Bluetooth manager is
-     * opened instead. Every other head unit keeps the standard action, unchanged.
-     */
     private fun openBluetoothSettings() {
-        if (!answeredByBydDecoy(Settings.ACTION_BLUETOOTH_SETTINGS)) {
-            openSystem(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
-            return
-        }
-        if (openBydScreen(BYD_BLUETOOTH_MANAGER)) return
-        Log.w(BYD_SETTINGS_TAG, "no Bluetooth screen on this head unit")
-        toast(getString(R.string.open_this_setting_from_your_car_s_settings_app))
+        openSystem(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
     }
 
     private fun openCarWifiSettings() {
         val tether = "com.android.settings.WIFI_TETHER_SETTINGS"
-        val target = packageManager.resolveActivity(Intent(tether), 0)?.activityInfo?.packageName
-        // Nothing opens the AOSP hotspot screen here: either no app answers the action at all, or BYD's
-        // decoy does. BYD's own screen answers android.intent.action.HOTSPOT_SETTINGS instead.
-        if (target == null || answeredByBydDecoy(tether)) {
-            if (targetedByBydSettingsWork && openBydScreen(BYD_HOTSPOT)) return
-            // Where the decoy answers the Wi-Fi settings fallback as well, taking it would only repeat
-            // the "not supported" dialog that brought the driver here. Say where the screen actually is.
-            if (answeredByBydDecoy(Settings.ACTION_WIRELESS_SETTINGS)) {
-                Log.w(BYD_SETTINGS_TAG, "no hotspot screen on this head unit")
-                toast(getString(R.string.open_this_setting_from_your_car_s_settings_app))
-                return
-            }
-            openSystem(Intent(Settings.ACTION_WIRELESS_SETTINGS))
-            return
-        }
-        if (target == "com.byd.carsettings") {
-            runCatching { startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)) }
-        }
         if (runCatching { startActivity(Intent(tether)) }.isSuccess) return
         openSystem(Intent(Settings.ACTION_WIRELESS_SETTINGS))
     }
 
     private fun openCarClientWifiSettings() {
-        val wifi = Intent(Settings.ACTION_WIFI_SETTINGS)
-        if (packageManager.resolveActivity(wifi, 0)?.activityInfo?.packageName == "com.byd.carsettings") {
-            runCatching { startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)) }
-        }
-        openSystem(wifi)
+        openSystem(Intent(Settings.ACTION_WIFI_SETTINGS))
     }
 
     private fun openSetupGuide(fromSettings: Boolean) {
@@ -2982,16 +2834,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             openSystem(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName")))
         }, matchButton(12, 60))
         content.addView(card, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(SETTINGS_BLOCK_GAP_DP) })
-    }
-
-    private fun clusterRouteConflict(parent: LinearLayout) {
-        parent.addView(label(getString(R.string.setup_cluster_route_conflict), 16, WARNING))
-        parent.addView(button(getString(R.string.setup_cluster_route_turn_off), true) {
-            AirPlayPersistence.saveAdbClusterEnabled(this, false)
-            ClusterActivityOutput.stopForSettings()
-            markReconnectNeeded()
-            render()
-        }, matchButton(12, 56))
     }
 
     private fun setupDoneStep(content: LinearLayout) {
@@ -3420,35 +3262,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         else -> "$positive ${step * CarPlayClusterDisplay.MARKER_STEP_PERCENT} %"
     }
 
-    private fun clusterMusicControls(card: LinearLayout) {
-        toggle(card, getString(R.string.settings_cluster_music), getString(R.string.settings_cluster_music_description),
-            ClusterMusicSettings.enabled(this)) {
-            ClusterMusicSettings.saveEnabled(this, it)
-            render()
-        }
-        if (!ClusterMusicSettings.enabled(this)) return
-        choice(card, getString(R.string.settings_cluster_music_mode), listOf(
-            getString(R.string.settings_cluster_music_temporary), getString(R.string.settings_cluster_music_permanent)),
-            if (ClusterMusicSettings.permanent(this)) 1 else 0, reconnects = false) {
-            ClusterMusicSettings.savePermanent(this, it == 1)
-        }
-        listOf(
-            Triple("x", R.string.settings_cluster_music_horizontal, ClusterMusicSettings.x(this)),
-            Triple("y", R.string.settings_cluster_music_vertical, ClusterMusicSettings.y(this)),
-            Triple("size", R.string.settings_cluster_music_size, ClusterMusicSettings.size(this)),
-        ).forEach { (key, title, value) ->
-            card.addView(overlaySliderRow(getString(title),
-                (if (key == "size") 50..300 else 5..95).toList(), value) { "$it%" }.also {
-                it.onSave = { percent -> ClusterMusicSettings.save(this, key, percent) }
-                val head = it.getChildAt(0) as LinearLayout
-                val value = head.getChildAt(head.childCount - 1)
-                value.layoutParams = (value.layoutParams as LinearLayout.LayoutParams).apply {
-                    marginStart = dp(SETTINGS_BLOCK_GAP_DP)
-                }
-            })
-        }
-    }
-
     private fun clusterSpeedometerControls(card: LinearLayout) {
         toggle(card, getString(R.string.settings_cluster_speedometer),
             getString(R.string.settings_cluster_speedometer_description), AirPlayPersistence.loadClusterSpeedometerEnabled(this)) {
@@ -3693,8 +3506,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
     /** Steering-wheel keys for the dashboard map zoom and the CarPlay joystick: the switches, the key service and the keys. */
     // One place for the key service setup, above every feature that needs it.
     private fun wheelKeysSettings(card: LinearLayout) {
-        // The joystick and map zoom use BYD's media and custom keys.
-        val byd = false
+        // The joystick and map zoom use head unit's media and custom keys.
         val zoomAvailable = false
         val vehicleKeysOn = WheelZoomSettings.joystick(this) ||
             (zoomAvailable && WheelZoomSettings.enabled(this))
@@ -3712,9 +3524,9 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             wheelKeyAssignButton(card, WheelZoomSettings.Role.MEDIA_PLAY_PAUSE,
                 getString(R.string.wheel_key_role_media_play_pause))
         }
-        // It acts on BYD's short voice keys (327, 304) only, which other head units never send. Once on it
+        // It acts on head unit's short voice keys (327, 304) only, which other head units never send. Once on it
         // stays reachable, like the controls below, in case the package check misses the car.
-        if (byd || WheelZoomSettings.siriLongPressOnly(this)) {
+        if (WheelZoomSettings.siriLongPressOnly(this)) {
             toggle(card, getString(R.string.wheel_siri_long_press_only), getString(R.string.wheel_siri_long_press_only_description),
                 WheelZoomSettings.siriLongPressOnly(this)) { WheelZoomSettings.setSiriLongPressOnly(this, it) }
         }
@@ -3722,7 +3534,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         toggle(card, getString(R.string.settings_external_controller), getString(R.string.settings_external_controller_description),
             AirPlayPersistence.loadExternalController(this)) { AirPlayPersistence.saveExternalController(this, it) }
         // Keep previously configured controls reachable even if package detection misses the car.
-        if (byd || zoomAvailable || WheelZoomSettings.joystick(this)) wheelKeyControls(card)
+        if (zoomAvailable || WheelZoomSettings.joystick(this)) wheelKeyControls(card)
     }
 
     // Map zoom only works where the dashboard map card used to show these controls.
@@ -3942,7 +3754,7 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         return action != WheelZoomKeys.Action.PASS || super.dispatchKeyEvent(event)
     }
 
-    /** The 0.2.9 Dashboard song setting, shown once: in the BYD navigation card, or under Advanced vehicle data. */
+    /** The 0.2.9 Dashboard song setting, shown once: in the head unit navigation card, or under Advanced vehicle data. */
     /** The last default-mode reads; a value an enabled switch needs is a warning when missing. */
     // Probe results are saved before they are shown, so the saved snapshot is the newest without
     // trusting the clock.
@@ -4583,24 +4395,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         refreshReconnectBar()
         refreshReadiness()
     }
-    private fun authorizeClusterRouting() {
-        val app = applicationContext
-        Thread({
-            val result = runCatching {
-                com.shilapi.xcertplay.adb.LocalAdb(com.shilapi.xcertplay.adb.AdbKeys.load(app)).use {
-                    it.connect(mayAsk = true)
-                }
-            }.getOrNull()
-            runOnUiThread {
-                if (!isFinishing && !isDestroyed) {
-                    toast(if (result == com.shilapi.xcertplay.adb.LocalAdb.Access.READY)
-                        getString(R.string.adb_access_ready) else getString(R.string.adb_not_approved))
-                    if (result == com.shilapi.xcertplay.adb.LocalAdb.Access.READY) ClusterActivityOutput.retry()
-                }
-            }
-        }, "adb-cluster-authorize").start()
-    }
-
     private fun reportFileName() = "OSNPlay-${SimpleDateFormat("yyyyMMdd-HHmmss-SSS", Locale.US).format(Date())}.txt"
 
     private fun saveReportToDownloads() {
@@ -4691,16 +4485,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
         appendLine()
         appendLine(BluetoothDiagnosticSnapshot.report(appContext))
         appendLine()
-        appendLine("--- Current cluster display diagnostics (even when disabled) ---")
-        appendLine(ClusterMapPresentation.diagnosticReport(appContext))
-        appendLine()
-        appendLine("--- ADB cluster activity routing ---")
-        appendLine("adbClusterActivityEnabled=${AirPlayPersistence.loadAdbClusterEnabled(appContext)}")
-        appendLine("clusterActivityMainTask=${ClusterActivityOutput.mainTaskId} surfaceValid=${ClusterActivityOutput.surface?.isValid}")
-        AdbClusterRouter.report(appContext).lineSequence().forEach { line ->
-            DiagnosticRedactor.redact(line)?.let { appendLine(it) }
-        }
-        appendLine()
         appendLine("--- Last display negotiation (timestamps distinguish it from current settings) ---")
         appendLine(DisplayDiagnosticSnapshot.report(appContext))
         appendLine()
@@ -4710,7 +4494,6 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             "connectWhenOpened=${OSNPlayPreferences.autoConnect(appContext)}")
         appendLine("Car hotspot control: autoEnable=${CarHotspotSettings.enabled(appContext)} " +
             "writeSettings=${CarHotspotTethering.permitted(appContext)} " +
-            "bydHeadUnit=${runCatching { CarHotspotSetup.isBydHeadUnit(appContext) }.getOrNull()} " +
             "hotspotOn=${runCatching { com.shilapi.xcertplay.network.CarHotspotStatus.isEnabled(appContext) }.getOrNull()}")
         appendLine(WheelKeyService.report(appContext))
         WheelKeyLog.report(WheelKeyService.connected()).forEach { appendLine(it) }
@@ -5456,23 +5239,13 @@ class OSNPlayActivity : ComponentActivity(), AppAppearanceOwner {
             intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER) &&
                 !intent.hasExtra("page")
 
-        private const val BYD_VEHICLE_TAG = "OSNPlay-BYD13"
+        private const val HEAD_UNIT_VEHICLE_TAG = "OSNPlay-head unit13"
         private const val VEHICLE_VALIDATION_RETRY_MILLIS = 500L
 
-        // BYD's settings app answers sixty standard android.settings actions with an activity in its
+        // head unit's settings app answers sixty standard android.settings actions with an activity in its
         // "unsupport" package instead of a real screen. It does nothing but report string/unsupport_tips
         // ("the multimedia system does not support this operation"), and startActivity reports success
         // when it reaches it, so reaching it cannot be told apart from a real screen by catching a throw.
-        private const val BYD_SETTINGS_PACKAGE = "com.byd.vehiclesettings"
-        private const val BYD_SETTINGS_TAG = "OSNPlay-Settings"
-
-        // BYD's own screens. An explicit component skips intent-filter matching, so the decoy cannot
-        // answer one. Source: docs/BYD_SETTINGS_ENTRY_POINTS.md.
-        private val BYD_BLUETOOTH_MANAGER =
-            ComponentName("com.byd.btsetting", "com.byd.btsetting.BluetoothManagerDialog")
-        private val BYD_HOTSPOT =
-            ComponentName(BYD_SETTINGS_PACKAGE, "$BYD_SETTINGS_PACKAGE.system.mvp.view.link.hotspot.PerHospotActivity")
-
         private const val ADB_KEY_SAVE_WAIT_MILLIS = 500L
         private const val REPORT_VIEW_MAX_CHARS = 200_000
         private const val REPORT_HEAD_MAX_CHARS = 20_000

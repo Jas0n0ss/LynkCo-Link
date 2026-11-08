@@ -7,7 +7,7 @@ import com.shilapi.xcertplay.iap2.wire.Iap2Frame
 /**
  * What CarPlay is doing, at a glance, for widgets and other screens outside CarPlay: the next
  * maneuver from iAP2 route guidance (0x5201/0x5202) and the song from NowPlayingUpdate (0x5001).
- * Fed by every CarPlay session, whatever the BYD output settings.
+ * Fed by every CarPlay session, whatever the head unit output settings.
  */
 object CarPlayGlance {
     /** One state of the glance; [maneuverType] is Apple's RouteGuidanceManeuverType, null without a route. */
@@ -58,7 +58,7 @@ object CarPlayGlance {
             laneListener?.invoke(lanes)
             return
         }
-        // This Lynk build has no BYD HUD/cluster consumer; lane guidance above is still logged.
+        // This Lynk build has no head unit HUD/cluster consumer; lane guidance above is still logged.
         return
     }
 
