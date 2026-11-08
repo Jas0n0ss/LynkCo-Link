@@ -20,6 +20,7 @@
 | 文档 | 内容 |
 | --- | --- |
 | [BUILD.md](BUILD.md) | 环境、模块、构建任务、认证资产、签名和 CI |
+| [LYNK-ACCEPTANCE.md](LYNK-ACCEPTANCE.md) | 领克实车验收矩阵与取证脚本 |
 | [TESTING.md](TESTING.md) | 自动化测试、构建验证与实车验收清单 |
 | [DESIGN-REVIEW.md](DESIGN-REVIEW.md) | 发布前的设计评审结论与已处理问题 |
 | [ADAPTATION-NOTES.md](ADAPTATION-NOTES.md) | 相对 DiPlay 的改造、LynkCo-DiPlay 整合和路线图 |

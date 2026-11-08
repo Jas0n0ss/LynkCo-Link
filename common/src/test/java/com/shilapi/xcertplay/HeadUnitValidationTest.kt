@@ -1,6 +1,5 @@
 package com.shilapi.xcertplay
 
-import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -11,7 +10,7 @@ import org.robolectric.annotation.Config
 @Config(sdk = [28])
 class HeadUnitValidationTest {
     @Test fun reportCoversTheAdaptationSurface() {
-        val report = HeadUnitValidation.report(ApplicationProvider.getApplicationContext())
+        val report = HeadUnitValidation.report(org.robolectric.RuntimeEnvironment.getApplication())
         assertTrue(report, report.contains("Head-unit validation"))
         assertTrue(report, report.contains("lynk_model"))
         assertTrue(report, report.contains("display"))
@@ -22,7 +21,7 @@ class HeadUnitValidationTest {
     }
 
     @Test fun checksHaveStableIdsAndReadableDetails() {
-        val checks = HeadUnitValidation.capture(ApplicationProvider.getApplicationContext())
+        val checks = HeadUnitValidation.capture(org.robolectric.RuntimeEnvironment.getApplication())
         assertTrue(checks.size >= 10)
         assertTrue(checks.map { it.id }.distinct().size == checks.size)
         assertTrue(checks.all { it.label.isNotBlank() && it.detail.isNotBlank() })

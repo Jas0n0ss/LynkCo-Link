@@ -35,6 +35,10 @@ Debug logs are exported from Settings → Diagnostics as a redacted ZIP:
 
 ![Debug logs](docs/assets/debug-logs-export.png)
 
+Run head-unit checks before a real-car session:
+
+![Head-unit checks](docs/assets/head-unit-checks.png)
+
 ## Download and install
 
 Download one file:
@@ -133,7 +137,7 @@ See [build instructions](docs/BUILD.md).
 ## Docs
 
 - [Install](docs/INSTALL.md) · [Build](docs/BUILD.md) · [Compatibility](docs/COMPATIBILITY.md)
-- [Testing](docs/TESTING.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
+- [Testing](docs/TESTING.md) · [Real-car acceptance](docs/LYNK-ACCEPTANCE.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
 - [License](LICENSING.md) · [Third-party notices](docs/THIRD_PARTY_NOTICES.md)
 
 ## Sources and credits

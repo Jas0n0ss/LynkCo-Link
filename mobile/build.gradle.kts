@@ -35,8 +35,8 @@ android {
         minSdk = 24
         targetSdk = 37
         // LynkCo-Link 0.1.2 = DiPlay 0.2.22 baseline + Lynk OSN launcher compatibility.
-        versionCode = 303
-        versionName = "0.3.3"
+        versionCode = 304
+        versionName = "0.3.4"
     }
 
     localAuthenticationAssets?.let { sourceSets.getByName("main").assets.srcDir(it) }
