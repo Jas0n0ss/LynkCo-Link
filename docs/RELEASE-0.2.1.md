@@ -7,5 +7,5 @@
 安装：
 
 ```sh
-adb install -r LynkCo-Link-0.2.1-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.2.1-general-signed.apk
 ```

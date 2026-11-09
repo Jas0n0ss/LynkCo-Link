@@ -9,6 +9,6 @@
 安装：
 
 ```sh
-adb install -r LynkCo-Link-0.3.0-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.3.0-general-signed.apk
 adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkActivity
 ```

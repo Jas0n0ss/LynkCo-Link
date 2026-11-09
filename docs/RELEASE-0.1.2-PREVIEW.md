@@ -1,6 +1,6 @@
 # LynkCo-Link 0.1.2 Release
 
-> 当前 `v0.1.2-preview` Release 已更新为 `LynkCo-Link-0.1.2-lynk-release-standalone.apk`（含认证资产，release 签名）。下面保留最初预览版说明，部分“预览包不含身份”的描述已不适用于当前 Release。
+> 当前 `v0.1.2-preview` Release 已更新为 `LynkCo-Link-0.1.2-general-signed.apk`（含认证资产，release 签名）。下面保留最初预览版说明，部分“预览包不含身份”的描述已不适用于当前 Release。
 
 发布日期：2026-11-07
 标签：`v0.1.2-preview`
@@ -14,7 +14,7 @@
 
 | 文件 | applicationId | 说明 |
 | --- | --- | --- |
-| `LynkCo-Link-0.1.2-lynk-release-standalone.apk` | `com.kugou.android.auto` | 主程序 + 白名单入口，含认证资产，release 签名 |
+| `LynkCo-Link-0.1.2-general-signed.apk` | `com.kugou.android.auto` | 主程序 + 白名单入口，含认证资产，release 签名 |
 | `SHA256SUMS.txt` | — | APK 的下载校验 |
 
 > **默认预览包不含 CarPlay 配件认证身份。** 可以安装、浏览界面、修改设置和导出诊断，但**无法完成真实 CarPlay 连接**。实车连接请使用自己合法持有的认证资产按 [BUILD.md](BUILD.md) 构建 standalone 包。仓库不分发认证私钥。

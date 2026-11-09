@@ -8,6 +8,6 @@
 Install:
 
 ```sh
-adb install -r LynkCo-Link-0.3.5-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.3.5-general-signed.apk
 adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkActivity
 ```
