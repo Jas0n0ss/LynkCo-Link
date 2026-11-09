@@ -8,9 +8,9 @@ on:
         required: true
         type: string
       car_model:
-        description: 'Car-model token for the asset name (for example lynkco, lynkco-01)'
+        description: 'Car model token, or general for the all-model APK (for example 01, 03, general)'
         required: false
-        default: lynkco
+        default: general
         type: string
 
 permissions:
@@ -26,7 +26,7 @@ jobs:
     timeout-minutes: 45
     env:
       RELEASE_TAG: ${{ inputs.tag }}
-      CAR_MODEL: ${{ inputs.car_model || 'lynkco' }}
+      CAR_MODEL: ${{ inputs.car_model || 'general' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -82,7 +82,7 @@ jobs:
           esac
           mkdir -p release-assets
           cp mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk \
-            "release-assets/LynkCo-Link-${VERSION}-signed-${MODEL}.apk"
+            "release-assets/LynkCo-Link-${VERSION}-${MODEL}-signed.apk"
           (cd release-assets && sha256sum *.apk > SHA256SUMS.txt)
           ls -lh release-assets
       - name: Publish full release information

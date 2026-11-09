@@ -13,7 +13,7 @@ LynkCo-Link 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac
 
 | 包 | applicationId | 说明 |
 | --- | --- | --- |
-| `LynkCo-Link-<version>-signed-<car-model>.apk` | `com.kugou.android.auto` | 唯一交付包，主程序 + 桌面入口 + 认证资产 |
+| `LynkCo-Link-<version>-<car-model>-signed.apk` | `com.kugou.android.auto` | 唯一交付包，主程序 + 桌面入口 + 认证资产 |
 
 > `com.kugou.android.auto` 来自 OSN Launcher3 白名单。应用本身是 LynkCo-Link，不含酷狗功能；安装前确认车机没有真正的酷狗车机版，否则会冲突。
 
@@ -33,7 +33,7 @@ LynkCo-Link 安装在**车机**上，不是 iPhone。无需越狱、外设、Mac
 
    ```sh
    adb devices
-   adb install -r LynkCo-Link-0.3.6-signed-lynkco.apk
+   adb install -r LynkCo-Link-0.3.6-general-signed.apk
    ```
 
 3. 若系统拦截未知来源：

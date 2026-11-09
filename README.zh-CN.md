@@ -37,11 +37,11 @@ LynkCo-Link 安装在**车机**上，不需要越狱 iPhone、外设或认证服
 只下载一个文件：
 
 ```text
-LynkCo-Link-<version>-signed-<car-model>.apk
+LynkCo-Link-<version>-<car-model>-signed.apk
 ```
 
-当前单包覆盖领克 01/02/03/05/06，车型标识使用 `lynkco`，例如
-`LynkCo-Link-0.3.6-signed-lynkco.apk`。
+当前单包覆盖领克 01/02/03/05/06，通用包车型标识使用 `general`，例如
+`LynkCo-Link-0.3.6-general-signed.apk`；单车型包使用 `01`、`03` 等。
 
 从 [Releases](https://github.com/Jas0n0ss/LynkCo-Link/releases/latest) 下载，或：
 
@@ -69,7 +69,7 @@ gh release download --repo Jas0n0ss/LynkCo-Link
 
 ```sh
 adb devices
-adb install -r LynkCo-Link-<version>-signed-<car-model>.apk
+adb install -r LynkCo-Link-<version>-<car-model>-signed.apk
 ```
 
 安装后首次必须手动打开一次，否则 Android stopped state 会让开机自启失效：
