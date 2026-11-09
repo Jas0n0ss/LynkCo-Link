@@ -8,6 +8,7 @@
 | --- | --- |
 | [README](../README.md) | English: overview, supported cars, download and build |
 | [README.zh-CN](../README.zh-CN.md) | 简体中文：项目简介、适配车型、下载与源码构建 |
+| [DESIGN-REVIEW-APPLE.md](DESIGN-REVIEW-APPLE.md) | Apple HIG / Liquid Glass 视角 UI 审查 |
 | [EMULATOR-LYNK-OSN.md](EMULATOR-LYNK-OSN.md) | API 28 AVD、横屏 UI、车机输入和 Mock SDK 测试 |
 | [INSTALL.md](INSTALL.md) | 车机安装、有线/无线连接、更新与故障排查 |
 | [COMPATIBILITY.md](COMPATIBILITY.md) | 适配车型矩阵、功能适用性、风险和实车验证清单 |

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 0.3.6 — 2026-11-09
+
+- Apple HIG 视角 UI 审查与优化：正文 17sp、说明 16sp、最小标签 14sp。
+- 修复设置页残留 DiLink 文案，统一为 OSN。
+- 首页状态改为 Not paired / Ready for iPhone。
+- 次要按钮降权，移除首页版本角标。
+- 新增设计审查文档。
+
 ## 0.3.5 — 2026-11-09
 
 - 一键车辆报告：Build、显示、音频、USB/输入、蓝牙/Wi-Fi、权限、UI 树、getprop/dumpsys、诊断报告、logcat、崩溃、会话日志和截图。

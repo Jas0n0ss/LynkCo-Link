@@ -141,7 +141,7 @@ Detailed owner-by-owner steps: [docs/NEXT-STEPS.md](docs/NEXT-STEPS.md).
 
 - [Install](docs/INSTALL.md) · [Build](docs/BUILD.md) · [Compatibility](docs/COMPATIBILITY.md)
 - [Testing](docs/TESTING.md) · [Real-car acceptance](docs/LYNK-ACCEPTANCE.md)
-- [Next steps / user TODO](docs/NEXT-STEPS.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
+- [Next steps / user TODO](docs/NEXT-STEPS.md) · [UI design review](docs/DESIGN-REVIEW-APPLE.md) · [Privacy](docs/PRIVACY.md) · [Security](SECURITY.md)
 - [License](LICENSING.md) · [Third-party notices](docs/THIRD_PARTY_NOTICES.md)
 
 ## Sources and credits
