@@ -107,7 +107,7 @@ export ANDROID_KEY_PASSWORD='...'
 
 产物为：
 
-- `LynkCo-Link-<version>-lynk-release-standalone.apk`：主程序 + 白名单入口，含可提取的认证材料；
+- `LynkCo-Link-<version>-signed-<car-model>.apk`：主程序 + 白名单入口，含可提取的认证材料；
 - `SHA256SUMS.txt`：APK 校验和。
 
 发布前必须确认认证材料的分发范围。

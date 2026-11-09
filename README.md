@@ -44,8 +44,11 @@ Run head-unit checks before a real-car session:
 Download one file:
 
 ```text
-LynkCo-Link-<version>-lynk-release-standalone.apk
+LynkCo-Link-<version>-signed-<car-model>.apk
 ```
+
+The current single APK covers Lynk & Co 01/02/03/05/06 and uses the model token `lynkco`,
+for example `LynkCo-Link-0.3.6-signed-lynkco.apk`.
 
 From [Releases](https://github.com/Jas0n0ss/LynkCo-Link/releases/latest), or:
 
@@ -67,7 +70,7 @@ gh release download --repo Jas0n0ss/LynkCo-Link
 
 ```sh
 adb devices
-adb install -r LynkCo-Link-<version>-lynk-release-standalone.apk
+adb install -r LynkCo-Link-<version>-signed-<car-model>.apk
 ```
 
 Launch once after installing; Android stopped state keeps boot start disabled until then:

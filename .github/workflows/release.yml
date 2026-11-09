@@ -7,6 +7,11 @@ on:
         description: 'Existing tag to publish (for example v0.1.2)'
         required: true
         type: string
+      car_model:
+        description: 'Car-model token for the asset name (for example lynkco, lynkco-01)'
+        required: false
+        default: lynkco
+        type: string
 
 permissions:
   contents: write
@@ -21,6 +26,7 @@ jobs:
     timeout-minutes: 45
     env:
       RELEASE_TAG: ${{ inputs.tag }}
+      CAR_MODEL: ${{ inputs.car_model || 'lynkco' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,9 +76,13 @@ jobs:
           set -euo pipefail
           ./gradlew :mobile:assembleStandaloneLynkRelease --stacktrace
           VERSION="${RELEASE_TAG#v}"
+          MODEL="$(printf '%s' "${CAR_MODEL}" | tr '[:upper:]' '[:lower:]')"
+          case "$MODEL" in
+            ''|*[!a-z0-9-]*) echo "car_model must contain only a-z, 0-9 and -"; exit 1 ;;
+          esac
           mkdir -p release-assets
           cp mobile/build/outputs/apk/lynk/release/mobile-lynk-release.apk \
-            "release-assets/LynkCo-Link-${VERSION}-lynk-release-standalone.apk"
+            "release-assets/LynkCo-Link-${VERSION}-signed-${MODEL}.apk"
           (cd release-assets && sha256sum *.apk > SHA256SUMS.txt)
           ls -lh release-assets
       - name: Publish full release information

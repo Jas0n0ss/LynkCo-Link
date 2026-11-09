@@ -51,13 +51,13 @@ APK 版本：
 下载：
 
 ```text
-LynkCo-Link-0.3.4-lynk-release-standalone.apk
+LynkCo-Link-0.3.4-signed-lynkco.apk
 ```
 
 安装：
 
 ```sh
-adb install -r LynkCo-Link-0.3.4-lynk-release-standalone.apk
+adb install -r LynkCo-Link-0.3.4-signed-lynkco.apk
 ```
 
 首次启动必须手动拉起：
