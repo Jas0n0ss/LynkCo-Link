@@ -145,7 +145,7 @@ object SettingsWidgets {
             }
             val descView = TextView(context).apply {
                 text = description
-                textSize = 14f
+                textSize = 17f
                 setTextColor(theme.textSecondary)
                 setPadding(0, theme.dp(context, 6), theme.dp(context, 16), 0)
                 applyTextStyle(context, theme)
@@ -330,14 +330,14 @@ object SettingsWidgets {
         }
         val minLabel = TextView(context).apply {
             text = context.getString(R.string.custom_resolution_summary, CarPlayDisplayScale.MIN_PERCENT)
-            textSize = 15f
+            textSize = 17f
             setTextColor(theme.textSecondary)
             applyTextStyle(context, theme)
         }
         range.addView(minLabel, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         val maxLabel = TextView(context).apply {
             text = context.getString(R.string.custom_resolution_summary, CarPlayDisplayScale.MAX_PERCENT)
-            textSize = 15f
+            textSize = 17f
             setTextColor(theme.textSecondary)
             applyTextStyle(context, theme)
         }

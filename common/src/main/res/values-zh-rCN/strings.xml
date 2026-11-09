@@ -528,10 +528,10 @@
     <string name="adb_vehicle_gear_unreadable">此固件上无法读取挡位。</string>
     <string name="advanced_vehicle_data">高级车辆数据</string>
     <string name="hide_advanced_vehicle_data">收起高级车辆数据</string>
-    <string name="advanced_vehicle_data_description">可使用 DiLink 5.0 默认数据读取，或探测旧版车机字段；所有操作均为只读。</string>
+    <string name="advanced_vehicle_data_description">可使用 OSN 5.0 默认数据读取，或探测旧版车机字段；所有操作均为只读。</string>
     <string name="vehicle_data_mode">车辆数据模式</string>
-    <string name="vehicle_data_mode_default">默认模式 · 已在 DiLink 5.0 车机验证</string>
-    <string name="vehicle_data_mode_legacy">旧版车机探测 · 已在 13 控制器 / DiLink 3.0 车机实测</string>
+    <string name="vehicle_data_mode_default">默认模式 · 已在 OSN 5.0 车机验证</string>
+    <string name="vehicle_data_mode_legacy">旧版车机探测 · 已在 13 控制器 / OSN 3.0 车机实测</string>
     <string name="adb_not_checked">尚未检测 ADB。</string>
     <string name="vehicle_probe_saved_automatic">车辆能力已保存；实时 ADB 验证和必要的重新探测会自动完成。</string>
     <string name="request_adb_authorization">请求 LynkCo-Link ADB 授权</string>
@@ -610,7 +610,7 @@
     <string name="btn_open_overlay_setting">前往开启【显示在其他应用上层】</string>
     <string name="manual_grant_cmd_hint">或在电脑终端执行以下 ADB 命令一键授权：</string>
     <string name="adb_cluster_activity_label">仪表地图</string>
-    <string name="adb_cluster_activity_mode">DiLink 4 仪表视频（ADB，实验性）</string>
+    <string name="adb_cluster_activity_mode">OSN 4 仪表视频（ADB，实验性）</string>
     <string name="adb_cluster_activity_description">通过内置ADB直接在已验证仪表副屏启动地图。请先授权ADB，再重新连接iPhone。</string>
     <string name="adb_cluster_authorize">授权 ADB / 重试仪表移动</string>
     <string name="adb_cluster_open">重试仪表地图</string>
@@ -739,7 +739,7 @@
     <string name="carplay_rotation_sharper">更清晰（屏幕尺寸）</string>
     <string name="auto_grant_incomplete">未验证全部请求权限。请检查下方各项状态；开启网络 ADB 后重试，或使用手动设置。现有权限保持不变。</string>
     <string name="carplay_call_controls_experimental">CarPlay 通话、Siri 与媒体按键（实验性）</string>
-    <string name="carplay_call_controls_experimental_description">电话键接听 CarPlay 来电，挂断键／模式键拒接或挂断。来电响铃时，也可用下一曲接听、上一曲拒接；通话接通后，上下曲不用于挂断。同时启用 DiLink 3 专用 Siri 和播放／暂停按键。默认关闭，车型与固件支持情况需实车确认；仪表通话显示单独设置。</string>
+    <string name="carplay_call_controls_experimental_description">电话键接听 CarPlay 来电，挂断键／模式键拒接或挂断。来电响铃时，也可用下一曲接听、上一曲拒接；通话接通后，上下曲不用于挂断。同时启用 OSN 3 专用 Siri 和播放／暂停按键。默认关闭，车型与固件支持情况需实车确认；仪表通话显示单独设置。</string>
     <string name="side_panel">CarPlay 旁的侧边面板（实验性）</string>
     <string name="side_panel_description">CarPlay 可移到屏幕的三分之二，LynkCo-Link 在其余部分显示自己的面板：横屏时在乘客一侧，竖屏时在底部（时钟，以及已读取时的电量）。可在会话菜单中显示或隐藏。下次连接时生效。</string>
     <string name="side_panel_show">侧边面板</string>
@@ -862,19 +862,19 @@
     <string name="settings_background_update_checks">在后台检查更新</string>
     <string name="settings_background_update_checks_description">LynkCo-Link 每天会在 GitHub 上检查一次新版本，并显示在主屏幕上。未经你点击，绝不会下载。</string>
     <string name="setup_guide">设置向导</string>
-    <string name="setup_guide_description">识别 DiLink 版本，选择连接方式，并开启适合你车辆的功能。</string>
+    <string name="setup_guide_description">识别 OSN 版本，选择连接方式，并开启适合你车辆的功能。</string>
     <string name="setup_step_of">第 %1$d 步，共 %2$d 步</string>
     <string name="setup_skip">跳过设置</string>
     <string name="setup_next">下一步</string>
     <string name="setup_car_title">你的车辆</string>
     <string name="setup_car_detected">已从系统版本中识别为 %1$s。如有误请更改。</string>
     <string name="setup_car_likely">看起来是 %1$s，请确认。</string>
-    <string name="setup_car_unknown">LynkCo-Link 无法读取 DiLink 版本。请在下方选择，或保留“不确定”。</string>
-    <string name="setup_car_choose">DiLink 版本</string>
+    <string name="setup_car_unknown">LynkCo-Link 无法读取 OSN 版本。请在下方选择，或保留“不确定”。</string>
+    <string name="setup_car_choose">OSN 版本</string>
     <string name="setup_car_evidence">系统版本：%1$s</string>
-    <string name="dilink_3">DiLink 3</string>
-    <string name="dilink_4">DiLink 4</string>
-    <string name="dilink_5">DiLink 5</string>
+    <string name="dilink_3">OSN 3</string>
+    <string name="dilink_4">OSN 4</string>
+    <string name="dilink_5">OSN 5</string>
     <string name="dilink_not_sure">不确定</string>
     <string name="setup_connection_title">连接</string>
     <string name="setup_connection_description">选择 iPhone 连接车辆的方式。大多数车辆使用车机自带的 5 GHz 热点效果最好。Wi-Fi Direct 无需热点，但可能回退到 2.4 GHz。</string>
@@ -883,7 +883,7 @@
     <string name="setup_features_title">功能</string>
     <string name="setup_features_description">为 %1$s 推荐。现在开启你需要的功能；所有选项都保留在设置中，之后可随时更改。</string>
     <string name="setup_features_description_unknown">现在开启你需要的功能；所有选项都保留在设置中，之后可随时更改。</string>
-    <string name="setup_cluster_route_conflict">DiLink 4 仪表路线已开启。在 DiLink 3 上，它会阻止 CarPlay 地图显示在仪表上。</string>
+    <string name="setup_cluster_route_conflict">OSN 4 仪表路线已开启。在 OSN 3 上，它会阻止 CarPlay 地图显示在仪表上。</string>
     <string name="setup_cluster_route_turn_off">关闭它</string>
     <string name="setup_badge_tested">已在部分车辆上测试</string>
     <string name="setup_badge_experimental">实验性</string>
@@ -1030,4 +1030,5 @@
     <string name="debug_logs_description_short">请将 ZIP 附到问题反馈中。不会自动上传。</string>
     <string name="validation_run">运行车机检查</string>
     <string name="validation_title">车机检查</string>
+    <string name="status_not_paired">未配对</string>
 </resources>

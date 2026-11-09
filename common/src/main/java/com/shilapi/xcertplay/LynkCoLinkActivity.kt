@@ -927,12 +927,12 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         } else {
             homeLastProblem = label("", 15, MUTED).apply { setPadding(0, dp(14), 0, 0) }.also(card::addView)
         }
-        card.addView(homeButton(getString(R.string.choose_iphone), false) { choosePhone() }, matchButton(if (compact) CONTROL_GAP_DP else 16, if (compact) 46 else 56))
+        card.addView(homeButton(getString(R.string.choose_iphone), false) { choosePhone() }, matchButton(if (compact) CONTROL_GAP_DP else 16, if (compact) 46 else 52))
         disconnectButton = homeButton(getString(R.string.disconnect), false) {
             disconnectButton?.isEnabled = false
             CarPlayBackgroundSession.stop { runOnUiThread { refreshStatus() } }
         }.apply { visibility = View.GONE }
-        card.addView(disconnectButton, matchButton(if (compact) CONTROL_GAP_DP else 16, if (compact) 46 else 56))
+        card.addView(disconnectButton, matchButton(if (compact) CONTROL_GAP_DP else 16, if (compact) 46 else 52))
         val right = column().apply { gravity = Gravity.CENTER_HORIZONTAL }
         val logo = ImageView(this).apply {
             setImageResource(R.drawable.ic_carplay)
@@ -949,7 +949,6 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         right.addView(homeButton(getString(R.string.settings), false) { page = "settings"; render() }, matchButton(height = if (compact) 54 else 68))
         if (!compact) right.addView(label(getString(R.string.make_lynkco_link_feel_right_for_your_car), 14, MUTED).apply { gravity = Gravity.CENTER; setPadding(0, dp(10), 0, dp(24)) })
         else right.addView(space(12))
-        right.addView(label(getString(R.string.home_public_preview, version()), 12, MUTED).apply { letterSpacing = .08f })
         availableUpdate?.let { release ->
             val message = getString(R.string.update_available_home)
             val tint = { alpha: Int -> (WARNING and 0x00FFFFFF) or (alpha shl 24) }
@@ -4334,7 +4333,9 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
                 setupError != null -> getString(R.string.setup_needs_attention) to WARNING
                 CarPlayBackgroundSession.active -> getString(R.string.carplay_connected) to READY
                 running -> getString(R.string.connecting_to_your_iphone) to ACCENT
-                else -> getString(R.string.status_ready_for_prefix).trim() to BUTTON
+                LynkCoLinkPreferences.phoneAddress(this@LynkCoLinkActivity) != null ->
+                    "${getString(R.string.status_ready_for_prefix)}${LynkCoLinkPreferences.phoneName(this@LynkCoLinkActivity)}" to BUTTON
+                else -> getString(R.string.status_not_paired) to BUTTON
             }
             this.text = text
             background = GradientDrawable().apply { cornerRadius = dp(14).toFloat(); setColor(color) }
@@ -4912,9 +4913,17 @@ class LynkCoLinkActivity : ComponentActivity(), AppAppearanceOwner {
         }
     }
 
+    /** Car screens sit farther away than a phone; keep captions from falling below 13 sp. */
+    private fun readableTextSize(requested: Int): Int = when {
+        requested <= 13 -> 14
+        requested == 14 -> 16
+        requested == 15 -> 17
+        else -> requested
+    }
+
     private fun label(value: String, size: Int, color: Int, bold: Boolean = false, centreGlyphs: Boolean = false) =
         (if (centreGlyphs) HeaderTitleView(this) else TextView(this)).apply {
-        text = value; textSize = size.toFloat(); setTextColor(color); gravity = Gravity.CENTER_VERTICAL
+        text = value; textSize = readableTextSize(size).toFloat(); setTextColor(color); gravity = Gravity.CENTER_VERTICAL
         typeface = if (bold) Typeface.create("sans-serif-medium", Typeface.NORMAL) else Typeface.create("sans-serif", Typeface.NORMAL)
         setLineSpacing(dp(3).toFloat(), 1f)
     }

@@ -566,10 +566,10 @@
     <string name="adb_vehicle_gear_unreadable">このファームウェアではギア位置を読み取れません。</string>
     <string name="advanced_vehicle_data">高度な車両データ</string>
     <string name="hide_advanced_vehicle_data">高度な車両データを非表示</string>
-    <string name="advanced_vehicle_data_description">DiLink 5.0の標準データ経路を使うか、古い車載端末の項目を検出するか選択できます。車両には何も書き込みません。</string>
+    <string name="advanced_vehicle_data_description">OSN 5.0の標準データ経路を使うか、古い車載端末の項目を検出するか選択できます。車両には何も書き込みません。</string>
     <string name="vehicle_data_mode">車両データモード</string>
-    <string name="vehicle_data_mode_default">標準モード · DiLink 5.0で検証済み</string>
-    <string name="vehicle_data_mode_legacy">旧型車載端末の検出 · コントローラー13／DiLink 3.0で試験済み</string>
+    <string name="vehicle_data_mode_default">標準モード · OSN 5.0で検証済み</string>
+    <string name="vehicle_data_mode_legacy">旧型車載端末の検出 · コントローラー13／OSN 3.0で試験済み</string>
     <string name="adb_not_checked">ADBはまだ確認していません。</string>
     <string name="vehicle_probe_saved_automatic">車両の機能情報を保存しました。必要なADBの検証と再検出を自動で実行します。</string>
     <string name="request_adb_authorization">LynkCo-LinkへのADBアクセスを許可</string>
@@ -647,7 +647,7 @@
     <string name="btn_open_overlay_setting">システムの重ね合わせ表示設定を開く</string>
     <string name="manual_grant_cmd_hint">またはパソコンから次のADBコマンドを実行してください。</string>
     <string name="adb_cluster_activity_label">メーター地図</string>
-    <string name="adb_cluster_activity_mode">DiLink 4のメーター映像をADBで起動（実験的機能）</string>
+    <string name="adb_cluster_activity_mode">OSN 4のメーター映像をADBで起動（実験的機能）</string>
     <string name="adb_cluster_activity_description">内部ADBで検証済みのメーターディスプレイに地図を直接起動します。ADBを許可してiPhoneを再接続してください。</string>
     <string name="adb_cluster_authorize">ADBを許可／メーター表示を再試行</string>
     <string name="adb_cluster_open">メーター地図を再試行</string>
@@ -779,7 +779,7 @@
     <string name="carplay_rotation_sharper">鮮明（画面サイズに合わせる）</string>
     <string name="auto_grant_incomplete">要求した権限をすべて確認できませんでした。下の状態を確認し、ネットワークADBを有効にして再試行するか、手動で設定してください。既存の権限は維持されます。</string>
     <string name="carplay_call_controls_experimental">CarPlayの通話・Siri・メディアキー（実験的機能）</string>
-    <string name="carplay_call_controls_experimental_description">電話キーでCarPlayの着信に応答し、終話／モードキーで着信を拒否または通話を終了します。着信中は「次の曲」でも応答、「前の曲」で拒否できます。通話開始後、この2つの曲送りキーでは通話を終了しません。DiLink 3専用のSiriと再生／一時停止キーも有効にします。標準ではオフです。車種とファームウェアへの対応は実車で確認してください。メーターパネルの通話表示は別の設定です。</string>
+    <string name="carplay_call_controls_experimental_description">電話キーでCarPlayの着信に応答し、終話／モードキーで着信を拒否または通話を終了します。着信中は「次の曲」でも応答、「前の曲」で拒否できます。通話開始後、この2つの曲送りキーでは通話を終了しません。OSN 3専用のSiriと再生／一時停止キーも有効にします。標準ではオフです。車種とファームウェアへの対応は実車で確認してください。メーターパネルの通話表示は別の設定です。</string>
     <string name="side_panel">CarPlay横のサイドパネル（実験的機能）</string>
     <string name="side_panel_description">CarPlayを画面の約3分の2に表示し、残りにLynkCo-Linkのパネルを表示できます。横画面では助手席側、縦画面では下側に配置し、時計や取得できる場合はバッテリーを表示します。接続中のメニューから表示・非表示を切り替えられます。次回のCarPlay接続から反映されます。</string>
     <string name="side_panel_show">サイドパネル</string>
@@ -904,19 +904,19 @@
     <string name="settings_background_update_checks">バックグラウンドで更新を確認</string>
     <string name="settings_background_update_checks_description">1日1回GitHubで新しいバージョンを確認し、あればホーム画面に表示します。タップしない限りダウンロードしません。</string>
     <string name="setup_guide">初期設定ガイド</string>
-    <string name="setup_guide_description">DiLinkのバージョンを確認し、接続方法と車に合う機能を選択します。</string>
+    <string name="setup_guide_description">OSNのバージョンを確認し、接続方法と車に合う機能を選択します。</string>
     <string name="setup_step_of">ステップ %1$d／%2$d</string>
     <string name="setup_skip">設定をスキップ</string>
     <string name="setup_next">次へ</string>
     <string name="setup_car_title">お使いの車</string>
     <string name="setup_car_detected">システムのバージョンから%1$sを検出しました。違う場合は変更してください。</string>
     <string name="setup_car_likely">%1$sと思われます。確認してください。</string>
-    <string name="setup_car_unknown">DiLinkのバージョンを読み取れませんでした。下から選択するか、「不明」のままにしてください。</string>
-    <string name="setup_car_choose">DiLinkのバージョン</string>
+    <string name="setup_car_unknown">OSNのバージョンを読み取れませんでした。下から選択するか、「不明」のままにしてください。</string>
+    <string name="setup_car_choose">OSNのバージョン</string>
     <string name="setup_car_evidence">システムバージョン：%1$s</string>
-    <string name="dilink_3">DiLink 3</string>
-    <string name="dilink_4">DiLink 4</string>
-    <string name="dilink_5">DiLink 5</string>
+    <string name="dilink_3">OSN 3</string>
+    <string name="dilink_4">OSN 4</string>
+    <string name="dilink_5">OSN 5</string>
     <string name="dilink_not_sure">不明</string>
     <string name="setup_connection_title">接続</string>
     <string name="setup_connection_description">iPhoneを車に接続する方法を選択してください。多くの車では5 GHzの車載ホットスポットが最適です。Wi-Fi Directはホットスポット不要ですが、2.4 GHzに切り替わることがあります。</string>
@@ -925,7 +925,7 @@
     <string name="setup_features_title">機能</string>
     <string name="setup_features_description">%1$sにおすすめの機能です。使いたい機能をオンにしてください。後から設定画面で変更できます。</string>
     <string name="setup_features_description_unknown">使いたい機能をオンにしてください。後から設定画面で変更できます。</string>
-    <string name="setup_cluster_route_conflict">DiLink 4のメーター経路がオンです。DiLink 3ではメーターのCarPlay地図が停止します。</string>
+    <string name="setup_cluster_route_conflict">OSN 4のメーター経路がオンです。OSN 3ではメーターのCarPlay地図が停止します。</string>
     <string name="setup_cluster_route_turn_off">オフにする</string>
     <string name="setup_badge_tested">一部の車で動作確認済み</string>
     <string name="setup_badge_experimental">実験的機能</string>
@@ -1072,4 +1072,5 @@
     <string name="debug_logs_description_short">ZIP を不具合報告に添付してください。自動アップロードはありません。</string>
     <string name="validation_run">車載機チェックを実行</string>
     <string name="validation_title">車載機チェック</string>
+    <string name="status_not_paired">未接続</string>
 </resources>
