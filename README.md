@@ -29,8 +29,6 @@ The UI ships in **English by default** and includes Simplified/Traditional Chine
 | --- | --- |
 | ![Connection](docs/assets/emulator-api28-lynkco-link-1920x1080.png) | ![1920x720](docs/assets/emulator-api33-lynkco-link-1920x720.png) |
 
-![Mock vehicle panel](docs/assets/emulator-api33-mock-vehicle-1920x720.png)
-
 Collect a redacted vehicle report from Settings → Diagnostics:
 
 ![Vehicle report](docs/assets/vehicle-report-export.png)
@@ -40,12 +38,6 @@ Run head-unit checks before a real-car session:
 ![Head-unit checks](docs/assets/head-unit-checks.png)
 
 ## Download and install
-
-Download one file:
-
-```text
-LynkCo-Link-<version>-<car-model>-signed.apk
-```
 
 The current single APK covers Lynk & Co 01/02/03/05/06 and uses the model token `general`,
 for example `LynkCo-Link-0.3.6-general-signed.apk`; a model-specific build uses `01`, `03`, etc.
@@ -98,18 +90,6 @@ adb shell am start -n com.kugou.android.auto/com.shilapi.xcertplay.LynkCoLinkAct
 - **Wired**: connect to the USB-A data port, open LynkCo-Link, tap Allow on the iPhone.
 - **Wireless**: LynkCo-Link → Connection, choose car hotspot / Wi-Fi Direct / Existing Wi-Fi and pair.
 - On failure: Settings → Diagnostics → Save diagnostic report.
-
-## FAQ
-
-| Problem | Fix |
-| --- | --- |
-| `adb: command not found` | Install Platform-Tools or run from its directory |
-| `device unauthorized` | Allow USB debugging on the car; revoke and reconnect if needed |
-| `INSTALL_FAILED_USER_RESTRICTED` | Enable USB install / unknown sources |
-| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Uninstall the old `com.lynkco.link.lynk` or entry package first (settings are lost) |
-| Installed but no icon | Reboot; check the package list; or start with ADB |
-| CarPlay does not connect | Unlock the iPhone, enable Bluetooth/Wi-Fi, export diagnostics |
-| Real Kugou app installed | Package conflict; uninstall the Kugou head-unit app |
 
 ## Update and uninstall
 
